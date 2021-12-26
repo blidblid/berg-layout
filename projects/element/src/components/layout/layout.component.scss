@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .berg-layout-flex {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+  }
+}
