@@ -1,0 +1,17 @@
+@mixin border($border) {
+  .berg-panel-top {
+    border-bottom: $border;
+  }
+
+  .berg-panel-left {
+    border-right: $border;
+  }
+
+  .berg-panel-right {
+    border-left: $border;
+  }
+
+  .berg-panel-bottom {
+    border-top: $border;
+  }
+}

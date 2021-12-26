@@ -1,0 +1,4 @@
+@use 'node_modules/@berg-layout/element' as layout;
+
+@include layout.border(1px solid indianred);
+@include layout.padding(8px, 16px, 16px, 32px);

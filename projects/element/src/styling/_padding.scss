@@ -1,0 +1,17 @@
+@mixin padding($mobile, $small, $medium, $large) {
+  .berg-panel-mobile {
+    padding: $mobile;
+  }
+
+  .berg-panel-small {
+    padding: $small;
+  }
+
+  .berg-panel-medium {
+    padding: $medium;
+  }
+
+  .berg-panel-large {
+    padding: $large;
+  }
+}

@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "angular": ["dist/angular/angular", "dist/angular"]
+      "@berg-layout/element": ["dist/element/element", "dist/element"]
     },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -12,6 +12,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "strictPropertyInitialization": false,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
