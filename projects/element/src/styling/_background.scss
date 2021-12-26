@@ -1,0 +1,11 @@
+@use './util';
+
+@mixin background(
+  $center,
+  $top: null,
+  $left: null,
+  $bottom: null,
+  $right: null
+) {
+  @include util.distribute(background, $center, $top, $left, $bottom, $right);
+}

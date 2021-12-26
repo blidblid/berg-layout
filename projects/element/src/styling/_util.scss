@@ -1,0 +1,28 @@
+@mixin distribute(
+  $property,
+  $center,
+  $top: null,
+  $left: null,
+  $bottom: null,
+  $right: null
+) {
+  .berg-panel-center {
+    #{$property}: $center or $top or $left or $bottom or $right;
+  }
+
+  .berg-panel-top {
+    #{$property}: $top or $bottom or $left or $right or $center;
+  }
+
+  .berg-panel-left {
+    #{$property}: $left or $right or $top or $bottom or $center;
+  }
+
+  .berg-panel-bottom {
+    #{$property}: $bottom or $top or $left or $right or $center;
+  }
+
+  .berg-panel-right {
+    #{$property}: $right or $left or $top or $bottom or $center;
+  }
+}

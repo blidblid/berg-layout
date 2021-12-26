@@ -1,3 +1,7 @@
 .berg-panel {
   display: block;
+
+  &.berg-panel-center {
+    flex: 1;
+  }
 }

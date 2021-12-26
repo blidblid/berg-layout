@@ -20,6 +20,7 @@ import { BergLayoutSlot } from '../layout/layout-model';
   host: {
     '[class]': 'hostClass',
     '[class.berg-panel]': 'true',
+    '[class.berg-panel-center]': '!slot',
     '[class.berg-panel-top]': 'slot === "top"',
     '[class.berg-panel-left]': 'slot === "left"',
     '[class.berg-panel-right]': 'slot === "right"',
