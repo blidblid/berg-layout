@@ -1,15 +1,18 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
-  OnDestroy,
+  ElementRef,
+  Inject,
+  Optional,
+  ViewContainerRef,
   ViewEncapsulation,
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BreakpointService } from '../../core';
-import { BergLayoutSlot } from '../layout/layout-model';
+import { BergResizeDirective } from '../resize';
+import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
 
 @Component({
   selector: 'berg-panel',
@@ -27,9 +30,7 @@ import { BergLayoutSlot } from '../layout/layout-model';
     '[class.berg-panel-bottom]': 'slot === "bottom"',
   },
 })
-export class BergPanelComponent implements OnDestroy {
-  @Input() slot: BergLayoutSlot;
-
+export class BergPanelComponent extends BergResizeDirective {
   hostClass: string;
 
   private hostClass$ = this.breakpoint.matches$.pipe(
@@ -46,19 +47,25 @@ export class BergPanelComponent implements OnDestroy {
     })
   );
 
-  private destroySub = new Subject<void>();
-
   constructor(
+    protected override elementRef: ElementRef<HTMLElement>,
+    protected override viewContainerRef: ViewContainerRef,
+    @Inject(DOCUMENT) protected override document: Document,
+    @Inject(BERG_RESIZE_INPUTS)
+    @Optional()
+    protected override inputs: BergResizeInputs,
     private breakpoint: BreakpointService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
+    super(elementRef, viewContainerRef, document, inputs);
+
     this.hostClass$.subscribe((hostClass) => {
       this.hostClass = hostClass;
       this.changeDetectorRef.markForCheck();
     });
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     this.destroySub.next();
     this.destroySub.complete();
   }

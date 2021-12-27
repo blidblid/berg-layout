@@ -7,5 +7,12 @@
   $bottom: null,
   $right: null
 ) {
-  @include util.distribute(background, $center, $top, $left, $bottom, $right);
+  @include util.distributeByPanel(
+    background,
+    $center,
+    $top,
+    $left,
+    $bottom,
+    $right
+  );
 }

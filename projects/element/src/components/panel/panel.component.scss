@@ -4,4 +4,21 @@
   &.berg-panel-center {
     flex: 1;
   }
+
+  &.berg-panel-resizing {
+    user-select: none;
+  }
+
+  &.berg-resize-resizing,
+  &.berg-resize-previewing {
+    &.berg-resize-above,
+    &.berg-resize-below {
+      cursor: ns-resize;
+    }
+
+    &.berg-resize-before,
+    &.berg-resize-after {
+      cursor: ew-resize;
+    }
+  }
 }

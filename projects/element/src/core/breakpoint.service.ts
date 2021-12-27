@@ -1,8 +1,11 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { shareReplay } from 'rxjs/operators';
-import { BergLayoutBreakpoints, BERG_LAYOUT_DEFAULT_BREAKPOINTS } from '.';
-import { BERG_LAYOUT_BREAKPOINTS } from './breakpoint-model';
+import {
+  BergLayoutBreakpoints,
+  BERG_LAYOUT_BREAKPOINTS,
+  BERG_LAYOUT_DEFAULT_BREAKPOINTS,
+} from './breakpoint-model';
 
 @Injectable({
   providedIn: 'root',

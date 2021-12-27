@@ -1,17 +1,11 @@
-@mixin padding($mobile, $small, $medium, $large) {
-  .berg-panel-mobile {
-    padding: $mobile;
-  }
+@use './util';
 
-  .berg-panel-small {
-    padding: $small;
-  }
-
-  .berg-panel-medium {
-    padding: $medium;
-  }
-
-  .berg-panel-large {
-    padding: $large;
-  }
+@mixin padding($large, $medium: null, $small: null, $mobile: null) {
+  @include util.distributeByResolution(
+    padding,
+    $large,
+    $medium,
+    $small,
+    $mobile
+  );
 }

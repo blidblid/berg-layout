@@ -1,5 +1,14 @@
 @use 'node_modules/@berg-layout/element' as layout;
 
-@include layout.border(4px solid rgba(255, 255, 255, 0.3));
+@include layout.border(
+  3px,
+  rgba(255, 255, 255, 0.3),
+  3px,
+  rgba(15, 54, 228, 0.3),
+  3px,
+  rgba(15, 132, 228, 0.3)
+);
+
 @include layout.padding(8px, 16px, 16px, 32px);
+
 @include layout.background(#424242, #303030);

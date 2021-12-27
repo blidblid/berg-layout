@@ -1,4 +1,4 @@
-@mixin distribute(
+@mixin distributeByPanel(
   $property,
   $center,
   $top: null,
@@ -7,22 +7,46 @@
   $right: null
 ) {
   .berg-panel-center {
-    #{$property}: $center or $top or $left or $bottom or $right;
+    #{$property}: $center;
   }
 
   .berg-panel-top {
-    #{$property}: $top or $bottom or $left or $right or $center;
+    #{$property}: $top or $center;
   }
 
   .berg-panel-left {
-    #{$property}: $left or $right or $top or $bottom or $center;
+    #{$property}: $left or $top or $center;
   }
 
   .berg-panel-bottom {
-    #{$property}: $bottom or $top or $left or $right or $center;
+    #{$property}: $bottom or $top or $left or $center;
   }
 
   .berg-panel-right {
     #{$property}: $right or $left or $top or $bottom or $center;
+  }
+}
+
+@mixin distributeByResolution(
+  $property,
+  $large,
+  $medium: null,
+  $small: null,
+  $mobile: null
+) {
+  .berg-panel-large {
+    #{$property}: $large;
+  }
+
+  .berg-panel-medium {
+    #{$property}: $medium or $large;
+  }
+
+  .berg-panel-small {
+    #{$property}: $small or $medium or $large;
+  }
+
+  .berg-panel-mobile {
+    #{$property}: $mobile or $small or $medium or $large;
   }
 }
