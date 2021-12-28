@@ -14,4 +14,4 @@ import {
     class: 'berg-layout',
   },
 })
-export class LayoutComponent {}
+export class BergLayoutComponent {}

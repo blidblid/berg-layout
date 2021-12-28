@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BergPanelModule } from '../panel';
-import { LayoutComponent } from './layout.component';
+import { BergLayoutComponent } from './layout.component';
 
-const API = [LayoutComponent];
+const API = [BergLayoutComponent];
 
 @NgModule({
   declarations: API,
