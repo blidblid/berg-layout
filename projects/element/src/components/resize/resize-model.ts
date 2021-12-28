@@ -10,6 +10,8 @@ export const BERG_RESIZE_DEFAULT_INPUTS: BergResizeInputs = {
   threshold: 8,
 };
 
+export const BERG_RESIZE_PREVIEW_DELAY = 250;
+
 export type BergResizePosition = 'above' | 'after' | 'below' | 'before' | null;
 
 export interface BergResizeInputs {

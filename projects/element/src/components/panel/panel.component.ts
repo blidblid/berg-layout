@@ -20,7 +20,6 @@ import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { BreakpointService, ListenerCacheService } from '../../core';
 import { BergResizeDirective } from '../resize';
 import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
-import { BERG_PANEL_MOUSE_MOVE_DEBOUNCE } from './panel-model';
 
 @Component({
   selector: 'berg-panel',
@@ -85,7 +84,7 @@ export class BergPanelComponent extends BergResizeDirective {
     return defer(() => {
       return this.listenerCache.getMousemove(this.layoutElement, () => {
         return fromEvent<MouseEvent>(this.layoutElement, 'mousemove').pipe(
-          debounceTime(BERG_PANEL_MOUSE_MOVE_DEBOUNCE, animationFrameScheduler)
+          debounceTime(0, animationFrameScheduler)
         );
       });
     });

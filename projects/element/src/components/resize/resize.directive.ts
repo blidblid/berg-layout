@@ -15,6 +15,7 @@ import {
   fromEvent,
   merge,
   Observable,
+  of,
   Subject,
 } from 'rxjs';
 import {
@@ -33,6 +34,7 @@ import {
   BergResizeSize,
   BERG_RESIZE_DEFAULT_INPUTS,
   BERG_RESIZE_INPUTS,
+  BERG_RESIZE_PREVIEW_DELAY,
 } from './resize-model';
 
 @Directive({
@@ -172,7 +174,14 @@ export class BergResizeDirective implements OnInit, OnDestroy {
       .subscribe((resizing) => (this.resizing = resizing));
 
     this.previewing$
-      .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
+      .pipe(
+        switchMap((previewing) => {
+          return of(previewing).pipe(
+            delay(previewing ? BERG_RESIZE_PREVIEW_DELAY : 0)
+          );
+        }),
+        takeUntil(this.destroySub)
+      )
       .subscribe((previewing) => (this.previewing = previewing));
 
     this.resizedSize$

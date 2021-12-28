@@ -1,1 +1,0 @@
-export const BERG_PANEL_MOUSE_MOVE_DEBOUNCE = 0;
