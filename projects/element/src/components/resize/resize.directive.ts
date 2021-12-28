@@ -105,7 +105,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     return this.elementRef.nativeElement;
   }
 
-  protected previewing$ = this.getMouseMove().pipe(
+  protected previewing$ = this.getMousemove().pipe(
     filter(() => !this._disabled),
     map((event) => this.checkThreshold(event)),
     distinctUntilChanged()
@@ -121,13 +121,13 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
   protected startResize$ = this.startPreview.pipe(
     filter(() => !this._disabled),
-    switchMap(() => this.getMouseDown().pipe(takeUntil(this.stopPreview$))),
+    switchMap(() => this.getMousedown().pipe(takeUntil(this.stopPreview$))),
     map((event) => this.checkThreshold(event))
   );
 
   protected stopResize$ = merge(
     fromEvent<MouseEvent>(this.document.body, 'mouseup'),
-    fromEvent<MouseEvent>(this.document.body, 'dragend')
+    fromEvent<DragEvent>(this.document.body, 'dragend')
   ).pipe(map(() => false));
 
   protected resizing$ = merge(this.startResize$, this.stopResize$).pipe(
@@ -154,11 +154,11 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     protected inputs: BergResizeInputs
   ) {}
 
-  protected getMouseDown(): Observable<MouseEvent> {
+  protected getMousedown(): Observable<MouseEvent> {
     return fromEvent<MouseEvent>(this.hostElem, 'mousedown');
   }
 
-  protected getMouseMove(): Observable<MouseEvent> {
+  protected getMousemove(): Observable<MouseEvent> {
     return fromEvent<MouseEvent>(this.hostElem, 'mousemove');
   }
 

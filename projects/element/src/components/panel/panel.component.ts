@@ -17,7 +17,7 @@ import {
   Observable,
 } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
-import { BreakpointService } from '../../core';
+import { BreakpointService, ListenerCacheService } from '../../core';
 import { BergResizeDirective } from '../resize';
 import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
 import { BERG_PANEL_MOUSE_MOVE_DEBOUNCE } from './panel-model';
@@ -63,6 +63,7 @@ export class BergPanelComponent extends BergResizeDirective {
     @Inject(BERG_RESIZE_INPUTS)
     @Optional()
     protected override inputs: BergResizeInputs,
+    private listenerCache: ListenerCacheService,
     private breakpoint: BreakpointService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
@@ -72,17 +73,21 @@ export class BergPanelComponent extends BergResizeDirective {
     this.subscribe();
   }
 
-  protected override getMouseDown(): Observable<MouseEvent> {
+  protected override getMousedown(): Observable<MouseEvent> {
     return defer(() => {
-      return fromEvent<MouseEvent>(this.layoutElement, 'mousedown');
+      return this.listenerCache.getMousedown(this.layoutElement, () => {
+        return fromEvent<MouseEvent>(this.layoutElement, 'mousedown');
+      });
     });
   }
 
-  protected override getMouseMove(): Observable<MouseEvent> {
+  protected override getMousemove(): Observable<MouseEvent> {
     return defer(() => {
-      return fromEvent<MouseEvent>(this.layoutElement, 'mousemove').pipe(
-        debounceTime(BERG_PANEL_MOUSE_MOVE_DEBOUNCE, animationFrameScheduler)
-      );
+      return this.listenerCache.getMousemove(this.layoutElement, () => {
+        return fromEvent<MouseEvent>(this.layoutElement, 'mousemove').pipe(
+          debounceTime(BERG_PANEL_MOUSE_MOVE_DEBOUNCE, animationFrameScheduler)
+        );
+      });
     });
   }
 
