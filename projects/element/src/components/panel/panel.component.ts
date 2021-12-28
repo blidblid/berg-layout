@@ -9,10 +9,12 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
 } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { animationFrameScheduler, defer, fromEvent, Observable } from 'rxjs';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { BreakpointService } from '../../core';
 import { BergResizeDirective } from '../resize';
 import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
+import { BERG_PANEL_MOUSE_MOVE_DEBOUNCE } from './panel-model';
 
 @Component({
   selector: 'berg-panel',
@@ -32,6 +34,7 @@ import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
 })
 export class BergPanelComponent extends BergResizeDirective {
   hostClass: string;
+  layoutElement: HTMLElement;
 
   private hostClass$ = this.breakpoint.matches$.pipe(
     map((breakpoint) => {
@@ -59,7 +62,39 @@ export class BergPanelComponent extends BergResizeDirective {
   ) {
     super(elementRef, viewContainerRef, document, inputs);
 
-    this.hostClass$.subscribe((hostClass) => {
+    this.subscribeToHostClass();
+    this.findLayoutElement();
+  }
+
+  protected override getMouseDown(): Observable<MouseEvent> {
+    return defer(() => {
+      return fromEvent<MouseEvent>(this.layoutElement, 'mousedown');
+    });
+  }
+
+  protected override getMouseMove(): Observable<MouseEvent> {
+    return defer(() => {
+      return fromEvent<MouseEvent>(this.layoutElement, 'mousemove').pipe(
+        debounceTime(BERG_PANEL_MOUSE_MOVE_DEBOUNCE, animationFrameScheduler)
+      );
+    });
+  }
+
+  private findLayoutElement(): void {
+    let elem = this.elementRef.nativeElement;
+
+    while (elem.parentElement) {
+      if (elem.parentElement.tagName === 'BERG-LAYOUT') {
+        this.layoutElement = elem.parentElement;
+        return;
+      }
+
+      elem = elem.parentElement;
+    }
+  }
+
+  private subscribeToHostClass(): void {
+    this.hostClass$.pipe(takeUntil(this.destroySub)).subscribe((hostClass) => {
       this.hostClass = hostClass;
       this.changeDetectorRef.markForCheck();
     });

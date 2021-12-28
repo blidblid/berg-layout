@@ -10,7 +10,13 @@ import {
   Optional,
   ViewContainerRef,
 } from '@angular/core';
-import { animationFrameScheduler, fromEvent, merge, Subject } from 'rxjs';
+import {
+  animationFrameScheduler,
+  fromEvent,
+  merge,
+  Observable,
+  Subject,
+} from 'rxjs';
 import {
   delay,
   distinctUntilChanged,
@@ -102,8 +108,22 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     return this.elementRef.nativeElement;
   }
 
-  private startResize$ = fromEvent<MouseEvent>(this.hostElem, 'mousedown').pipe(
+  private previewing$ = this.getMouseMove().pipe(
     filter(() => !this._disabled),
+    map((event) => this.checkThreshold(event))
+  );
+
+  private isPreviewing$ = this.previewing$.pipe(
+    filter((previewing) => previewing)
+  );
+
+  private isNotPreviewing$ = this.previewing$.pipe(
+    filter((previewing) => !previewing)
+  );
+
+  private startResize$ = this.isPreviewing$.pipe(
+    filter(() => !this._disabled),
+    switchMap(() => this.getMouseDown().pipe(takeUntil(this.isNotPreviewing$))),
     map((event) => this.checkThreshold(event))
   );
 
@@ -111,22 +131,6 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     fromEvent<MouseEvent>(this.document.body, 'mouseup'),
     fromEvent<MouseEvent>(this.document.body, 'dragend')
   ).pipe(map(() => false));
-
-  private startPreviewing$ = fromEvent<MouseEvent>(
-    this.hostElem,
-    'mousemove'
-  ).pipe(
-    filter(() => !this._disabled),
-    map((event) => this.checkThreshold(event))
-  );
-
-  private stopPreviewing$ = fromEvent<MouseEvent>(
-    this.hostElem,
-    'mouseleave'
-  ).pipe(
-    filter(() => !this._disabled),
-    map(() => false)
-  );
 
   private resizedSize$ = this.startResize$.pipe(
     switchMap(() => {
@@ -147,6 +151,14 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     protected inputs: BergResizeInputs
   ) {}
 
+  protected getMouseDown(): Observable<MouseEvent> {
+    return fromEvent<MouseEvent>(this.hostElem, 'mousedown');
+  }
+
+  protected getMouseMove(): Observable<MouseEvent> {
+    return fromEvent<MouseEvent>(this.hostElem, 'mousemove');
+  }
+
   private subscribe(): void {
     if (this.position === null) {
       return;
@@ -156,7 +168,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
       .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
       .subscribe((resizing) => (this.resizing = resizing));
 
-    merge(this.startPreviewing$, this.stopPreviewing$)
+    this.previewing$
       .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
       .subscribe((previewing) => (this.previewing = previewing));
 
@@ -191,18 +203,20 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     let mouse = 0;
     let origin = 0;
 
+    const rect = this.hostElem.getBoundingClientRect();
+
     if (this.position === 'above') {
-      mouse = event.offsetY;
-      origin = 0;
+      mouse = event.pageY;
+      origin = rect.y;
     } else if (this.position === 'after') {
-      mouse = event.offsetX;
-      origin = this.hostElem.getBoundingClientRect().width;
+      mouse = event.pageX;
+      origin = rect.x + rect.width;
     } else if (this.position === 'below') {
-      mouse = event.offsetY;
-      origin = this.hostElem.getBoundingClientRect().height;
+      mouse = event.pageY;
+      origin = rect.height + rect.y;
     } else if (this.position === 'before') {
-      mouse = event.offsetX;
-      origin = 0;
+      mouse = event.pageX;
+      origin = rect.x;
     }
 
     return this.threshold > Math.abs(origin - mouse);
