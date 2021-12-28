@@ -11,10 +11,12 @@
   }
 
   &:host(.berg-layout-resize-horizontal) {
+    user-select: none;
     cursor: ew-resize;
   }
 
   &:host(.berg-layout-resize-vertical) {
+    user-select: none;
     cursor: ns-resize;
 
     &:host(.berg-layout-resize-horizontal) {
