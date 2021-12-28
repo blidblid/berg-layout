@@ -22,6 +22,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  startWith,
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
@@ -39,10 +40,6 @@ import {
   host: {
     '[class.berg-resize-resizing]': 'resizing',
     '[class.berg-resize-previewing]': 'previewing',
-    '[class.berg-resize-above]': 'position === "above"',
-    '[class.berg-resize-after]': 'position === "after"',
-    '[class.berg-resize-below]': 'position === "below"',
-    '[class.berg-resize-before]': 'position === "before"',
     '[style.width.px]': 'size.width',
     '[style.height.px]': 'size.height',
     '[style.box-sizing]': '"border-box"',
@@ -104,35 +101,41 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
   protected destroySub = new Subject<void>();
 
-  private get hostElem() {
+  protected get hostElem() {
     return this.elementRef.nativeElement;
   }
 
-  private previewing$ = this.getMouseMove().pipe(
+  protected previewing$ = this.getMouseMove().pipe(
     filter(() => !this._disabled),
-    map((event) => this.checkThreshold(event))
+    map((event) => this.checkThreshold(event)),
+    distinctUntilChanged()
   );
 
-  private isPreviewing$ = this.previewing$.pipe(
+  protected startPreview = this.previewing$.pipe(
     filter((previewing) => previewing)
   );
 
-  private isNotPreviewing$ = this.previewing$.pipe(
+  protected stopPreview$ = this.previewing$.pipe(
     filter((previewing) => !previewing)
   );
 
-  private startResize$ = this.isPreviewing$.pipe(
+  protected startResize$ = this.startPreview.pipe(
     filter(() => !this._disabled),
-    switchMap(() => this.getMouseDown().pipe(takeUntil(this.isNotPreviewing$))),
+    switchMap(() => this.getMouseDown().pipe(takeUntil(this.stopPreview$))),
     map((event) => this.checkThreshold(event))
   );
 
-  private stopResize$ = merge(
+  protected stopResize$ = merge(
     fromEvent<MouseEvent>(this.document.body, 'mouseup'),
     fromEvent<MouseEvent>(this.document.body, 'dragend')
   ).pipe(map(() => false));
 
-  private resizedSize$ = this.startResize$.pipe(
+  protected resizing$ = merge(this.startResize$, this.stopResize$).pipe(
+    startWith(false),
+    distinctUntilChanged()
+  );
+
+  protected resizedSize$ = this.startResize$.pipe(
     switchMap(() => {
       return fromEvent<MouseEvent>(this.document.body, 'mousemove').pipe(
         takeUntil(this.stopResize$)
@@ -159,7 +162,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     return fromEvent<MouseEvent>(this.hostElem, 'mousemove');
   }
 
-  private subscribe(): void {
+  private subscribeToEvents(): void {
     if (this.position === null) {
       return;
     }
@@ -200,6 +203,10 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   }
 
   private checkThreshold(event: MouseEvent): boolean {
+    if (!this.position) {
+      return false;
+    }
+
     let mouse = 0;
     let origin = 0;
 
@@ -234,6 +241,6 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscribe();
+    this.subscribeToEvents();
   }
 }

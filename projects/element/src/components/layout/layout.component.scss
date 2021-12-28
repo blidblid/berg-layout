@@ -9,4 +9,16 @@
     justify-content: space-between;
     flex: 1;
   }
+
+  &:host(.berg-layout-resize-horizontal) {
+    cursor: ew-resize;
+  }
+
+  &:host(.berg-layout-resize-vertical) {
+    cursor: ns-resize;
+
+    &:host(.berg-layout-resize-horizontal) {
+      cursor: move;
+    }
+  }
 }

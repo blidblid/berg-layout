@@ -9,7 +9,13 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
 } from '@angular/core';
-import { animationFrameScheduler, defer, fromEvent, Observable } from 'rxjs';
+import {
+  animationFrameScheduler,
+  combineLatest,
+  defer,
+  fromEvent,
+  Observable,
+} from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { BreakpointService } from '../../core';
 import { BergResizeDirective } from '../resize';
@@ -62,8 +68,8 @@ export class BergPanelComponent extends BergResizeDirective {
   ) {
     super(elementRef, viewContainerRef, document, inputs);
 
-    this.subscribeToHostClass();
-    this.findLayoutElement();
+    this.layoutElement = this.findLayoutElement();
+    this.subscribe();
   }
 
   protected override getMouseDown(): Observable<MouseEvent> {
@@ -80,24 +86,40 @@ export class BergPanelComponent extends BergResizeDirective {
     });
   }
 
-  private findLayoutElement(): void {
+  private findLayoutElement(): HTMLElement {
     let elem = this.elementRef.nativeElement;
 
     while (elem.parentElement) {
       if (elem.parentElement.tagName === 'BERG-LAYOUT') {
-        this.layoutElement = elem.parentElement;
-        return;
+        return elem.parentElement;
       }
 
       elem = elem.parentElement;
     }
+
+    return this.hostElem;
   }
 
-  private subscribeToHostClass(): void {
+  private subscribe(): void {
     this.hostClass$.pipe(takeUntil(this.destroySub)).subscribe((hostClass) => {
       this.hostClass = hostClass;
       this.changeDetectorRef.markForCheck();
     });
+
+    combineLatest([this.previewing$, this.resizing$])
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(([previewing, resizing]) => {
+        const resizeClass =
+          this.position === 'above' || this.position === 'below'
+            ? 'berg-layout-resize-vertical'
+            : 'berg-layout-resize-horizontal';
+
+        if (previewing || resizing) {
+          this.layoutElement.classList.add(resizeClass);
+        } else {
+          this.layoutElement.classList.remove(resizeClass);
+        }
+      });
   }
 
   override ngOnDestroy(): void {
