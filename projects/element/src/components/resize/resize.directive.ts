@@ -32,11 +32,13 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { BergLayoutSlot } from '../layout/layout-model';
+import { BodyListeners } from './body-listeners';
 import {
   BergResizeInputs,
   BergResizePosition,
   BergResizeSize,
   BERG_RESIZE_DEFAULT_INPUTS,
+  BERG_RESIZE_EXPAND_PADDING,
   BERG_RESIZE_INPUTS,
 } from './resize-model';
 
@@ -151,7 +153,11 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     switchMap(() => this.getMousedown().pipe(takeUntil(this.stopPreview$)))
   );
 
-  protected stopResize$ = merge(this.getMouseup(), this.getDragend());
+  protected stopResize$ = merge(
+    this.bodyListeners.mouseup$,
+    this.bodyListeners.mouseleave$,
+    this.bodyListeners.dragend$
+  );
 
   protected resizing$ = merge(
     this.startResize$.pipe(map(() => true)),
@@ -168,11 +174,11 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   private collapseAtSize$ = this.resizedSize$.pipe(
     filter((size) => {
       if (size.width !== undefined) {
-        return size.rect.width - size.width > this.collapseThreshold;
+        return this.collapseThreshold >= size.width / size.rect.width;
       }
 
       if (size.height !== undefined) {
-        return size.rect.height - size.height > this.collapseThreshold;
+        return this.collapseThreshold >= size.height / size.rect.height;
       }
 
       return false;
@@ -183,11 +189,11 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     withLatestFrom(this.collapseAtSize$),
     filter(([size, collapseAtSize]) => {
       if (size.width !== undefined && collapseAtSize.width !== undefined) {
-        return size.width - collapseAtSize.width > this.collapseThreshold / 2;
+        return size.width - BERG_RESIZE_EXPAND_PADDING > collapseAtSize.width;
       }
 
       if (size.height !== undefined && collapseAtSize.height !== undefined) {
-        return size.height - collapseAtSize.height > this.collapseThreshold / 2;
+        return size.height - BERG_RESIZE_EXPAND_PADDING > collapseAtSize.height;
       }
 
       return false;
@@ -201,6 +207,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   ).pipe(distinctUntilChanged());
 
   constructor(
+    protected bodyListeners: BodyListeners,
     protected elementRef: ElementRef<HTMLElement>,
     protected viewContainerRef: ViewContainerRef,
     @Inject(DOCUMENT) protected document: Document,
@@ -211,14 +218,6 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
   protected getMousedown(): Observable<MouseEvent> {
     return fromEvent<MouseEvent>(this.hostElem, 'mousedown');
-  }
-
-  protected getDragend(): Observable<DragEvent> {
-    return fromEvent<DragEvent>(this.document.body, 'dragend');
-  }
-
-  protected getMouseup(): Observable<MouseEvent> {
-    return fromEvent<MouseEvent>(this.document.body, 'mouseup');
   }
 
   protected getMousemove(): Observable<MouseEvent> {

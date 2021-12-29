@@ -8,9 +8,11 @@ export const BERG_RESIZE_DEFAULT_INPUTS: BergResizeInputs = {
   position: null,
   disabled: false,
   resizeThreshold: 6,
-  collapseThreshold: 100,
+  collapseThreshold: 0.5,
   previewDelay: 0,
 };
+
+export const BERG_RESIZE_EXPAND_PADDING = 4;
 
 export type BergResizePosition = 'above' | 'after' | 'below' | 'before' | null;
 

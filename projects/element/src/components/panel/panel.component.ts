@@ -19,6 +19,7 @@ import {
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { BreakpointService, ListenerCacheService } from '../../core';
 import { BergResizeDirective } from '../resize';
+import { BodyListeners } from '../resize/body-listeners';
 import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
 
 @Component({
@@ -56,6 +57,7 @@ export class BergPanelComponent extends BergResizeDirective {
   );
 
   constructor(
+    protected override bodyListeners: BodyListeners,
     protected override elementRef: ElementRef<HTMLElement>,
     protected override viewContainerRef: ViewContainerRef,
     @Inject(DOCUMENT) protected override document: Document,
@@ -66,8 +68,7 @@ export class BergPanelComponent extends BergResizeDirective {
     private breakpoint: BreakpointService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-    super(elementRef, viewContainerRef, document, inputs);
-
+    super(bodyListeners, elementRef, viewContainerRef, document, inputs);
     this.layoutElement = this.findLayoutElement();
     this.subscribe();
   }
@@ -88,14 +89,6 @@ export class BergPanelComponent extends BergResizeDirective {
         );
       });
     });
-  }
-
-  protected override getDragend(): Observable<DragEvent> {
-    return defer(() => this.listenerCache.bodyDragend$);
-  }
-
-  protected override getMouseup(): Observable<MouseEvent> {
-    return defer(() => this.listenerCache.bodyMouseup$);
   }
 
   private findLayoutElement(): HTMLElement {
