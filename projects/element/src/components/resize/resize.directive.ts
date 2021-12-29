@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   Optional,
+  Output,
   ViewContainerRef,
 } from '@angular/core';
 import {
@@ -19,13 +20,16 @@ import {
   Subject,
 } from 'rxjs';
 import {
+  debounceTime,
   delay,
   distinctUntilChanged,
   filter,
   map,
+  share,
   startWith,
   switchMap,
   takeUntil,
+  withLatestFrom,
 } from 'rxjs/operators';
 import { BergLayoutSlot } from '../layout/layout-model';
 import {
@@ -34,7 +38,6 @@ import {
   BergResizeSize,
   BERG_RESIZE_DEFAULT_INPUTS,
   BERG_RESIZE_INPUTS,
-  BERG_RESIZE_PREVIEW_DELAY,
 } from './resize-model';
 
 @Directive({
@@ -42,8 +45,9 @@ import {
   host: {
     '[class.berg-resize-resizing]': 'resizing',
     '[class.berg-resize-previewing]': 'previewing',
-    '[style.width.px]': 'size.width',
-    '[style.height.px]': 'size.height',
+    '[class.berg-resize-collapsed]': 'collapsed',
+    '[style.width.px]': 'size?.width',
+    '[style.height.px]': 'size?.height',
     '[style.box-sizing]': '"border-box"',
   },
 })
@@ -60,13 +64,33 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
   /** Threshold to determine if a cursor position should be able to resize the element. */
   @Input('bergResizeThreshold')
-  get threshold() {
-    return this._threshold;
+  get resizeThreshold() {
+    return this._resizeThreshold;
   }
-  set threshold(value: number) {
-    this._threshold = value;
+  set resizeThreshold(value: number) {
+    this._resizeThreshold = value;
   }
-  private _threshold: number = this.getInput('threshold');
+  private _resizeThreshold: number = this.getInput('resizeThreshold');
+
+  /** Threshold to determine when a resize should be interpreted as a collapsing event. */
+  @Input('bergResizeCollapseThreshold')
+  get collapseThreshold() {
+    return this._collapseThreshold;
+  }
+  set collapseThreshold(value: number) {
+    this._collapseThreshold = value;
+  }
+  private _collapseThreshold: number = this.getInput('collapseThreshold');
+
+  /** Delay before the resize preview is shown. */
+  @Input('bergResizePreviewDelay')
+  get previewDelay() {
+    return this._previewDelay;
+  }
+  set previewDelay(value: number) {
+    this._previewDelay = value;
+  }
+  private _previewDelay: number = this.getInput('previewDelay');
 
   /** Slot name to position the resize toggle. */
   @Input('slot')
@@ -91,8 +115,9 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
   resizing = false;
   previewing = false;
+  collapsed = false;
 
-  size: BergResizeSize = { width: undefined, height: undefined };
+  size: BergResizeSize;
 
   /** Whether the popover is disabled. */
   @Input('bergResizeDisabled')
@@ -113,7 +138,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     distinctUntilChanged()
   );
 
-  protected startPreview = this.previewing$.pipe(
+  protected startPreview$ = this.previewing$.pipe(
     filter((previewing) => previewing)
   );
 
@@ -121,21 +146,20 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     filter((previewing) => !previewing)
   );
 
-  protected startResize$ = this.startPreview.pipe(
+  protected startResize$ = this.startPreview$.pipe(
     filter(() => !this._disabled),
-    switchMap(() => this.getMousedown().pipe(takeUntil(this.stopPreview$))),
-    map((event) => this.checkThreshold(event))
+    switchMap(() => this.getMousedown().pipe(takeUntil(this.stopPreview$)))
   );
 
   protected stopResize$ = merge(
     fromEvent<MouseEvent>(this.document.body, 'mouseup'),
     fromEvent<DragEvent>(this.document.body, 'dragend')
-  ).pipe(map(() => false));
-
-  protected resizing$ = merge(this.startResize$, this.stopResize$).pipe(
-    startWith(false),
-    distinctUntilChanged()
   );
+
+  protected resizing$ = merge(
+    this.startResize$.pipe(map(() => true)),
+    this.stopResize$.pipe(map(() => false))
+  ).pipe(startWith(false), distinctUntilChanged());
 
   protected resizedSize$ = this.startResize$.pipe(
     switchMap(() => {
@@ -143,9 +167,45 @@ export class BergResizeDirective implements OnInit, OnDestroy {
         takeUntil(this.stopResize$)
       );
     }),
-    delay(0, animationFrameScheduler),
-    map((event) => this.calculateSize(event))
+    debounceTime(0, animationFrameScheduler),
+    map((event) => this.calculateSize(event)),
+    share()
   );
+
+  private collapseAtSize$ = this.resizedSize$.pipe(
+    filter((size) => {
+      if (size.width !== undefined) {
+        return size.rect.width - size.width > this.collapseThreshold;
+      }
+
+      if (size.height !== undefined) {
+        return size.rect.height - size.height > this.collapseThreshold;
+      }
+
+      return false;
+    })
+  );
+
+  private expandAtSize$ = this.resizedSize$.pipe(
+    withLatestFrom(this.collapseAtSize$),
+    filter(([size, collapseAtSize]) => {
+      if (size.width !== undefined && collapseAtSize.width !== undefined) {
+        return size.width - collapseAtSize.width > this.collapseThreshold;
+      }
+
+      if (size.height !== undefined && collapseAtSize.height !== undefined) {
+        return size.height - collapseAtSize.height > this.collapseThreshold;
+      }
+
+      return false;
+    })
+  );
+
+  /** When a user resizes beyond a panel min-size. */
+  @Output('bergResizeCollapsed') collapsed$ = merge(
+    this.collapseAtSize$.pipe(map(() => true)),
+    this.expandAtSize$.pipe(map(() => false))
+  ).pipe(distinctUntilChanged());
 
   constructor(
     protected elementRef: ElementRef<HTMLElement>,
@@ -169,16 +229,14 @@ export class BergResizeDirective implements OnInit, OnDestroy {
       return;
     }
 
-    merge(this.startResize$, this.stopResize$)
-      .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
+    this.resizing$
+      .pipe(takeUntil(this.destroySub))
       .subscribe((resizing) => (this.resizing = resizing));
 
     this.previewing$
       .pipe(
         switchMap((previewing) => {
-          return of(previewing).pipe(
-            delay(previewing ? BERG_RESIZE_PREVIEW_DELAY : 0)
-          );
+          return of(previewing).pipe(delay(previewing ? this.previewDelay : 0));
         }),
         takeUntil(this.destroySub)
       )
@@ -191,24 +249,28 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     merge(fromEvent(this.hostElem, 'dragstart'))
       .pipe(takeUntil(this.destroySub))
       .subscribe((event) => event.preventDefault());
+
+    this.collapsed$.pipe(takeUntil(this.destroySub)).subscribe((collapsed) => {
+      this.collapsed = collapsed;
+    });
   }
 
   private calculateSize(event: MouseEvent): BergResizeSize {
     const rect = this.hostElem.getBoundingClientRect();
 
     if (this.position === 'above') {
-      return { height: rect.height + rect.y - event.pageY };
+      return { rect, height: rect.height + rect.y - event.pageY };
     }
 
     if (this.position === 'after') {
-      return { width: event.pageX - rect.x };
+      return { rect, width: event.pageX - rect.x };
     }
 
     if (this.position === 'below') {
-      return { height: event.pageY - rect.y };
+      return { rect, height: event.pageY - rect.y };
     }
 
-    return { width: rect.width + rect.x - event.pageX };
+    return { rect, width: rect.width + rect.x - event.pageX };
   }
 
   private checkThreshold(event: MouseEvent): boolean {
@@ -235,7 +297,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
       origin = rect.x;
     }
 
-    return this.threshold > Math.abs(origin - mouse);
+    return this.resizeThreshold > Math.abs(origin - mouse);
   }
 
   private getInput<T extends keyof BergResizeInputs>(

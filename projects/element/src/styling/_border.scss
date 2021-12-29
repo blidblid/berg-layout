@@ -30,6 +30,10 @@
       border-bottom: $resizing-border;
       box-shadow: 0 -#{$resizing-border-width} $resizing-border-color inset;
     }
+
+    &.berg-resize-collapsed {
+      @include collapsed-horizontal-panel();
+    }
   }
 
   .berg-panel-left {
@@ -43,6 +47,10 @@
     &.berg-resize-resizing {
       border-right: $resizing-border;
       box-shadow: -#{$resizing-border-width} 0 $resizing-border-color inset;
+    }
+
+    &.berg-resize-collapsed {
+      @include collapsed-vertical-panel();
     }
   }
 
@@ -58,6 +66,10 @@
       border-left: $resizing-border;
       box-shadow: $resizing-border-width 0 $resizing-border-color inset;
     }
+
+    &.berg-resize-collapsed {
+      @include collapsed-vertical-panel();
+    }
   }
 
   .berg-panel-bottom {
@@ -72,5 +84,28 @@
       border-top: $resizing-border;
       box-shadow: 0 $resizing-border-width $resizing-border-color inset;
     }
+
+    &.berg-resize-collapsed {
+      @include collapsed-horizontal-panel();
+    }
   }
+}
+
+@mixin collapsed-vertical-panel() {
+  @include collapsed-panel;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+}
+
+@mixin collapsed-horizontal-panel() {
+  @include collapsed-panel;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+}
+
+@mixin collapsed-panel() {
+  padding: 0 !important;
+  overflow: hidden !important;
 }
