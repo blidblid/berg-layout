@@ -9,13 +9,20 @@
   rgb(15, 132, 228)
 );
 
-@include layout.width(left, 20vw);
-@include layout.min-width(left, 10vw);
+.berg-panel-center {
+  background: #424242;
+  padding: 32px;
+}
 
-@include layout.padding('top', 32px);
-@include layout.padding('right', 32px);
-@include layout.padding('bottom', 32px);
-@include layout.padding('left', 32px);
-@include layout.padding('center', 32px);
+.berg-panel-left {
+  width: 20vw;
+  min-width: 10vw;
+}
 
-@include layout.background(#424242, #303030);
+.berg-panel-left,
+.berg-panel-right,
+.berg-panel-top,
+.berg-panel-bottom {
+  background: #303030;
+  padding: 32px;
+}
