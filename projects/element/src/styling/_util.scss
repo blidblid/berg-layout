@@ -50,3 +50,30 @@
     #{$property}: $mobile or $small or $medium or $large;
   }
 }
+
+@mixin distributeToPanelByResolution(
+  $property,
+  $panel,
+  $large,
+  $medium: null,
+  $small: null,
+  $mobile: null
+) {
+  .berg-panel-#{$panel} {
+    &.berg-panel-large {
+      #{$property}: $large;
+    }
+
+    &.berg-panel-medium {
+      #{$property}: $medium or $large;
+    }
+
+    &.berg-panel-small {
+      #{$property}: $small or $medium or $large;
+    }
+
+    &.berg-panel-mobile {
+      #{$property}: $mobile or $small or $medium or $large;
+    }
+  }
+}

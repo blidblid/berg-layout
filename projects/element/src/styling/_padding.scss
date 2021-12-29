@@ -1,8 +1,9 @@
 @use './util';
 
-@mixin padding($large, $medium: null, $small: null, $mobile: null) {
-  @include util.distributeByResolution(
+@mixin padding($panel, $large, $medium: null, $small: null, $mobile: null) {
+  @include util.distributeToPanelByResolution(
     padding,
+    $panel,
     $large,
     $medium,
     $small,

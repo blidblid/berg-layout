@@ -1,0 +1,34 @@
+@use './util';
+
+@mixin height($panel, $large, $medium: null, $small: null, $mobile: null) {
+  @include util.distributeToPanelByResolution(
+    height,
+    $panel,
+    $large,
+    $medium,
+    $small,
+    $mobile
+  );
+}
+
+@mixin max-height($panel, $large, $medium: null, $small: null, $mobile: null) {
+  @include util.distributeToPanelByResolution(
+    max-height,
+    $panel,
+    $large,
+    $medium,
+    $small,
+    $mobile
+  );
+}
+
+@mixin min-height($panel, $large, $medium: null, $small: null, $mobile: null) {
+  @include util.distributeToPanelByResolution(
+    min-height,
+    $panel,
+    $large,
+    $medium,
+    $small,
+    $mobile
+  );
+}

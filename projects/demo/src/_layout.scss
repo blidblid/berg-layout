@@ -9,6 +9,13 @@
   rgb(15, 132, 228)
 );
 
-@include layout.padding(32px, 16px, 16px, 8px);
+@include layout.width(left, 20vw);
+@include layout.min-width(left, 20vw);
+
+@include layout.padding('top', 32px);
+@include layout.padding('right', 32px);
+@include layout.padding('bottom', 32px);
+@include layout.padding('left', 32px);
+@include layout.padding('center', 32px);
 
 @include layout.background(#424242, #303030);
