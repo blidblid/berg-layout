@@ -151,10 +151,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     switchMap(() => this.getMousedown().pipe(takeUntil(this.stopPreview$)))
   );
 
-  protected stopResize$ = merge(
-    fromEvent<MouseEvent>(this.document.body, 'mouseup'),
-    fromEvent<DragEvent>(this.document.body, 'dragend')
-  );
+  protected stopResize$ = merge(this.getMouseup(), this.getDragend());
 
   protected resizing$ = merge(
     this.startResize$.pipe(map(() => true)),
@@ -162,11 +159,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   ).pipe(startWith(false), distinctUntilChanged());
 
   protected resizedSize$ = this.startResize$.pipe(
-    switchMap(() => {
-      return fromEvent<MouseEvent>(this.document.body, 'mousemove').pipe(
-        takeUntil(this.stopResize$)
-      );
-    }),
+    switchMap(() => this.getMousemove().pipe(takeUntil(this.stopResize$))),
     debounceTime(0, animationFrameScheduler),
     map((event) => this.calculateSize(event)),
     share()
@@ -190,11 +183,11 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     withLatestFrom(this.collapseAtSize$),
     filter(([size, collapseAtSize]) => {
       if (size.width !== undefined && collapseAtSize.width !== undefined) {
-        return size.width - collapseAtSize.width > this.collapseThreshold;
+        return size.width - collapseAtSize.width > this.collapseThreshold / 2;
       }
 
       if (size.height !== undefined && collapseAtSize.height !== undefined) {
-        return size.height - collapseAtSize.height > this.collapseThreshold;
+        return size.height - collapseAtSize.height > this.collapseThreshold / 2;
       }
 
       return false;
@@ -220,8 +213,16 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     return fromEvent<MouseEvent>(this.hostElem, 'mousedown');
   }
 
+  protected getDragend(): Observable<DragEvent> {
+    return fromEvent<DragEvent>(this.document.body, 'dragend');
+  }
+
+  protected getMouseup(): Observable<MouseEvent> {
+    return fromEvent<MouseEvent>(this.document.body, 'mouseup');
+  }
+
   protected getMousemove(): Observable<MouseEvent> {
-    return fromEvent<MouseEvent>(this.hostElem, 'mousemove');
+    return fromEvent<MouseEvent>(this.document.body, 'mousemove');
   }
 
   private subscribeToEvents(): void {

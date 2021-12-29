@@ -90,6 +90,14 @@ export class BergPanelComponent extends BergResizeDirective {
     });
   }
 
+  protected override getDragend(): Observable<DragEvent> {
+    return defer(() => this.listenerCache.bodyDragend$);
+  }
+
+  protected override getMouseup(): Observable<MouseEvent> {
+    return defer(() => this.listenerCache.bodyMouseup$);
+  }
+
   private findLayoutElement(): HTMLElement {
     let elem = this.elementRef.nativeElement;
 
