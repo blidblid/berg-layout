@@ -1,7 +1,7 @@
 @use 'node_modules/@berg-layout/element' as layout;
 
 @include layout.border(
-  3px,
+  1px,
   rgba(255, 255, 255, 0.3),
   3px,
   rgba(228, 224, 15, 0.993),
@@ -10,7 +10,7 @@
 );
 
 @include layout.width(left, 20vw);
-@include layout.min-width(left, 20vw);
+@include layout.min-width(left, 10vw);
 
 @include layout.padding('top', 32px);
 @include layout.padding('right', 32px);
