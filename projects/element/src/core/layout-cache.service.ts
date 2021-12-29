@@ -10,32 +10,32 @@ export class ListenerCacheService {
 
   getMousemove(
     layoutElement: HTMLElement,
-    getFallback: () => Observable<MouseEvent>
+    getObservable: () => Observable<MouseEvent>
   ): Observable<MouseEvent> {
-    return this.getCached(this.mousemove, layoutElement, getFallback);
+    return this.getCached(this.mousemove, layoutElement, getObservable);
   }
 
   getMousedown(
     layoutElement: HTMLElement,
-    getFallback: () => Observable<MouseEvent>
+    getObservable: () => Observable<MouseEvent>
   ): Observable<MouseEvent> {
-    return this.getCached(this.mousedown, layoutElement, getFallback);
+    return this.getCached(this.mousedown, layoutElement, getObservable);
   }
 
   private getCached<T>(
     map: WeakMap<HTMLElement, Observable<T>>,
     layout: HTMLElement,
-    getFallback: () => Observable<T>
+    getObservable: () => Observable<T>
   ): Observable<T> {
-    const observable = map.get(layout);
+    const cached = map.get(layout);
 
-    if (observable) {
-      return observable;
+    if (cached) {
+      return cached;
     }
 
-    const fallback = getFallback();
-    map.set(layout, fallback);
+    const observable = getObservable();
+    map.set(layout, observable);
 
-    return fallback;
+    return observable;
   }
 }
