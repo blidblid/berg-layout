@@ -3,7 +3,6 @@
   $border-color,
   $resizing-border-width: null,
   $resizing-border-color: null,
-  $previewing-border-width: null,
   $previewing-border-color: null
 ) {
   $border: $border-width solid $border-color;
@@ -13,17 +12,17 @@
   $resizing-border-color: $resizing-border-color or $border-color;
 
   $previewing-border: $border-width solid $previewing-border-color;
-  $previewing-border-width: $previewing-border-width or $resizing-border-width
-    or $border-width;
   $previewing-border-color: $previewing-border-color or $resizing-border-color
     or $border-color;
+
+  $placeholder-border: $resizing-border-width solid $previewing-border-color;
 
   .berg-panel-top {
     border-bottom: $border;
 
     &.berg-resize-previewing {
       border-bottom: $previewing-border;
-      box-shadow: 0 -#{$previewing-border-width} $previewing-border-color inset;
+      box-shadow: 0 -#{$resizing-border-width} $previewing-border-color inset;
     }
 
     &.berg-resize-resizing {
@@ -33,6 +32,7 @@
 
     &.berg-resize-collapsed {
       @include collapsed-horizontal-panel();
+      border-bottom: $placeholder-border;
     }
   }
 
@@ -41,7 +41,7 @@
 
     &.berg-resize-previewing {
       border-right: $previewing-border;
-      box-shadow: -#{$previewing-border-width} 0 $previewing-border-color inset;
+      box-shadow: -#{$resizing-border-width} 0 $previewing-border-color inset;
     }
 
     &.berg-resize-resizing {
@@ -51,6 +51,7 @@
 
     &.berg-resize-collapsed {
       @include collapsed-vertical-panel();
+      border-right: $placeholder-border;
     }
   }
 
@@ -59,7 +60,7 @@
 
     &.berg-resize-previewing {
       border-left: $previewing-border;
-      box-shadow: $previewing-border-width 0 $previewing-border-color inset;
+      box-shadow: $resizing-border-width 0 $previewing-border-color inset;
     }
 
     &.berg-resize-resizing {
@@ -69,6 +70,7 @@
 
     &.berg-resize-collapsed {
       @include collapsed-vertical-panel();
+      border-left: $placeholder-border;
     }
   }
 
@@ -77,7 +79,7 @@
 
     &.berg-resize-previewing {
       border-top: $previewing-border;
-      box-shadow: 0 $previewing-border-width $previewing-border-color inset;
+      box-shadow: 0 $resizing-border-width $previewing-border-color inset;
     }
 
     &.berg-resize-resizing {
@@ -87,6 +89,7 @@
 
     &.berg-resize-collapsed {
       @include collapsed-horizontal-panel();
+      border-top: $placeholder-border;
     }
   }
 }
