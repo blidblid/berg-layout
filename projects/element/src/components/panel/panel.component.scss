@@ -6,4 +6,8 @@
     flex: 1;
     max-height: 100%;
   }
+
+  &.berg-panel-left + &.berg-panel-right {
+    flex: 1;
+  }
 }
