@@ -12,7 +12,7 @@ export const BERG_RESIZE_DEFAULT_INPUTS: BergResizeInputs = {
   previewDelay: 0,
 };
 
-export const BERG_RESIZE_EXPAND_PADDING = 4;
+export const BERG_RESIZE_EXPAND_PADDING = 16;
 
 export type BergResizePosition = 'above' | 'after' | 'below' | 'before' | null;
 
