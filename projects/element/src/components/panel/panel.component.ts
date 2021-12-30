@@ -1,3 +1,4 @@
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -5,6 +6,7 @@ import {
   Component,
   ElementRef,
   Inject,
+  Input,
   Optional,
   ViewContainerRef,
   ViewEncapsulation,
@@ -31,14 +33,37 @@ import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
   host: {
     '[class]': 'hostClass',
     '[class.berg-panel]': 'true',
+    '[class.berg-panel-collapsed]': 'collapsed',
     '[class.berg-panel-center]': '!slot',
     '[class.berg-panel-top]': 'slot === "top"',
     '[class.berg-panel-left]': 'slot === "left"',
     '[class.berg-panel-right]': 'slot === "right"',
     '[class.berg-panel-bottom]': 'slot === "bottom"',
+    '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
+    '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
   },
 })
 export class BergPanelComponent extends BergResizeDirective {
+  /** Whether the panel is absolutely positioned. */
+  @Input()
+  get absolute() {
+    return this._absolute;
+  }
+  set absolute(value: boolean) {
+    this._absolute = coerceBooleanProperty(value);
+  }
+  private _absolute: boolean;
+
+  /** Whether the panel is collapsed. */
+  @Input()
+  get collapsed() {
+    return this._collapsed;
+  }
+  set collapsed(value: boolean) {
+    this._collapsed = coerceBooleanProperty(value);
+  }
+  private _collapsed: boolean;
+
   hostClass: string;
   layoutElement: HTMLElement;
 

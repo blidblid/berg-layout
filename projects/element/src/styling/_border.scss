@@ -31,7 +31,6 @@
     }
 
     &.berg-resize-collapsed {
-      @include collapsed-horizontal-panel();
       border-bottom: $placeholder-border;
     }
   }
@@ -50,7 +49,6 @@
     }
 
     &.berg-resize-collapsed {
-      @include collapsed-vertical-panel();
       border-right: $placeholder-border;
     }
   }
@@ -69,7 +67,6 @@
     }
 
     &.berg-resize-collapsed {
-      @include collapsed-vertical-panel();
       border-left: $placeholder-border;
     }
   }
@@ -88,27 +85,7 @@
     }
 
     &.berg-resize-collapsed {
-      @include collapsed-horizontal-panel();
       border-top: $placeholder-border;
     }
   }
-}
-
-@mixin collapsed-vertical-panel() {
-  @include collapsed-panel;
-  width: 0 !important;
-  min-width: 0 !important;
-  max-width: 0 !important;
-}
-
-@mixin collapsed-horizontal-panel() {
-  @include collapsed-panel;
-  height: 0 !important;
-  min-height: 0 !important;
-  max-height: 0 !important;
-}
-
-@mixin collapsed-panel() {
-  padding: 0 !important;
-  overflow: hidden !important;
 }

@@ -1,13 +1,53 @@
+@mixin collapsed-panel() {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
 .berg-panel {
   display: block;
   overflow: auto;
 
-  &.berg-panel-center {
-    flex: 1;
-    max-height: 100%;
+  &.berg-panel-collapsed {
+    transition: min-width 0.2s ease-in, max-width 0.2s ease-in;
   }
 
-  &.berg-panel-left + &.berg-panel-right {
-    flex: 1;
+  &.berg-resize-collapsed,
+  &.berg-panel-collapsed {
+    &.berg-panel-vertical {
+      @include collapsed-panel();
+      width: 0 !important;
+      min-width: 0 !important;
+      max-width: 0 !important;
+    }
+
+    &.berg-panel-horizontal {
+      @include collapsed-panel();
+      height: 0 !important;
+      min-height: 0 !important;
+      max-height: 0 !important;
+    }
+  }
+}
+
+.berg-panel-center {
+  flex: 1;
+  max-height: 100%;
+}
+
+.berg-panel-left + .berg-panel-right {
+  flex: 1;
+}
+
+.berg-panel-absolute {
+  position: absolute;
+
+  .berg-panel-vertical {
+    top: 0;
+    bottom: 0;
+  }
+
+  .berg-panel-horizontal {
+    left: 0;
+    right: 0;
   }
 }

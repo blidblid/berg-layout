@@ -47,7 +47,7 @@ import {
   host: {
     '[class.berg-resize-resizing]': 'resizing',
     '[class.berg-resize-previewing]': 'previewing',
-    '[class.berg-resize-collapsed]': 'collapsed',
+    '[class.berg-resize-collapsed]': 'resizeCollapsed',
     '[style.width.px]': 'size?.width',
     '[style.height.px]': 'size?.height',
     '[style.box-sizing]': '"border-box"',
@@ -117,7 +117,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
   resizing = false;
   previewing = false;
-  collapsed = false;
+  resizeCollapsed = false;
 
   size: BergResizeSize;
 
@@ -200,7 +200,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     })
   );
 
-  /** When a user resizes beyond a panel min-size. */
+  /** Emits when a user resizes beyond where the element stops shrinking. */
   @Output('bergResizeCollapsed') collapsed$ = merge(
     this.collapseAtSize$.pipe(map(() => true)),
     this.expandAtSize$.pipe(map(() => false))
@@ -251,7 +251,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
       .subscribe((event) => event.preventDefault());
 
     this.collapsed$.pipe(takeUntil(this.destroySub)).subscribe((collapsed) => {
-      this.collapsed = collapsed;
+      this.resizeCollapsed = collapsed;
     });
   }
 
