@@ -1,7 +1,9 @@
 .berg-panel {
   display: block;
+  overflow: auto;
 
   &.berg-panel-center {
     flex: 1;
+    max-height: 100%;
   }
 }
