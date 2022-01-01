@@ -1,0 +1,13 @@
+{
+  "name": "@berg-layout/builder-hooks",
+  "author": "Albin Berglund",
+  "license": "Licensed",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "peerDependencies": {
+    "@berglund/angular-cli-hooks": "^0.0.1"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

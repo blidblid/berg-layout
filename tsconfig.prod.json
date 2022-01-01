@@ -2,7 +2,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@berg-layout/element": ["dist/element/element", "dist/element"]
+      "@berg-layout/element": ["dist/element"],
+      "@berg-layout/web-component": ["dist/web-component"]
     },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

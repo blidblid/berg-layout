@@ -1,21 +1,24 @@
 <berg-layout>
   <berg-panel slot="top">
-    Top slot
+    <button (click)="collapsed = !collapsed">Toggle left collapsed</button>
+    <button (click)="absolute = !absolute">Toggle left absolute</button>
   </berg-panel>
 
-  <berg-panel slot="left">
-    Left slot
+  <berg-panel slot="left"
+              [attr.collapsed]="collapsed"
+              [attr.absolute]="absolute">
+    Left
   </berg-panel>
 
   <berg-panel>
-    Center slot
+    Center
   </berg-panel>
 
   <berg-panel slot="right">
-    Right slot
+    Right
   </berg-panel>
 
   <berg-panel slot="bottom">
-    Bottom slot
+    Bottom
   </berg-panel>
 </berg-layout>

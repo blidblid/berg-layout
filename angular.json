@@ -155,6 +155,39 @@
           }
         }
       }
+    },
+    "web-component": {
+      "projectType": "application",
+      "root": "projects/web-component",
+      "sourceRoot": "projects/web-component/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@berglund/angular-cli-hooks:browser",
+          "options": {
+            "assets": ["projects/web-component/src/package.json"],
+            "outputPath": "dist/web-component",
+            "index": "projects/web-component/src/index.html",
+            "main": "projects/web-component/src/main.ts",
+            "polyfills": "projects/web-component/src/polyfills.ts",
+            "tsConfig": "projects/web-component/tsconfig.app.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "none"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
     }
   },
   "defaultProject": "element"

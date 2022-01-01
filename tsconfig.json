@@ -2,7 +2,8 @@
   "extends": "./tsconfig.prod.json",
   "compilerOptions": {
     "paths": {
-      "@berg-layout/angular": ["projects/element/src"]
+      "@berg-layout/element": ["projects/element/src"],
+      "@berg-layout/web-component": ["dist/web-component"]
     }
   }
 }

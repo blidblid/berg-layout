@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "upgrade-hooks": "cd projects/builder-hooks && tsc && cd ../.. && yarn upgrade @berg-layout/builder-hooks"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
     "@berg-layout/element": "./dist/element",
+    "@berg-layout/web-component": "./dist/web-component",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
@@ -29,8 +31,11 @@
     "@angular-devkit/build-angular": "~13.1.2",
     "@angular/cli": "~13.1.1",
     "@angular/compiler-cli": "~13.1.0",
+    "@berg-layout/builder-hooks": "./projects/builder-hooks/dist",
+    "@berglund/angular-cli-hooks": "^0.0.4",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
+    "fs-extra": "^10.0.0",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",

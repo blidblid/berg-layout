@@ -6,10 +6,7 @@
 .berg-panel {
   display: block;
   overflow: auto;
-
-  &.berg-panel-collapsed {
-    transition: min-width 0.2s ease-in, max-width 0.2s ease-in;
-  }
+  transition: margin 0.2s ease-in;
 
   &.berg-resize-collapsed,
   &.berg-panel-collapsed {
@@ -41,13 +38,17 @@
 .berg-panel-absolute {
   position: absolute;
 
-  .berg-panel-vertical {
+  &.berg-panel-vertical {
     top: 0;
     bottom: 0;
   }
 
-  .berg-panel-horizontal {
+  &.berg-panel-horizontal {
     left: 0;
     right: 0;
   }
+}
+
+.berg-panel-bottom {
+  z-index: 1;
 }

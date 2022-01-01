@@ -7,6 +7,7 @@ import {
   ElementRef,
   Inject,
   Input,
+  OnInit,
   Optional,
   ViewContainerRef,
   ViewEncapsulation,
@@ -31,9 +32,11 @@ import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class]': 'hostClass',
+    '[class]': '_hostClass',
     '[class.berg-panel]': 'true',
-    '[class.berg-panel-collapsed]': 'collapsed',
+    '[class.berg-panel-absolute]': 'absolute',
+    '[class.berg-panel-collapsed]': 'collapsed && !_startCollapsed',
+    '[class.berg-panel-start-collapsed]': '_startCollapsed',
     '[class.berg-panel-center]': '!slot',
     '[class.berg-panel-top]': 'slot === "top"',
     '[class.berg-panel-left]': 'slot === "left"',
@@ -41,9 +44,10 @@ import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
     '[class.berg-panel-bottom]': 'slot === "bottom"',
     '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
     '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
+    '[style.margin]': '_margin',
   },
 })
-export class BergPanelComponent extends BergResizeDirective {
+export class BergPanelComponent extends BergResizeDirective implements OnInit {
   /** Whether the panel is absolutely positioned. */
   @Input()
   get absolute() {
@@ -61,11 +65,17 @@ export class BergPanelComponent extends BergResizeDirective {
   }
   set collapsed(value: boolean) {
     this._collapsed = coerceBooleanProperty(value);
+
+    if (this._startCollapsed) {
+      this._startCollapsed = false;
+    }
   }
   private _collapsed: boolean;
 
-  hostClass: string;
-  layoutElement: HTMLElement;
+  _margin: string;
+  _hostClass: string;
+  _layoutElement: HTMLElement;
+  _startCollapsed: boolean;
 
   private hostClass$ = this.breakpoint.matches$.pipe(
     map((breakpoint) => {
@@ -94,22 +104,22 @@ export class BergPanelComponent extends BergResizeDirective {
     private changeDetectorRef: ChangeDetectorRef
   ) {
     super(bodyListeners, elementRef, viewContainerRef, document, inputs);
-    this.layoutElement = this.findLayoutElement();
+    this._layoutElement = this.findLayoutElement();
     this.subscribe();
   }
 
   protected override getMousedown(): Observable<MouseEvent> {
     return defer(() => {
-      return this.listenerCache.getMousedown(this.layoutElement, () => {
-        return fromEvent<MouseEvent>(this.layoutElement, 'mousedown');
+      return this.listenerCache.getMousedown(this._layoutElement, () => {
+        return fromEvent<MouseEvent>(this._layoutElement, 'mousedown');
       });
     });
   }
 
   protected override getMousemove(): Observable<MouseEvent> {
     return defer(() => {
-      return this.listenerCache.getMousemove(this.layoutElement, () => {
-        return fromEvent<MouseEvent>(this.layoutElement, 'mousemove').pipe(
+      return this.listenerCache.getMousemove(this._layoutElement, () => {
+        return fromEvent<MouseEvent>(this._layoutElement, 'mousemove').pipe(
           debounceTime(0, animationFrameScheduler)
         );
       });
@@ -132,7 +142,7 @@ export class BergPanelComponent extends BergResizeDirective {
 
   private subscribe(): void {
     this.hostClass$.pipe(takeUntil(this.destroySub)).subscribe((hostClass) => {
-      this.hostClass = hostClass;
+      this._hostClass = hostClass;
       this.changeDetectorRef.markForCheck();
     });
 
@@ -145,15 +155,15 @@ export class BergPanelComponent extends BergResizeDirective {
             : 'berg-layout-resize-horizontal';
 
         if (previewing || resizing) {
-          this.layoutElement.classList.add(resizeClass);
+          this._layoutElement.classList.add(resizeClass);
         } else {
-          this.layoutElement.classList.remove(resizeClass);
+          this._layoutElement.classList.remove(resizeClass);
         }
       });
   }
 
-  override ngOnDestroy(): void {
-    this.destroySub.next();
-    this.destroySub.complete();
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this._startCollapsed = this.collapsed;
   }
 }
