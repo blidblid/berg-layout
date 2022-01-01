@@ -123,14 +123,17 @@ export class BergPanelComponent extends BergResizeDirective {
       return;
     }
 
-    this._margin =
-      this.slot === 'left'
-        ? `0 0 0 -${this.hostElem.getBoundingClientRect().width}px`
-        : this.slot === 'right'
-        ? `0 -${this.hostElem.getBoundingClientRect().width}px 0 0`
-        : this.slot === 'top'
-        ? `-${this.hostElem.getBoundingClientRect().height}px 0 0 0`
-        : `0 0 -${this.hostElem.getBoundingClientRect().height}px 0`;
+    const { width, height } = this.hostElem.getBoundingClientRect();
+
+    if ((this.slot = 'left')) {
+      this._margin = `0 0 0 -${width}px`;
+    } else if (this.slot === 'right') {
+      this._margin === `0 -${width}px 0 0`;
+    } else if (this.slot === 'top') {
+      this._margin === `-${height}px 0 0 0`;
+    } else {
+      this._margin === `0 0 -${height}px 0`;
+    }
   }
 
   expand(): void {
