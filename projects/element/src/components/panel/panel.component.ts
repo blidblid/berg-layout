@@ -36,8 +36,8 @@ import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
     '[class.berg-panel]': 'true',
     '[class.berg-panel-absolute]': '_absolute',
     '[class.berg-panel-hidden]': '_hidden',
-    '[class.berg-panel-vertical]': '_vertical',
-    '[class.berg-panel-horizontal]': '_horizontal',
+    '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
+    '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
     '[class.berg-panel-center]': '!slot',
     '[class.berg-panel-top]': 'slot === "top"',
     '[class.berg-panel-left]': 'slot === "left"',
@@ -75,14 +75,6 @@ export class BergPanelComponent extends BergResizeDirective {
   }
   _hidden: boolean;
   _collapsed: boolean;
-
-  get _vertical(): boolean {
-    return this.slot === 'left' || this.slot === 'right';
-  }
-
-  get _horizontal(): boolean {
-    return this.slot === 'top' || this.slot === 'bottom';
-  }
 
   _margin: string | null;
   _hostClass: string;
@@ -131,9 +123,14 @@ export class BergPanelComponent extends BergResizeDirective {
       return;
     }
 
-    this._margin = this._vertical
-      ? `0 0 0 -${this.hostElem.getBoundingClientRect().width}px`
-      : `0 -${this.hostElem.getBoundingClientRect().height}px 0 0`;
+    this._margin =
+      this.slot === 'left'
+        ? `0 0 0 -${this.hostElem.getBoundingClientRect().width}px`
+        : this.slot === 'right'
+        ? `0 -${this.hostElem.getBoundingClientRect().width}px 0 0`
+        : this.slot === 'top'
+        ? `-${this.hostElem.getBoundingClientRect().height}px 0 0 0`
+        : `0 0 -${this.hostElem.getBoundingClientRect().height}px 0`;
   }
 
   expand(): void {
