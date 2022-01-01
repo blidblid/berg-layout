@@ -9,16 +9,18 @@ import { BergLayoutComponent, BergPanelComponent } from '@berg-layout/element';
 })
 export class AppModule {
   constructor(injector: Injector) {
-    for (const element of [
+    for (const [component, name] of [
       [BergLayoutComponent, 'berg-layout'] as const,
       [BergPanelComponent, 'berg-panel'] as const,
     ]) {
-      customElements.define(
-        element[1],
-        createCustomElement(element[0], {
-          injector,
-        })
-      );
+      if (customElements.get(name) === undefined) {
+        customElements.define(
+          name,
+          createCustomElement(component, {
+            injector,
+          })
+        );
+      }
     }
   }
 

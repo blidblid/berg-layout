@@ -7,7 +7,7 @@ import {
   ElementRef,
   Inject,
   Input,
-  OnInit,
+  NgZone,
   Optional,
   ViewContainerRef,
   ViewEncapsulation,
@@ -34,48 +34,60 @@ import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
   host: {
     '[class]': '_hostClass',
     '[class.berg-panel]': 'true',
-    '[class.berg-panel-absolute]': 'absolute',
-    '[class.berg-panel-collapsed]': 'collapsed && !_startCollapsed',
-    '[class.berg-panel-start-collapsed]': '_startCollapsed',
+    '[class.berg-panel-absolute]': '_absolute',
+    '[class.berg-panel-hidden]': '_hidden',
+    '[class.berg-panel-vertical]': '_vertical',
+    '[class.berg-panel-horizontal]': '_horizontal',
     '[class.berg-panel-center]': '!slot',
     '[class.berg-panel-top]': 'slot === "top"',
     '[class.berg-panel-left]': 'slot === "left"',
     '[class.berg-panel-right]': 'slot === "right"',
     '[class.berg-panel-bottom]': 'slot === "bottom"',
-    '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
-    '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
     '[style.margin]': '_margin',
+    '(transitionend)': '_onTransitionend()',
   },
 })
-export class BergPanelComponent extends BergResizeDirective implements OnInit {
+export class BergPanelComponent extends BergResizeDirective {
   /** Whether the panel is absolutely positioned. */
   @Input()
-  get absolute() {
-    return this._absolute;
-  }
   set absolute(value: boolean) {
     this._absolute = coerceBooleanProperty(value);
   }
-  private _absolute: boolean;
+  _absolute: boolean;
 
   /** Whether the panel is collapsed. */
   @Input()
-  get collapsed() {
-    return this._collapsed;
-  }
   set collapsed(value: boolean) {
     this._collapsed = coerceBooleanProperty(value);
 
-    if (this._startCollapsed) {
-      this._startCollapsed = false;
+    if (this._collapsed && !this._init) {
+      this._hidden = true;
+      return;
+    } else {
+      this._hidden = false;
+    }
+
+    if (this._collapsed) {
+      this.collapse();
+    } else {
+      this.expand();
     }
   }
-  private _collapsed: boolean;
+  _hidden: boolean;
+  _collapsed: boolean;
 
-  _margin: string;
+  get _vertical(): boolean {
+    return this.slot === 'left' || this.slot === 'right';
+  }
+
+  get _horizontal(): boolean {
+    return this.slot === 'top' || this.slot === 'bottom';
+  }
+
+  _margin: string | null;
   _hostClass: string;
   _layoutElement: HTMLElement;
-  _startCollapsed: boolean;
+  _init: boolean;
 
   private hostClass$ = this.breakpoint.matches$.pipe(
     map((breakpoint) => {
@@ -101,11 +113,44 @@ export class BergPanelComponent extends BergResizeDirective implements OnInit {
     protected override inputs: BergResizeInputs,
     private listenerCache: ListenerCacheService,
     private breakpoint: BreakpointService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private zone: NgZone
   ) {
     super(bodyListeners, elementRef, viewContainerRef, document, inputs);
     this._layoutElement = this.findLayoutElement();
     this.subscribe();
+
+    // Life cycle hooks are bugged out in @angular/elements.
+    this.zone.runOutsideAngular(() => {
+      Promise.resolve().then(() => (this._init = true));
+    });
+  }
+
+  collapse(): void {
+    if (!this.slot) {
+      return;
+    }
+
+    this._margin = this._vertical
+      ? `0 0 0 -${this.hostElem.getBoundingClientRect().width}px`
+      : `0 -${this.hostElem.getBoundingClientRect().height}px 0 0`;
+  }
+
+  expand(): void {
+    if (!this.slot) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      this._margin = null;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  _onTransitionend() {
+    if (this._collapsed) {
+      this._hidden = true;
+    }
   }
 
   protected override getMousedown(): Observable<MouseEvent> {
@@ -160,10 +205,5 @@ export class BergPanelComponent extends BergResizeDirective implements OnInit {
           this._layoutElement.classList.remove(resizeClass);
         }
       });
-  }
-
-  override ngOnInit(): void {
-    super.ngOnInit();
-    this._startCollapsed = this.collapsed;
   }
 }

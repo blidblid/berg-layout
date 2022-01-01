@@ -8,8 +8,11 @@
   overflow: auto;
   transition: margin 0.2s ease-in;
 
-  &.berg-resize-collapsed,
-  &.berg-panel-collapsed {
+  &.berg-panel-hidden {
+    display: none;
+  }
+
+  &.berg-resize-collapsed {
     &.berg-panel-vertical {
       @include collapsed-panel();
       width: 0 !important;
