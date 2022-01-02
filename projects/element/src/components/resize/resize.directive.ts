@@ -281,20 +281,24 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     let mouse = 0;
     let origin = 0;
 
-    const rect = this.hostElem.getBoundingClientRect();
+    const { x, y, width, height } = this.hostElem.getBoundingClientRect();
+
+    if (width === 0 || height === 0) {
+      return false;
+    }
 
     if (this.resizePosition === 'above') {
       mouse = event.pageY;
-      origin = rect.y;
+      origin = y;
     } else if (this.resizePosition === 'after') {
       mouse = event.pageX;
-      origin = rect.x + rect.width;
+      origin = x + width;
     } else if (this.resizePosition === 'below') {
       mouse = event.pageY;
-      origin = rect.height + rect.y;
+      origin = height + y;
     } else if (this.resizePosition === 'before') {
       mouse = event.pageX;
-      origin = rect.x;
+      origin = x;
     }
 
     return this.resizeThreshold > Math.abs(origin - mouse);
