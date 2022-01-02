@@ -46,6 +46,20 @@
   flex: 1;
 }
 
+.berg-panel-left,
+.berg-panel-right {
+  z-index: 0;
+}
+
+.berg-panel-bottom,
+.berg-panel-top {
+  z-index: 1;
+}
+
+.berg-panel-backdrop {
+  z-index: 2;
+}
+
 .berg-panel-absolute {
   position: absolute;
   z-index: 3;
@@ -61,18 +75,4 @@
     right: 0;
     max-height: 80vh;
   }
-}
-
-.berg-panel-left,
-.berg-panel-right {
-  z-index: 0;
-}
-
-.berg-panel-bottom,
-.berg-panel-top {
-  z-index: 1;
-}
-
-.berg-panel-backdrop {
-  z-index: 2;
 }
