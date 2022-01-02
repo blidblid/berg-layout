@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
     "@berg-layout/element": "./dist/element",
-    "@berg-layout/web-component": "./dist/web-component",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

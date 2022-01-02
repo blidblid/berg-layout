@@ -5,10 +5,12 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Inject,
   Input,
   NgZone,
   Optional,
+  Output,
   ViewContainerRef,
   ViewEncapsulation,
 } from '@angular/core';
@@ -52,6 +54,7 @@ export class BergPanelComponent extends BergResizeDirective {
   @Input()
   set absolute(value: boolean) {
     this._absolute = coerceBooleanProperty(value);
+    this.updateBackdrop();
   }
   _absolute: boolean;
 
@@ -67,6 +70,8 @@ export class BergPanelComponent extends BergResizeDirective {
       this._hidden = false;
     }
 
+    this.updateBackdrop();
+
     if (this._collapsed) {
       this.collapse();
     } else {
@@ -76,9 +81,13 @@ export class BergPanelComponent extends BergResizeDirective {
   _hidden: boolean;
   _collapsed: boolean;
 
+  /** Emits whenever a user clicks a panel backdrop. */
+  @Output() backdropClicked = new EventEmitter<void>();
+
   _margin: string | null;
   _hostClass: string;
   _layoutElement: HTMLElement;
+  _backdropElement: HTMLElement;
   _init: boolean;
 
   private hostClass$ = this.breakpoint.matches$.pipe(
@@ -109,7 +118,7 @@ export class BergPanelComponent extends BergResizeDirective {
     private zone: NgZone
   ) {
     super(bodyListeners, elementRef, viewContainerRef, document, inputs);
-    this._layoutElement = this.findLayoutElement();
+    this._layoutElement = this.findLayoutParentElement();
     this.subscribe();
 
     // Life cycle hooks are bugged out in @angular/elements.
@@ -171,7 +180,7 @@ export class BergPanelComponent extends BergResizeDirective {
     });
   }
 
-  private findLayoutElement(): HTMLElement {
+  private findLayoutParentElement(): HTMLElement {
     let elem = this.elementRef.nativeElement;
 
     while (elem.parentElement) {
@@ -182,7 +191,40 @@ export class BergPanelComponent extends BergResizeDirective {
       elem = elem.parentElement;
     }
 
-    return this.hostElem;
+    throw new Error('berg-panel can only be used inside berg-layout');
+  }
+
+  private showBackdrop(): void {
+    this._layoutElement.appendChild(this.getBackdropElement());
+  }
+
+  private hideBackdrop(): void {
+    const backdrop = this.getBackdropElement();
+
+    if (this._layoutElement.contains(backdrop)) {
+      this._layoutElement.removeChild(backdrop);
+    }
+  }
+
+  private updateBackdrop(): void {
+    if (this._absolute && !this._collapsed) {
+      this.showBackdrop();
+    } else {
+      this.hideBackdrop();
+    }
+  }
+
+  private getBackdropElement(): HTMLElement {
+    if (!this._backdropElement) {
+      this._backdropElement = this.document.createElement('div');
+      this._backdropElement.classList.add('berg-panel-backdrop');
+
+      fromEvent(this._backdropElement, 'click')
+        .pipe(takeUntil(this.destroySub))
+        .subscribe(() => this.backdropClicked.emit());
+    }
+
+    return this._backdropElement;
   }
 
   private subscribe(): void {
@@ -195,7 +237,7 @@ export class BergPanelComponent extends BergResizeDirective {
       .pipe(takeUntil(this.destroySub))
       .subscribe(([previewing, resizing]) => {
         const resizeClass =
-          this.position === 'above' || this.position === 'below'
+          this.resizePosition === 'above' || this.resizePosition === 'below'
             ? 'berg-layout-resize-vertical'
             : 'berg-layout-resize-horizontal';
 

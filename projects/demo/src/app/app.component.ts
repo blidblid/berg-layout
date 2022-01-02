@@ -12,6 +12,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  absolute = false;
   collapsed = false;
+  absolute = false;
 }

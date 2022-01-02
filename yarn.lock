@@ -1202,11 +1202,6 @@
   dependencies:
     tslib "^2.3.0"
 
-"@berg-layout/web-component@./dist/web-component":
-  version "0.0.1"
-  dependencies:
-    tslib "^2.3.0"
-
 "@berglund/angular-cli-hooks@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@berglund/angular-cli-hooks/-/angular-cli-hooks-0.0.4.tgz#7919bad58fbeb206d1822cfd7dab485347f1cc93"

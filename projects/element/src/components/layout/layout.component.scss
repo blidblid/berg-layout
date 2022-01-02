@@ -1,13 +1,13 @@
 :host {
   display: flex;
   flex-direction: column;
+  position: relative;
   overflow: hidden;
   height: 100%;
   width: 100%;
 
   .berg-layout-flex {
     display: flex;
-    position: relative;
     justify-content: space-between;
     min-height: 0;
     flex: 1;

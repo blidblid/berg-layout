@@ -29,6 +29,15 @@
   }
 }
 
+.berg-panel-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  cursor: pointer;
+}
+
 .berg-panel-center {
   flex: 1;
   max-height: 100%;
@@ -40,18 +49,25 @@
 
 .berg-panel-absolute {
   position: absolute;
+  z-index: 3;
 
   &.berg-panel-vertical {
     top: 0;
     bottom: 0;
+    max-width: 80vw;
   }
 
   &.berg-panel-horizontal {
     left: 0;
     right: 0;
+    max-height: 80vh;
   }
 }
 
 .berg-panel-bottom {
   z-index: 1;
+}
+
+.berg-panel-backdrop {
+  z-index: 2;
 }

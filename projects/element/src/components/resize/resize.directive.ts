@@ -56,13 +56,13 @@ import {
 export class BergResizeDirective implements OnInit, OnDestroy {
   /** Whether the popover is disabled. */
   @Input('bergResizePosition')
-  get position() {
-    return this._position ?? this._slotPosition;
+  get resizePosition() {
+    return this._resizePosition ?? this._slotPosition;
   }
-  set position(value: BergResizePosition) {
-    this._position = value;
+  set resizePosition(value: BergResizePosition) {
+    this._resizePosition = value;
   }
-  private _position: BergResizePosition = this.getInput('position');
+  private _resizePosition: BergResizePosition = this.getInput('position');
 
   /** Threshold to determine if a cursor position should be able to resize the element. */
   @Input('bergResizeThreshold')
@@ -208,7 +208,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
   constructor(
     protected bodyListeners: BodyListeners,
-    protected elementRef: ElementRef<HTMLElement>,
+    protected elementRef: ElementRef,
     protected viewContainerRef: ViewContainerRef,
     @Inject(DOCUMENT) protected document: Document,
     @Inject(BERG_RESIZE_INPUTS)
@@ -225,7 +225,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   }
 
   private subscribeToEvents(): void {
-    if (this.position === null) {
+    if (this.resizePosition === null) {
       return;
     }
 
@@ -246,7 +246,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
       .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
       .subscribe((size) => (this.size = size));
 
-    merge(fromEvent(this.hostElem, 'dragstart'))
+    merge(fromEvent<DragEvent>(this.hostElem, 'dragstart'))
       .pipe(takeUntil(this.destroySub))
       .subscribe((event) => event.preventDefault());
 
@@ -258,15 +258,15 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   private calculateSize(event: MouseEvent): BergResizeSize {
     const rect = this.hostElem.getBoundingClientRect();
 
-    if (this.position === 'above') {
+    if (this.resizePosition === 'above') {
       return { rect, height: rect.height + rect.y - event.pageY };
     }
 
-    if (this.position === 'after') {
+    if (this.resizePosition === 'after') {
       return { rect, width: event.pageX - rect.x };
     }
 
-    if (this.position === 'below') {
+    if (this.resizePosition === 'below') {
       return { rect, height: event.pageY - rect.y };
     }
 
@@ -274,7 +274,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   }
 
   private checkThreshold(event: MouseEvent): boolean {
-    if (!this.position) {
+    if (!this.resizePosition) {
       return false;
     }
 
@@ -283,16 +283,16 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
     const rect = this.hostElem.getBoundingClientRect();
 
-    if (this.position === 'above') {
+    if (this.resizePosition === 'above') {
       mouse = event.pageY;
       origin = rect.y;
-    } else if (this.position === 'after') {
+    } else if (this.resizePosition === 'after') {
       mouse = event.pageX;
       origin = rect.x + rect.width;
-    } else if (this.position === 'below') {
+    } else if (this.resizePosition === 'below') {
       mouse = event.pageY;
       origin = rect.height + rect.y;
-    } else if (this.position === 'before') {
+    } else if (this.resizePosition === 'before') {
       mouse = event.pageX;
       origin = rect.x;
     }

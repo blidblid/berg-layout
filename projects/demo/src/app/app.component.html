@@ -5,8 +5,9 @@
   </berg-panel>
 
   <berg-panel slot="left"
-              [attr.collapsed]="collapsed"
-              [attr.absolute]="absolute">
+              (backdropClicked)="collapsed = !collapsed"
+              [collapsed]="collapsed"
+              [absolute]="absolute">
     Left
   </berg-panel>
 
