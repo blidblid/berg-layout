@@ -39,11 +39,10 @@
 }
 
 .berg-panel-center {
-  flex: 1;
   max-height: 100%;
 }
 
-.berg-panel-left + .berg-panel-right {
+.berg-resize-unresizable {
   flex: 1;
 }
 

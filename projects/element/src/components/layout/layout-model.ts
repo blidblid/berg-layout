@@ -1,1 +1,1 @@
-export type BergLayoutSlot = 'top' | 'left' | 'bottom' | 'right';
+export type BergLayoutSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';

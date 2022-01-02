@@ -14,18 +14,15 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
 } from '@angular/core';
+import { combineLatest, fromEvent } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { BodyListeners, BreakpointService } from '../../core';
+import { BergLayoutControllerFactory } from '../layout';
 import {
-  animationFrameScheduler,
-  combineLatest,
-  defer,
-  fromEvent,
-  Observable,
-} from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
-import { BreakpointService, ListenerCacheService } from '../../core';
-import { BergResizeDirective } from '../resize';
-import { BodyListeners } from '../resize/body-listeners';
-import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
+  BergResizeBase,
+  BergResizeInputs,
+  BERG_RESIZE_INPUTS,
+} from '../resize';
 
 @Component({
   selector: 'berg-panel',
@@ -40,16 +37,16 @@ import { BergResizeInputs, BERG_RESIZE_INPUTS } from '../resize/resize-model';
     '[class.berg-panel-hidden]': '_hidden',
     '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
     '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
-    '[class.berg-panel-center]': '!slot',
     '[class.berg-panel-top]': 'slot === "top"',
     '[class.berg-panel-left]': 'slot === "left"',
     '[class.berg-panel-right]': 'slot === "right"',
     '[class.berg-panel-bottom]': 'slot === "bottom"',
+    '[class.berg-panel-center]': 'slot === "center"',
     '[style.margin]': '_margin',
     '(transitionend)': '_onTransitionend()',
   },
 })
-export class BergPanelComponent extends BergResizeDirective {
+export class BergPanelComponent extends BergResizeBase {
   /** Whether the panel is absolutely positioned. */
   @Input()
   set absolute(value: boolean) {
@@ -89,6 +86,7 @@ export class BergPanelComponent extends BergResizeDirective {
   _layoutElement: HTMLElement;
   _backdropElement: HTMLElement;
   _init: boolean;
+  _controller = this.controllerFactory.get(this.findLayoutParentElement());
 
   private hostClass$ = this.breakpoint.matches$.pipe(
     map((breakpoint) => {
@@ -112,13 +110,14 @@ export class BergPanelComponent extends BergResizeDirective {
     @Inject(BERG_RESIZE_INPUTS)
     @Optional()
     protected override inputs: BergResizeInputs,
-    private listenerCache: ListenerCacheService,
+    private controllerFactory: BergLayoutControllerFactory,
     private breakpoint: BreakpointService,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone
   ) {
     super(bodyListeners, elementRef, viewContainerRef, document, inputs);
     this._layoutElement = this.findLayoutParentElement();
+    this._controller.addSlot(this.slot);
     this.subscribe();
 
     // Life cycle hooks are bugged out in @angular/elements.
@@ -162,25 +161,11 @@ export class BergPanelComponent extends BergResizeDirective {
     }
   }
 
-  protected override getMousedown(): Observable<MouseEvent> {
-    return defer(() => {
-      return this.listenerCache.getMousedown(this._layoutElement, () => {
-        return fromEvent<MouseEvent>(this._layoutElement, 'mousedown');
-      });
-    });
-  }
-
-  protected override getMousemove(): Observable<MouseEvent> {
-    return defer(() => {
-      return this.listenerCache.getMousemove(this._layoutElement, () => {
-        return fromEvent<MouseEvent>(this._layoutElement, 'mousemove').pipe(
-          debounceTime(0, animationFrameScheduler)
-        );
-      });
-    });
-  }
-
   private findLayoutParentElement(): HTMLElement {
+    if (this._layoutElement) {
+      return this._layoutElement;
+    }
+
     let elem = this.elementRef.nativeElement;
 
     while (elem.parentElement) {

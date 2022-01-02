@@ -13,9 +13,10 @@ import {
 } from '@angular/core';
 import {
   animationFrameScheduler,
+  BehaviorSubject,
+  defer,
   fromEvent,
   merge,
-  Observable,
   of,
   Subject,
 } from 'rxjs';
@@ -31,8 +32,8 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BergLayoutSlot } from '../layout/layout-model';
-import { BodyListeners } from './body-listeners';
+import { BodyListeners } from '../../core';
+import { BergLayoutController, BergLayoutSlot } from '../layout';
 import {
   BergResizeInputs,
   BergResizePosition,
@@ -43,21 +44,21 @@ import {
 } from './resize-model';
 
 @Directive({
-  selector: '[bergResize]',
   host: {
-    '[class.berg-resize-resizing]': 'resizing',
-    '[class.berg-resize-previewing]': 'previewing',
-    '[class.berg-resize-collapsed]': 'resizeCollapsed',
+    '[class.berg-resize-resizing]': '_resizing',
+    '[class.berg-resize-previewing]': '_previewing',
+    '[class.berg-resize-collapsed]': '_resizeCollapsed',
+    '[class.berg-resize-unresizable]': '!_resizable',
     '[style.width.px]': 'size?.width',
     '[style.height.px]': 'size?.height',
     '[style.box-sizing]': '"border-box"',
   },
 })
-export class BergResizeDirective implements OnInit, OnDestroy {
+export abstract class BergResizeBase implements OnInit, OnDestroy {
   /** Whether the popover is disabled. */
   @Input('bergResizePosition')
   get resizePosition() {
-    return this._resizePosition ?? this._slotPosition;
+    return this._resizePosition ?? this._slotResizePosition;
   }
   set resizePosition(value: BergResizePosition) {
     this._resizePosition = value;
@@ -97,31 +98,36 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   /** Slot name to position the resize toggle. */
   @Input('slot')
   get slot() {
-    return this._slot;
+    return this.slotSub.value;
   }
   set slot(value: BergLayoutSlot) {
     if (value === 'top') {
-      this._slotPosition = 'below';
+      this._slotResizePosition = 'below';
     } else if (value === 'right') {
-      this._slotPosition = 'before';
+      this._slotResizePosition = 'before';
     } else if (value === 'bottom') {
-      this._slotPosition = 'above';
+      this._slotResizePosition = 'above';
     } else if (value === 'left') {
-      this._slotPosition = 'after';
+      this._slotResizePosition = 'after';
+    } else {
+      this._slotResizePosition = null;
     }
 
-    this._slot = value;
+    this._controller.addSlot(value);
+    this.slotSub.next(value);
   }
-  private _slot: BergLayoutSlot;
-  private _slotPosition: BergResizePosition;
+  private slotSub = new BehaviorSubject<BergLayoutSlot>('center');
+  private _slotResizePosition: BergResizePosition;
 
-  resizing = false;
-  previewing = false;
-  resizeCollapsed = false;
+  _resizing = false;
+  _previewing = false;
+  _resizeCollapsed = false;
+  _resizable = true;
+  abstract _controller: BergLayoutController;
 
   size: BergResizeSize;
 
-  /** Whether the popover is disabled. */
+  /** Whether resizing is disabled. */
   @Input('bergResizeDisabled')
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
@@ -134,11 +140,18 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     return this.elementRef.nativeElement;
   }
 
-  protected previewing$ = this.getMousemove().pipe(
-    filter(() => !this._disabled),
-    map((event) => this.checkThreshold(event)),
-    distinctUntilChanged()
+  private resizable$ = this.slotSub.pipe(
+    switchMap((slot) => this._controller.getResizable(slot))
   );
+
+  protected previewing$ = defer(() => {
+    return this._controller.mousemove$.pipe(
+      withLatestFrom(this.resizable$),
+      filter(([_, resizable]) => !this._disabled && resizable),
+      map(([event]) => this.checkThreshold(event)),
+      distinctUntilChanged()
+    );
+  });
 
   protected startPreview$ = this.previewing$.pipe(
     filter((previewing) => previewing)
@@ -149,8 +162,11 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   );
 
   protected startResize$ = this.startPreview$.pipe(
-    filter(() => !this._disabled),
-    switchMap(() => this.getMousedown().pipe(takeUntil(this.stopPreview$)))
+    withLatestFrom(this.resizable$),
+    filter(([_, resizable]) => !this._disabled && resizable),
+    switchMap(() => {
+      return this._controller.mousedown$.pipe(takeUntil(this.stopPreview$));
+    })
   );
 
   protected stopResize$ = merge(
@@ -165,7 +181,9 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   ).pipe(startWith(false), distinctUntilChanged());
 
   protected resizedSize$ = this.startResize$.pipe(
-    switchMap(() => this.getMousemove().pipe(takeUntil(this.stopResize$))),
+    switchMap(() =>
+      this._controller.mousemove$.pipe(takeUntil(this.stopResize$))
+    ),
     debounceTime(0, animationFrameScheduler),
     map((event) => this.calculateSize(event)),
     share()
@@ -216,14 +234,6 @@ export class BergResizeDirective implements OnInit, OnDestroy {
     protected inputs: BergResizeInputs
   ) {}
 
-  protected getMousedown(): Observable<MouseEvent> {
-    return fromEvent<MouseEvent>(this.hostElem, 'mousedown');
-  }
-
-  protected getMousemove(): Observable<MouseEvent> {
-    return fromEvent<MouseEvent>(this.document.body, 'mousemove');
-  }
-
   private subscribeToEvents(): void {
     if (this.resizePosition === null) {
       return;
@@ -231,7 +241,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
 
     this.resizing$
       .pipe(takeUntil(this.destroySub))
-      .subscribe((resizing) => (this.resizing = resizing));
+      .subscribe((resizing) => (this._resizing = resizing));
 
     this.previewing$
       .pipe(
@@ -240,7 +250,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
         }),
         takeUntil(this.destroySub)
       )
-      .subscribe((previewing) => (this.previewing = previewing));
+      .subscribe((previewing) => (this._previewing = previewing));
 
     this.resizedSize$
       .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
@@ -251,7 +261,11 @@ export class BergResizeDirective implements OnInit, OnDestroy {
       .subscribe((event) => event.preventDefault());
 
     this.collapsed$.pipe(takeUntil(this.destroySub)).subscribe((collapsed) => {
-      this.resizeCollapsed = collapsed;
+      this._resizeCollapsed = collapsed;
+    });
+
+    this.resizable$.pipe(takeUntil(this.destroySub)).subscribe((resizable) => {
+      this._resizable = resizable;
     });
   }
 
@@ -313,6 +327,7 @@ export class BergResizeDirective implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroySub.next();
     this.destroySub.complete();
+    this._controller.removeSlot(this.slot);
   }
 
   ngOnInit(): void {
