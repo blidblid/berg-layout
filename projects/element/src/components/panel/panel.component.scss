@@ -63,7 +63,13 @@
   }
 }
 
-.berg-panel-bottom {
+.berg-panel-left,
+.berg-panel-right {
+  z-index: 0;
+}
+
+.berg-panel-bottom,
+.berg-panel-top {
   z-index: 1;
 }
 

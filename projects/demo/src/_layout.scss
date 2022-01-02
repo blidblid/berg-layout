@@ -1,18 +1,13 @@
 @use 'node_modules/@berg-layout/element' as layout;
 
-@include layout.border(
-  1px,
-  rgba(255, 255, 255, 0.3),
-  3px,
-  rgba(228, 224, 15, 0.993),
-  rgb(15, 132, 228),
-  rgba(255, 255, 255, 0.6)
-);
-
-.berg-panel-center {
-  background: #424242;
-  padding: 32px;
-}
+// @include layout.border(
+//   1px,
+//   rgba(255, 255, 255, 0.3),
+//   3px,
+//   rgba(228, 224, 15, 0.993),
+//   rgb(15, 132, 228),
+//   rgba(255, 255, 255, 0.6)
+// );
 
 .berg-panel-left {
   width: 50vw;
@@ -27,10 +22,16 @@
   min-width: 10vw;
 }
 
+.berg-panel-center {
+  background: #fafafa;
+  padding: 32px;
+}
+
 .berg-panel-left,
 .berg-panel-right,
 .berg-panel-top,
 .berg-panel-bottom {
-  background: #303030;
+  background: white;
   padding: 32px;
+  @include layout.elevation(4);
 }
