@@ -1209,10 +1209,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@berglund/rx@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@berglund/rx/-/rx-0.0.3.tgz#f542ffb90698ba59f48ced922c81d171f8c48145"
-  integrity sha512-bfvBJegS0Mlb8DcXHNm9r0+Llc16VxalzySk9n01mwBFMoGQKbY/CLQrkEjNN4Z2fBvpwJ0ZYtvJYd+nZ1dvYg==
+"@berglund/rx@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@berglund/rx/-/rx-0.0.5.tgz#4d2c55f8736b4c0b6fa69862c5f8cdcb0b71d06b"
+  integrity sha512-xhmAzXTKkr/NCiRnaxD1tx6Uaaf6MrUDtPSOo2yG2yVl1tqaW69PEDzKq3obntdaqEHlOmxzxNxuhhjuoIlPfQ==
   dependencies:
     tslib "^2.1.0"
 

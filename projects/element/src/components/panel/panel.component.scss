@@ -40,9 +40,10 @@
 
 .berg-panel-center {
   max-height: 100%;
+  flex: 1;
 }
 
-.berg-resize-unresizable {
+.berg-panel-left + .berg-panel-right {
   flex: 1;
 }
 

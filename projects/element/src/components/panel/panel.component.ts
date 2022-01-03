@@ -17,12 +17,13 @@ import {
 import { combineLatest, fromEvent } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BodyListeners, BreakpointService } from '../../core';
-import { BergLayoutControllerFactory } from '../layout';
 import {
   BergResizeBase,
   BergResizeInputs,
   BERG_RESIZE_INPUTS,
 } from '../resize';
+import { BergPanelControllerFactory } from './panel-controller-factory';
+import { BergPanel } from './panel-model';
 
 @Component({
   selector: 'berg-panel',
@@ -33,7 +34,7 @@ import {
   host: {
     '[class]': '_hostClass',
     '[class.berg-panel]': 'true',
-    '[class.berg-panel-absolute]': '_absolute',
+    '[class.berg-panel-absolute]': 'absolute',
     '[class.berg-panel-hidden]': '_hidden',
     '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
     '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
@@ -46,17 +47,24 @@ import {
     '(transitionend)': '_onTransitionend()',
   },
 })
-export class BergPanelComponent extends BergResizeBase {
+export class BergPanelComponent extends BergResizeBase implements BergPanel {
   /** Whether the panel is absolutely positioned. */
   @Input()
+  get absolute() {
+    return this._absolute;
+  }
   set absolute(value: boolean) {
     this._absolute = coerceBooleanProperty(value);
     this.updateBackdrop();
+    this._controller.push();
   }
-  _absolute: boolean;
+  private _absolute: boolean;
 
   /** Whether the panel is collapsed. */
   @Input()
+  get collapsed() {
+    return this._collapsed;
+  }
   set collapsed(value: boolean) {
     this._collapsed = coerceBooleanProperty(value);
 
@@ -68,6 +76,7 @@ export class BergPanelComponent extends BergResizeBase {
     }
 
     this.updateBackdrop();
+    this._controller.push();
 
     if (this._collapsed) {
       this.collapse();
@@ -75,8 +84,8 @@ export class BergPanelComponent extends BergResizeBase {
       this.expand();
     }
   }
+  private _collapsed: boolean;
   _hidden: boolean;
-  _collapsed: boolean;
 
   /** Emits whenever a user clicks a panel backdrop. */
   @Output() backdropClicked = new EventEmitter<void>();
@@ -110,15 +119,15 @@ export class BergPanelComponent extends BergResizeBase {
     @Inject(BERG_RESIZE_INPUTS)
     @Optional()
     protected override inputs: BergResizeInputs,
-    private controllerFactory: BergLayoutControllerFactory,
+    private controllerFactory: BergPanelControllerFactory,
     private breakpoint: BreakpointService,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone
   ) {
     super(bodyListeners, elementRef, viewContainerRef, document, inputs);
     this._layoutElement = this.findLayoutParentElement();
-    this._controller.addSlot(this.slot);
     this.subscribe();
+    this._controller.add(this);
 
     // Life cycle hooks are bugged out in @angular/elements.
     this.zone.runOutsideAngular(() => {
@@ -232,5 +241,10 @@ export class BergPanelComponent extends BergResizeBase {
           this._layoutElement.classList.remove(resizeClass);
         }
       });
+  }
+
+  override ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this._controller.remove(this);
   }
 }

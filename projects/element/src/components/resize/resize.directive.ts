@@ -14,7 +14,9 @@ import {
 import {
   animationFrameScheduler,
   BehaviorSubject,
+  combineLatest,
   defer,
+  EMPTY,
   fromEvent,
   merge,
   of,
@@ -33,7 +35,8 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { BodyListeners } from '../../core';
-import { BergLayoutController, BergLayoutSlot } from '../layout';
+import { BergPanelSlot } from '../panel';
+import { BergPanelController } from '../panel/panel-controller';
 import {
   BergResizeInputs,
   BergResizePosition,
@@ -48,7 +51,6 @@ import {
     '[class.berg-resize-resizing]': '_resizing',
     '[class.berg-resize-previewing]': '_previewing',
     '[class.berg-resize-collapsed]': '_resizeCollapsed',
-    '[class.berg-resize-unresizable]': '!_resizable',
     '[style.width.px]': 'size?.width',
     '[style.height.px]': 'size?.height',
     '[style.box-sizing]': '"border-box"',
@@ -100,7 +102,7 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   get slot() {
     return this.slotSub.value;
   }
-  set slot(value: BergLayoutSlot) {
+  set slot(value: BergPanelSlot) {
     if (value === 'top') {
       this._slotResizePosition = 'below';
     } else if (value === 'right') {
@@ -113,17 +115,16 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
       this._slotResizePosition = null;
     }
 
-    this._controller.addSlot(value);
+    this._controller.push();
     this.slotSub.next(value);
   }
-  private slotSub = new BehaviorSubject<BergLayoutSlot>('center');
+  private slotSub = new BehaviorSubject<BergPanelSlot>('center');
   private _slotResizePosition: BergResizePosition;
 
   _resizing = false;
   _previewing = false;
   _resizeCollapsed = false;
-  _resizable = true;
-  abstract _controller: BergLayoutController;
+  abstract _controller: BergPanelController;
 
   size: BergResizeSize;
 
@@ -136,53 +137,56 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
 
   protected destroySub = new Subject<void>();
 
-  protected get hostElem() {
+  get hostElem() {
     return this.elementRef.nativeElement;
   }
 
-  private resizable$ = this.slotSub.pipe(
-    switchMap((slot) => this._controller.getResizable(slot))
-  );
-
-  protected previewing$ = defer(() => {
-    return this._controller.mousemove$.pipe(
-      withLatestFrom(this.resizable$),
-      filter(([_, resizable]) => !this._disabled && resizable),
-      map(([event]) => this.checkThreshold(event)),
-      distinctUntilChanged()
+  private resizable$ = defer(() => {
+    return combineLatest([
+      this.slotSub,
+      this._controller.slotIsResizable$,
+    ]).pipe(
+      map(([slot, slotIsResizable]) => slotIsResizable(slot)),
+      share()
     );
   });
 
-  protected startPreview$ = this.previewing$.pipe(
-    filter((previewing) => previewing)
-  );
+  protected previewing$ = defer(() => {
+    return this._controller.fromPanelsEvent<MouseEvent>('mousemove').pipe(
+      withLatestFrom(this.resizable$),
+      filter(([_, resizable]) => !this._disabled && resizable),
+      map(([event]) => this.checkThreshold(event)),
+      distinctUntilChanged(),
+      share()
+    );
+  });
 
-  protected stopPreview$ = this.previewing$.pipe(
-    filter((previewing) => !previewing)
-  );
-
-  protected startResize$ = this.startPreview$.pipe(
+  protected resizeEvent$ = this.previewing$.pipe(
     withLatestFrom(this.resizable$),
     filter(([_, resizable]) => !this._disabled && resizable),
-    switchMap(() => {
-      return this._controller.mousedown$.pipe(takeUntil(this.stopPreview$));
+    switchMap(([previewing]) => {
+      return previewing
+        ? this._controller.fromLayoutEvent<MouseEvent>('mousedown')
+        : EMPTY;
     })
   );
 
-  protected stopResize$ = merge(
+  protected stopResizeEvent$ = merge(
     this.bodyListeners.mouseup$,
     this.bodyListeners.mouseleave$,
     this.bodyListeners.dragend$
   );
 
   protected resizing$ = merge(
-    this.startResize$.pipe(map(() => true)),
-    this.stopResize$.pipe(map(() => false))
+    this.resizeEvent$.pipe(map(() => true)),
+    this.stopResizeEvent$.pipe(map(() => false))
   ).pipe(startWith(false), distinctUntilChanged());
 
-  protected resizedSize$ = this.startResize$.pipe(
+  protected resizedSize$ = this.resizeEvent$.pipe(
     switchMap(() =>
-      this._controller.mousemove$.pipe(takeUntil(this.stopResize$))
+      this._controller
+        .fromLayoutEvent<MouseEvent>('mousemove')
+        .pipe(takeUntil(this.stopResizeEvent$))
     ),
     debounceTime(0, animationFrameScheduler),
     map((event) => this.calculateSize(event)),
@@ -263,10 +267,6 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     this.collapsed$.pipe(takeUntil(this.destroySub)).subscribe((collapsed) => {
       this._resizeCollapsed = collapsed;
     });
-
-    this.resizable$.pipe(takeUntil(this.destroySub)).subscribe((resizable) => {
-      this._resizable = resizable;
-    });
   }
 
   private calculateSize(event: MouseEvent): BergResizeSize {
@@ -327,7 +327,6 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroySub.next();
     this.destroySub.complete();
-    this._controller.removeSlot(this.slot);
   }
 
   ngOnInit(): void {
