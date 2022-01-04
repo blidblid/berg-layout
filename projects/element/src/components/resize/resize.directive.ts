@@ -56,7 +56,7 @@ import {
   },
 })
 export abstract class BergResizeBase implements OnInit, OnDestroy {
-  /** Whether the popover is disabled. */
+  /** Position of the resize toggle. */
   @Input('bergResizePosition')
   get resizePosition() {
     return this._resizePosition ?? this._slotResizePosition;
@@ -95,6 +95,16 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     this._previewDelay = value;
   }
   private _previewDelay: number = this.getInput('previewDelay');
+
+  /** Delay before the resize preview is shown. */
+  @Input()
+  get resizeTwoDimensions() {
+    return this._resizeTwoDimensions;
+  }
+  set resizeTwoDimensions(value: boolean) {
+    this._resizeTwoDimensions = value;
+  }
+  private _resizeTwoDimensions: boolean = this.getInput('twoDimensions');
 
   /** Slot name to position the resize toggle. */
   @Input('slot')
@@ -150,7 +160,9 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
       this._controller.fromResizeTogglesEvent<MouseEvent>('mousemove').pipe(
         withLatestFrom(this.resizeToggle$),
         filter(() => !this._disabled),
-        map(([event, resizeToggle]) => this.checkThreshold(event, resizeToggle))
+        map(([event, resizeToggle]) =>
+          this.checkResizeThreshold(event, resizeToggle)
+        )
       ),
       this._controller
         .fromResizeTogglesEvent<MouseEvent>('mouseleave')
@@ -294,7 +306,7 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     return { rect, width: rect.width + rect.x - event.pageX };
   }
 
-  private checkThreshold(
+  private checkResizeThreshold(
     event: MouseEvent,
     resizeToggle: HTMLElement | null
   ): boolean {
@@ -304,6 +316,10 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
 
     if (event.target === resizeToggle) {
       return true;
+    }
+
+    if (!this.resizeTwoDimensions) {
+      return false;
     }
 
     let mouse = 0;
