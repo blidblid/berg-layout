@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { BergPanelController } from './panel-controller';
 
 @Injectable({ providedIn: 'root' })
 export class BergPanelControllerFactory {
   private controllers = new WeakMap<HTMLElement, BergPanelController>();
+
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   get(layoutElement: HTMLElement): BergPanelController {
     const cachedController = this.controllers.get(layoutElement);
@@ -12,7 +15,7 @@ export class BergPanelControllerFactory {
       return cachedController;
     }
 
-    const controller = new BergPanelController(layoutElement);
+    const controller = new BergPanelController(layoutElement, this.document);
     this.controllers.set(layoutElement, controller);
 
     return controller;

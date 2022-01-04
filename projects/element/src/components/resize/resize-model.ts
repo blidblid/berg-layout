@@ -7,7 +7,7 @@ export const BERG_RESIZE_INPUTS = new InjectionToken<BergResizeInputs>(
 export const BERG_RESIZE_DEFAULT_INPUTS: BergResizeInputs = {
   position: null,
   disabled: false,
-  resizeThreshold: 6,
+  resizeThreshold: 16,
   collapseThreshold: 0.5,
   previewDelay: 0,
 };

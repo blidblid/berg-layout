@@ -1,108 +1,17 @@
-@mixin border(
-  $border-width,
-  $border-color,
-  $resizing-border-width: null,
-  $resizing-border-color: null,
-  $previewing-border-color: null,
-  $collapsed-border-color: null
-) {
-  $border: $border-width solid $border-color;
-
-  $resizing-border: $border-width solid $resizing-border-color;
-  $resizing-border-width: $resizing-border-width or $border-width;
-  $resizing-border-color: $resizing-border-color or $border-color;
-
-  $previewing-border: $border-width solid $previewing-border-color;
-  $previewing-border-color: $previewing-border-color or $resizing-border-color
-    or $border-color;
-
-  $collapsed-border-color: $collapsed-border-color or $border-color;
-
+@mixin borders($border) {
   .berg-panel-top {
     border-bottom: $border;
-
-    &.berg-resize-collapsed {
-      border-color: $collapsed-border-color;
-    }
-
-    &.berg-resize-previewing {
-      border-bottom: $previewing-border;
-      box-shadow: 0 -#{$resizing-border-width} $previewing-border-color inset;
-    }
-
-    &.berg-resize-resizing {
-      border-bottom: $resizing-border;
-      box-shadow: 0 -#{$resizing-border-width} $resizing-border-color inset;
-    }
-
-    &.berg-resize-collapsed {
-      border-width: $resizing-border-width;
-    }
-  }
-
-  .berg-panel-left {
-    border-right: $border;
-
-    &.berg-resize-collapsed {
-      border-color: $collapsed-border-color;
-    }
-
-    &.berg-resize-previewing {
-      border-right: $previewing-border;
-      box-shadow: -#{$resizing-border-width} 0 $previewing-border-color inset;
-    }
-
-    &.berg-resize-resizing {
-      border-right: $resizing-border;
-      box-shadow: -#{$resizing-border-width} 0 $resizing-border-color inset;
-    }
-
-    &.berg-resize-collapsed {
-      border-width: $resizing-border-width;
-    }
   }
 
   .berg-panel-right {
     border-left: $border;
-
-    &.berg-resize-collapsed {
-      border-color: $collapsed-border-color;
-    }
-
-    &.berg-resize-previewing {
-      border-left: $previewing-border;
-      box-shadow: $resizing-border-width 0 $previewing-border-color inset;
-    }
-
-    &.berg-resize-resizing {
-      border-left: $resizing-border;
-      box-shadow: $resizing-border-width 0 $resizing-border-color inset;
-    }
-
-    &.berg-resize-collapsed {
-      border-width: $resizing-border-width;
-    }
   }
 
   .berg-panel-bottom {
     border-top: $border;
+  }
 
-    &.berg-resize-collapsed {
-      border-color: $collapsed-border-color;
-    }
-
-    &.berg-resize-previewing {
-      border-top: $previewing-border;
-      box-shadow: 0 $resizing-border-width $previewing-border-color inset;
-    }
-
-    &.berg-resize-resizing {
-      border-top: $resizing-border;
-      box-shadow: 0 $resizing-border-width $resizing-border-color inset;
-    }
-
-    &.berg-resize-collapsed {
-      border-width: $resizing-border-width;
-    }
+  .berg-panel-left {
+    border-right: $border;
   }
 }

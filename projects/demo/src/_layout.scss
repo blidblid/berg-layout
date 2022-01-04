@@ -1,13 +1,14 @@
 @use 'node_modules/@berg-layout/element' as layout;
 
-// @include layout.border(
-//   1px,
-//   rgba(255, 255, 255, 0.3),
-//   3px,
-//   rgba(228, 224, 15, 0.993),
-//   rgb(15, 132, 228),
-//   rgba(255, 255, 255, 0.6)
-// );
+@include layout.borders(1px solid lightgrey);
+
+@include layout.resizing(
+  (
+    'resizing-indicator-width': 6px,
+    'resizing-indicator-color': rgb(255, 251, 0),
+    'previewing-indicator-color': rgb(15, 132, 228),
+  )
+);
 
 .berg-panel-left {
   width: 50vw;
@@ -23,7 +24,7 @@
 }
 
 .berg-panel-center {
-  background: #fafafa;
+  background: lightgrey;
   padding: 32px;
 }
 

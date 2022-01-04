@@ -5,9 +5,8 @@ import {
   map,
   merge,
   Observable,
-  share,
+  shareReplay,
   Subject,
-  switchMap,
 } from 'rxjs';
 import { BergPanel, BergPanelSlot } from './panel-model';
 
@@ -20,39 +19,20 @@ export class BergPanelController {
     add: this.addSub,
     push: this.pushSub,
     remove: this.removeSub,
-  }).pipe(debounceTime(0), share());
+  }).pipe(debounceTime(0), shareReplay(1));
 
-  slotIsResizable$ = this.panels$.pipe(
-    map((panels) => {
-      return (panelSlot: BergPanelSlot) => {
-        const expandedAbsolutePanels = panels.filter(
-          (panel) => panel.absolute && !panel.collapsed
-        );
+  private resizeTogglesRecord = {
+    top: this.createResizeToggleElement('top'),
+    right: this.createResizeToggleElement('right'),
+    bottom: this.createResizeToggleElement('bottom'),
+    left: this.createResizeToggleElement('left'),
+  };
 
-        if (expandedAbsolutePanels.length > 0) {
-          return expandedAbsolutePanels.some(({ slot }) => slot === panelSlot);
-        }
-
-        if (panelSlot === 'right') {
-          return (
-            panels.some(({ slot }) => slot === 'center') ||
-            panels.every(({ slot }) => slot !== 'left')
-          );
-        }
-
-        if (panelSlot === 'center') {
-          return false;
-        }
-
-        return true;
-      };
-    }),
-    share()
+  private resizeToggles: HTMLElement[] = Object.values(
+    this.resizeTogglesRecord
   );
 
-  private panelsEvents: Record<string, Observable<any>> = {};
-
-  constructor(public layoutElement: HTMLElement) {}
+  constructor(public layoutElement: HTMLElement, private document: Document) {}
 
   add(panel: BergPanel): void {
     this.addSub.next(panel);
@@ -70,17 +50,48 @@ export class BergPanelController {
     return fromEvent<T>(this.layoutElement, eventName);
   }
 
-  fromPanelsEvent<T extends Event>(eventName: string): Observable<T> {
-    if (!this.panelsEvents[eventName]) {
-      this.panelsEvents[eventName] = this.panels$.pipe(
-        switchMap((panels) => {
-          return merge(
-            ...panels.map((panel) => fromEvent<T>(panel.hostElem, eventName))
-          );
-        })
-      );
+  fromResizeTogglesEvent<T extends Event>(eventName: string): Observable<T> {
+    return merge(
+      ...this.resizeToggles.map((resizeToggle) => {
+        return fromEvent<T>(resizeToggle, eventName);
+      })
+    );
+  }
+
+  getResizeToggle(slot: BergPanelSlot): HTMLElement | null {
+    return slot === 'center' ? null : this.resizeTogglesRecord[slot];
+  }
+
+  getRenderedResizeToggles(slot: BergPanelSlot): Observable<HTMLElement[]> {
+    return this.panels$.pipe(
+      map((panels) => this.getResizeTogglesForSlot(slot, panels))
+    );
+  }
+
+  private getResizeTogglesForSlot(
+    slot: BergPanelSlot,
+    panels: BergPanel[]
+  ): HTMLElement[] {
+    if (slot === 'right') {
+      return [this.resizeTogglesRecord.right];
     }
 
-    return this.panelsEvents[eventName];
+    if (slot === 'bottom') {
+      return [this.resizeTogglesRecord.bottom];
+    }
+
+    if (slot === 'center') {
+      return (['left', 'top'] as const)
+        .filter((s) => panels.some((panel) => panel.slot === s))
+        .map((s) => this.resizeTogglesRecord[s]);
+    }
+
+    return [];
+  }
+
+  private createResizeToggleElement(slot: BergPanelSlot): HTMLElement {
+    const div = this.document.createElement('div');
+    div.classList.add('berg-resize-toggle', `berg-resize-toggle-${slot}`);
+    return div;
   }
 }

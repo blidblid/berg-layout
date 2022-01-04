@@ -127,11 +127,13 @@ export class BergPanelComponent extends BergResizeBase implements BergPanel {
     super(bodyListeners, elementRef, viewContainerRef, document, inputs);
     this._layoutElement = this.findLayoutParentElement();
     this.subscribe();
-    this._controller.add(this);
 
     // Life cycle hooks are bugged out in @angular/elements.
     this.zone.runOutsideAngular(() => {
-      Promise.resolve().then(() => (this._init = true));
+      Promise.resolve().then(() => {
+        this._controller.add(this);
+        this._init = true;
+      });
     });
   }
 

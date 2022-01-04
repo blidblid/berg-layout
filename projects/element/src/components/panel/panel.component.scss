@@ -6,6 +6,7 @@
 .berg-panel {
   display: block;
   overflow: auto;
+  position: relative;
   transition: margin 0.2s ease-in;
 
   &.berg-panel-hidden {
@@ -76,4 +77,23 @@
     right: 0;
     max-height: 80vh;
   }
+}
+
+.berg-resize-toggle {
+  position: absolute;
+  z-index: 3;
+}
+
+.berg-resize-toggle-left,
+.berg-resize-toggle-right {
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.berg-resize-toggle-top,
+.berg-resize-toggle-bottom {
+  left: 0;
+  right: 0;
+  top: 0;
 }

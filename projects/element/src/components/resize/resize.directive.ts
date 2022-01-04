@@ -13,13 +13,12 @@ import {
 } from '@angular/core';
 import {
   animationFrameScheduler,
-  BehaviorSubject,
-  combineLatest,
   defer,
   EMPTY,
   fromEvent,
   merge,
   of,
+  ReplaySubject,
   Subject,
 } from 'rxjs';
 import {
@@ -51,8 +50,8 @@ import {
     '[class.berg-resize-resizing]': '_resizing',
     '[class.berg-resize-previewing]': '_previewing',
     '[class.berg-resize-collapsed]': '_resizeCollapsed',
-    '[style.width.px]': 'size?.width',
-    '[style.height.px]': 'size?.height',
+    '[style.width.px]': '_size?.width',
+    '[style.height.px]': '_size?.height',
     '[style.box-sizing]': '"border-box"',
   },
 })
@@ -100,7 +99,7 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   /** Slot name to position the resize toggle. */
   @Input('slot')
   get slot() {
-    return this.slotSub.value;
+    return this._slot;
   }
   set slot(value: BergPanelSlot) {
     if (value === 'top') {
@@ -115,18 +114,19 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
       this._slotResizePosition = null;
     }
 
+    this._slot = value;
     this._controller.push();
     this.slotSub.next(value);
   }
-  private slotSub = new BehaviorSubject<BergPanelSlot>('center');
+  private _slot: BergPanelSlot = 'center';
+  protected slotSub = new ReplaySubject<BergPanelSlot>(1);
   private _slotResizePosition: BergResizePosition;
 
   _resizing = false;
   _previewing = false;
   _resizeCollapsed = false;
+  _size: BergResizeSize;
   abstract _controller: BergPanelController;
-
-  size: BergResizeSize;
 
   /** Whether resizing is disabled. */
   @Input('bergResizeDisabled')
@@ -137,34 +137,30 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
 
   protected destroySub = new Subject<void>();
 
-  get hostElem() {
+  get hostElem(): HTMLElement {
     return this.elementRef.nativeElement;
   }
 
-  private resizable$ = defer(() => {
-    return combineLatest([
-      this.slotSub,
-      this._controller.slotIsResizable$,
-    ]).pipe(
-      map(([slot, slotIsResizable]) => slotIsResizable(slot)),
-      share()
-    );
-  });
+  resizeToggle$ = this.slotSub.pipe(
+    map((slot) => this._controller.getResizeToggle(slot))
+  );
 
   protected previewing$ = defer(() => {
-    return this._controller.fromPanelsEvent<MouseEvent>('mousemove').pipe(
-      withLatestFrom(this.resizable$),
-      filter(([_, resizable]) => !this._disabled && resizable),
-      map(([event]) => this.checkThreshold(event)),
-      distinctUntilChanged(),
-      share()
-    );
+    return merge(
+      this._controller.fromResizeTogglesEvent<MouseEvent>('mousemove').pipe(
+        withLatestFrom(this.resizeToggle$),
+        filter(() => !this._disabled),
+        map(([event, resizeToggle]) => this.checkThreshold(event, resizeToggle))
+      ),
+      this._controller
+        .fromResizeTogglesEvent<MouseEvent>('mouseleave')
+        .pipe(map(() => false))
+    ).pipe(startWith(false), distinctUntilChanged(), share());
   });
 
   protected resizeEvent$ = this.previewing$.pipe(
-    withLatestFrom(this.resizable$),
-    filter(([_, resizable]) => !this._disabled && resizable),
-    switchMap(([previewing]) => {
+    filter(() => !this._disabled),
+    switchMap((previewing) => {
       return previewing
         ? this._controller.fromLayoutEvent<MouseEvent>('mousedown')
         : EMPTY;
@@ -258,7 +254,7 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
 
     this.resizedSize$
       .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
-      .subscribe((size) => (this.size = size));
+      .subscribe((size) => (this._size = size));
 
     merge(fromEvent<DragEvent>(this.hostElem, 'dragstart'))
       .pipe(takeUntil(this.destroySub))
@@ -267,8 +263,19 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     this.collapsed$.pipe(takeUntil(this.destroySub)).subscribe((collapsed) => {
       this._resizeCollapsed = collapsed;
     });
-  }
 
+    this.slotSub
+      .pipe(
+        startWith(this._slot),
+        switchMap((slot) => this._controller.getRenderedResizeToggles(slot)),
+        takeUntil(this.destroySub)
+      )
+      .subscribe((resizeToggles) => {
+        for (const resizeToggle of resizeToggles) {
+          this.hostElem.appendChild(resizeToggle);
+        }
+      });
+  }
   private calculateSize(event: MouseEvent): BergResizeSize {
     const rect = this.hostElem.getBoundingClientRect();
 
@@ -287,15 +294,22 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     return { rect, width: rect.width + rect.x - event.pageX };
   }
 
-  private checkThreshold(event: MouseEvent): boolean {
-    if (!this.resizePosition) {
+  private checkThreshold(
+    event: MouseEvent,
+    resizeToggle: HTMLElement | null
+  ): boolean {
+    if (resizeToggle === null || !this.resizePosition) {
       return false;
+    }
+
+    if (event.target === resizeToggle) {
+      return true;
     }
 
     let mouse = 0;
     let origin = 0;
 
-    const { x, y, width, height } = this.hostElem.getBoundingClientRect();
+    const { x, y, width, height } = resizeToggle.getBoundingClientRect();
 
     if (width === 0 || height === 0) {
       return false;

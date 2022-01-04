@@ -1,0 +1,72 @@
+@use 'sass:map';
+
+@mixin resizing($map) {
+  $resizing-indicator-width: map-get($map, 'resizing-indicator-width');
+  $resizing-indicator-color: map-get($map, 'resizing-indicator-color');
+  $previewing-indicator-color: map-get($map, 'previewing-indicator-color');
+
+  $resizing-border: $resizing-indicator-width solid $resizing-indicator-color;
+  $resizing-indicator-color: $resizing-indicator-color;
+
+  $previewing-indicator-color: $previewing-indicator-color or
+    $resizing-indicator-color;
+  $previewing-border: $resizing-indicator-width solid
+    $previewing-indicator-color;
+
+  .berg-resize-toggle-right,
+  .berg-resize-toggle-bottom {
+    .berg-resize-previewing & {
+      background: $previewing-indicator-color;
+    }
+
+    .berg-resize-resizing & {
+      background: $resizing-indicator-color;
+    }
+  }
+
+  .berg-panel-top {
+    &.berg-resize-previewing {
+      ~ .berg-panel-center {
+        .berg-resize-toggle-top {
+          background: $previewing-indicator-color;
+        }
+      }
+    }
+
+    &.berg-resize-resizing {
+      ~ .berg-panel-center {
+        .berg-resize-toggle-top {
+          background: $resizing-indicator-color;
+        }
+      }
+    }
+  }
+
+  .berg-panel-left {
+    &.berg-resize-previewing {
+      ~ .berg-panel-center {
+        .berg-resize-toggle-left {
+          background: $previewing-indicator-color;
+        }
+      }
+    }
+
+    &.berg-resize-resizing {
+      ~ .berg-panel-center {
+        .berg-resize-toggle-left {
+          background: $resizing-indicator-color;
+        }
+      }
+    }
+  }
+
+  .berg-resize-toggle-top,
+  .berg-resize-toggle-bottom {
+    height: $resizing-indicator-width;
+  }
+
+  .berg-resize-toggle-right,
+  .berg-resize-toggle-left {
+    width: $resizing-indicator-width;
+  }
+}
