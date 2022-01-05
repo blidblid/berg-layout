@@ -11,6 +11,12 @@
 
   &.berg-panel-hidden {
     display: none;
+
+    ~ .berg-panel-center {
+      .berg-resize-toggle {
+        display: none;
+      }
+    }
   }
 
   &.berg-resize-collapsed {
