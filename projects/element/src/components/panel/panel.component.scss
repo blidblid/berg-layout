@@ -16,6 +16,14 @@
   }
 }
 
+:host(.berg-panel-vertical) {
+  min-height: 64px;
+}
+
+:host(.berg-panel-horizontal) {
+  min-width: 128px;
+}
+
 // keep all collapsed css !important to prevent overrides
 :host(.berg-resize-collapsed) {
   @mixin collapsed-panel() {
