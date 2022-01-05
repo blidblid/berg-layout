@@ -282,12 +282,9 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
         switchMap((slot) => this._controller.getRenderedResizeToggles(slot)),
         takeUntil(this.destroySub)
       )
-      .subscribe((resizeToggles) => {
-        for (const resizeToggle of resizeToggles) {
-          this.hostElem.appendChild(resizeToggle);
-        }
-      });
+      .subscribe((resizeToggles) => this.appendResizeToggles(resizeToggles));
   }
+
   private calculateSize(event: MouseEvent): BergResizeSize {
     const rect = this.hostElem.getBoundingClientRect();
 
@@ -346,6 +343,12 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     }
 
     return this.resizeThreshold > Math.abs(origin - mouse);
+  }
+
+  private appendResizeToggles(resizeToggles: HTMLElement[]): void {
+    for (const resizeToggle of resizeToggles) {
+      this.hostElem.appendChild(resizeToggle);
+    }
   }
 
   private getInput<T extends keyof BergResizeInputs>(

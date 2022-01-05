@@ -1,105 +1,98 @@
-@mixin collapsed-panel() {
-  padding: 0 !important;
-  overflow: visible !important;
-}
-
-.berg-panel {
+:host {
   display: block;
-  overflow: auto;
   position: relative;
   transition: margin 0.2s ease-in;
 
-  &.berg-panel-hidden {
+  .berg-panel-content {
+    padding: 32px;
+    overflow: auto;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+  }
+
+  &:host(.berg-panel-hidden) {
     display: none;
-
-    ~ .berg-panel-center {
-      .berg-resize-toggle {
-        display: none;
-      }
-    }
-  }
-
-  &.berg-resize-collapsed {
-    &.berg-panel-vertical {
-      @include collapsed-panel();
-      width: 0 !important;
-      min-width: 0 !important;
-      max-width: 0 !important;
-    }
-
-    &.berg-panel-horizontal {
-      @include collapsed-panel();
-      height: 0 !important;
-      min-height: 0 !important;
-      max-height: 0 !important;
-    }
   }
 }
 
-.berg-panel-backdrop {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  cursor: pointer;
+// keep all collapsed css !important to prevent overrides
+:host(.berg-resize-collapsed) {
+  @mixin collapsed-panel() {
+    padding: 0 !important;
+    position: absolute !important;
+    overflow: hidden !important;
+  }
+
+  &:host(.berg-panel-vertical) {
+    @include collapsed-panel();
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+  }
+
+  &:host(.berg-panel-horizontal) {
+    @include collapsed-panel();
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+  }
+
+  &:host(.berg-panel-top) {
+    bottom: 100% !important;
+  }
+
+  &:host(.berg-panel-right) {
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 100% !important;
+    overflow: visible !important;
+  }
+
+  &:host(.berg-panel-bottom) {
+    left: 0 !important;
+    right: 0 !important;
+    top: 100% !important;
+    overflow: visible !important;
+  }
+
+  &:host(.berg-panel-left) {
+    right: 100% !important;
+  }
 }
 
-.berg-panel-center {
+:host(.berg-panel-center) {
   max-height: 100%;
   flex: 1;
 }
 
-.berg-panel-left + .berg-panel-right {
+:host(.berg-panel-left) + :host(.berg-panel-right) {
   flex: 1;
 }
 
-.berg-panel-left,
-.berg-panel-right {
+:host(.berg-panel-left),
+:host(.berg-panel-right) {
   z-index: 0;
 }
 
-.berg-panel-bottom,
-.berg-panel-top {
+:host(.berg-panel-bottom),
+:host(.berg-panel-top) {
   z-index: 1;
 }
 
-.berg-panel-backdrop {
-  z-index: 2;
-}
-
-.berg-panel-absolute {
+:host(.berg-panel-absolute) {
   position: absolute;
   z-index: 3;
 
-  &.berg-panel-vertical {
+  &:host(.berg-panel-vertical) {
     top: 0;
     bottom: 0;
     max-width: 80vw;
   }
 
-  &.berg-panel-horizontal {
+  &:host(&.berg-panel-horizontal) {
     left: 0;
     right: 0;
     max-height: 80vh;
   }
-}
-
-.berg-resize-toggle {
-  position: absolute;
-  z-index: 2;
-}
-
-.berg-resize-toggle-left,
-.berg-resize-toggle-right {
-  top: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.berg-resize-toggle-top,
-.berg-resize-toggle-bottom {
-  left: 0;
-  right: 0;
-  top: 0;
 }

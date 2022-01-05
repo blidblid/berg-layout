@@ -28,9 +28,7 @@ export class BergPanelController {
     left: this.createResizeToggleElement('left'),
   };
 
-  private resizeToggles: HTMLElement[] = Object.values(
-    this.resizeTogglesRecord
-  );
+  resizeToggles: HTMLElement[] = Object.values(this.resizeTogglesRecord);
 
   constructor(public layoutElement: HTMLElement, private document: Document) {}
 
@@ -80,9 +78,25 @@ export class BergPanelController {
       return [this.resizeTogglesRecord.bottom];
     }
 
+    if (
+      slot === 'left' &&
+      panels.some((panel) => panel.slot === 'left' && panel.absolute)
+    ) {
+      return [this.resizeTogglesRecord.left];
+    }
+
+    if (
+      slot === 'top' &&
+      panels.some((panel) => panel.slot === 'top' && panel.absolute)
+    ) {
+      return [this.resizeTogglesRecord.top];
+    }
+
     if (slot === 'center') {
       return (['left', 'top'] as const)
-        .filter((s) => panels.some((panel) => panel.slot === s))
+        .filter((s) => {
+          return panels.some((panel) => panel.slot === s && !panel.absolute);
+        })
         .map((s) => this.resizeTogglesRecord[s]);
     }
 

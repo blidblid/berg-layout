@@ -25,7 +25,6 @@
 
 .berg-panel-center {
   background: lightgrey;
-  padding: 32px;
 }
 
 .berg-panel-left,
@@ -33,6 +32,5 @@
 .berg-panel-top,
 .berg-panel-bottom {
   background: white;
-  padding: 32px;
   @include layout.elevation(4);
 }

@@ -29,7 +29,7 @@ import { BergPanel } from './panel-model';
   selector: 'berg-panel',
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': '_hostClass',
@@ -214,6 +214,18 @@ export class BergPanelComponent extends BergResizeBase implements BergPanel {
     if (!this._backdropElement) {
       this._backdropElement = this.document.createElement('div');
       this._backdropElement.classList.add('berg-panel-backdrop');
+      this._backdropElement.setAttribute(
+        'style',
+        [
+          'position: absolute;',
+          'top: 0;',
+          'right: 0;',
+          'bottom: 0;',
+          'left: 0;',
+          'z-index: 2;',
+          'cursor: pointer;',
+        ].join(' ')
+      );
 
       fromEvent(this._backdropElement, 'click')
         .pipe(takeUntil(this.destroySub))
