@@ -1,8 +1,3 @@
-@mixin collapsed-panel() {
-  padding: 0 !important;
-  overflow: visible !important;
-}
-
 .berg-panel {
   display: block;
   overflow: auto;
@@ -19,7 +14,14 @@
     }
   }
 
+  // keep all collapsed css !important to prevent overrides
   &.berg-resize-collapsed {
+    @mixin collapsed-panel() {
+      padding: 0 !important;
+      position: absolute !important;
+      overflow: hidden !important;
+    }
+
     &.berg-panel-vertical {
       @include collapsed-panel();
       width: 0 !important;
@@ -32,6 +34,28 @@
       height: 0 !important;
       min-height: 0 !important;
       max-height: 0 !important;
+    }
+
+    &.berg-panel-top {
+      bottom: 100% !important;
+    }
+
+    &.berg-panel-right {
+      top: 0 !important;
+      bottom: 0 !important;
+      left: 100% !important;
+      overflow: visible !important;
+    }
+
+    &.berg-panel-bottom {
+      left: 0 !important;
+      right: 0 !important;
+      top: 100% !important;
+      overflow: visible !important;
+    }
+
+    &.berg-panel-left {
+      right: 100% !important;
     }
   }
 }
