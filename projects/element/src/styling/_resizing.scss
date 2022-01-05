@@ -24,6 +24,16 @@
     }
   }
 
+  .berg-resize-collapsed {
+    .berg-resize-toggle-right {
+      left: -#{$resizing-indicator-width};
+    }
+
+    .berg-resize-toggle-bottom {
+      top: -#{$resizing-indicator-width};
+    }
+  }
+
   .berg-panel-top {
     &.berg-resize-previewing {
       ~ .berg-panel-center {

@@ -1,6 +1,6 @@
 @mixin collapsed-panel() {
   padding: 0 !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 
 .berg-panel {
