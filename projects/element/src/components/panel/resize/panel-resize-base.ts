@@ -33,9 +33,9 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BodyListeners } from '../../core';
-import { BergPanelSlot } from '../panel';
-import { BergPanelController } from '../panel/panel-controller';
+import { BergPanelSlot } from '..';
+import { BodyListeners } from '../../../core';
+import { BergPanelController } from '../panel-controller';
 import {
   BergResizeInputs,
   BergResizePosition,
@@ -43,7 +43,7 @@ import {
   BERG_RESIZE_DEFAULT_INPUTS,
   BERG_RESIZE_EXPAND_PADDING,
   BERG_RESIZE_INPUTS,
-} from './resize-model';
+} from './panel-resize-model';
 
 @Directive({
   host: {
@@ -57,6 +57,7 @@ import {
 })
 export abstract class BergPanelResizeBase implements OnInit, OnDestroy {
   /** Position of the resize toggle. */
+  @Input()
   get resizePosition() {
     return this._resizePosition ?? this._slotResizePosition;
   }
@@ -66,6 +67,7 @@ export abstract class BergPanelResizeBase implements OnInit, OnDestroy {
   private _resizePosition: BergResizePosition = this.getInput('resizePosition');
 
   /** Threshold to determine if a cursor position should be able to resize the element. */
+  @Input()
   get resizeThreshold() {
     return this._resizeThreshold;
   }
@@ -75,6 +77,7 @@ export abstract class BergPanelResizeBase implements OnInit, OnDestroy {
   private _resizeThreshold: number = this.getInput('resizeThreshold');
 
   /** Threshold to determine when a resize should be interpreted as a collapsing event. */
+  @Input()
   get resizeCollapseThreshold() {
     return this._resizeCollapseThreshold;
   }
@@ -86,6 +89,7 @@ export abstract class BergPanelResizeBase implements OnInit, OnDestroy {
   );
 
   /** Delay before the resize preview is shown. */
+  @Input()
   get resizePreviewDelay() {
     return this._resizePreviewDelay;
   }

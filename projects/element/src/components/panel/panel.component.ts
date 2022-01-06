@@ -17,13 +17,13 @@ import {
 import { combineLatest, fromEvent } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BodyListeners, BreakpointService } from '../../core';
+import { BergPanelControllerFactory } from './panel-controller-factory';
+import { BergPanel } from './panel-model';
 import {
   BergPanelResizeBase,
   BergResizeInputs,
   BERG_RESIZE_INPUTS,
-} from '../resize';
-import { BergPanelControllerFactory } from './panel-controller-factory';
-import { BergPanel } from './panel-model';
+} from './resize';
 
 @Component({
   selector: 'berg-panel',
