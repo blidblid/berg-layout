@@ -5,12 +5,12 @@ export const BERG_RESIZE_INPUTS = new InjectionToken<BergResizeInputs>(
 );
 
 export const BERG_RESIZE_DEFAULT_INPUTS: BergResizeInputs = {
-  position: null,
-  disabled: false,
+  resizePosition: null,
+  resizeDisabled: false,
   resizeThreshold: 16,
-  collapseThreshold: 0.5,
-  twoDimensions: false,
-  previewDelay: 0,
+  resizeCollapseThreshold: 0.5,
+  resizeTwoDimensions: false,
+  resizePreviewDelay: 0,
 };
 
 export const BERG_RESIZE_EXPAND_PADDING = 16;
@@ -18,12 +18,12 @@ export const BERG_RESIZE_EXPAND_PADDING = 16;
 export type BergResizePosition = 'above' | 'after' | 'below' | 'before' | null;
 
 export interface BergResizeInputs {
-  position: BergResizePosition;
-  disabled: boolean;
-  twoDimensions: boolean;
+  resizePosition: BergResizePosition;
+  resizeDisabled: boolean;
+  resizeTwoDimensions: boolean;
   resizeThreshold: number;
-  collapseThreshold: number;
-  previewDelay: number;
+  resizeCollapseThreshold: number;
+  resizePreviewDelay: number;
 }
 
 export interface BergResizeSize {

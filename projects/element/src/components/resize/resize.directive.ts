@@ -55,19 +55,17 @@ import {
     '[style.box-sizing]': '"border-box"',
   },
 })
-export abstract class BergResizeBase implements OnInit, OnDestroy {
+export abstract class BergPanelResizeBase implements OnInit, OnDestroy {
   /** Position of the resize toggle. */
-  @Input('bergResizePosition')
   get resizePosition() {
     return this._resizePosition ?? this._slotResizePosition;
   }
   set resizePosition(value: BergResizePosition) {
     this._resizePosition = value;
   }
-  private _resizePosition: BergResizePosition = this.getInput('position');
+  private _resizePosition: BergResizePosition = this.getInput('resizePosition');
 
   /** Threshold to determine if a cursor position should be able to resize the element. */
-  @Input('bergResizeThreshold')
   get resizeThreshold() {
     return this._resizeThreshold;
   }
@@ -77,24 +75,24 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   private _resizeThreshold: number = this.getInput('resizeThreshold');
 
   /** Threshold to determine when a resize should be interpreted as a collapsing event. */
-  @Input('bergResizeCollapseThreshold')
-  get collapseThreshold() {
-    return this._collapseThreshold;
+  get resizeCollapseThreshold() {
+    return this._resizeCollapseThreshold;
   }
-  set collapseThreshold(value: number) {
-    this._collapseThreshold = value;
+  set resizeCollapseThreshold(value: number) {
+    this._resizeCollapseThreshold = value;
   }
-  private _collapseThreshold: number = this.getInput('collapseThreshold');
+  private _resizeCollapseThreshold: number = this.getInput(
+    'resizeCollapseThreshold'
+  );
 
   /** Delay before the resize preview is shown. */
-  @Input('bergResizePreviewDelay')
-  get previewDelay() {
-    return this._previewDelay;
+  get resizePreviewDelay() {
+    return this._resizePreviewDelay;
   }
-  set previewDelay(value: number) {
-    this._previewDelay = value;
+  set resizePreviewDelay(value: number) {
+    this._resizePreviewDelay = value;
   }
-  private _previewDelay: number = this.getInput('previewDelay');
+  private _resizePreviewDelay: number = this.getInput('resizePreviewDelay');
 
   /** Delay before the resize preview is shown. */
   @Input()
@@ -104,7 +102,14 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   set resizeTwoDimensions(value: boolean) {
     this._resizeTwoDimensions = value;
   }
-  private _resizeTwoDimensions: boolean = this.getInput('twoDimensions');
+  private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
+
+  /** Whether resizing is disabled. */
+  @Input()
+  set resizeDisabled(value: boolean) {
+    this._resizeDisabled = coerceBooleanProperty(value);
+  }
+  private _resizeDisabled: boolean = this.getInput('resizeDisabled');
 
   /** Slot name to position the resize toggle. */
   @Input('slot')
@@ -138,13 +143,6 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   _size: BergResizeSize;
   abstract _controller: BergPanelController;
 
-  /** Whether resizing is disabled. */
-  @Input('bergResizeDisabled')
-  set disabled(value: boolean) {
-    this._disabled = coerceBooleanProperty(value);
-  }
-  private _disabled: boolean = this.getInput('disabled');
-
   protected destroySub = new Subject<void>();
 
   get hostElem(): HTMLElement {
@@ -159,7 +157,7 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     return merge(
       this._controller.fromResizeTogglesEvent<MouseEvent>('mousemove').pipe(
         withLatestFrom(this.resizeToggle$),
-        filter(() => !this._disabled),
+        filter(() => !this._resizeDisabled),
         map(([event, resizeToggle]) =>
           this.checkResizeThreshold(event, resizeToggle)
         )
@@ -171,7 +169,7 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   });
 
   protected resizeEvent$ = this.previewing$.pipe(
-    filter(() => !this._disabled),
+    filter(() => !this._resizeDisabled),
     switchMap((previewing) => {
       return previewing
         ? this._controller.fromLayoutEvent<MouseEvent>('mousedown')
@@ -204,11 +202,11 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
   private collapseAtSize$ = this.resizedSize$.pipe(
     filter((size) => {
       if (size.width !== undefined) {
-        return this.collapseThreshold >= size.width / size.rect.width;
+        return this.resizeCollapseThreshold >= size.width / size.rect.width;
       }
 
       if (size.height !== undefined) {
-        return this.collapseThreshold >= size.height / size.rect.height;
+        return this.resizeCollapseThreshold >= size.height / size.rect.height;
       }
 
       return false;
@@ -258,7 +256,9 @@ export abstract class BergResizeBase implements OnInit, OnDestroy {
     this.previewing$
       .pipe(
         switchMap((previewing) => {
-          return of(previewing).pipe(delay(previewing ? this.previewDelay : 0));
+          return of(previewing).pipe(
+            delay(previewing ? this.resizePreviewDelay : 0)
+          );
         }),
         takeUntil(this.destroySub)
       )

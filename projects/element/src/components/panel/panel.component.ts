@@ -18,7 +18,7 @@ import { combineLatest, fromEvent } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BodyListeners, BreakpointService } from '../../core';
 import {
-  BergResizeBase,
+  BergPanelResizeBase,
   BergResizeInputs,
   BERG_RESIZE_INPUTS,
 } from '../resize';
@@ -47,7 +47,10 @@ import { BergPanel } from './panel-model';
     '(transitionend)': '_onTransitionend()',
   },
 })
-export class BergPanelComponent extends BergResizeBase implements BergPanel {
+export class BergPanelComponent
+  extends BergPanelResizeBase
+  implements BergPanel
+{
   /** Whether the panel is absolutely positioned. */
   @Input()
   get absolute() {

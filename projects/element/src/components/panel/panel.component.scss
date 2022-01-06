@@ -3,9 +3,14 @@
   position: relative;
   transition: margin 0.2s ease-in;
 
+  .berg-panel-overflow {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+  }
+
   .berg-panel-content {
     padding: 32px;
-    overflow: auto;
     box-sizing: border-box;
     height: 100%;
     width: 100%;
@@ -26,21 +31,17 @@
 
 // keep all collapsed css !important to prevent overrides
 :host(.berg-resize-collapsed) {
-  @mixin collapsed-panel() {
-    padding: 0 !important;
-    position: absolute !important;
-    overflow: hidden !important;
-  }
+  padding: 0 !important;
+  position: absolute !important;
+  overflow: visible !important;
 
   &:host(.berg-panel-vertical) {
-    @include collapsed-panel();
     width: 0 !important;
     min-width: 0 !important;
     max-width: 0 !important;
   }
 
   &:host(.berg-panel-horizontal) {
-    @include collapsed-panel();
     height: 0 !important;
     min-height: 0 !important;
     max-height: 0 !important;
@@ -54,14 +55,12 @@
     top: 0 !important;
     bottom: 0 !important;
     left: 100% !important;
-    overflow: visible !important;
   }
 
   &:host(.berg-panel-bottom) {
     left: 0 !important;
     right: 0 !important;
     top: 100% !important;
-    overflow: visible !important;
   }
 
   &:host(.berg-panel-left) {
