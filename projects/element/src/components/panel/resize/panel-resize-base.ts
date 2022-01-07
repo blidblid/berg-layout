@@ -33,9 +33,9 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BergPanelSlot } from '..';
 import { BodyListeners } from '../../../core';
 import { BergPanelController } from '../panel-controller';
+import { BergPanelSlot } from '../panel-model';
 import {
   BergResizeInputs,
   BergResizePosition,

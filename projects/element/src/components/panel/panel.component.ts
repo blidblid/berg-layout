@@ -1,4 +1,5 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -14,9 +15,9 @@ import {
   ViewContainerRef,
   ViewEncapsulation,
 } from '@angular/core';
-import { combineLatest, fromEvent } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { BodyListeners, BreakpointService } from '../../core';
+import { BehaviorSubject, combineLatest, fromEvent } from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { BodyListeners } from '../../core';
 import { BergPanelControllerFactory } from './panel-controller-factory';
 import { BergPanel } from './panel-model';
 import {
@@ -90,6 +91,24 @@ export class BergPanelComponent
   private _collapsed: boolean;
   _hidden: boolean;
 
+  @Input()
+  set mobileBreakpoint(value: string) {
+    this.mobileBreakpointSub.next(value);
+  }
+  private mobileBreakpointSub = new BehaviorSubject<string>('800px');
+
+  @Input()
+  set smallBreakpoint(value: string) {
+    this.smallBreakpointSub.next(value);
+  }
+  private smallBreakpointSub = new BehaviorSubject<string>('900px');
+
+  @Input()
+  set mediumBreakpoint(value: string) {
+    this.mediumBreakpointSub.next(value);
+  }
+  private mediumBreakpointSub = new BehaviorSubject<string>('1100px');
+
   /** Emits whenever a user clicks a panel backdrop. */
   @Output() backdropClicked = new EventEmitter<void>();
 
@@ -100,20 +119,34 @@ export class BergPanelComponent
   _init: boolean;
   _controller = this.controllerFactory.get(this.findLayoutParentElement());
 
-  private hostClass$ = this.breakpoint.matches$.pipe(
-    map((breakpoint) => {
-      if (breakpoint.breakpoints[this.breakpoint.mobileBreakpoint]) {
-        return 'berg-panel-mobile';
-      } else if (breakpoint.breakpoints[this.breakpoint.smallBreakpoint]) {
-        return 'berg-panel-small';
-      } else if (breakpoint.breakpoints[this.breakpoint.mediumBreakpoint]) {
-        return 'berg-panel-medium';
-      }
+  private hostClass$ = combineLatest([
+    this.mobileBreakpointSub,
+    this.smallBreakpointSub,
+    this.mediumBreakpointSub,
+  ]).pipe(
+    map((breakpoints) => breakpoints.map(this.getBreakpoint)),
+    switchMap(([mobile, small, medium]) => {
+      return this.breakpointObserver
+        .observe(
+          [mobile, small, medium].filter(
+            (breakpoint): breakpoint is string => !!breakpoint
+          )
+        )
+        .pipe(
+          map((state) => {
+            if (state.breakpoints[mobile]) {
+              return 'berg-panel-mobile';
+            } else if (state.breakpoints[small]) {
+              return 'berg-panel-small';
+            } else if (state.breakpoints[medium]) {
+              return 'berg-panel-medium';
+            }
 
-      return 'berg-panel-large';
+            return 'berg-panel-large';
+          })
+        );
     })
   );
-
   constructor(
     protected override bodyListeners: BodyListeners,
     protected override elementRef: ElementRef<HTMLElement>,
@@ -123,7 +156,7 @@ export class BergPanelComponent
     @Optional()
     protected override inputs: BergResizeInputs,
     private controllerFactory: BergPanelControllerFactory,
-    private breakpoint: BreakpointService,
+    private breakpointObserver: BreakpointObserver,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone
   ) {
@@ -258,6 +291,10 @@ export class BergPanelComponent
           this._layoutElement.classList.remove(resizeClass);
         }
       });
+  }
+
+  private getBreakpoint(breakpoint?: string): string {
+    return breakpoint ? `(max-width: ${breakpoint})` : '';
   }
 
   override ngOnDestroy(): void {

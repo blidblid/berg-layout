@@ -6,3 +6,9 @@ export interface BergPanel {
 }
 
 export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
+
+export interface BergPanelBreakpoints {
+  mobile: string;
+  small: string;
+  medium: string;
+}
