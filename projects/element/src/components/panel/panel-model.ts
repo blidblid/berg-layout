@@ -30,7 +30,7 @@ export const BERG_PANEL_DEFAULT_INPUTS: BergPanelInputs = {
   resizeThreshold: 16,
   resizeCollapseThreshold: 0.5,
   resizeTwoDimensions: false,
-  resizePreviewDelay: 500,
+  resizePreviewDelay: 200,
 };
 
 export const BERG_RESIZE_EXPAND_PADDING = 16;
