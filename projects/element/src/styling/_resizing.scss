@@ -17,16 +17,16 @@
   .berg-resize-toggle-right,
   .berg-resize-toggle-bottom,
   .berg-resize-toggle-left {
-    .berg-resize-previewing & {
+    .berg-panel-previewing & {
       background: $previewing-indicator-color;
     }
 
-    .berg-resize-resizing & {
+    .berg-panel-resizing & {
       background: $resizing-indicator-color;
     }
   }
 
-  .berg-resize-collapsed {
+  .berg-panel-collapsed {
     .berg-resize-toggle-right {
       left: -#{$resizing-indicator-width};
     }
@@ -50,7 +50,7 @@
       bottom: -#{$resizing-indicator-width};
     }
 
-    &.berg-resize-previewing {
+    &.berg-panel-previewing {
       ~ .berg-panel-center {
         .berg-resize-toggle-top {
           background: $previewing-indicator-color;
@@ -58,7 +58,7 @@
       }
     }
 
-    &.berg-resize-resizing {
+    &.berg-panel-resizing {
       ~ .berg-panel-center {
         .berg-resize-toggle-top {
           background: $resizing-indicator-color;
@@ -81,7 +81,7 @@
       right: -#{$resizing-indicator-width};
     }
 
-    &.berg-resize-previewing {
+    &.berg-panel-previewing {
       ~ .berg-panel-center {
         .berg-resize-toggle-left {
           background: $previewing-indicator-color;
@@ -89,7 +89,7 @@
       }
     }
 
-    &.berg-resize-resizing {
+    &.berg-panel-resizing {
       ~ .berg-panel-center {
         .berg-resize-toggle-left {
           background: $resizing-indicator-color;

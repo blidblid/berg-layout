@@ -30,7 +30,7 @@
 }
 
 // keep all collapsed css !important to prevent overrides
-:host(.berg-resize-collapsed) {
+:host(.berg-panel-collapsed) {
   padding: 0 !important;
   position: absolute !important;
   overflow: visible !important;
