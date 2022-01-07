@@ -1,12 +1,10 @@
 @use 'node_modules/@berg-layout/element' as layout;
 
-@include layout.borders(1px solid lightgrey);
-
 @include layout.resizing(
   (
     'resizing-indicator-width': 6px,
-    'resizing-indicator-color': rgb(255, 251, 0),
-    'previewing-indicator-color': rgb(15, 132, 228),
+    'resizing-indicator-color': #d0743b,
+    'previewing-indicator-color': rgb(59, 127, 208),
   )
 );
 
@@ -28,14 +26,27 @@
   min-height: 10vh;
 }
 
-.berg-panel-center {
-  background: lightgrey;
+.berg-panel-top {
+  background: rgb(60, 60, 60);
+}
+
+.berg-panel-bottom {
+  border-top: 1px solid rgb(65, 65, 65);
+}
+
+.berg-panel-left,
+.berg-panel-right {
+  background: rgb(37, 37, 38);
+}
+
+.berg-panel-center,
+.berg-panel-bottom {
+  background: rgb(30, 30, 30);
 }
 
 .berg-panel-left,
 .berg-panel-right,
 .berg-panel-top,
 .berg-panel-bottom {
-  background: white;
   @include layout.elevation(4);
 }
