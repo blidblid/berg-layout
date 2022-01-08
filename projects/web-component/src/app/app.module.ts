@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
-import { BergLayoutComponent, BergPanelComponent } from '@berg-layout/element';
+import { BergLayoutComponent, BergPanelComponent } from '@berg-layout/angular';
 
 @NgModule({
   imports: [BrowserModule],

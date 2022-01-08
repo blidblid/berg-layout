@@ -1,5 +1,5 @@
 {
-  "name": "@berg-layout/element",
+  "name": "@berg-layout/angular",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^13.1.0",

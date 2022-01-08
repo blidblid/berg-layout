@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@berg-layout/element": ["dist/element"],
+      "@berg-layout/angular": ["dist/angular"],
       "@berg-layout/web-component": ["dist/web-component"]
     },
     "baseUrl": "./",

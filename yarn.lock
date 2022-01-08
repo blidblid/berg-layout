@@ -1192,12 +1192,12 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
-"@berg-layout/builder-hooks@./projects/builder-hooks/dist":
-  version "0.0.1"
+"@berg-layout/angular@./dist/angular":
+  version "0.0.0-watch"
   dependencies:
     tslib "^2.3.0"
 
-"@berg-layout/element@./dist/element":
+"@berg-layout/builder-hooks@./projects/builder-hooks/dist":
   version "0.0.1"
   dependencies:
     tslib "^2.3.0"
