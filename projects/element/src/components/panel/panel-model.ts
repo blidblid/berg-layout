@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { BergCommonInputs, BERG_COMMON_DEFAULT_INPUTS } from '../input-model';
+import { BergSharedInputs, BERG_SHARED_DEFAULT_INPUTS } from '../../core';
 
 export interface BergPanel {
   slot: BergPanelSlot;
@@ -17,9 +17,9 @@ export interface BergPanelBreakpoints {
 }
 
 /** Inputs that can set on only panels. */
-export interface BergPanelInputs extends BergCommonInputs {}
+export interface BergPanelInputs extends BergSharedInputs {}
 
-export const BERG_PANEL_DEFAULT_INPUTS = BERG_COMMON_DEFAULT_INPUTS;
+export const BERG_PANEL_DEFAULT_INPUTS = BERG_SHARED_DEFAULT_INPUTS;
 
 export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
   'BERG_PANEL_INPUTS'

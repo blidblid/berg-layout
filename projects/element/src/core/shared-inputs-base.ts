@@ -1,9 +1,15 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Directive, Input } from '@angular/core';
-import { BergCommonInputs, BERG_COMMON_DEFAULT_INPUTS } from './input-model';
+import { Directive, ElementRef, Input } from '@angular/core';
+import { BergPanelControllerFactory } from '../components/panel/panel-controller-factory';
+import {
+  BergSharedInputs,
+  BERG_SHARED_DEFAULT_INPUTS,
+} from './shared-inputs-model';
 
 @Directive()
-export class BergCommonInputsBase {
+export class BergCommonInputsBase implements BergSharedInputs {
+  protected controller = this.controllerFactory.get(this.findLayoutElement());
+
   /** Whether the panel is absolutely positioned. */
   @Input()
   get absolute() {
@@ -79,11 +85,43 @@ export class BergCommonInputsBase {
   }
   private _resizeDisabled: boolean = this.getCommonInput('resizeDisabled');
 
-  constructor(protected inputs: BergCommonInputs) {}
+  protected layoutElement: HTMLElement;
 
-  private getCommonInput<T extends keyof BergCommonInputs>(
+  constructor(
+    protected inputs: BergSharedInputs,
+    protected controllerFactory: BergPanelControllerFactory,
+    protected elementRef: ElementRef
+  ) {}
+
+  protected findLayoutElement(): HTMLElement {
+    if (this.layoutElement) {
+      return this.layoutElement;
+    }
+
+    let elem = this.elementRef.nativeElement;
+
+    while (elem) {
+      if (elem.tagName === 'BERG-LAYOUT') {
+        return elem;
+      }
+
+      elem = elem.parentElement;
+    }
+
+    throw new Error('<berg-panel> could not find a <berg-layout> element');
+  }
+
+  private getCommonInput<T extends keyof BergSharedInputs>(
     input: T
-  ): BergCommonInputs[T] {
-    return this.inputs ? this.inputs[input] : BERG_COMMON_DEFAULT_INPUTS[input];
+  ): BergSharedInputs[T] {
+    if (this.inputs) {
+      return this.inputs[input];
+    }
+
+    if (this.controller.commonInputs && this.controller.commonInputs[input]) {
+      return this.controller.commonInputs[input];
+    }
+
+    return BERG_SHARED_DEFAULT_INPUTS[input];
   }
 }

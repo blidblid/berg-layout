@@ -8,6 +8,7 @@ import {
   shareReplay,
   Subject,
 } from 'rxjs';
+import { BergSharedInputs } from '../../core';
 import { BergPanel, BergPanelSlot } from './panel-model';
 
 export class BergPanelController {
@@ -28,6 +29,7 @@ export class BergPanelController {
     left: this.createResizeToggleElement('left'),
   };
 
+  commonInputs: BergSharedInputs | null;
   resizeToggles: HTMLElement[] = Object.values(this.resizeTogglesRecord);
 
   constructor(public layoutElement: HTMLElement, private document: Document) {}

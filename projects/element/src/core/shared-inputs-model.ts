@@ -1,4 +1,4 @@
-export const BERG_COMMON_DEFAULT_INPUTS: BergCommonInputs = {
+export const BERG_SHARED_DEFAULT_INPUTS: BergSharedInputs = {
   absolute: false,
   collapsed: false,
   resizeDisabled: false,
@@ -9,7 +9,7 @@ export const BERG_COMMON_DEFAULT_INPUTS: BergCommonInputs = {
 };
 
 /** Inputs that can set on either layouts or panels. */
-export interface BergCommonInputs {
+export interface BergSharedInputs {
   absolute: boolean;
   collapsed: boolean;
   resizeDisabled: boolean;

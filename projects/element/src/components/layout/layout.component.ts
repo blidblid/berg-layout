@@ -3,8 +3,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Inject,
   Input,
+  OnChanges,
+  OnDestroy,
   Optional,
   ViewEncapsulation,
 } from '@angular/core';
@@ -16,7 +19,8 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { BergCommonInputsBase } from '../input-base';
+import { BergCommonInputsBase } from '../../core/shared-inputs-base';
+import { BergPanelControllerFactory } from '../panel/panel-controller-factory';
 import {
   BergLayoutInputs,
   BERG_LAYOUT_DEFAULT_INPUTS,
@@ -34,7 +38,10 @@ import {
     '[class.berg-layout]': 'true',
   },
 })
-export class BergLayoutComponent extends BergCommonInputsBase {
+export class BergLayoutComponent
+  extends BergCommonInputsBase
+  implements OnDestroy, OnChanges
+{
   /** Mobile resolution breakpoint. */
   @Input()
   set mobileBreakpoint(value: string) {
@@ -69,11 +76,13 @@ export class BergLayoutComponent extends BergCommonInputsBase {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
+    protected override controllerFactory: BergPanelControllerFactory,
+    protected override elementRef: ElementRef<HTMLElement>,
     @Inject(BERG_LAYOUT_INPUTS)
     @Optional()
     protected override inputs: BergLayoutInputs
   ) {
-    super(inputs);
+    super(inputs, controllerFactory, elementRef);
     this.subscribe();
   }
 
@@ -124,7 +133,12 @@ export class BergLayoutComponent extends BergCommonInputsBase {
   }
 
   ngOnDestroy(): void {
+    this.controller.commonInputs = null;
     this.destroySub.next();
     this.destroySub.complete();
+  }
+
+  ngOnChanges(): void {
+    this.controller.commonInputs = this;
   }
 }

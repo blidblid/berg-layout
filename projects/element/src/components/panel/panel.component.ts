@@ -37,7 +37,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { BodyListeners } from '../../core';
-import { BergCommonInputsBase } from '../input-base';
+import { BergCommonInputsBase } from '../../core/shared-inputs-base';
 import { BergPanelControllerFactory } from './panel-controller-factory';
 import {
   BergPanel,
@@ -114,11 +114,7 @@ export class BergPanelComponent
   _hidden: boolean;
 
   private init: boolean;
-  private layoutElement: HTMLElement;
   private destroySub = new Subject<void>();
-  private controller = this.controllerFactory.get(
-    this.findLayoutParentElement()
-  );
 
   get hostElem(): HTMLElement {
     return this.elementRef.nativeElement;
@@ -214,17 +210,18 @@ export class BergPanelComponent
 
   constructor(
     private bodyListeners: BodyListeners,
-    private elementRef: ElementRef<HTMLElement>,
-    private controllerFactory: BergPanelControllerFactory,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone,
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT)
+    private document: Document,
+    protected override elementRef: ElementRef<HTMLElement>,
+    protected override controllerFactory: BergPanelControllerFactory,
     @Inject(BERG_PANEL_INPUTS)
     @Optional()
     protected override inputs: BergPanelInputs
   ) {
-    super(inputs);
-    this.layoutElement = this.findLayoutParentElement();
+    super(inputs, controllerFactory, elementRef);
+    this.layoutElement = this.findLayoutElement();
     this.subscribe();
 
     // Life cycle hooks are bugged out in @angular/elements.
@@ -269,24 +266,6 @@ export class BergPanelComponent
     if (this.collapsed) {
       this._hidden = true;
     }
-  }
-
-  private findLayoutParentElement(): HTMLElement {
-    if (this.layoutElement) {
-      return this.layoutElement;
-    }
-
-    let elem = this.elementRef.nativeElement;
-
-    while (elem.parentElement) {
-      if (elem.parentElement.tagName === 'BERG-LAYOUT') {
-        return elem.parentElement;
-      }
-
-      elem = elem.parentElement;
-    }
-
-    throw new Error('berg-panel can only be used inside berg-layout');
   }
 
   private showBackdrop(): void {
