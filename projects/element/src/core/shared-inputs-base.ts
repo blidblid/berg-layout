@@ -114,12 +114,12 @@ export class BergCommonInputsBase implements BergSharedInputs {
   private getCommonInput<T extends keyof BergSharedInputs>(
     input: T
   ): BergSharedInputs[T] {
-    if (this.inputs) {
-      return this.inputs[input];
-    }
-
     if (this.controller.commonInputs && this.controller.commonInputs[input]) {
       return this.controller.commonInputs[input];
+    }
+
+    if (this.inputs) {
+      return this.inputs[input];
     }
 
     return BERG_SHARED_DEFAULT_INPUTS[input];
