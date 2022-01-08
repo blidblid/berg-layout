@@ -1,5 +1,3 @@
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -12,11 +10,11 @@ import {
   NgZone,
   Optional,
   Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import {
   animationFrameScheduler,
-  BehaviorSubject,
   combineLatest,
   defer,
   EMPTY,
@@ -39,6 +37,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { BodyListeners } from '../../core';
+import { BergCommonInputsBase } from '../input-base';
 import { BergPanelControllerFactory } from './panel-controller-factory';
 import {
   BergPanel,
@@ -46,7 +45,6 @@ import {
   BergPanelResizePosition,
   BergPanelResizeSize,
   BergPanelSlot,
-  BERG_PANEL_DEFAULT_INPUTS,
   BERG_PANEL_INPUTS,
   BERG_RESIZE_EXPAND_PADDING,
 } from './panel-model';
@@ -58,8 +56,7 @@ import {
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class]': '_hostClass',
-    '[class.berg-panel]': 'true',
+    class: 'berg-panel',
     '[class.berg-panel-absolute]': 'absolute',
     '[class.berg-panel-hidden]': '_hidden',
     '[class.berg-panel-resizing]': '_resizing',
@@ -79,133 +76,10 @@ import {
     '(transitionend)': '_onTransitionend()',
   },
 })
-export class BergPanelComponent implements BergPanel {
-  /** Whether the panel is absolutely positioned. */
-  @Input()
-  get absolute() {
-    return this._absolute;
-  }
-  set absolute(value: boolean) {
-    this._absolute = coerceBooleanProperty(value);
-    this.updateBackdrop();
-    this._controller.push();
-  }
-  private _absolute: boolean = this.getInput('absolute');
-
-  /** Whether the panel is collapsed. */
-  @Input()
-  get collapsed() {
-    return this._collapsed;
-  }
-  set collapsed(value: boolean) {
-    this._collapsed = coerceBooleanProperty(value);
-
-    if (this._collapsed && !this._init) {
-      this._hidden = true;
-      return;
-    } else {
-      this._hidden = false;
-    }
-
-    this.updateBackdrop();
-    this._controller.push();
-
-    if (this._collapsed) {
-      this.collapse();
-    } else {
-      this.expand();
-    }
-  }
-  private _collapsed: boolean = this.getInput('collapsed');
-  _hidden: boolean;
-
-  /** Mobile resolution breakpoint. */
-  @Input()
-  set mobileBreakpoint(value: string) {
-    this.mobileBreakpointSub.next(value);
-  }
-  private mobileBreakpointSub = new BehaviorSubject<string>(
-    this.getInput('mobileBreakpoint')
-  );
-
-  /** Small resolution breakpoint. */
-  @Input()
-  set smallBreakpoint(value: string) {
-    this.smallBreakpointSub.next(value);
-  }
-  private smallBreakpointSub = new BehaviorSubject<string>(
-    this.getInput('smallBreakpoint')
-  );
-
-  /** Medium resolution breakpoint. */
-  @Input()
-  set mediumBreakpoint(value: string) {
-    this.mediumBreakpointSub.next(value);
-  }
-  private mediumBreakpointSub = new BehaviorSubject<string>(
-    this.getInput('mediumBreakpoint')
-  );
-
-  /** Position of the resize toggle. */
-  @Input()
-  get resizePosition() {
-    return this._resizePosition ?? this._slotResizePosition;
-  }
-  set resizePosition(value: BergPanelResizePosition) {
-    this._resizePosition = value;
-  }
-  private _resizePosition: BergPanelResizePosition =
-    this.getInput('resizePosition');
-
-  /** Threshold to determine if a cursor position should be able to resize the element. */
-  @Input()
-  get resizeThreshold() {
-    return this._resizeThreshold;
-  }
-  set resizeThreshold(value: number) {
-    this._resizeThreshold = value;
-  }
-  private _resizeThreshold: number = this.getInput('resizeThreshold');
-
-  /** Threshold to determine when a resize should be interpreted as a collapsing event. */
-  @Input()
-  get resizeCollapseThreshold() {
-    return this._resizeCollapseThreshold;
-  }
-  set resizeCollapseThreshold(value: number) {
-    this._resizeCollapseThreshold = value;
-  }
-  private _resizeCollapseThreshold: number = this.getInput(
-    'resizeCollapseThreshold'
-  );
-
-  /** Delay before the resize preview is shown. */
-  @Input()
-  get resizePreviewDelay() {
-    return this._resizePreviewDelay;
-  }
-  set resizePreviewDelay(value: number) {
-    this._resizePreviewDelay = value;
-  }
-  private _resizePreviewDelay: number = this.getInput('resizePreviewDelay');
-
-  /** Delay before the resize preview is shown. */
-  @Input()
-  get resizeTwoDimensions() {
-    return this._resizeTwoDimensions;
-  }
-  set resizeTwoDimensions(value: boolean) {
-    this._resizeTwoDimensions = value;
-  }
-  private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
-
-  /** Whether resizing is disabled. */
-  @Input()
-  set resizeDisabled(value: boolean) {
-    this._resizeDisabled = coerceBooleanProperty(value);
-  }
-  private _resizeDisabled: boolean = this.getInput('resizeDisabled');
-
+export class BergPanelComponent
+  extends BergCommonInputsBase
+  implements BergPanel
+{
   /** Name of the content projection slot. */
   @Input('slot')
   get slot() {
@@ -213,66 +87,67 @@ export class BergPanelComponent implements BergPanel {
   }
   set slot(value: BergPanelSlot) {
     if (value === 'top') {
-      this._slotResizePosition = 'below';
+      this.resizePosition = 'below';
     } else if (value === 'right') {
-      this._slotResizePosition = 'before';
+      this.resizePosition = 'before';
     } else if (value === 'bottom') {
-      this._slotResizePosition = 'above';
+      this.resizePosition = 'above';
     } else if (value === 'left') {
-      this._slotResizePosition = 'after';
+      this.resizePosition = 'after';
     } else {
-      this._slotResizePosition = null;
+      this.resizePosition = null;
     }
 
     this._slot = value;
-    this._controller.push();
     this.slotSub.next(value);
   }
-  private slotSub = new ReplaySubject<BergPanelSlot>(1);
   private _slot: BergPanelSlot = 'center';
-  private _slotResizePosition: BergPanelResizePosition;
+  protected slotSub = new ReplaySubject<BergPanelSlot>(1);
+  private resizePosition: BergPanelResizePosition;
 
   _resizing = false;
   _previewing = false;
   _resizeCollapsed = false;
   _size: BergPanelResizeSize;
   _margin: string | null;
-  _hostClass: string;
-  _layoutElement: HTMLElement;
   _backdropElement: HTMLElement;
-  _init: boolean;
-  _controller = this.controllerFactory.get(this.findLayoutParentElement());
+  _hidden: boolean;
 
+  private init: boolean;
+  private layoutElement: HTMLElement;
   private destroySub = new Subject<void>();
+  private controller = this.controllerFactory.get(
+    this.findLayoutParentElement()
+  );
 
   get hostElem(): HTMLElement {
     return this.elementRef.nativeElement;
   }
 
   resizeToggle$ = this.slotSub.pipe(
-    map((slot) => this._controller.getResizeToggle(slot))
+    map((slot) => this.controller.getResizeToggle(slot))
   );
 
   private previewing$ = defer(() => {
     return merge(
-      this._controller.fromResizeTogglesEvent<MouseEvent>('mousemove').pipe(
+      this.controller.fromResizeTogglesEvent<MouseEvent>('mousemove').pipe(
         withLatestFrom(this.resizeToggle$),
-        filter(() => !this._resizeDisabled),
+        filter(() => !this.resizeDisabled),
         map(([event, resizeToggle]) =>
           this.checkResizeThreshold(event, resizeToggle)
         )
       ),
-      this._controller
+      this.controller
         .fromResizeTogglesEvent<MouseEvent>('mouseleave')
         .pipe(map(() => false))
     ).pipe(startWith(false), distinctUntilChanged(), share());
   });
 
   private resizeEvent$ = this.previewing$.pipe(
-    filter(() => !this._resizeDisabled),
+    filter(() => !this.resizeDisabled),
     switchMap((previewing) => {
       return previewing
-        ? this._controller.fromLayoutEvent<MouseEvent>('mousedown')
+        ? this.controller.fromLayoutEvent<MouseEvent>('mousedown')
         : EMPTY;
     })
   );
@@ -290,7 +165,7 @@ export class BergPanelComponent implements BergPanel {
 
   private resizedSize$ = this.resizeEvent$.pipe(
     switchMap(() =>
-      this._controller
+      this.controller
         .fromLayoutEvent<MouseEvent>('mousemove')
         .pipe(takeUntil(this.stopResizeEvent$))
     ),
@@ -337,54 +212,26 @@ export class BergPanelComponent implements BergPanel {
   /** Emits whenever a user clicks a panel backdrop. */
   @Output() backdropClicked = new EventEmitter<void>();
 
-  private hostClass$ = combineLatest([
-    this.mobileBreakpointSub,
-    this.smallBreakpointSub,
-    this.mediumBreakpointSub,
-  ]).pipe(
-    map((breakpoints) => breakpoints.map(this.getBreakpoint)),
-    switchMap(([mobile, small, medium]) => {
-      return this.breakpointObserver
-        .observe(
-          [mobile, small, medium].filter(
-            (breakpoint): breakpoint is string => !!breakpoint
-          )
-        )
-        .pipe(
-          map((state) => {
-            if (state.breakpoints[mobile]) {
-              return 'berg-panel-mobile';
-            } else if (state.breakpoints[small]) {
-              return 'berg-panel-small';
-            } else if (state.breakpoints[medium]) {
-              return 'berg-panel-medium';
-            }
-
-            return 'berg-panel-large';
-          })
-        );
-    })
-  );
   constructor(
     private bodyListeners: BodyListeners,
     private elementRef: ElementRef<HTMLElement>,
     private controllerFactory: BergPanelControllerFactory,
-    private breakpointObserver: BreakpointObserver,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone,
     @Inject(DOCUMENT) private document: Document,
     @Inject(BERG_PANEL_INPUTS)
     @Optional()
-    private inputs: BergPanelInputs
+    protected override inputs: BergPanelInputs
   ) {
-    this._layoutElement = this.findLayoutParentElement();
+    super(inputs);
+    this.layoutElement = this.findLayoutParentElement();
     this.subscribe();
 
     // Life cycle hooks are bugged out in @angular/elements.
     this.zone.runOutsideAngular(() => {
       Promise.resolve().then(() => {
-        this._controller.add(this);
-        this._init = true;
+        this.controller.add(this);
+        this.init = true;
       });
     });
   }
@@ -419,14 +266,14 @@ export class BergPanelComponent implements BergPanel {
   }
 
   _onTransitionend() {
-    if (this._collapsed) {
+    if (this.collapsed) {
       this._hidden = true;
     }
   }
 
   private findLayoutParentElement(): HTMLElement {
-    if (this._layoutElement) {
-      return this._layoutElement;
+    if (this.layoutElement) {
+      return this.layoutElement;
     }
 
     let elem = this.elementRef.nativeElement;
@@ -443,19 +290,19 @@ export class BergPanelComponent implements BergPanel {
   }
 
   private showBackdrop(): void {
-    this._layoutElement.appendChild(this.getBackdropElement());
+    this.layoutElement.appendChild(this.getBackdropElement());
   }
 
   private hideBackdrop(): void {
     const backdrop = this.getBackdropElement();
 
-    if (this._layoutElement.contains(backdrop)) {
-      this._layoutElement.removeChild(backdrop);
+    if (this.layoutElement.contains(backdrop)) {
+      this.layoutElement.removeChild(backdrop);
     }
   }
 
   private updateBackdrop(): void {
-    if (this._absolute && !this._collapsed) {
+    if (this.absolute && !this.collapsed) {
       this.showBackdrop();
     } else {
       this.hideBackdrop();
@@ -522,7 +369,7 @@ export class BergPanelComponent implements BergPanel {
     this.slotSub
       .pipe(
         startWith(this._slot),
-        switchMap((slot) => this._controller.getRenderedResizeToggles(slot)),
+        switchMap((slot) => this.controller.getRenderedResizeToggles(slot)),
         takeUntil(this.destroySub)
       )
       .subscribe((resizeToggles) => this.appendResizeToggles(resizeToggles));
@@ -594,18 +441,7 @@ export class BergPanelComponent implements BergPanel {
     }
   }
 
-  private getInput<T extends keyof BergPanelInputs>(
-    input: T
-  ): BergPanelInputs[T] {
-    return this.inputs ? this.inputs[input] : BERG_PANEL_DEFAULT_INPUTS[input];
-  }
-
   private subscribe(): void {
-    this.hostClass$.pipe(takeUntil(this.destroySub)).subscribe((hostClass) => {
-      this._hostClass = hostClass;
-      this.changeDetectorRef.markForCheck();
-    });
-
     combineLatest([this.previewing$, this.resizing$])
       .pipe(takeUntil(this.destroySub))
       .subscribe(([previewing, resizing]) => {
@@ -615,24 +451,49 @@ export class BergPanelComponent implements BergPanel {
             : 'berg-layout-resize-horizontal';
 
         if (previewing || resizing) {
-          this._layoutElement.classList.add(resizeClass);
+          this.layoutElement.classList.add(resizeClass);
         } else {
-          this._layoutElement.classList.remove(resizeClass);
+          this.layoutElement.classList.remove(resizeClass);
         }
       });
-  }
-
-  private getBreakpoint(breakpoint?: string): string {
-    return breakpoint ? `(max-width: ${breakpoint})` : '';
   }
 
   ngOnInit(): void {
     this.subscribeToResize();
   }
 
+  ngOnChanges(change: SimpleChanges): void {
+    if (change['absolute']) {
+      this.updateBackdrop();
+      this.controller.push();
+    }
+
+    if (change['slot']) {
+      this.controller.push();
+    }
+
+    if (change['collapsed']) {
+      if (this.collapsed && !this.init) {
+        this._hidden = true;
+        return;
+      } else {
+        this._hidden = false;
+      }
+
+      this.updateBackdrop();
+      this.controller.push();
+
+      if (this.collapsed) {
+        this.collapse();
+      } else {
+        this.expand();
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroySub.next();
     this.destroySub.complete();
-    this._controller.remove(this);
+    this.controller.remove(this);
   }
 }
