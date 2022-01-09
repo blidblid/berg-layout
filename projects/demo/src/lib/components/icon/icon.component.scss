@@ -1,0 +1,16 @@
+.app-icon {
+  display: block;
+  height: 48px;
+  width: 48px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  &.app-icon-round {
+    border-radius: 50%;
+  }
+
+  &.app-icon-inverted {
+    filter: invert(100%);
+  }
+}

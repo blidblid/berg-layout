@@ -1,0 +1,12 @@
+@mixin theme($theme) {
+  $colors: map-get($theme, 'colors');
+  $typography: map-get($theme, 'typography');
+
+  .app-list-item {
+    background: map-get($colors, secondary-background);
+  }
+
+  .app-list-title {
+    font: map-get($typography, h1);
+  }
+}

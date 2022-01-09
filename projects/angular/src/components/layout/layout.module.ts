@@ -7,7 +7,7 @@ const API = [BergLayoutComponent];
 
 @NgModule({
   declarations: API,
-  exports: API,
+  exports: [...API, BergPanelModule],
   imports: [BergPanelModule, CommonModule],
 })
 export class BergLayoutModule {}

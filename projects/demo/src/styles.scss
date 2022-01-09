@@ -1,5 +1,20 @@
 @use './button';
 @use './layout';
+@use './lib/components/card/card';
+@use 'sass:math';
+
+$colors: (
+  primary: rgb(59, 127, 208),
+  secondary: #d0743b,
+  background: rgb(30, 30, 30),
+  background-low-contrast: rgb(37, 37, 38),
+  background-high-contrast: rgb(60, 60, 60),
+  divider: rgb(65, 65, 65),
+  text: white,
+);
+
+@include card.theme($colors);
+@include layout.theme($colors);
 
 html,
 body {

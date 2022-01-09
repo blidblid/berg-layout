@@ -14,7 +14,8 @@
           "changeDetection": "OnPush",
           "viewEncapsulation": "None",
           "prefix": "berg",
-          "export": true
+          "export": true,
+          "skipImport": true
         },
         "@schematics/angular:directive": {
           "prefix": "berg",
@@ -61,7 +62,8 @@
           "changeDetection": "OnPush",
           "viewEncapsulation": "None",
           "prefix": "berg",
-          "export": true
+          "export": true,
+          "skipImport": true
         },
         "@schematics/angular:application": {
           "strict": true

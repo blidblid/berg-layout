@@ -5,10 +5,10 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'berg-angular-demo',
+  templateUrl: './angular-demo.component.html',
+  styleUrls: ['./angular-demo.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AngularDemoComponent {}

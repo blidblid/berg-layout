@@ -3,7 +3,8 @@
   "compilerOptions": {
     "paths": {
       "@berg-layout/angular": ["projects/angular/src"],
-      "@berg-layout/web-component": ["dist/web-component"]
+      "@berg-layout/web-component": ["dist/web-component"],
+      "@demo/components": ["projects/demo/src/lib/components"]
     }
   }
 }

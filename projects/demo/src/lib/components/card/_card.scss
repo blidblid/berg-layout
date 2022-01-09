@@ -1,0 +1,14 @@
+@mixin theme($colors) {
+  .app-card {
+    color: map-get($colors, text);
+    background: map-get($colors, background-high-contrast);
+
+    &:hover {
+      outline: 5px solid map-get($colors, primary);
+    }
+
+    &:focus {
+      outline: 5px solid map-get($colors, secondary);
+    }
+  }
+}

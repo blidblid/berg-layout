@@ -1,0 +1,22 @@
+.app-list {
+  display: block;
+
+  .app-list-title {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .app-list-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1vw;
+
+    .app-list-item {
+      aspect-ratio: 1;
+      height: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      box-shadow: 0 2px 2px rgb(10 16 20 / 24%), 0 0 2px rgb(10 16 20 / 12%);
+    }
+  }
+}

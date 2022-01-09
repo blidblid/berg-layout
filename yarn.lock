@@ -3434,6 +3434,11 @@ hdr-histogram-percentiles-obj@^3.0.0:
   resolved "https://registry.yarnpkg.com/hdr-histogram-percentiles-obj/-/hdr-histogram-percentiles-obj-3.0.0.tgz#9409f4de0c2dda78e61de2d9d78b1e9f3cba283c"
   integrity sha512-7kIufnBqdsBGcSZLPJwqHT3yhk1QTsSlFsVD3kx5ixH/AlgBs9yM1q6DPhXZ8f8gtdqgh7N7/5btRLpQsS2gHw==
 
+highlight.js@^11.4.0:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.4.0.tgz#34ceadd49e1596ee5aba3d99346cdfd4845ee05a"
+  integrity sha512-nawlpCBCSASs7EdvZOYOYVkJpGmAOKMYZgZtUqSRqodZE0GRVcFKwo1RcpeOemqh9hyttTdd5wDBwHkuSyUfnA==
+
 hosted-git-info@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-4.0.2.tgz#5e425507eede4fea846b7262f0838456c4209961"

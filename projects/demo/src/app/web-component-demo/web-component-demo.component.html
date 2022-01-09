@@ -1,0 +1,18 @@
+<berg-layout resize-two-dimensions="true">
+  <berg-panel slot="top">
+    <button (click)="collapsed = !collapsed">Toggle collapsed</button>
+    <button (click)="absolute = !absolute">Toggle absolute</button>
+  </berg-panel>
+
+  <berg-panel slot="left"
+              (backdropClicked)="collapsed = !collapsed"
+              [collapsed]="collapsed"
+              [absolute]="absolute">
+  </berg-panel>
+
+  <berg-panel></berg-panel>
+
+  <berg-panel slot="right"></berg-panel>
+
+  <berg-panel slot="bottom"></berg-panel>
+</berg-layout>

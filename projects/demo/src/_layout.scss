@@ -1,52 +1,86 @@
+@use 'sass:map';
 @use 'node_modules/@berg-layout/angular' as layout;
 
-@include layout.resizing(
-  (
-    'resizing-indicator-width': 6px,
-    'resizing-indicator-color': #d0743b,
-    'previewing-indicator-color': rgb(59, 127, 208),
-  )
-);
+@mixin theme($colors) {
+  $primary: map-get(
+    $map: $colors,
+    $key: 'primary',
+  );
 
-.berg-panel-left {
-  width: 50vw;
-}
+  $secondary: map-get(
+    $map: $colors,
+    $key: 'secondary',
+  );
 
-.berg-panel-backdrop {
-  background: rgba(0, 0, 0, 0.3);
-}
+  $divider: map-get(
+    $map: $colors,
+    $key: 'divider',
+  );
 
-.berg-panel-left,
-.berg-panel-right {
-  min-width: 10vw;
-}
+  $background: map-get(
+    $map: $colors,
+    $key: 'background',
+  );
 
-.berg-panel-top,
-.berg-panel-bottom {
-  min-height: 10vh;
-}
+  $background-low-contrast: map-get(
+    $map: $colors,
+    $key: 'background-low-contrast',
+  );
 
-.berg-panel-top {
-  background: rgb(60, 60, 60);
-}
+  $background-high-contrast: map-get(
+    $map: $colors,
+    $key: 'background-high-contrast',
+  );
 
-.berg-panel-bottom {
-  border-top: 1px solid rgb(65, 65, 65);
-}
+  @include layout.resizing(
+    (
+      'resizing-indicator-width': 6px,
+      'previewing-indicator-color': $primary,
+      'resizing-indicator-color': $secondary,
+    )
+  );
 
-.berg-panel-left,
-.berg-panel-right {
-  background: rgb(37, 37, 38);
-}
+  .berg-panel-left {
+    width: 50vw;
+  }
 
-.berg-panel-center,
-.berg-panel-bottom {
-  background: rgb(30, 30, 30);
-}
+  .berg-panel-backdrop {
+    background: $background;
+  }
 
-.berg-panel-left,
-.berg-panel-right,
-.berg-panel-top,
-.berg-panel-bottom {
-  @include layout.elevation(4);
+  .berg-panel-left,
+  .berg-panel-right {
+    min-width: 10vw;
+  }
+
+  .berg-panel-top,
+  .berg-panel-bottom {
+    min-height: 10vh;
+  }
+
+  .berg-panel-top {
+    background: $background-high-contrast;
+  }
+
+  .berg-panel-bottom {
+    border-top: 1px solid $divider;
+  }
+
+  .berg-panel-left,
+  .berg-panel-right {
+    background: $background-low-contrast;
+  }
+
+  body,
+  .berg-panel-center,
+  .berg-panel-bottom {
+    background: $background;
+  }
+
+  .berg-panel-left,
+  .berg-panel-right,
+  .berg-panel-top,
+  .berg-panel-bottom {
+    @include layout.elevation(4);
+  }
 }
