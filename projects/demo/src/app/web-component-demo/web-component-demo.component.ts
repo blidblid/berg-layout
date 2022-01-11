@@ -3,6 +3,8 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
+import { LayoutOperators } from '@demo/operators';
+import { LayoutRx, Slot } from '@demo/rx';
 
 @Component({
   selector: 'berg-web-component-demo',
@@ -12,6 +14,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WebComponentDemoComponent {
-  collapsed = false;
-  absolute = false;
+  constructor(public operators: LayoutOperators, public rx: LayoutRx) {
+    require('@berg-layout/web-component');
+  }
+
+  onBackdropClick(slot: Slot): void {
+    this.rx[slot].collapsed.next(true);
+  }
 }

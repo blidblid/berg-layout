@@ -3,8 +3,8 @@ export const BERG_SHARED_DEFAULT_INPUTS: BergSharedInputs = {
   collapsed: false,
   resizeDisabled: false,
   resizeThreshold: 16,
-  resizeCollapseThreshold: 0.5,
-  resizeTwoDimensions: false,
+  resizeCollapseRatio: 0.5,
+  resizeTwoDimensions: true,
   resizePreviewDelay: 200,
 };
 
@@ -15,6 +15,6 @@ export interface BergSharedInputs {
   resizeDisabled: boolean;
   resizeTwoDimensions: boolean;
   resizeThreshold: number;
-  resizeCollapseThreshold: number;
+  resizeCollapseRatio: number;
   resizePreviewDelay: number;
 }

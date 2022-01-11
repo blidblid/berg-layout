@@ -1,0 +1,60 @@
+<berg-layout *ngIf="rx.layout$ | async as layout"
+             [absolute]="layout.absolute!"
+             [collapsed]="layout.collapsed!"
+             [resizeDisabled]="layout.resizeDisabled!"
+             [resizeTwoDimensions]="layout.resizeTwoDimensions!"
+             [resizeThreshold]="layout.resizeThreshold!"
+             [resizeCollapseRatio]="layout.resizeCollapseRatio!"
+             [resizePreviewDelay]="layout.resizePreviewDelay!">
+  <berg-panel slot="top"
+              *ngIf="!layout.top?.hide!"
+              [absolute]="layout.top?.absolute!"
+              [collapsed]="layout.top?.collapsed!"
+              [resizeDisabled]="layout.top?.resizeDisabled!"
+              [resizeTwoDimensions]="layout.top?.resizeTwoDimensions!"
+              [resizeThreshold]="layout.top?.resizeThreshold!"
+              [resizeCollapseRatio]="layout.top?.resizeCollapseRatio!"
+              [resizePreviewDelay]="layout.top?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('top')">
+  </berg-panel>
+
+  <berg-panel slot="right"
+              *ngIf="!layout.right?.hide!"
+              [absolute]="layout.right?.absolute!"
+              [collapsed]="layout.right?.collapsed!"
+              [resizeDisabled]="layout.right?.resizeDisabled!"
+              [resizeTwoDimensions]="layout.right?.resizeTwoDimensions!"
+              [resizeThreshold]="layout.right?.resizeThreshold!"
+              [resizeCollapseRatio]="layout.right?.resizeCollapseRatio!"
+              [resizePreviewDelay]="layout.right?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('right')">
+  </berg-panel>
+
+  <berg-panel slot="bottom"
+              *ngIf="!layout.bottom?.hide!"
+              [absolute]="layout.bottom?.absolute!"
+              [collapsed]="layout.bottom?.collapsed!"
+              [resizeDisabled]="layout.bottom?.resizeDisabled!"
+              [resizeTwoDimensions]="layout.bottom?.resizeTwoDimensions!"
+              [resizeThreshold]="layout.bottom?.resizeThreshold!"
+              [resizeCollapseRatio]="layout.bottom?.resizeCollapseRatio!"
+              [resizePreviewDelay]="layout.bottom?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('bottom')">
+  </berg-panel>
+
+  <berg-panel slot="left"
+              *ngIf="!layout.left?.hide!"
+              [absolute]="layout.left?.absolute!"
+              [collapsed]="layout.left?.collapsed!"
+              [resizeDisabled]="layout.left?.resizeDisabled!"
+              [resizeTwoDimensions]="layout.left?.resizeTwoDimensions!"
+              [resizeThreshold]="layout.left?.resizeThreshold!"
+              [resizeCollapseRatio]="layout.left?.resizeCollapseRatio!"
+              [resizePreviewDelay]="layout.left?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('left')">
+  </berg-panel>
+
+  <berg-panel>
+    <berg-editor></berg-editor>
+  </berg-panel>
+</berg-layout>

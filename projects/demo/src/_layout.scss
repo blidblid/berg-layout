@@ -45,7 +45,7 @@
   }
 
   .berg-panel-backdrop {
-    background: $background;
+    background: rgba($color: $background, $alpha: 0.8);
   }
 
   .berg-panel-left,

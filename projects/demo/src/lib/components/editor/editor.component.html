@@ -1,0 +1,13 @@
+<button *ngIf="!edit; else editor"
+        mat-icon-button
+        (click)="edit = true">
+  <mat-icon>edit</mat-icon>
+</button>
+
+<ng-template #editor>
+  <berg-outlet [component]="operators.edit"></berg-outlet>
+
+  <mat-card>
+    <berg-outlet [component]="operators.components$ | async"></berg-outlet>
+  </mat-card>
+</ng-template>

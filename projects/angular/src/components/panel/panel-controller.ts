@@ -32,7 +32,9 @@ export class BergPanelController {
   commonInputs: BergSharedInputs | null;
   resizeToggles: HTMLElement[] = Object.values(this.resizeTogglesRecord);
 
-  constructor(public layoutElement: HTMLElement, private document: Document) {}
+  constructor(public layoutElement: HTMLElement, private document: Document) {
+    this.panels$.subscribe(); // make shareReplay(1) eagerly cache panels
+  }
 
   add(panel: BergPanel): void {
     this.addSub.next(panel);

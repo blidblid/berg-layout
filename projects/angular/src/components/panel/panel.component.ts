@@ -120,7 +120,7 @@ export class BergPanelComponent
     return this.elementRef.nativeElement;
   }
 
-  resizeToggle$ = this.slotSub.pipe(
+  private resizeToggle$ = this.slotSub.pipe(
     map((slot) => this.controller.getResizeToggle(slot))
   );
 
@@ -157,7 +157,7 @@ export class BergPanelComponent
   private resizing$ = merge(
     this.resizeEvent$.pipe(map(() => true)),
     this.stopResizeEvent$.pipe(map(() => false))
-  ).pipe(startWith(false), distinctUntilChanged());
+  ).pipe(share(), startWith(false), distinctUntilChanged());
 
   private resizedSize$ = this.resizeEvent$.pipe(
     switchMap(() =>
@@ -173,11 +173,11 @@ export class BergPanelComponent
   private collapseAtSize$ = this.resizedSize$.pipe(
     filter((size) => {
       if (size.width !== undefined) {
-        return this.resizeCollapseThreshold >= size.width / size.rect.width;
+        return this.resizeCollapseRatio >= size.width / size.rect.width;
       }
 
       if (size.height !== undefined) {
-        return this.resizeCollapseThreshold >= size.height / size.rect.height;
+        return this.resizeCollapseRatio >= size.height / size.rect.height;
       }
 
       return false;
@@ -206,7 +206,7 @@ export class BergPanelComponent
   ).pipe(distinctUntilChanged());
 
   /** Emits whenever a user clicks a panel backdrop. */
-  @Output() backdropClicked = new EventEmitter<void>();
+  @Output() backdropClick = new EventEmitter<void>();
 
   constructor(
     private bodyListeners: BodyListeners,
@@ -240,15 +240,17 @@ export class BergPanelComponent
 
     const { width, height } = this.hostElem.getBoundingClientRect();
 
-    if ((this.slot = 'left')) {
+    if (this.slot === 'left') {
       this._margin = `0 0 0 -${width}px`;
     } else if (this.slot === 'right') {
-      this._margin === `0 -${width}px 0 0`;
+      this._margin = `0 -${width}px 0 0`;
     } else if (this.slot === 'top') {
-      this._margin === `-${height}px 0 0 0`;
+      this._margin = `-${height}px 0 0 0`;
     } else {
-      this._margin === `0 0 -${height}px 0`;
+      this._margin = `0 0 -${height}px 0`;
     }
+
+    this.changeDetectorRef.markForCheck();
   }
 
   expand(): void {
@@ -307,7 +309,7 @@ export class BergPanelComponent
 
       fromEvent(this._backdropElement, 'click')
         .pipe(takeUntil(this.destroySub))
-        .subscribe(() => this.backdropClicked.emit());
+        .subscribe(() => this.backdropClick.emit());
     }
 
     return this._backdropElement;
@@ -318,9 +320,10 @@ export class BergPanelComponent
       return;
     }
 
-    this.resizing$
-      .pipe(takeUntil(this.destroySub))
-      .subscribe((resizing) => (this._resizing = resizing));
+    this.resizing$.pipe(takeUntil(this.destroySub)).subscribe((resizing) => {
+      this._resizing = resizing;
+      this.changeDetectorRef.markForCheck();
+    });
 
     this.previewing$
       .pipe(
@@ -331,11 +334,17 @@ export class BergPanelComponent
         }),
         takeUntil(this.destroySub)
       )
-      .subscribe((previewing) => (this._previewing = previewing));
+      .subscribe((previewing) => {
+        this._previewing = previewing;
+        this.changeDetectorRef.markForCheck();
+      });
 
     this.resizedSize$
       .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
-      .subscribe((size) => (this._size = size));
+      .subscribe((size) => {
+        this._size = size;
+        this.changeDetectorRef.markForCheck();
+      });
 
     merge(fromEvent<DragEvent>(this.hostElem, 'dragstart'))
       .pipe(takeUntil(this.destroySub))
@@ -343,6 +352,7 @@ export class BergPanelComponent
 
     this.collapsed$.pipe(takeUntil(this.destroySub)).subscribe((collapsed) => {
       this._resizeCollapsed = collapsed;
+      this.changeDetectorRef.markForCheck();
     });
 
     this.slotSub
@@ -437,7 +447,8 @@ export class BergPanelComponent
       });
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
+    super.ngOnInit();
     this.subscribeToResize();
   }
 

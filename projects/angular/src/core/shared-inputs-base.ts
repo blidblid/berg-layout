@@ -18,7 +18,7 @@ export class BergCommonInputsBase implements BergSharedInputs {
   set absolute(value: boolean) {
     this._absolute = coerceBooleanProperty(value);
   }
-  private _absolute: boolean = this.getCommonInput('absolute');
+  private _absolute: boolean;
 
   /** Whether the panel is collapsed. */
   @Input()
@@ -28,7 +28,7 @@ export class BergCommonInputsBase implements BergSharedInputs {
   set collapsed(value: boolean) {
     this._collapsed = coerceBooleanProperty(value);
   }
-  private _collapsed: boolean = this.getCommonInput('collapsed');
+  private _collapsed: boolean;
 
   /** Threshold to determine if a cursor position should be able to resize the element. */
   @Input()
@@ -38,19 +38,17 @@ export class BergCommonInputsBase implements BergSharedInputs {
   set resizeThreshold(value: number) {
     this._resizeThreshold = value;
   }
-  private _resizeThreshold: number = this.getCommonInput('resizeThreshold');
+  private _resizeThreshold: number;
 
-  /** Threshold to determine when a resize should be interpreted as a collapsing event. */
+  /** Ratio to determine what resize event that should be interpreted as a collapsing event. */
   @Input()
-  get resizeCollapseThreshold() {
-    return this._resizeCollapseThreshold;
+  get resizeCollapseRatio() {
+    return this._resizeCollapseRatio;
   }
-  set resizeCollapseThreshold(value: number) {
-    this._resizeCollapseThreshold = value;
+  set resizeCollapseRatio(value: number) {
+    this._resizeCollapseRatio = value;
   }
-  private _resizeCollapseThreshold: number = this.getCommonInput(
-    'resizeCollapseThreshold'
-  );
+  private _resizeCollapseRatio: number;
 
   /** Delay before the resize preview is shown. */
   @Input()
@@ -60,8 +58,7 @@ export class BergCommonInputsBase implements BergSharedInputs {
   set resizePreviewDelay(value: number) {
     this._resizePreviewDelay = value;
   }
-  private _resizePreviewDelay: number =
-    this.getCommonInput('resizePreviewDelay');
+  private _resizePreviewDelay: number;
 
   /** Delay before the resize preview is shown. */
   @Input()
@@ -71,9 +68,7 @@ export class BergCommonInputsBase implements BergSharedInputs {
   set resizeTwoDimensions(value: boolean) {
     this._resizeTwoDimensions = value;
   }
-  private _resizeTwoDimensions: boolean = this.getCommonInput(
-    'resizeTwoDimensions'
-  );
+  private _resizeTwoDimensions: boolean;
 
   /** Whether resizing is disabled. */
   @Input()
@@ -83,7 +78,7 @@ export class BergCommonInputsBase implements BergSharedInputs {
   set resizeDisabled(value: boolean) {
     this._resizeDisabled = coerceBooleanProperty(value);
   }
-  private _resizeDisabled: boolean = this.getCommonInput('resizeDisabled');
+  private _resizeDisabled: boolean;
 
   protected layoutElement: HTMLElement;
 
@@ -108,13 +103,22 @@ export class BergCommonInputsBase implements BergSharedInputs {
       elem = elem.parentElement;
     }
 
+    const queried: HTMLElement | null = document.querySelector('berg-layout');
+
+    if (queried) {
+      return queried;
+    }
+
     throw new Error('<berg-panel> could not find a <berg-layout> element');
   }
 
   private getCommonInput<T extends keyof BergSharedInputs>(
     input: T
   ): BergSharedInputs[T] {
-    if (this.controller.commonInputs && input in this.controller.commonInputs) {
+    if (
+      this.controller.commonInputs &&
+      this.controller.commonInputs[input] !== undefined
+    ) {
       return this.controller.commonInputs[input];
     }
 
@@ -123,5 +127,15 @@ export class BergCommonInputsBase implements BergSharedInputs {
     }
 
     return BERG_SHARED_DEFAULT_INPUTS[input];
+  }
+
+  ngOnInit(): void {
+    this._absolute = this.getCommonInput('absolute');
+    this._collapsed = this.getCommonInput('collapsed');
+    this._resizeDisabled = this.getCommonInput('resizeDisabled');
+    this._resizePreviewDelay = this.getCommonInput('resizePreviewDelay');
+    this._resizeThreshold = this.getCommonInput('resizeThreshold');
+    this._resizeTwoDimensions = this.getCommonInput('resizeTwoDimensions');
+    this._resizeCollapseRatio = this.getCommonInput('resizeCollapseRatio');
   }
 }

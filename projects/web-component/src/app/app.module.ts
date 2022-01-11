@@ -1,4 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  DoBootstrap,
+  Injector,
+  NgModule,
+} from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
 import { BergLayoutComponent, BergPanelComponent } from '@berg-layout/angular';
@@ -7,7 +12,7 @@ import { BergLayoutComponent, BergPanelComponent } from '@berg-layout/angular';
   imports: [BrowserModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {
+export class AppModule implements DoBootstrap {
   constructor(injector: Injector) {
     for (const [component, name] of [
       [BergLayoutComponent, 'berg-layout'] as const,

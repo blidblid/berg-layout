@@ -1,18 +1,61 @@
-<berg-layout resize-two-dimensions="true">
-  <berg-panel slot="top">
-    <button (click)="collapsed = !collapsed">Toggle collapsed</button>
-    <button (click)="absolute = !absolute">Toggle absolute</button>
+<berg-layout *ngIf="rx.layout$ | async as layout"
+             [absolute]="layout.absolute!"
+             [collapsed]="layout.collapsed!"
+             [resizeDisabled]="layout.resizeDisabled!"
+             [resizeTwoDimensions]="layout.resizeTwoDimensions!"
+             [resizeThreshold]="layout.resizeThreshold!"
+             [resizeCollapseRatio]="layout.resizeCollapseRatio!"
+             [resizePreviewDelay]="layout.resizePreviewDelay!">
+
+  <berg-panel slot="top"
+              *ngIf="!layout.top?.hide!"
+              [attr.absolute]="layout.top?.absolute!"
+              [attr.collapsed]="layout.top?.collapsed!"
+              [attr.resize-disabled]="layout.top?.resizeDisabled!"
+              [attr.resize-two-dimensions]="layout.top?.resizeTwoDimensions!"
+              [attr.resize-threshold]="layout.top?.resizeThreshold!"
+              [attr.resize-collapse-ratio]="layout.top?.resizeCollapseRatio!"
+              [attr.resize-preview-delay]="layout.top?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('top')">
+  </berg-panel>
+
+  <berg-panel slot="right"
+              *ngIf="!layout.right?.hide!"
+              [attr.absolute]="layout.right?.absolute!"
+              [attr.collapsed]="layout.right?.collapsed!"
+              [attr.resize-disabled]="layout.right?.resizeDisabled!"
+              [attr.resize-two-dimensions]="layout.right?.resizeTwoDimensions!"
+              [attr.resize-threshold]="layout.right?.resizeThreshold!"
+              [attr.resize-collapse-ratio]="layout.right?.resizeCollapseRatio!"
+              [attr.resize-preview-delay]="layout.right?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('right')">
+  </berg-panel>
+
+  <berg-panel slot="bottom"
+              *ngIf="!layout.bottom?.hide!"
+              [attr.absolute]="layout.bottom?.absolute!"
+              [attr.collapsed]="layout.bottom?.collapsed!"
+              [attr.resize-disabled]="layout.bottom?.resizeDisabled!"
+              [attr.resize-two-dimensions]="layout.bottom?.resizeTwoDimensions!"
+              [attr.resize-threshold]="layout.bottom?.resizeThreshold!"
+              [attr.resize-collapse-ratio]="layout.bottom?.resizeCollapseRatio!"
+              [attr.resize-preview-delay]="layout.bottom?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('bottom')">
   </berg-panel>
 
   <berg-panel slot="left"
-              (backdropClicked)="collapsed = !collapsed"
-              [collapsed]="collapsed"
-              [absolute]="absolute">
+              *ngIf="!layout.left?.hide!"
+              [attr.absolute]="layout.left?.absolute!"
+              [attr.collapsed]="layout.left?.collapsed!"
+              [attr.resize-disabled]="layout.left?.resizeDisabled!"
+              [attr.resize-two-dimensions]="layout.left?.resizeTwoDimensions!"
+              [attr.resize-threshold]="layout.left?.resizeThreshold!"
+              [attr.resize-collapse-ratio]="layout.left?.resizeCollapseRatio!"
+              [attr.resize-preview-delay]="layout.left?.resizePreviewDelay!"
+              (backdropClick)="onBackdropClick('left')">
   </berg-panel>
 
-  <berg-panel></berg-panel>
-
-  <berg-panel slot="right"></berg-panel>
-
-  <berg-panel slot="bottom"></berg-panel>
+  <berg-panel>
+    <berg-editor></berg-editor>
+  </berg-panel>
 </berg-layout>

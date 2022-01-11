@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import '@berg-layout/web-component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BergSelectModule } from '@berglund/material';
 import { AngularDemoModule } from './angular-demo/angular-demo.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +13,8 @@ import { WebComponentDemoModule } from './web-component-demo/web-component-demo.
   imports: [
     AngularDemoModule,
     AppRoutingModule,
+    BergSelectModule,
+    BrowserAnimationsModule,
     BrowserModule,
     HomeModule,
     WebComponentDemoModule,

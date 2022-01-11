@@ -1,7 +1,10 @@
+@use 'node_modules/@berg-layout/angular' as layout;
+
 @mixin theme($colors) {
   .app-card {
     color: map-get($colors, text);
     background: map-get($colors, background-high-contrast);
+    @include layout.elevation(4);
 
     &:hover {
       outline: 5px solid map-get($colors, primary);

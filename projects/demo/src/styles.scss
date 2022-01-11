@@ -2,6 +2,22 @@
 @use './layout';
 @use './lib/components/card/card';
 @use 'sass:math';
+@use '@angular/material' as mat;
+@include mat.core();
+
+$primary: mat.define-palette(mat.$orange-palette, 400);
+$accent: mat.define-palette(mat.$red-palette, A200);
+$warn: mat.define-palette(mat.$red-palette);
+
+$theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+    ),
+  )
+);
 
 $colors: (
   primary: rgb(59, 127, 208),
@@ -15,6 +31,7 @@ $colors: (
 
 @include card.theme($colors);
 @include layout.theme($colors);
+@include mat.all-component-themes($theme);
 
 html,
 body {
@@ -23,4 +40,5 @@ body {
 
 body {
   margin: 0;
+  color: rgba(255, 255, 255, 0.7);
 }

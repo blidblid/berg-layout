@@ -214,6 +214,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/material@^13.1.1":
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-13.1.1.tgz#4d2d5a1ea6527b282beb26de6491eb3a221fab2a"
+  integrity sha512-kKWZBhnzuBYAVO1nrkqEaVTCJ2onEWs+tzAJDIlmbo9USiQyVCnFXx+rs86m4kRUxeAAZ9mcW5BGJr6oy5ClCA==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/platform-browser-dynamic@~13.1.0":
   version "13.1.1"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-13.1.1.tgz#452c9b1a61998400674f6ee03bc46326ae1295a4"
@@ -1209,10 +1216,24 @@
   dependencies:
     tslib "^2.3.0"
 
-"@berglund/rx@^0.0.5":
+"@berglund/material@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@berglund/material/-/material-0.0.7.tgz#3cc26e79d7e6cb6ca6c8ef170c1698db0552f17a"
+  integrity sha512-Kf4zJFkGvj+/S7aaXW14hSJ76WqLZuC+sYCkI8T0PbB8ky8rnKCXUkIHxYSWf8KGwRTkMO+A83dNzaZiYKTpsQ==
+  dependencies:
+    tslib "^2.1.0"
+
+"@berglund/mixins@^0.0.5":
   version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@berglund/rx/-/rx-0.0.5.tgz#4d2c55f8736b4c0b6fa69862c5f8cdcb0b71d06b"
-  integrity sha512-xhmAzXTKkr/NCiRnaxD1tx6Uaaf6MrUDtPSOo2yG2yVl1tqaW69PEDzKq3obntdaqEHlOmxzxNxuhhjuoIlPfQ==
+  resolved "https://registry.yarnpkg.com/@berglund/mixins/-/mixins-0.0.5.tgz#b4b8ba39229544bd66203a88a3d577ee064c42f4"
+  integrity sha512-X7Gy2l4aX8ZE+8U4+qQ7GjB6T8ErBTJAN21FjuOwg/qskydNfoUfylam80TH/6Dqn1lvIyanLUJE7CdAewdfoQ==
+  dependencies:
+    tslib "^2.2.0"
+
+"@berglund/rx@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@berglund/rx/-/rx-0.0.6.tgz#d0c49b43036b0901023a223fda18f3525f1ab509"
+  integrity sha512-DBsrzPPS4ur2y8gwLevAWyfBvGrdy94ZIxyltGr5S4kwZmo0ohHFf4HBRLbb8sAYvDiGMU/E833sQr0WEuW8gw==
   dependencies:
     tslib "^2.1.0"
 
@@ -1443,10 +1464,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.4.tgz#fec0ce0526abb6062fd206d72a642811b887a111"
   integrity sha512-6xwbrW4JJiJLgF+zNypN5wr2ykM9/jHcL7rQ8fZe2vuftggjzZeRSM4OwRc6Xk8qWjwJ99qVHo/JgOGmomWRog==
 
-"@types/node@^12.11.1":
-  version "12.20.38"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.38.tgz#74801983c0558a7a31a4ead18bce2edded2b0e2f"
-  integrity sha512-NxmtBRGipjx1B225OeMdI+CQmLbYqvvmYbukDTJGDgzIDgPQ1EcjGmYxGhOk5hTBqeB558S6RgHSpq2iiqifAQ==
+"@types/node@^17.0.8":
+  version "17.0.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.8.tgz#50d680c8a8a78fe30abe6906453b21ad8ab0ad7b"
+  integrity sha512-YofkM6fGv4gDJq78g4j0mMuGMkZVxZDgtU0JRdx6FgiJDG+0fY0GKVolOV8WqVmEhLCXkQRjwDdKyPxJp/uucg==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -6178,7 +6199,7 @@ tree-kill@1.2.2:
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.2.tgz#4ca09a9092c88b73a7cdc5e8a01b507b0790a0cc"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
 
-tslib@2.3.1, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.3.0:
+tslib@2.3.1, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.2.0, tslib@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==

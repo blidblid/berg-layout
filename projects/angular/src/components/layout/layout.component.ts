@@ -6,7 +6,6 @@ import {
   ElementRef,
   Inject,
   Input,
-  OnChanges,
   OnDestroy,
   Optional,
   ViewEncapsulation,
@@ -40,7 +39,7 @@ import {
 })
 export class BergLayoutComponent
   extends BergCommonInputsBase
-  implements OnDestroy, OnChanges
+  implements OnDestroy
 {
   /** Mobile resolution breakpoint. */
   @Input()
@@ -84,6 +83,7 @@ export class BergLayoutComponent
   ) {
     super(inputs, controllerFactory, elementRef);
     this.subscribe();
+    this.controller.commonInputs = this;
   }
 
   private hostClass$ = combineLatest([
@@ -136,9 +136,5 @@ export class BergLayoutComponent
     this.controller.commonInputs = null;
     this.destroySub.next();
     this.destroySub.complete();
-  }
-
-  ngOnChanges(): void {
-    this.controller.commonInputs = this;
   }
 }
