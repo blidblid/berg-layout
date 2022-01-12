@@ -12,7 +12,7 @@ export type Slot = 'top' | 'right' | 'bottom' | 'left';
 
 export interface Panel extends Partial<BergPanelInputs> {
   slot: Slot;
-  hide: boolean;
+  remove: boolean;
 }
 
 export type ObservableProperties<T> = {

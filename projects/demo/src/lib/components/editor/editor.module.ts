@@ -5,12 +5,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { BergOutletModule } from '@berglund/mixins';
+import { BergHighlightCodeModule } from '../code-highlighter';
 import { EditorComponent } from './editor.component';
 
 @NgModule({
   declarations: [EditorComponent],
   exports: [EditorComponent],
   imports: [
+    BergHighlightCodeModule,
     BergOutletModule,
     CommonModule,
     MatButtonModule,

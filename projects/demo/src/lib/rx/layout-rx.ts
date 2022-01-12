@@ -7,6 +7,7 @@ import { userInput } from '@berglund/rx';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Layout, ObservableProperties, Panel, Slot } from './layout-model';
+import { toHtml } from './layout-util';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +46,14 @@ export class LayoutRx {
     })
   );
 
+  angularHtml$: Observable<string> = this.layout$.pipe(
+    map((layout) => toHtml(layout, false))
+  );
+
+  webComponentHtml$: Observable<string> = this.layout$.pipe(
+    map((layout) => toHtml(layout, true))
+  );
+
   private createCommonInputs() {
     return {
       resizeDisabled: userInput(BERG_SHARED_DEFAULT_INPUTS.resizeDisabled),
@@ -69,10 +78,10 @@ export class LayoutRx {
 
   private createPanelInputs(slot: Slot) {
     return {
+      slot: of(slot),
       absolute: userInput(false),
       collapsed: userInput(false),
-      slot: of(slot),
-      hide: userInput(false),
+      remove: userInput(false),
       ...this.createCommonInputs(),
     };
   }

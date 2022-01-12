@@ -5,7 +5,7 @@
              [resizeCollapseRatio]="layout.resizeCollapseRatio!"
              [resizePreviewDelay]="layout.resizePreviewDelay!">
   <berg-panel slot="top"
-              *ngIf="!layout.top?.hide!"
+              *ngIf="!layout.top?.remove!"
               [absolute]="layout.top?.absolute!"
               [collapsed]="layout.top?.collapsed!"
               [resizeDisabled]="layout.top?.resizeDisabled!"
@@ -13,7 +13,7 @@
   </berg-panel>
 
   <berg-panel slot="right"
-              *ngIf="!layout.right?.hide!"
+              *ngIf="!layout.right?.remove!"
               [absolute]="layout.right?.absolute!"
               [collapsed]="layout.right?.collapsed!"
               [resizeDisabled]="layout.right?.resizeDisabled!"
@@ -21,7 +21,7 @@
   </berg-panel>
 
   <berg-panel slot="bottom"
-              *ngIf="!layout.bottom?.hide!"
+              *ngIf="!layout.bottom?.remove!"
               [absolute]="layout.bottom?.absolute!"
               [collapsed]="layout.bottom?.collapsed!"
               [resizeDisabled]="layout.bottom?.resizeDisabled!"
@@ -29,7 +29,7 @@
   </berg-panel>
 
   <berg-panel slot="left"
-              *ngIf="!layout.left?.hide!"
+              *ngIf="!layout.left?.remove!"
               [absolute]="layout.left?.absolute!"
               [collapsed]="layout.left?.collapsed!"
               [resizeDisabled]="layout.left?.resizeDisabled!"
@@ -37,6 +37,6 @@
   </berg-panel>
 
   <berg-panel>
-    <berg-editor></berg-editor>
+    <berg-editor [html]="rx.angularHtml$ | async"></berg-editor>
   </berg-panel>
 </berg-layout>

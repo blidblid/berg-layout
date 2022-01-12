@@ -1,0 +1,8 @@
+@use 'sass:map';
+
+@mixin theme($colors) {
+  .mat-card,
+  pre {
+    border: 1px solid map-get($map: $colors, $key: 'divider');
+  }
+}

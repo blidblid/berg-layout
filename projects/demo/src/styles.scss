@@ -1,5 +1,6 @@
 @use './button';
 @use './layout';
+@use './lib/components/editor/editor';
 @use './lib/components/card/card';
 @use 'sass:math';
 @use '@angular/material' as mat;
@@ -30,6 +31,7 @@ $colors: (
 );
 
 @include card.theme($colors);
+@include editor.theme($colors);
 @include layout.theme($colors);
 @include mat.all-component-themes($theme);
 

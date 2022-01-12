@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Input,
   ViewEncapsulation,
 } from '@angular/core';
 import { LayoutOperators } from '@demo/operators';
@@ -16,7 +17,17 @@ import { LayoutOperators } from '@demo/operators';
   },
 })
 export class EditorComponent {
-  edit = false;
+  @Input() html: string | null;
+
+  view: 'none' | 'edit' | 'code' = 'none';
 
   constructor(public operators: LayoutOperators) {}
+
+  updateView(view: 'none' | 'edit' | 'code'): void {
+    if (view === this.view) {
+      this.view = 'none';
+    } else {
+      this.view = view;
+    }
+  }
 }

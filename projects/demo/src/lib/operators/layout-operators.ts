@@ -44,8 +44,8 @@ export class LayoutOperators {
       component({
         component: BergCheckboxComponent,
         inputs: {
-          label: 'Hide',
-          connect: this.layoutRx[slot].hide,
+          label: 'Remove',
+          connect: this.layoutRx[slot].remove,
         },
       }),
       component({

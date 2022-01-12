@@ -1,10 +1,19 @@
-<button *ngIf="!edit; else editor"
-        mat-icon-button
-        (click)="edit = true">
-  <mat-icon>edit</mat-icon>
-</button>
+<span>
+  <button mat-icon-button
+          (click)="updateView('edit')"
+          [color]="view === 'edit' ? 'primary' : null">
+    <mat-icon>edit</mat-icon>
+  </button>
 
-<ng-template #editor>
+  <button mat-icon-button
+          (click)="updateView('code')"
+          [color]="view === 'code' ? 'primary' : null">
+    <mat-icon>code</mat-icon>
+  </button>
+</span>
+
+<div class="berg-editor-cards"
+     *ngIf="view === 'edit'">
   <mat-card>
     <mat-card-title>Top</mat-card-title>
     <berg-outlet [component]="operators.top"></berg-outlet>
@@ -29,4 +38,9 @@
     <mat-card-title>Layout</mat-card-title>
     <berg-outlet [component]="operators.layout"></berg-outlet>
   </mat-card>
-</ng-template>
+</div>
+
+
+<ng-container *ngIf="view === 'code'">
+  <pre><code class="language-html" bergHighlightCode>{{ html }}</code></pre>
+</ng-container>

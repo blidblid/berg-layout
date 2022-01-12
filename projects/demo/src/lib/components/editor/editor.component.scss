@@ -1,7 +1,10 @@
 .berg-editor {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  .berg-editor-cards {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    padding-top: 16px;
+  }
 
   .berg-outlet {
     display: grid !important;
@@ -10,11 +13,92 @@
   }
 
   .mat-card {
-    background: #3c3c3c;
+    background: transparent;
+    box-shadow: none;
+  }
 
+  pre {
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  .mat-card {
     .mat-card-title {
       margin-bottom: 16px;
       font-size: 16px;
     }
   }
+}
+
+// code styling
+code {
+  font-weight: 300;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #969896;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-type,
+.hljs-addition {
+  color: #cc99cc;
+}
+
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #f99157;
+}
+
+.hljs-string,
+.hljs-doctag,
+.hljs-regexp {
+  color: #8abeb7;
+}
+
+.hljs-title,
+.hljs-name,
+.hljs-section,
+.hljs-built_in {
+  color: #b5bd68;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-selector-id,
+.hljs-title.class_,
+.hljs-class .hljs-title {
+  color: #ffcc66;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-subst,
+.hljs-meta,
+.hljs-link {
+  color: #f99157;
+}
+
+.hljs-deletion {
+  color: #dc322f;
+}
+
+.hljs-formula {
+  background: #eee8d5;
+}
+
+.hljs-attr,
+.hljs-attribute {
+  color: #81a2be;
+}
+
+.hljs-emphasis {
+  font-style: italic;
 }
