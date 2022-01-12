@@ -2,12 +2,13 @@
 @use './layout';
 @use './lib/components/editor/editor';
 @use './lib/components/card/card';
+@use 'sass:map';
 @use 'sass:math';
 @use '@angular/material' as mat;
 @include mat.core();
 
-$primary: mat.define-palette(mat.$orange-palette, 400);
-$accent: mat.define-palette(mat.$red-palette, A200);
+$primary: mat.define-palette(mat.$orange-palette, A400);
+$accent: mat.define-palette(mat.$orange-palette, A400);
 $warn: mat.define-palette(mat.$red-palette);
 
 $theme: mat.define-dark-theme(
@@ -20,9 +21,14 @@ $theme: mat.define-dark-theme(
   )
 );
 
+$config: mat.get-color-config($theme);
+$accent-palette: map.get($config, 'accent');
+$accent-color: mat.get-color-from-palette($accent-palette);
+
+// make a new color map since @angular/material has a tedious API.
 $colors: (
-  primary: rgb(59, 127, 208),
-  secondary: #d0743b,
+  primary: #006eff,
+  secondary: $accent-color,
   background: rgb(30, 30, 30),
   background-low-contrast: rgb(37, 37, 38),
   background-high-contrast: rgb(60, 60, 60),
