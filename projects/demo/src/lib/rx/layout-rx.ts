@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BERG_SHARED_DEFAULT_INPUTS } from '@berg-layout/angular';
+import {
+  BERG_LAYOUT_DEFAULT_INPUTS,
+  BERG_SHARED_DEFAULT_INPUTS,
+} from '@berg-layout/angular';
 import { userInput } from '@berglund/rx';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -22,15 +25,18 @@ export class LayoutRx {
   right = this.createPanelInputs('right');
   bottom = this.createPanelInputs('bottom');
   left = this.createPanelInputs('left');
+  layout = this.createLayoutInputs();
 
   layout$: Observable<Layout> = combineLatest([
-    this.toPanel(this.top),
-    this.toPanel(this.right),
-    this.toPanel(this.bottom),
-    this.toPanel(this.left),
+    this.observeProperties(this.top),
+    this.observeProperties(this.right),
+    this.observeProperties(this.bottom),
+    this.observeProperties(this.left),
+    this.observeProperties(this.layout),
   ]).pipe(
-    map(([top, right, bottom, left]) => {
+    map(([top, right, bottom, left, layout]) => {
       return {
+        ...layout,
         top,
         right,
         bottom,
@@ -41,31 +47,39 @@ export class LayoutRx {
 
   private createCommonInputs() {
     return {
-      absolute: userInput(false),
-      collapsed: userInput(false),
       resizeDisabled: userInput(BERG_SHARED_DEFAULT_INPUTS.resizeDisabled),
+    };
+  }
+
+  private createLayoutInputs() {
+    return {
       resizeTwoDimensions: userInput(
-        BERG_SHARED_DEFAULT_INPUTS.resizeTwoDimensions
+        BERG_LAYOUT_DEFAULT_INPUTS.resizeTwoDimensions
       ),
-      resizeThreshold: userInput(BERG_SHARED_DEFAULT_INPUTS.resizeThreshold),
+      resizeThreshold: userInput(BERG_LAYOUT_DEFAULT_INPUTS.resizeThreshold),
       resizeCollapseRatio: userInput(
-        BERG_SHARED_DEFAULT_INPUTS.resizeCollapseRatio
+        BERG_LAYOUT_DEFAULT_INPUTS.resizeCollapseRatio
       ),
       resizePreviewDelay: userInput(
-        BERG_SHARED_DEFAULT_INPUTS.resizePreviewDelay
+        BERG_LAYOUT_DEFAULT_INPUTS.resizePreviewDelay
       ),
+      ...this.createCommonInputs(),
     };
   }
 
   private createPanelInputs(slot: Slot) {
     return {
+      absolute: userInput(false),
+      collapsed: userInput(false),
       slot: of(slot),
       hide: userInput(false),
       ...this.createCommonInputs(),
     };
   }
 
-  private toPanel(properties: ObservableProperties<Panel>): Observable<Panel> {
+  private observeProperties<T>(
+    properties: ObservableProperties<T>
+  ): Observable<T> {
     return combineLatest(
       Object.entries(properties).map(([key, observable]) => {
         // the rxjs map overload is acting up

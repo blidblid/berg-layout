@@ -1,3 +1,3 @@
 export * from './body-listeners';
-export * from './shared-inputs-base';
+export * from './controller-base';
 export * from './shared-inputs-model';

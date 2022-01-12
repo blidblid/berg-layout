@@ -1,19 +1,15 @@
 <berg-layout *ngIf="rx.layout$ | async as layout"
-             [resizeDisabled]="layout.resizeDisabled!"
-             [resizeTwoDimensions]="layout.resizeTwoDimensions!"
-             [resizeThreshold]="layout.resizeThreshold!"
-             [resizeCollapseRatio]="layout.resizeCollapseRatio!"
-             [resizePreviewDelay]="layout.resizePreviewDelay!">
+             [resize-disabled]="layout.resizeDisabled!"
+             [resize-two-dimensions]="layout.resizeTwoDimensions!"
+             [resize-threshold]="layout.resizeThreshold!"
+             [resize-collapse-ratio]="layout.resizeCollapseRatio!"
+             [resize-preview-delay]="layout.resizePreviewDelay!">
 
   <berg-panel slot="top"
               *ngIf="!layout.top?.hide!"
               [attr.absolute]="layout.top?.absolute!"
               [attr.collapsed]="layout.top?.collapsed!"
               [attr.resize-disabled]="layout.top?.resizeDisabled!"
-              [attr.resize-two-dimensions]="layout.top?.resizeTwoDimensions!"
-              [attr.resize-threshold]="layout.top?.resizeThreshold!"
-              [attr.resize-collapse-ratio]="layout.top?.resizeCollapseRatio!"
-              [attr.resize-preview-delay]="layout.top?.resizePreviewDelay!"
               (backdropClick)="onBackdropClick('top')">
   </berg-panel>
 
@@ -22,10 +18,6 @@
               [attr.absolute]="layout.right?.absolute!"
               [attr.collapsed]="layout.right?.collapsed!"
               [attr.resize-disabled]="layout.right?.resizeDisabled!"
-              [attr.resize-two-dimensions]="layout.right?.resizeTwoDimensions!"
-              [attr.resize-threshold]="layout.right?.resizeThreshold!"
-              [attr.resize-collapse-ratio]="layout.right?.resizeCollapseRatio!"
-              [attr.resize-preview-delay]="layout.right?.resizePreviewDelay!"
               (backdropClick)="onBackdropClick('right')">
   </berg-panel>
 
@@ -34,10 +26,6 @@
               [attr.absolute]="layout.bottom?.absolute!"
               [attr.collapsed]="layout.bottom?.collapsed!"
               [attr.resize-disabled]="layout.bottom?.resizeDisabled!"
-              [attr.resize-two-dimensions]="layout.bottom?.resizeTwoDimensions!"
-              [attr.resize-threshold]="layout.bottom?.resizeThreshold!"
-              [attr.resize-collapse-ratio]="layout.bottom?.resizeCollapseRatio!"
-              [attr.resize-preview-delay]="layout.bottom?.resizePreviewDelay!"
               (backdropClick)="onBackdropClick('bottom')">
   </berg-panel>
 
@@ -46,10 +34,6 @@
               [attr.absolute]="layout.left?.absolute!"
               [attr.collapsed]="layout.left?.collapsed!"
               [attr.resize-disabled]="layout.left?.resizeDisabled!"
-              [attr.resize-two-dimensions]="layout.left?.resizeTwoDimensions!"
-              [attr.resize-threshold]="layout.left?.resizeThreshold!"
-              [attr.resize-collapse-ratio]="layout.left?.resizeCollapseRatio!"
-              [attr.resize-preview-delay]="layout.left?.resizePreviewDelay!"
               (backdropClick)="onBackdropClick('left')">
   </berg-panel>
 

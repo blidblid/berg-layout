@@ -13,10 +13,10 @@
   $previewing-border: $resizing-indicator-width solid
     $previewing-indicator-color;
 
-  .berg-resize-toggle-top,
-  .berg-resize-toggle-right,
-  .berg-resize-toggle-bottom,
-  .berg-resize-toggle-left {
+  .berg-panel-resize-toggle-top,
+  .berg-panel-resize-toggle-right,
+  .berg-panel-resize-toggle-bottom,
+  .berg-panel-resize-toggle-left {
     .berg-panel-previewing & {
       background: $previewing-indicator-color;
     }
@@ -26,12 +26,12 @@
     }
   }
 
-  .berg-panel-collapsed {
-    .berg-resize-toggle-right {
+  .berg-panel-resize-collapsed {
+    .berg-panel-resize-toggle-right {
       left: -#{$resizing-indicator-width};
     }
 
-    .berg-resize-toggle-bottom {
+    .berg-panel-resize-toggle-bottom {
       top: -#{$resizing-indicator-width};
     }
   }
@@ -39,20 +39,20 @@
   .berg-panel-top {
     &.berg-panel-hidden {
       ~ .berg-panel-center {
-        .berg-resize-toggle-top {
+        .berg-panel-resize-toggle-top {
           display: none;
         }
       }
     }
 
-    .berg-resize-toggle-top {
+    .berg-panel-resize-toggle-top {
       top: auto;
       bottom: -#{$resizing-indicator-width};
     }
 
     &.berg-panel-previewing {
       ~ .berg-panel-center {
-        .berg-resize-toggle-top {
+        .berg-panel-resize-toggle-top {
           background: $previewing-indicator-color;
         }
       }
@@ -60,7 +60,7 @@
 
     &.berg-panel-resizing {
       ~ .berg-panel-center {
-        .berg-resize-toggle-top {
+        .berg-panel-resize-toggle-top {
           background: $resizing-indicator-color;
         }
       }
@@ -70,20 +70,20 @@
   .berg-panel-left {
     &.berg-panel-hidden {
       ~ .berg-panel-center {
-        .berg-resize-toggle-left {
+        .berg-panel-resize-toggle-left {
           display: none;
         }
       }
     }
 
-    .berg-resize-toggle-left {
+    .berg-panel-resize-toggle-left {
       left: auto;
       right: -#{$resizing-indicator-width};
     }
 
     &.berg-panel-previewing {
       ~ .berg-panel-center {
-        .berg-resize-toggle-left {
+        .berg-panel-resize-toggle-left {
           background: $previewing-indicator-color;
         }
       }
@@ -91,37 +91,37 @@
 
     &.berg-panel-resizing {
       ~ .berg-panel-center {
-        .berg-resize-toggle-left {
+        .berg-panel-resize-toggle-left {
           background: $resizing-indicator-color;
         }
       }
     }
   }
 
-  .berg-resize-toggle-top,
-  .berg-resize-toggle-bottom {
+  .berg-panel-resize-toggle-top,
+  .berg-panel-resize-toggle-bottom {
     height: $resizing-indicator-width;
   }
 
-  .berg-resize-toggle-right,
-  .berg-resize-toggle-left {
+  .berg-panel-resize-toggle-right,
+  .berg-panel-resize-toggle-left {
     width: $resizing-indicator-width;
   }
 
-  .berg-resize-toggle {
+  .berg-panel-resize-toggle {
     position: absolute;
     z-index: 2;
   }
 
-  .berg-resize-toggle-left,
-  .berg-resize-toggle-right {
+  .berg-panel-resize-toggle-left,
+  .berg-panel-resize-toggle-right {
     top: 0;
     bottom: 0;
     left: 0;
   }
 
-  .berg-resize-toggle-top,
-  .berg-resize-toggle-bottom {
+  .berg-panel-resize-toggle-top,
+  .berg-panel-resize-toggle-bottom {
     left: 0;
     right: 0;
     top: 0;

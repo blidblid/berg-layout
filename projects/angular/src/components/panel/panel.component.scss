@@ -29,8 +29,14 @@
   min-width: 128px;
 }
 
+:host(.berg-panel-resize-disabled) {
+  .berg-panel-resize-toggle {
+    display: none;
+  }
+}
+
 // keep all collapsed css !important to prevent overrides
-:host(.berg-panel-collapsed) {
+:host(.berg-panel-resize-collapsed) {
   padding: 0 !important;
   position: absolute !important;
   overflow: visible !important;

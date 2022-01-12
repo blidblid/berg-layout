@@ -6,7 +6,6 @@ import {
 } from '@berglund/material';
 import { component } from '@berglund/mixins';
 import { LayoutRx, Slot } from '@demo/rx';
-import { map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LayoutOperators {
@@ -24,79 +23,82 @@ export class LayoutOperators {
   right = this.createPanel('right');
   bottom = this.createPanel('bottom');
   left = this.createPanel('left');
-
-  components$ = this.layoutRx.edit$.pipe(
-    map((edit) => Object.values(this[edit.slot as Slot]))
-  );
+  layout = this.createLayout();
 
   private createPanel(slot: Slot) {
-    return {
-      absolute: component({
+    return [
+      component({
         component: BergCheckboxComponent,
         inputs: {
           label: 'Absolute',
           connect: this.layoutRx[slot].absolute,
         },
       }),
-      collapsed: component({
+      component({
         component: BergCheckboxComponent,
         inputs: {
           label: 'Collapsed',
           connect: this.layoutRx[slot].collapsed,
         },
       }),
-      hide: component({
+      component({
         component: BergCheckboxComponent,
         inputs: {
           label: 'Hide',
           connect: this.layoutRx[slot].hide,
         },
       }),
-      ...this.createCommon(slot),
-    };
-  }
-
-  private createCommon(slot: Slot) {
-    return {
-      resizeDisabled: component({
+      component({
         component: BergCheckboxComponent,
         inputs: {
           label: 'Resize disabled',
           connect: this.layoutRx[slot].resizeDisabled,
         },
       }),
-      resizeTwoDimensions: component({
+    ];
+  }
+
+  private createLayout() {
+    return [
+      component({
+        component: BergCheckboxComponent,
+        inputs: {
+          label: 'Resize disabled',
+          connect: this.layoutRx.layout.resizeDisabled,
+        },
+      }),
+      component({
         component: BergCheckboxComponent,
         inputs: {
           label: 'Resize two dimensions',
-          connect: this.layoutRx[slot].resizeTwoDimensions,
+          connect: this.layoutRx.layout.resizeTwoDimensions,
         },
       }),
-      resizeThreshold: component({
+      component({
         component: BergInputComponent,
         inputs: {
           label: 'Resize threshold',
           type: 'number',
-          connect: this.layoutRx[slot].resizeThreshold,
+          connect: this.layoutRx.layout.resizeThreshold,
         },
       }),
-      resizeCollapseRatio: component({
+      component({
         component: BergInputComponent,
         inputs: {
           label: 'Resize collapsed threshold',
           type: 'number',
-          connect: this.layoutRx[slot].resizeCollapseRatio,
+          connect: this.layoutRx.layout.resizeCollapseRatio,
         },
       }),
-      resizePreviewDelay: component({
+      component({
         component: BergInputComponent,
         inputs: {
           label: 'Resize preview delay',
           type: 'number',
-          connect: this.layoutRx[slot].resizePreviewDelay,
+          connect: this.layoutRx.layout.resizePreviewDelay,
         },
       }),
-    };
+    ];
   }
 
   constructor(private layoutRx: LayoutRx) {}

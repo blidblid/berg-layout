@@ -4,9 +4,9 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Inject,
+  Injector,
   Input,
   NgZone,
   Optional,
@@ -14,7 +14,6 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { BERG_PANEL_DEFAULT_INPUTS } from '@berg-layout/angular';
 import {
   animationFrameScheduler,
   combineLatest,
@@ -39,14 +38,14 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { BodyListeners } from '../../core';
-import { BergCommonInputsBase } from '../../core/shared-inputs-base';
-import { BergPanelControllerFactory } from './panel-controller-factory';
+import { BergCommonInputsBase } from '../../core/controller-base';
 import {
   BergPanel,
   BergPanelInputs,
   BergPanelResizePosition,
   BergPanelResizeSize,
   BergPanelSlot,
+  BERG_PANEL_DEFAULT_INPUTS,
   BERG_PANEL_INPUTS,
   BERG_RESIZE_EXPAND_PADDING,
 } from './panel-model';
@@ -63,7 +62,8 @@ import {
     '[class.berg-panel-hidden]': '_hidden',
     '[class.berg-panel-resizing]': '_resizing',
     '[class.berg-panel-previewing]': '_previewing',
-    '[class.berg-panel-collapsed]': '_resizeCollapsed',
+    '[class.berg-panel-resize-collapsed]': '_resizeCollapsed',
+    '[class.berg-panel-resize-disabled]': 'resizeDisabled',
     '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
     '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
     '[class.berg-panel-top]': 'slot === "top"',
@@ -127,6 +127,16 @@ export class BergPanelComponent
   }
   private _collapsed: boolean = this.getInput('collapsed');
 
+  /** Whether resizing is disabled. */
+  @Input()
+  get resizeDisabled() {
+    return this._resizeDisabled || this.controller.layoutInputs.resizeDisabled;
+  }
+  set resizeDisabled(value: boolean) {
+    this._resizeDisabled = coerceBooleanProperty(value);
+  }
+  private _resizeDisabled: boolean;
+
   _resizing = false;
   _previewing = false;
   _resizeCollapsed = false;
@@ -135,12 +145,7 @@ export class BergPanelComponent
   _backdropElement: HTMLElement;
   _hidden: boolean;
 
-  private init: boolean;
   private destroySub = new Subject<void>();
-
-  get hostElem(): HTMLElement {
-    return this.elementRef.nativeElement;
-  }
 
   private resizeToggle$ = this.slotSub.pipe(
     map((slot) => this.controller.getResizeToggle(slot))
@@ -195,11 +200,17 @@ export class BergPanelComponent
   private collapseAtSize$ = this.resizedSize$.pipe(
     filter((size) => {
       if (size.width !== undefined) {
-        return this.resizeCollapseRatio >= size.width / size.rect.width;
+        return (
+          this.controller.layoutInputs.resizeCollapseRatio >=
+          size.width / size.rect.width
+        );
       }
 
       if (size.height !== undefined) {
-        return this.resizeCollapseRatio >= size.height / size.rect.height;
+        return (
+          this.controller.layoutInputs.resizeCollapseRatio >=
+          size.height / size.rect.height
+        );
       }
 
       return false;
@@ -236,13 +247,12 @@ export class BergPanelComponent
     private zone: NgZone,
     @Inject(DOCUMENT)
     private document: Document,
-    protected override elementRef: ElementRef<HTMLElement>,
-    protected override controllerFactory: BergPanelControllerFactory,
+    protected override injector: Injector,
     @Inject(BERG_PANEL_INPUTS)
     @Optional()
     protected override inputs: BergPanelInputs
   ) {
-    super(inputs, controllerFactory, elementRef);
+    super(injector, inputs);
     this.layoutElement = this.findLayoutElement();
     this.subscribe();
 
@@ -250,13 +260,17 @@ export class BergPanelComponent
     this.zone.runOutsideAngular(() => {
       Promise.resolve().then(() => {
         this.controller.add(this);
-        this.init = true;
       });
     });
   }
 
   collapse(): void {
     if (!this.slot) {
+      return;
+    }
+
+    if (this._resizeCollapsed) {
+      this._hidden = true;
       return;
     }
 
@@ -351,7 +365,9 @@ export class BergPanelComponent
       .pipe(
         switchMap((previewing) => {
           return of(previewing).pipe(
-            delay(previewing ? this.resizePreviewDelay : 0)
+            delay(
+              previewing ? this.controller.layoutInputs.resizePreviewDelay : 0
+            )
           );
         }),
         takeUntil(this.destroySub)
@@ -416,7 +432,7 @@ export class BergPanelComponent
       return true;
     }
 
-    if (!this.resizeTwoDimensions) {
+    if (!this.controller.layoutInputs.resizeTwoDimensions) {
       return false;
     }
 
@@ -443,7 +459,9 @@ export class BergPanelComponent
       origin = x;
     }
 
-    return this.resizeThreshold > Math.abs(origin - mouse);
+    return (
+      this.controller.layoutInputs.resizeThreshold > Math.abs(origin - mouse)
+    );
   }
 
   private appendResizeToggles(resizeToggles: HTMLElement[]): void {
@@ -479,8 +497,7 @@ export class BergPanelComponent
       });
   }
 
-  override ngOnInit(): void {
-    super.ngOnInit();
+  ngOnInit(): void {
     this.subscribeToResize();
   }
 
@@ -495,7 +512,8 @@ export class BergPanelComponent
     }
 
     if (change['collapsed']) {
-      if (this.collapsed && !this.init) {
+      // do not animate if the panel is initially collapsed
+      if (this.collapsed && change['collapsed'].isFirstChange()) {
         this._hidden = true;
         return;
       } else {

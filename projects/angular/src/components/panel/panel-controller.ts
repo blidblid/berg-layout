@@ -8,7 +8,7 @@ import {
   shareReplay,
   Subject,
 } from 'rxjs';
-import { BergSharedInputs } from '../../core';
+import { BergLayoutInputs } from '../layout';
 import { BergPanel, BergPanelSlot } from './panel-model';
 
 export class BergPanelController {
@@ -29,7 +29,7 @@ export class BergPanelController {
     left: this.createResizeToggleElement('left'),
   };
 
-  commonInputs: BergSharedInputs | null;
+  layoutInputs: BergLayoutInputs;
   resizeToggles: HTMLElement[] = Object.values(this.resizeTogglesRecord);
 
   constructor(public layoutElement: HTMLElement, private document: Document) {
@@ -109,7 +109,10 @@ export class BergPanelController {
 
   private createResizeToggleElement(slot: BergPanelSlot): HTMLElement {
     const div = this.document.createElement('div');
-    div.classList.add('berg-resize-toggle', `berg-resize-toggle-${slot}`);
+    div.classList.add(
+      'berg-panel-resize-toggle',
+      `berg-panel-resize-toggle-${slot}`
+    );
     return div;
   }
 }

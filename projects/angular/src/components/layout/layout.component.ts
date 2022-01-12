@@ -1,10 +1,11 @@
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Inject,
+  Injector,
   Input,
   OnDestroy,
   Optional,
@@ -18,11 +19,12 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { BergCommonInputsBase } from '../../core/shared-inputs-base';
-import { BergPanelControllerFactory } from '../panel/panel-controller-factory';
+import { BergCommonInputsBase } from '../../core';
 import {
+  BergLayoutElement,
   BergLayoutInputs,
   BERG_LAYOUT_DEFAULT_INPUTS,
+  BERG_LAYOUT_ELEMENT,
   BERG_LAYOUT_INPUTS,
 } from './layout-model';
 
@@ -32,6 +34,9 @@ import {
   styleUrls: ['./layout.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    { provide: BERG_LAYOUT_ELEMENT, useExisting: BergLayoutComponent },
+  ],
   host: {
     '[class]': '_hostClass',
     '[class.berg-layout]': 'true',
@@ -39,7 +44,7 @@ import {
 })
 export class BergLayoutComponent
   extends BergCommonInputsBase
-  implements OnDestroy
+  implements BergLayoutInputs, BergLayoutElement, OnDestroy
 {
   /** Mobile resolution breakpoint. */
   @Input()
@@ -68,6 +73,56 @@ export class BergLayoutComponent
     this.getInput('mediumBreakpoint')
   );
 
+  /** Threshold to determine if a cursor position should be able to resize the element. */
+  @Input()
+  get resizeThreshold() {
+    return this._resizeThreshold;
+  }
+  set resizeThreshold(value: number) {
+    this._resizeThreshold = value;
+  }
+  private _resizeThreshold: number;
+
+  /** Ratio to determine what resize event that should be interpreted as a collapsing event. */
+  @Input()
+  get resizeCollapseRatio() {
+    return this._resizeCollapseRatio;
+  }
+  set resizeCollapseRatio(value: number) {
+    this._resizeCollapseRatio = value;
+  }
+  private _resizeCollapseRatio: number;
+
+  /** Delay before the resize preview is shown. */
+  @Input()
+  get resizePreviewDelay() {
+    return this._resizePreviewDelay;
+  }
+  set resizePreviewDelay(value: number) {
+    this._resizePreviewDelay = value;
+  }
+  private _resizePreviewDelay: number;
+
+  /** Delay before the resize preview is shown. */
+  @Input()
+  get resizeTwoDimensions() {
+    return this._resizeTwoDimensions;
+  }
+  set resizeTwoDimensions(value: boolean) {
+    this._resizeTwoDimensions = coerceBooleanProperty(value);
+  }
+  private _resizeTwoDimensions: boolean;
+
+  /** Whether resizing is disabled. */
+  @Input()
+  get resizeDisabled() {
+    return this._resizeDisabled;
+  }
+  set resizeDisabled(value: boolean) {
+    this._resizeDisabled = coerceBooleanProperty(value);
+  }
+  private _resizeDisabled: boolean;
+
   _hostClass: string;
 
   private destroySub = new Subject<void>();
@@ -75,15 +130,14 @@ export class BergLayoutComponent
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
-    protected override controllerFactory: BergPanelControllerFactory,
-    protected override elementRef: ElementRef<HTMLElement>,
+    protected override injector: Injector,
     @Inject(BERG_LAYOUT_INPUTS)
     @Optional()
     protected override inputs: BergLayoutInputs
   ) {
-    super(inputs, controllerFactory, elementRef);
+    super(injector, inputs);
     this.subscribe();
-    this.controller.commonInputs = this;
+    this.controller.layoutInputs = this;
   }
 
   private hostClass$ = combineLatest([
@@ -133,7 +187,6 @@ export class BergLayoutComponent
   }
 
   ngOnDestroy(): void {
-    this.controller.commonInputs = null;
     this.destroySub.next();
     this.destroySub.complete();
   }

@@ -11,6 +11,9 @@ import { LayoutOperators } from '@demo/operators';
   styleUrls: ['./editor.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'berg-editor',
+  },
 })
 export class EditorComponent {
   edit = false;

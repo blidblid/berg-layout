@@ -1200,7 +1200,7 @@
     to-fast-properties "^2.0.0"
 
 "@berg-layout/angular@./dist/angular":
-  version "0.0.0-watch"
+  version "0.0.1"
   dependencies:
     tslib "^2.3.0"
 

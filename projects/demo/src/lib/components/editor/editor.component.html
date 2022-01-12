@@ -5,10 +5,28 @@
 </button>
 
 <ng-template #editor>
-  <berg-outlet [component]="operators.edit"></berg-outlet>
+  <mat-card>
+    <mat-card-title>Top</mat-card-title>
+    <berg-outlet [component]="operators.top"></berg-outlet>
+  </mat-card>
 
   <mat-card>
-    <mat-card-title>Resizing</mat-card-title>
-    <berg-outlet [component]="operators.components$ | async"></berg-outlet>
+    <mat-card-title>Right</mat-card-title>
+    <berg-outlet [component]="operators.right"></berg-outlet>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Bottom</mat-card-title>
+    <berg-outlet [component]="operators.bottom"></berg-outlet>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Left</mat-card-title>
+    <berg-outlet [component]="operators.left"></berg-outlet>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Layout</mat-card-title>
+    <berg-outlet [component]="operators.layout"></berg-outlet>
   </mat-card>
 </ng-template>
