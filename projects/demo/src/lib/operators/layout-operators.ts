@@ -31,19 +31,6 @@ export class LayoutOperators {
 
   private createPanel(slot: Slot) {
     return {
-      hide: component({
-        component: BergCheckboxComponent,
-        inputs: {
-          label: 'Hide',
-          connect: this.layoutRx[slot].hide,
-        },
-      }),
-      ...this.createCommon(slot),
-    };
-  }
-
-  private createCommon(slot: Slot) {
-    return {
       absolute: component({
         component: BergCheckboxComponent,
         inputs: {
@@ -58,6 +45,19 @@ export class LayoutOperators {
           connect: this.layoutRx[slot].collapsed,
         },
       }),
+      hide: component({
+        component: BergCheckboxComponent,
+        inputs: {
+          label: 'Hide',
+          connect: this.layoutRx[slot].hide,
+        },
+      }),
+      ...this.createCommon(slot),
+    };
+  }
+
+  private createCommon(slot: Slot) {
+    return {
       resizeDisabled: component({
         component: BergCheckboxComponent,
         inputs: {

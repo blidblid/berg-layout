@@ -10,26 +10,6 @@ import {
 export class BergCommonInputsBase implements BergSharedInputs {
   protected controller = this.controllerFactory.get(this.findLayoutElement());
 
-  /** Whether the panel is absolutely positioned. */
-  @Input()
-  get absolute() {
-    return this._absolute;
-  }
-  set absolute(value: boolean) {
-    this._absolute = coerceBooleanProperty(value);
-  }
-  private _absolute: boolean;
-
-  /** Whether the panel is collapsed. */
-  @Input()
-  get collapsed() {
-    return this._collapsed;
-  }
-  set collapsed(value: boolean) {
-    this._collapsed = coerceBooleanProperty(value);
-  }
-  private _collapsed: boolean;
-
   /** Threshold to determine if a cursor position should be able to resize the element. */
   @Input()
   get resizeThreshold() {
@@ -130,8 +110,6 @@ export class BergCommonInputsBase implements BergSharedInputs {
   }
 
   ngOnInit(): void {
-    this._absolute = this.getCommonInput('absolute');
-    this._collapsed = this.getCommonInput('collapsed');
     this._resizeDisabled = this.getCommonInput('resizeDisabled');
     this._resizePreviewDelay = this.getCommonInput('resizePreviewDelay');
     this._resizeThreshold = this.getCommonInput('resizeThreshold');

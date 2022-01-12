@@ -16,10 +16,17 @@ export interface BergPanelBreakpoints {
   medium: string;
 }
 
-/** Inputs that can set on only panels. */
-export interface BergPanelInputs extends BergSharedInputs {}
+/** Inputs that can set on panels. */
+export interface BergPanelInputs extends BergSharedInputs {
+  absolute: boolean;
+  collapsed: boolean;
+}
 
-export const BERG_PANEL_DEFAULT_INPUTS = BERG_SHARED_DEFAULT_INPUTS;
+export const BERG_PANEL_DEFAULT_INPUTS = {
+  absolute: false,
+  collapsed: false,
+  ...BERG_SHARED_DEFAULT_INPUTS,
+};
 
 export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
   'BERG_PANEL_INPUTS'

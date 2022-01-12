@@ -1,3 +1,4 @@
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -13,6 +14,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
+import { BERG_PANEL_DEFAULT_INPUTS } from '@berg-layout/angular';
 import {
   animationFrameScheduler,
   combineLatest,
@@ -104,6 +106,26 @@ export class BergPanelComponent
   private _slot: BergPanelSlot = 'center';
   protected slotSub = new ReplaySubject<BergPanelSlot>(1);
   private resizePosition: BergPanelResizePosition;
+
+  /** Whether the panel is absolutely positioned. */
+  @Input()
+  get absolute() {
+    return this._absolute;
+  }
+  set absolute(value: boolean) {
+    this._absolute = coerceBooleanProperty(value);
+  }
+  private _absolute: boolean = this.getInput('collapsed');
+
+  /** Whether the panel is collapsed. */
+  @Input()
+  get collapsed() {
+    return this._collapsed;
+  }
+  set collapsed(value: boolean) {
+    this._collapsed = coerceBooleanProperty(value);
+  }
+  private _collapsed: boolean = this.getInput('collapsed');
 
   _resizing = false;
   _previewing = false;
@@ -428,6 +450,16 @@ export class BergPanelComponent
     for (const resizeToggle of resizeToggles) {
       this.hostElem.appendChild(resizeToggle);
     }
+  }
+
+  private getInput<T extends keyof BergPanelInputs>(
+    input: T
+  ): BergPanelInputs[T] {
+    if (this.inputs) {
+      return this.inputs[input];
+    }
+
+    return BERG_PANEL_DEFAULT_INPUTS[input];
   }
 
   private subscribe(): void {
