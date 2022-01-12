@@ -30,20 +30,6 @@ export class LayoutOperators {
       component({
         component: BergCheckboxComponent,
         inputs: {
-          label: 'Absolute',
-          connect: this.layoutRx[slot].absolute,
-        },
-      }),
-      component({
-        component: BergCheckboxComponent,
-        inputs: {
-          label: 'Collapsed',
-          connect: this.layoutRx[slot].collapsed,
-        },
-      }),
-      component({
-        component: BergCheckboxComponent,
-        inputs: {
           label: 'Remove',
           connect: this.layoutRx[slot].remove,
         },
@@ -51,8 +37,25 @@ export class LayoutOperators {
       component({
         component: BergCheckboxComponent,
         inputs: {
+          label: 'Absolute',
+          connect: this.layoutRx[slot].absolute,
+          disabled: this.layoutRx[slot].remove.asObservable(),
+        },
+      }),
+      component({
+        component: BergCheckboxComponent,
+        inputs: {
+          label: 'Collapsed',
+          connect: this.layoutRx[slot].collapsed,
+          disabled: this.layoutRx[slot].remove.asObservable(),
+        },
+      }),
+      component({
+        component: BergCheckboxComponent,
+        inputs: {
           label: 'Resize disabled',
           connect: this.layoutRx[slot].resizeDisabled,
+          disabled: this.layoutRx[slot].remove.asObservable(),
         },
       }),
     ];
