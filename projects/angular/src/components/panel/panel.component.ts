@@ -4,8 +4,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Inject,
+  InjectFlags,
   Injector,
   Input,
   NgZone,
@@ -37,7 +39,9 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BergCommonInputsBase, BodyListeners } from '../../core';
+import { BodyListeners } from '../../core';
+import { BERG_LAYOUT_ELEMENT } from '../layout';
+import { BergPanelControllerStore } from './panel-controller-store';
 import {
   BergPanel,
   BergPanelInputs,
@@ -77,10 +81,7 @@ import {
     '(transitionend)': '_onTransitionend()',
   },
 })
-export class BergPanelComponent
-  extends BergCommonInputsBase
-  implements BergPanel
-{
+export class BergPanelComponent implements BergPanel {
   /** Name of the content projection slot. */
   @Input('slot')
   get slot() {
@@ -129,7 +130,7 @@ export class BergPanelComponent
   /** Whether resizing is disabled. */
   @Input()
   get resizeDisabled() {
-    return this._resizeDisabled || this.controller.layoutInputs.resizeDisabled;
+    return this._resizeDisabled || this.controller.resizeDisabled;
   }
   set resizeDisabled(value: boolean) {
     this._resizeDisabled = coerceBooleanProperty(value);
@@ -142,7 +143,10 @@ export class BergPanelComponent
   _size: BergPanelResizeSize;
   _margin: string | null;
   _backdropElement: HTMLElement;
+  _layoutElement: HTMLElement;
   _hidden: boolean;
+
+  private controller = this.panelControllerStore.get(this.getLayoutElement());
 
   private destroySub = new Subject<void>();
 
@@ -200,15 +204,13 @@ export class BergPanelComponent
     filter((size) => {
       if (size.width !== undefined) {
         return (
-          this.controller.layoutInputs.resizeCollapseRatio >=
-          size.width / size.rect.width
+          this.controller.resizeCollapseRatio >= size.width / size.rect.width
         );
       }
 
       if (size.height !== undefined) {
         return (
-          this.controller.layoutInputs.resizeCollapseRatio >=
-          size.height / size.rect.height
+          this.controller.resizeCollapseRatio >= size.height / size.rect.height
         );
       }
 
@@ -232,7 +234,7 @@ export class BergPanelComponent
   );
 
   /** Emits when a user resizes beyond where the element stops shrinking. */
-  @Output('bergResizeCollapsed') collapsed$ = merge(
+  @Output('resizeCollapsed') collapsed$ = merge(
     this.collapseAtSize$.pipe(map(() => true)),
     this.expandAtSize$.pipe(map(() => false))
   ).pipe(distinctUntilChanged());
@@ -240,19 +242,24 @@ export class BergPanelComponent
   /** Emits whenever a user clicks a panel backdrop. */
   @Output() backdropClick = new EventEmitter<void>();
 
+  get hostElem() {
+    return this.elementRef.nativeElement;
+  }
+
   constructor(
     private bodyListeners: BodyListeners,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone,
     @Inject(DOCUMENT)
     private document: Document,
-    protected override injector: Injector,
+    private panelControllerStore: BergPanelControllerStore,
+    private elementRef: ElementRef<HTMLElement>,
+    protected injector: Injector,
     @Inject(BERG_PANEL_INPUTS)
     @Optional()
-    protected override inputs: BergPanelInputs
+    protected inputs: BergPanelInputs
   ) {
-    super(injector, inputs);
-    this.layoutElement = this.getLayoutElement();
+    this._layoutElement = this.getLayoutElement();
     this.subscribe();
 
     // Life cycle hooks are bugged out in @angular/elements.
@@ -306,14 +313,14 @@ export class BergPanelComponent
   }
 
   private showBackdrop(): void {
-    this.layoutElement.appendChild(this.getBackdropElement());
+    this._layoutElement.appendChild(this.getBackdropElement());
   }
 
   private hideBackdrop(): void {
     const backdrop = this.getBackdropElement();
 
-    if (this.layoutElement.contains(backdrop)) {
-      this.layoutElement.removeChild(backdrop);
+    if (this._layoutElement.contains(backdrop)) {
+      this._layoutElement.removeChild(backdrop);
     }
   }
 
@@ -364,9 +371,7 @@ export class BergPanelComponent
       .pipe(
         switchMap((previewing) => {
           return of(previewing).pipe(
-            delay(
-              previewing ? this.controller.layoutInputs.resizePreviewDelay : 0
-            )
+            delay(previewing ? this.controller.resizePreviewDelay : 0)
           );
         }),
         takeUntil(this.destroySub)
@@ -431,7 +436,7 @@ export class BergPanelComponent
       return true;
     }
 
-    if (!this.controller.layoutInputs.resizeTwoDimensions) {
+    if (!this.controller.resizeTwoDimensions) {
       return false;
     }
 
@@ -458,15 +463,51 @@ export class BergPanelComponent
       origin = x;
     }
 
-    return (
-      this.controller.layoutInputs.resizeThreshold > Math.abs(origin - mouse)
-    );
+    return this.controller.resizeThreshold > Math.abs(origin - mouse);
   }
 
   private appendResizeToggles(resizeToggles: HTMLElement[]): void {
     for (const resizeToggle of resizeToggles) {
       this.hostElem.appendChild(resizeToggle);
     }
+  }
+
+  protected getLayoutElement(): HTMLElement {
+    if (!this._layoutElement) {
+      this._layoutElement = this.findLayoutElement();
+    }
+
+    return this._layoutElement;
+  }
+
+  private findLayoutElement(): HTMLElement {
+    const injected = this.injector.get(
+      BERG_LAYOUT_ELEMENT,
+      null,
+      InjectFlags.SkipSelf
+    );
+
+    if (injected) {
+      return injected.hostElem;
+    }
+
+    let elem: HTMLElement | null = this.hostElem;
+
+    while (elem) {
+      if (elem.tagName === LAYOUT_TAGNAME) {
+        return elem;
+      }
+
+      elem = elem.parentElement;
+    }
+
+    const queried: HTMLElement | null = document.querySelector('berg-layout');
+
+    if (queried) {
+      return queried;
+    }
+
+    throw new Error('<berg-panel> could not find a <berg-layout> element');
   }
 
   private getInput<T extends keyof BergPanelInputs>(
@@ -489,9 +530,9 @@ export class BergPanelComponent
             : 'berg-layout-resize-horizontal';
 
         if (previewing || resizing) {
-          this.layoutElement.classList.add(resizeClass);
+          this._layoutElement.classList.add(resizeClass);
         } else {
-          this.layoutElement.classList.remove(resizeClass);
+          this._layoutElement.classList.remove(resizeClass);
         }
       });
   }
@@ -536,3 +577,5 @@ export class BergPanelComponent
     this.controller.remove(this);
   }
 }
+
+const LAYOUT_TAGNAME = 'BERG-LAYOUT';

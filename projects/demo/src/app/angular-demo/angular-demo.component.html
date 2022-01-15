@@ -37,16 +37,6 @@
   </berg-panel>
 
   <berg-panel>
-    <berg-layout>
-      <berg-panel slot="left">
-        inside yo
-      </berg-panel>
-
-      <berg-panel></berg-panel>
-
-      <berg-panel slot="right">
-        inside yo
-      </berg-panel>
-    </berg-layout>
+    <berg-editor [html]="rx.angularHtml$ | async"></berg-editor>
   </berg-panel>
 </berg-layout>

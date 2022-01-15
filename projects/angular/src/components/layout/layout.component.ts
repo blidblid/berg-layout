@@ -1,11 +1,11 @@
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Inject,
-  Injector,
   Input,
   OnDestroy,
   Optional,
@@ -19,7 +19,8 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { BergCommonInputsBase } from '../../core';
+import { BergPanelController } from '../panel/panel-controller';
+import { BergPanelControllerStore } from '../panel/panel-controller-store';
 import {
   BergLayoutElement,
   BergLayoutInputs,
@@ -43,7 +44,7 @@ import {
   },
 })
 export class BergLayoutComponent
-  extends BergCommonInputsBase
+  extends BergPanelController
   implements BergLayoutInputs, BergLayoutElement, OnDestroy
 {
   /** Mobile resolution breakpoint. */
@@ -73,70 +74,22 @@ export class BergLayoutComponent
     this.getInput('mediumBreakpoint')
   );
 
-  /** Threshold to determine if a cursor position should be able to resize the element. */
-  @Input()
-  get resizeThreshold() {
-    return this._resizeThreshold;
-  }
-  set resizeThreshold(value: number) {
-    this._resizeThreshold = value;
-  }
-  private _resizeThreshold: number;
-
-  /** Ratio to determine what resize event that should be interpreted as a collapsing event. */
-  @Input()
-  get resizeCollapseRatio() {
-    return this._resizeCollapseRatio;
-  }
-  set resizeCollapseRatio(value: number) {
-    this._resizeCollapseRatio = value;
-  }
-  private _resizeCollapseRatio: number;
-
-  /** Delay before the resize preview is shown. */
-  @Input()
-  get resizePreviewDelay() {
-    return this._resizePreviewDelay;
-  }
-  set resizePreviewDelay(value: number) {
-    this._resizePreviewDelay = value;
-  }
-  private _resizePreviewDelay: number;
-
-  /** Delay before the resize preview is shown. */
-  @Input()
-  get resizeTwoDimensions() {
-    return this._resizeTwoDimensions;
-  }
-  set resizeTwoDimensions(value: boolean) {
-    this._resizeTwoDimensions = coerceBooleanProperty(value);
-  }
-  private _resizeTwoDimensions: boolean;
-
-  /** Whether resizing is disabled. */
-  @Input()
-  get resizeDisabled() {
-    return this._resizeDisabled;
-  }
-  set resizeDisabled(value: boolean) {
-    this._resizeDisabled = coerceBooleanProperty(value);
-  }
-  private _resizeDisabled: boolean;
-
   _hostClass: string;
 
   private destroySub = new Subject<void>();
 
   constructor(
+    @Inject(DOCUMENT) protected override document: Document,
     private changeDetectorRef: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
-    protected override injector: Injector,
+    private elementRef: ElementRef<HTMLElement>,
+    private panelControllerStore: BergPanelControllerStore,
     @Inject(BERG_LAYOUT_INPUTS)
     @Optional()
-    protected override inputs: BergLayoutInputs
+    private inputs: BergLayoutInputs
   ) {
-    super(injector, inputs);
-    this.controller.layoutInputs = this;
+    super(elementRef.nativeElement, document);
+    this.panelControllerStore.add(this);
     this.subscribe();
   }
 

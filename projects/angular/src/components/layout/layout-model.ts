@@ -1,11 +1,11 @@
 import { InjectionToken } from '@angular/core';
-import { BergSharedInputs, BERG_SHARED_DEFAULT_INPUTS } from '../../core';
 
 /** Inputs that can set on only layouts. */
-export interface BergLayoutInputs extends BergSharedInputs {
+export interface BergLayoutInputs {
   mobileBreakpoint: string;
   smallBreakpoint: string;
   mediumBreakpoint: string;
+  resizeDisabled: boolean;
   resizeTwoDimensions: boolean;
   resizeThreshold: number;
   resizeCollapseRatio: number;
@@ -13,10 +13,10 @@ export interface BergLayoutInputs extends BergSharedInputs {
 }
 
 export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
-  ...BERG_SHARED_DEFAULT_INPUTS,
   mobileBreakpoint: '800px',
   smallBreakpoint: '900px',
   mediumBreakpoint: '1100px',
+  resizeDisabled: false,
   resizeThreshold: 16,
   resizeCollapseRatio: 0.5,
   resizeTwoDimensions: true,

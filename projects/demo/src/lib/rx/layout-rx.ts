@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BERG_LAYOUT_DEFAULT_INPUTS,
-  BERG_SHARED_DEFAULT_INPUTS,
-} from '@berg-layout/angular';
+import { BERG_LAYOUT_DEFAULT_INPUTS } from '@berg-layout/angular';
 import { userInput } from '@berglund/rx';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -54,14 +51,9 @@ export class LayoutRx {
     map((layout) => toHtml(layout, true))
   );
 
-  private createCommonInputs() {
-    return {
-      resizeDisabled: userInput(BERG_SHARED_DEFAULT_INPUTS.resizeDisabled),
-    };
-  }
-
   private createLayoutInputs() {
     return {
+      resizeDisabled: userInput(BERG_LAYOUT_DEFAULT_INPUTS.resizeDisabled),
       resizeTwoDimensions: userInput(
         BERG_LAYOUT_DEFAULT_INPUTS.resizeTwoDimensions
       ),
@@ -72,7 +64,6 @@ export class LayoutRx {
       resizePreviewDelay: userInput(
         BERG_LAYOUT_DEFAULT_INPUTS.resizePreviewDelay
       ),
-      ...this.createCommonInputs(),
     };
   }
 
@@ -82,7 +73,7 @@ export class LayoutRx {
       absolute: userInput(false),
       collapsed: userInput(false),
       remove: userInput(false),
-      ...this.createCommonInputs(),
+      resizeDisabled: userInput(false),
     };
   }
 
