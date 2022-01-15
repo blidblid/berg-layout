@@ -1,4 +1,7 @@
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import {
+  coerceBooleanProperty,
+  coerceNumberProperty,
+} from '@angular/cdk/coercion';
 import { Directive, Input } from '@angular/core';
 import { arrayReducer } from '@berglund/rx';
 import {
@@ -20,7 +23,7 @@ export class BergPanelController {
     return this._resizeThreshold;
   }
   set resizeThreshold(value: number) {
-    this._resizeThreshold = value;
+    this._resizeThreshold = Math.min(coerceNumberProperty(value), 1);
   }
   private _resizeThreshold: number;
 
@@ -30,7 +33,7 @@ export class BergPanelController {
     return this._resizeCollapseRatio;
   }
   set resizeCollapseRatio(value: number) {
-    this._resizeCollapseRatio = value;
+    this._resizeCollapseRatio = coerceNumberProperty(value);
   }
   private _resizeCollapseRatio: number;
 
@@ -40,7 +43,7 @@ export class BergPanelController {
     return this._resizePreviewDelay;
   }
   set resizePreviewDelay(value: number) {
-    this._resizePreviewDelay = value;
+    this._resizePreviewDelay = coerceNumberProperty(value);
   }
   private _resizePreviewDelay: number;
 
