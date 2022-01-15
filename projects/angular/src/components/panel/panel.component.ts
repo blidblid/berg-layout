@@ -37,8 +37,7 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BodyListeners } from '../../core';
-import { BergCommonInputsBase } from '../../core/controller-base';
+import { BergCommonInputsBase, BodyListeners } from '../../core';
 import {
   BergPanel,
   BergPanelInputs,
@@ -156,9 +155,9 @@ export class BergPanelComponent
       this.controller.fromResizeTogglesEvent<MouseEvent>('mousemove').pipe(
         withLatestFrom(this.resizeToggle$),
         filter(() => !this.resizeDisabled),
-        map(([event, resizeToggle]) =>
-          this.checkResizeThreshold(event, resizeToggle)
-        )
+        map(([event, resizeToggle]) => {
+          return this.checkResizeThreshold(event, resizeToggle);
+        })
       ),
       this.controller
         .fromResizeTogglesEvent<MouseEvent>('mouseleave')
@@ -253,7 +252,7 @@ export class BergPanelComponent
     protected override inputs: BergPanelInputs
   ) {
     super(injector, inputs);
-    this.layoutElement = this.findLayoutElement();
+    this.layoutElement = this.getLayoutElement();
     this.subscribe();
 
     // Life cycle hooks are bugged out in @angular/elements.

@@ -47,7 +47,6 @@ function startElement(
     html = html + ' ' + printer(key, value);
 
     if (i !== inputs.length - 1) {
-      console.log(childIndent);
       html = html + '\n' + childIndent;
     }
   }

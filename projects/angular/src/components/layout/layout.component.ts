@@ -136,8 +136,8 @@ export class BergLayoutComponent
     protected override inputs: BergLayoutInputs
   ) {
     super(injector, inputs);
-    this.subscribe();
     this.controller.layoutInputs = this;
+    this.subscribe();
   }
 
   private hostClass$ = combineLatest([

@@ -20,9 +20,17 @@ export class BergCommonInputsBase {
     protected inputs: BergSharedInputs
   ) {}
 
-  protected findLayoutElement(): HTMLElement {
-    if (this.layoutElement) {
-      return this.layoutElement;
+  protected getLayoutElement(): HTMLElement {
+    if (!this.layoutElement) {
+      this.layoutElement = this.findLayoutElement();
+    }
+
+    return this.layoutElement;
+  }
+
+  private findLayoutElement(): HTMLElement {
+    if (this.hostElem.tagName === LAYOUT_TAGNAME) {
+      return this.hostElem;
     }
 
     const injected = this.injector.get(
@@ -38,7 +46,7 @@ export class BergCommonInputsBase {
     let elem = this.hostElem;
 
     while (elem) {
-      if (elem.tagName === 'BERG-LAYOUT') {
+      if (elem.tagName === LAYOUT_TAGNAME) {
         return elem;
       }
 
@@ -54,3 +62,5 @@ export class BergCommonInputsBase {
     throw new Error('<berg-panel> could not find a <berg-layout> element');
   }
 }
+
+const LAYOUT_TAGNAME = 'BERG-LAYOUT';
