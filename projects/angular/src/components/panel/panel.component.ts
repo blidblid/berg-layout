@@ -39,7 +39,6 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BodyListeners } from '../../core';
 import { BERG_LAYOUT_ELEMENT } from '../layout';
 import { BergPanelControllerStore } from './panel-controller-store';
 import {
@@ -179,9 +178,9 @@ export class BergPanelComponent implements BergPanel {
   );
 
   private stopResizeEvent$ = merge(
-    this.bodyListeners.mouseup$,
-    this.bodyListeners.mouseleave$,
-    this.bodyListeners.dragend$
+    fromEvent<MouseEvent>(this.document.body, 'mouseup'),
+    fromEvent<MouseEvent>(this.document.body, 'mouseleave'),
+    fromEvent<DragEvent>(this.document.body, 'dragend')
   );
 
   private resizing$ = merge(
@@ -247,7 +246,6 @@ export class BergPanelComponent implements BergPanel {
   }
 
   constructor(
-    private bodyListeners: BodyListeners,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone,
     @Inject(DOCUMENT)
