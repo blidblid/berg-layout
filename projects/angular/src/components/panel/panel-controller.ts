@@ -17,23 +17,18 @@ import { BergPanel, BergPanelSlot } from './panel-model';
 
 @Directive()
 export class BergPanelController {
-  /** Threshold to determine if a cursor position should be able to resize the element. */
-  @Input()
-  get resizeThreshold() {
-    return this._resizeThreshold;
-  }
-  set resizeThreshold(value: number) {
-    this._resizeThreshold = Math.min(coerceNumberProperty(value), 1);
-  }
-  private _resizeThreshold: number;
-
-  /** Ratio to determine what resize event that should be interpreted as a collapsing event. */
+  /**
+   * Ratio to determine when resize events should collapse panels.
+   * - If it's 0, resizing cannot collapse panels.
+   * - If it's 0.5, the panel collapses when resizing 50% beyond a panel min-width.
+   * - If it's 1, any resizing collapses the panel.
+   */
   @Input()
   get resizeCollapseRatio() {
     return this._resizeCollapseRatio;
   }
   set resizeCollapseRatio(value: number) {
-    this._resizeCollapseRatio = coerceNumberProperty(value);
+    this._resizeCollapseRatio = Math.min(coerceNumberProperty(value), 1);
   }
   private _resizeCollapseRatio: number;
 

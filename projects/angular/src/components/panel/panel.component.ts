@@ -50,6 +50,7 @@ import {
   BERG_PANEL_DEFAULT_INPUTS,
   BERG_PANEL_INPUTS,
   BERG_RESIZE_EXPAND_PADDING,
+  BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE,
 } from './panel-model';
 
 @Component({
@@ -259,13 +260,7 @@ export class BergPanelComponent implements BergPanel {
   ) {
     this._layoutElement = this.getLayoutElement();
     this.subscribe();
-
-    // Life cycle hooks are bugged out in @angular/elements.
-    this.zone.runOutsideAngular(() => {
-      Promise.resolve().then(() => {
-        this.controller.add(this);
-      });
-    });
+    this.controller.add(this);
   }
 
   collapse(): void {
@@ -461,7 +456,9 @@ export class BergPanelComponent implements BergPanel {
       origin = x;
     }
 
-    return this.controller.resizeThreshold > Math.abs(origin - mouse);
+    return (
+      BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE > Math.abs(origin - mouse)
+    );
   }
 
   private appendResizeToggles(resizeToggles: HTMLElement[]): void {

@@ -34,6 +34,8 @@ export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
 
 export const BERG_RESIZE_EXPAND_PADDING = 16;
 
+export const BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE = 8;
+
 export type BergPanelResizePosition =
   | 'above'
   | 'after'

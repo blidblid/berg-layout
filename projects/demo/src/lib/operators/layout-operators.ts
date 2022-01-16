@@ -80,15 +80,7 @@ export class LayoutOperators {
       component({
         component: BergInputComponent,
         inputs: {
-          label: 'Resize threshold',
-          type: 'number',
-          connect: this.layoutRx.layout.resizeThreshold,
-        },
-      }),
-      component({
-        component: BergInputComponent,
-        inputs: {
-          label: 'Resize collapsed threshold',
+          label: 'Resize collapse ratio',
           type: 'number',
           connect: this.layoutRx.layout.resizeCollapseRatio,
         },

@@ -7,7 +7,6 @@ export interface BergLayoutInputs {
   mediumBreakpoint: string;
   resizeDisabled: boolean;
   resizeTwoDimensions: boolean;
-  resizeThreshold: number;
   resizeCollapseRatio: number;
   resizePreviewDelay: number;
 }
@@ -17,7 +16,6 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   smallBreakpoint: '900px',
   mediumBreakpoint: '1100px',
   resizeDisabled: false,
-  resizeThreshold: 16,
   resizeCollapseRatio: 0.5,
   resizeTwoDimensions: true,
   resizePreviewDelay: 200,

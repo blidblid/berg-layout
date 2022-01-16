@@ -1,7 +1,6 @@
 <berg-layout *ngIf="rx.layout$ | async as layout"
              [resizeDisabled]="layout.resizeDisabled!"
              [resizeTwoDimensions]="layout.resizeTwoDimensions!"
-             [resizeThreshold]="layout.resizeThreshold!"
              [resizeCollapseRatio]="layout.resizeCollapseRatio!"
              [resizePreviewDelay]="layout.resizePreviewDelay!">
   <berg-panel slot="top"

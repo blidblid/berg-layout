@@ -57,7 +57,6 @@ export class LayoutRx {
       resizeTwoDimensions: userInput(
         BERG_LAYOUT_DEFAULT_INPUTS.resizeTwoDimensions
       ),
-      resizeThreshold: userInput(BERG_LAYOUT_DEFAULT_INPUTS.resizeThreshold),
       resizeCollapseRatio: userInput(
         BERG_LAYOUT_DEFAULT_INPUTS.resizeCollapseRatio
       ),
