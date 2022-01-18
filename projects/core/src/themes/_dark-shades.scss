@@ -1,0 +1,22 @@
+@use '../styling/resizing';
+@use './common';
+
+@mixin dark-shades() {
+  @include common.theme(
+    $colors: (
+      background: rgb(30, 30, 30),
+      background-low-contrast: rgb(37, 37, 38),
+      background-high-contrast: rgb(60, 60, 60),
+      background-backdrop: rgba(white, 0.3),
+      divider: rgb(65, 65, 65),
+    )
+  );
+
+  @include resizing.resizing(
+    (
+      'resizing-indicator-width': 6px,
+      'resizing-indicator-color': #ff9100,
+      'previewing-indicator-color': #006eff,
+    )
+  );
+}

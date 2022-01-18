@@ -1,17 +1,7 @@
 @use 'sass:map';
-@use 'node_modules/@berg-layout/angular' as layout;
+@use '../styling/elevation' as elevation;
 
 @mixin theme($colors) {
-  $primary: map-get(
-    $map: $colors,
-    $key: 'primary',
-  );
-
-  $secondary: map-get(
-    $map: $colors,
-    $key: 'secondary',
-  );
-
   $divider: map-get(
     $map: $colors,
     $key: 'divider',
@@ -32,12 +22,9 @@
     $key: 'background-high-contrast',
   );
 
-  @include layout.resizing(
-    (
-      'resizing-indicator-width': 6px,
-      'previewing-indicator-color': $primary,
-      'resizing-indicator-color': $secondary,
-    )
+  $background-backdrop: map-get(
+    $map: $colors,
+    $key: 'background-backdrop',
   );
 
   .berg-panel-left {
@@ -45,7 +32,7 @@
   }
 
   .berg-panel-backdrop {
-    background: rgba($color: white, $alpha: 0.3);
+    background: $background-backdrop;
   }
 
   .berg-panel-left,
@@ -81,6 +68,6 @@
   .berg-panel-right,
   .berg-panel-top,
   .berg-panel-bottom {
-    @include layout.elevation(4);
+    @include elevation.elevation(4);
   }
 }

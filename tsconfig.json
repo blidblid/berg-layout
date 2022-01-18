@@ -6,7 +6,13 @@
       "@berg-layout/web-component": ["dist/web-component"],
       "@demo/components": ["projects/demo/src/lib/components"],
       "@demo/operators": ["projects/demo/src/lib/operators"],
-      "@demo/rx": ["projects/demo/src/lib/rx"]
+      "@demo/rx": [
+        "projects/demo/src/lib/rx"
+      ],
+      "core": [
+        "dist/core/core",
+        "dist/core"
+      ]
     }
   }
 }

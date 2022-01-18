@@ -1,7 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/angular",
-  "assets": ["./_index.scss", "./src/styling"],
   "lib": {
     "entryFile": "src/public-api.ts"
   }

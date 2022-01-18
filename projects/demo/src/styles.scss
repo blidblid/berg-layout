@@ -1,9 +1,10 @@
-@use './layout';
 @use './lib/components/editor/editor';
 @use './lib/components/card/card';
 @use 'sass:map';
 @use 'sass:math';
 @use '@angular/material' as mat;
+@use 'node_modules/@berg-layout/core' as layout;
+
 @include mat.core();
 
 $primary: mat.define-palette(mat.$orange-palette, A400);
@@ -31,13 +32,15 @@ $colors: (
   background: rgb(30, 30, 30),
   background-low-contrast: rgb(37, 37, 38),
   background-high-contrast: rgb(60, 60, 60),
+  background-backdrop: rgba(white, 0.3),
   divider: rgb(65, 65, 65),
   text: white,
 );
 
+@include layout.dark-shades();
+
 @include card.theme($colors);
 @include editor.theme($colors);
-@include layout.theme($colors);
 @include mat.all-component-themes($theme);
 
 html,

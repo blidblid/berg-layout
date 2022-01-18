@@ -1,4 +1,4 @@
-import { BuilderOutput } from '@angular-devkit/architect';
+import { BuilderOutput, Target } from '@angular-devkit/architect';
 import { hook } from '@berglund/angular-cli-hooks';
 import {
   copyFileSync,
@@ -13,22 +13,23 @@ export default [
   hook({
     name: 'build',
     after: async ({}, { workspaceRoot, target }): Promise<BuilderOutput> => {
-      if (target?.project !== 'web-component') {
-        return { success: true };
-      }
-
-      concatBundle(workspaceRoot);
-      copyAssets(workspaceRoot);
-
-      unlinkSync(join(workspaceRoot, 'dist/web-component/index.html'));
-      unlinkSync(
-        join(workspaceRoot, 'dist/web-component/3rdpartylicenses.txt')
-      );
-
+      webComponentBuildHook(workspaceRoot, target);
       return { success: true };
     },
   }),
 ];
+
+function webComponentBuildHook(workspaceRoot: string, target?: Target) {
+  if (target?.project !== 'web-component') {
+    return { success: true };
+  }
+
+  concatBundle(workspaceRoot);
+  copyAssets(workspaceRoot);
+
+  unlinkSync(join(workspaceRoot, 'dist/web-component/index.html'));
+  unlinkSync(join(workspaceRoot, 'dist/web-component/3rdpartylicenses.txt'));
+}
 
 function copyAssets(workspaceRoot: string): void {
   const assets = [

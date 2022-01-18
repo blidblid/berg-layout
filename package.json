@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
     "@berg-layout/angular": "./dist/angular",
+    "@berg-layout/core": "./dist/core",
     "@berglund/material": "^0.0.7",
     "@berglund/mixins": "^0.0.5",
     "@berglund/rx": "^0.0.6",
@@ -49,6 +50,8 @@
     "ng-packagr": "^13.0.0",
     "prettier": "^2.5.1",
     "prettier-plugin-organize-imports": "^2.3.4",
+    "sass": "^1.48.0",
+    "sass-loader": "^12.4.0",
     "typescript": "~4.5.2"
   }
 }

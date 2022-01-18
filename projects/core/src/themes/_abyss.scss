@@ -1,0 +1,22 @@
+@use '../styling/resizing';
+@use './common';
+
+@mixin abyss() {
+  @include common.theme(
+    $colors: (
+      background: rgb(2, 12, 23),
+      background-low-contrast: rgb(6, 7, 32),
+      background-high-contrast: rgb(18, 25, 43),
+      background-backdrop: rgba(white, 0.3),
+      divider: rgb(43, 44, 73),
+    )
+  );
+
+  @include resizing.resizing(
+    (
+      'resizing-indicator-width': 6px,
+      'previewing-indicator-color': rgb(94, 111, 151),
+      'resizing-indicator-color': rgb(94, 151, 94),
+    )
+  );
+}
