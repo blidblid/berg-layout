@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng b core && ng b angular && ng b web-component && ng b demo",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "upgrade-hooks": "cd projects/builder-hooks && tsc && cd ../.. && yarn upgrade @berg-layout/builder-hooks"

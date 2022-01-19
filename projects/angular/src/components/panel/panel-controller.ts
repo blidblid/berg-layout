@@ -13,6 +13,7 @@ import {
   shareReplay,
   Subject,
 } from 'rxjs';
+import { BergLayoutInputs, BERG_LAYOUT_DEFAULT_INPUTS } from '../layout';
 import { BergPanel, BergPanelSlot } from './panel-model';
 
 @Directive()
@@ -30,7 +31,7 @@ export class BergPanelController {
   set resizeCollapseRatio(value: number) {
     this._resizeCollapseRatio = Math.min(coerceNumberProperty(value), 1);
   }
-  private _resizeCollapseRatio: number;
+  private _resizeCollapseRatio: number = this.getInput('resizeCollapseRatio');
 
   /** Delay before the resize preview is shown. */
   @Input()
@@ -40,7 +41,7 @@ export class BergPanelController {
   set resizePreviewDelay(value: number) {
     this._resizePreviewDelay = coerceNumberProperty(value);
   }
-  private _resizePreviewDelay: number;
+  private _resizePreviewDelay: number = this.getInput('resizePreviewDelay');
 
   /** Delay before the resize preview is shown. */
   @Input()
@@ -50,7 +51,7 @@ export class BergPanelController {
   set resizeTwoDimensions(value: boolean) {
     this._resizeTwoDimensions = coerceBooleanProperty(value);
   }
-  private _resizeTwoDimensions: boolean;
+  private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
 
   /** Whether resizing is disabled. */
   @Input()
@@ -60,7 +61,7 @@ export class BergPanelController {
   set resizeDisabled(value: boolean) {
     this._resizeDisabled = coerceBooleanProperty(value);
   }
-  private _resizeDisabled: boolean;
+  private _resizeDisabled: boolean = this.getInput('resizeDisabled');
 
   private addPanelSub = new Subject<BergPanel>();
   private pushPanelSub = new Subject<void>();
@@ -81,7 +82,11 @@ export class BergPanelController {
 
   resizeToggles: HTMLElement[] = Object.values(this.resizeTogglesRecord);
 
-  constructor(public hostElem: HTMLElement, protected document: Document) {
+  constructor(
+    public hostElem: HTMLElement,
+    protected document: Document,
+    protected inputs: BergLayoutInputs
+  ) {
     this.panels$.subscribe(); // make shareReplay(1) eagerly cache panels
   }
 
@@ -117,6 +122,12 @@ export class BergPanelController {
     return this.panels$.pipe(
       map((panels) => this.getResizeTogglesForSlot(slot, panels))
     );
+  }
+
+  protected getInput<T extends keyof BergLayoutInputs>(
+    input: T
+  ): BergLayoutInputs[T] {
+    return this.inputs ? this.inputs[input] : BERG_LAYOUT_DEFAULT_INPUTS[input];
   }
 
   private getResizeTogglesForSlot(

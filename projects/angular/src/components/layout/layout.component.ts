@@ -24,7 +24,6 @@ import { BergPanelControllerStore } from '../panel/panel-controller-store';
 import {
   BergLayoutElement,
   BergLayoutInputs,
-  BERG_LAYOUT_DEFAULT_INPUTS,
   BERG_LAYOUT_ELEMENT,
   BERG_LAYOUT_INPUTS,
 } from './layout-model';
@@ -80,15 +79,15 @@ export class BergLayoutComponent
 
   constructor(
     @Inject(DOCUMENT) protected override document: Document,
+    @Inject(BERG_LAYOUT_INPUTS)
+    @Optional()
+    protected override inputs: BergLayoutInputs,
     private changeDetectorRef: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
     private elementRef: ElementRef<HTMLElement>,
-    private panelControllerStore: BergPanelControllerStore,
-    @Inject(BERG_LAYOUT_INPUTS)
-    @Optional()
-    private inputs: BergLayoutInputs
+    private panelControllerStore: BergPanelControllerStore
   ) {
-    super(elementRef.nativeElement, document);
+    super(elementRef.nativeElement, document, inputs);
     this.panelControllerStore.add(this);
     this.subscribe();
   }
@@ -131,12 +130,6 @@ export class BergLayoutComponent
       this._hostClass = hostClass;
       this.changeDetectorRef.markForCheck();
     });
-  }
-
-  private getInput<T extends keyof BergLayoutInputs>(
-    input: T
-  ): BergLayoutInputs[T] {
-    return this.inputs ? this.inputs[input] : BERG_LAYOUT_DEFAULT_INPUTS[input];
   }
 
   ngOnDestroy(): void {

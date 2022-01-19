@@ -1,11 +1,12 @@
 {
   "name": "@berg-layout/angular",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "peerDependencies": {
     "@angular/common": "^13.1.0",
     "@angular/core": "^13.1.0"
   },
   "dependencies": {
+    "@berglund/rx": "^0.0.1",
     "tslib": "^2.3.0"
   }
 }
