@@ -3,7 +3,6 @@ import {
   coerceNumberProperty,
 } from '@angular/cdk/coercion';
 import { Directive, Input } from '@angular/core';
-import { arrayReducer } from '@berglund/rx';
 import {
   debounceTime,
   fromEvent,
@@ -15,6 +14,7 @@ import {
 } from 'rxjs';
 import { BergLayoutInputs, BERG_LAYOUT_DEFAULT_INPUTS } from '../layout';
 import { BergPanel, BergPanelSlot } from './panel-model';
+import { arrayReducer } from './panel-util';
 
 @Directive()
 export class BergPanelController {

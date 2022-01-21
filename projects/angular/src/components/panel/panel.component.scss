@@ -86,9 +86,12 @@
   z-index: 0;
 }
 
-:host(.berg-panel-bottom),
-:host(.berg-panel-top) {
+:host(.berg-panel-bottom) {
   z-index: 1;
+}
+
+:host(.berg-panel-top) {
+  z-index: 2;
 }
 
 :host(.berg-panel-absolute) {
