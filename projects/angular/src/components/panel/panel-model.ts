@@ -34,6 +34,9 @@ export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
 
 export const BERG_RESIZE_EXPAND_PADDING = 16;
 
+// Use a debounce to prevent rapid resizes from trigger resize toggling
+export const BERG_RESIZE_EXPAND_DEBOUNCE = 10;
+
 export const BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE = 8;
 
 export type BergPanelResizePosition =
@@ -42,6 +45,8 @@ export type BergPanelResizePosition =
   | 'below'
   | 'before'
   | null;
+
+export type BergPanelResizeSnap = 'collapsed' | 'expanded' | null;
 
 export interface BergPanelResizeSize {
   rect: DOMRect;

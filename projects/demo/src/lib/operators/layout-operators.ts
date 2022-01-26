@@ -80,9 +80,17 @@ export class LayoutOperators {
       component({
         component: BergInputComponent,
         inputs: {
-          label: 'Resize collapse ratio',
+          label: 'Resize collapse offset',
           type: 'number',
-          connect: this.layoutRx.layout.resizeCollapseRatio,
+          connect: this.layoutRx.layout.resizeCollapseOffset,
+        },
+      }),
+      component({
+        component: BergInputComponent,
+        inputs: {
+          label: 'Resize expand offset',
+          type: 'number',
+          connect: this.layoutRx.layout.resizeExpandOffset,
         },
       }),
       component({

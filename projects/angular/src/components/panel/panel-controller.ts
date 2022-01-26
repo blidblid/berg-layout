@@ -19,19 +19,30 @@ import { arrayReducer } from './panel-util';
 @Directive()
 export class BergPanelController {
   /**
-   * Ratio to determine when resize events should collapse panels.
-   * - If it's 0, resizing cannot collapse panels.
-   * - If it's 0.5, the panel collapses when resizing 50% beyond a panel min-width.
-   * - If it's 1, any resizing collapses the panel.
+   * Px value to determine what resize events should collapse panels.
+   * If it's 16px, resizing will collapse a panel if its resized 16px smaller than it current width.
    */
   @Input()
-  get resizeCollapseRatio() {
-    return this._resizeCollapseRatio;
+  get resizeCollapseOffset() {
+    return this._resizeCollapseOffset;
   }
-  set resizeCollapseRatio(value: number) {
-    this._resizeCollapseRatio = Math.min(coerceNumberProperty(value), 1);
+  set resizeCollapseOffset(value: number) {
+    this._resizeCollapseOffset = coerceNumberProperty(value);
   }
-  private _resizeCollapseRatio: number = this.getInput('resizeCollapseRatio');
+  private _resizeCollapseOffset: number = this.getInput('resizeCollapseOffset');
+
+  /**
+   * Px value to determine what resize events should expand panels.
+   * If it's 16px, resizing will expand a panel if its resized 16px beyond than it current width.
+   */
+  @Input()
+  get resizeExpandOffset() {
+    return this._resizeExpandOffset;
+  }
+  set resizeExpandOffset(value: number) {
+    this._resizeExpandOffset = coerceNumberProperty(value);
+  }
+  private _resizeExpandOffset: number = this.getInput('resizeExpandOffset');
 
   /** Delay before the resize preview is shown. */
   @Input()

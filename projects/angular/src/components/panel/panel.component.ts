@@ -10,7 +10,6 @@ import {
   InjectFlags,
   Injector,
   Input,
-  NgZone,
   Optional,
   Output,
   SimpleChanges,
@@ -39,6 +38,7 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
+import { BergPanelResizeSnap } from '.';
 import { BERG_LAYOUT_ELEMENT } from '../layout';
 import { BergPanelControllerStore } from './panel-controller-store';
 import {
@@ -65,7 +65,8 @@ import {
     '[class.berg-panel-hidden]': '_hidden',
     '[class.berg-panel-resizing]': '_resizing',
     '[class.berg-panel-previewing]': '_previewing',
-    '[class.berg-panel-resize-collapsed]': '_resizeCollapsed',
+    '[class.berg-panel-resize-expanded]': '_resizeSnap === "expanded"',
+    '[class.berg-panel-resize-collapsed]': '_resizeSnap === "collapsed"',
     '[class.berg-panel-resize-disabled]': 'resizeDisabled',
     '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
     '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
@@ -139,7 +140,7 @@ export class BergPanelComponent implements BergPanel {
 
   _resizing = false;
   _previewing = false;
-  _resizeCollapsed = false;
+  _resizeSnap: BergPanelResizeSnap = null;
   _size: BergPanelResizeSize;
   _margin: string | null;
   _backdropElement: HTMLElement;
@@ -200,26 +201,31 @@ export class BergPanelComponent implements BergPanel {
     share()
   );
 
-  private collapseAtSize$ = this.resizedSize$.pipe(
+  private startResizeCollapse$ = this.resizedSize$.pipe(
     filter((size) => {
+      if (this._resizeSnap !== null) {
+        return false;
+      }
+
       if (size.width !== undefined) {
         return (
-          this.controller.resizeCollapseRatio >= size.width / size.rect.width
+          size.rect.width - size.width >= this.controller.resizeCollapseOffset
         );
       }
 
       if (size.height !== undefined) {
         return (
-          this.controller.resizeCollapseRatio >= size.height / size.rect.height
+          size.rect.height - size.height >= this.controller.resizeCollapseOffset
         );
       }
 
       return false;
-    })
+    }),
+    share()
   );
 
-  private expandAtSize$ = this.resizedSize$.pipe(
-    withLatestFrom(this.collapseAtSize$),
+  private stopResizeCollapse$ = this.resizedSize$.pipe(
+    withLatestFrom(this.startResizeCollapse$),
     filter(([size, collapseAtSize]) => {
       if (size.width !== undefined && collapseAtSize.width !== undefined) {
         return size.width - BERG_RESIZE_EXPAND_PADDING > collapseAtSize.width;
@@ -234,10 +240,68 @@ export class BergPanelComponent implements BergPanel {
   );
 
   /** Emits when a user resizes beyond where the element stops shrinking. */
-  @Output('resizeCollapsed') collapsed$ = merge(
-    this.collapseAtSize$.pipe(map(() => true)),
-    this.expandAtSize$.pipe(map(() => false))
-  ).pipe(distinctUntilChanged());
+  @Output('resizeCollapsed')
+  resizeCollapsed$ = merge(
+    this.startResizeCollapse$.pipe(map(() => true)),
+    this.stopResizeCollapse$.pipe(map(() => false))
+  ).pipe(startWith(false), distinctUntilChanged());
+
+  private startResizeExpand$ = this.resizedSize$.pipe(
+    withLatestFrom(this.startResizeCollapse$.pipe(startWith(null))),
+    filter(([size, collapseAtSize]) => {
+      if (this._resizeSnap !== null) {
+        return false;
+      }
+
+      if (size.width !== undefined) {
+        if (collapseAtSize?.width && collapseAtSize.rect.width > size.width) {
+          return false;
+        }
+
+        return (
+          size.width - size.rect.width >= this.controller.resizeExpandOffset
+        );
+      }
+
+      if (size.height !== undefined) {
+        if (
+          collapseAtSize?.height &&
+          collapseAtSize.rect.height > size.height
+        ) {
+          return false;
+        }
+
+        return (
+          size.height - size.rect.height >= this.controller.resizeExpandOffset
+        );
+      }
+
+      return false;
+    }),
+    share()
+  );
+
+  private stopResizeExpand$ = this.resizedSize$.pipe(
+    withLatestFrom(this.startResizeExpand$),
+    filter(([size, [expandAtSize]]) => {
+      if (size.width !== undefined && expandAtSize.width !== undefined) {
+        return expandAtSize.width - BERG_RESIZE_EXPAND_PADDING > size.width;
+      }
+
+      if (size.height !== undefined && expandAtSize.height !== undefined) {
+        return expandAtSize.height - BERG_RESIZE_EXPAND_PADDING > size.height;
+      }
+
+      return false;
+    })
+  );
+
+  /** Emits when a user resizes beyond where the element stops expanding. */
+  @Output('resizeExpanded')
+  resizeExpanded$ = merge(
+    this.startResizeExpand$.pipe(map(() => true)),
+    this.stopResizeExpand$.pipe(map(() => false))
+  ).pipe(startWith(false), distinctUntilChanged());
 
   /** Emits whenever a user clicks a panel backdrop. */
   @Output() backdropClick = new EventEmitter<void>();
@@ -248,7 +312,6 @@ export class BergPanelComponent implements BergPanel {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private zone: NgZone,
     @Inject(DOCUMENT)
     private document: Document,
     private panelControllerStore: BergPanelControllerStore,
@@ -268,7 +331,7 @@ export class BergPanelComponent implements BergPanel {
       return;
     }
 
-    if (this._resizeCollapsed) {
+    if (this._resizeSnap === 'collapsed') {
       this._hidden = true;
       return;
     }
@@ -385,10 +448,19 @@ export class BergPanelComponent implements BergPanel {
       .pipe(takeUntil(this.destroySub))
       .subscribe((event) => event.preventDefault());
 
-    this.collapsed$.pipe(takeUntil(this.destroySub)).subscribe((collapsed) => {
-      this._resizeCollapsed = collapsed;
-      this.changeDetectorRef.markForCheck();
-    });
+    combineLatest([this.resizeCollapsed$, this.resizeExpanded$])
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(([collapsed, expanded]) => {
+        if (expanded && !collapsed) {
+          this._resizeSnap = 'expanded';
+        } else if (collapsed && !expanded) {
+          this._resizeSnap = 'collapsed';
+        } else {
+          this._resizeSnap = null;
+        }
+
+        this.changeDetectorRef.markForCheck();
+      });
 
     this.slotSub
       .pipe(

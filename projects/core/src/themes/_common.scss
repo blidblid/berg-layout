@@ -27,22 +27,8 @@
     $key: 'background-backdrop',
   );
 
-  .berg-panel-left {
-    width: 50vw;
-  }
-
   .berg-panel-backdrop {
     background: $background-backdrop;
-  }
-
-  .berg-panel-left,
-  .berg-panel-right {
-    min-width: 10vw;
-  }
-
-  .berg-panel-top,
-  .berg-panel-bottom {
-    min-height: 10vh;
   }
 
   .berg-panel-top {
