@@ -7,34 +7,43 @@
 
   <berg-panel slot="top"
               *ngIf="!layout.top?.remove!"
+              output-binding-mode="noop"
               [attr.absolute]="layout.top?.absolute!"
               [attr.collapsed]="layout.top?.collapsed!"
               [attr.resize-disabled]="layout.top?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('top')">
+              (resizeSnapped)="onResizeSnapped('top', $event)"
+              (backdropClicked)="onBackdropClicked('top')">
   </berg-panel>
 
   <berg-panel slot="right"
               *ngIf="!layout.right?.remove!"
+              output-binding-mode="noop"
               [attr.absolute]="layout.right?.absolute!"
               [attr.collapsed]="layout.right?.collapsed!"
               [attr.resize-disabled]="layout.right?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('right')">
+              (resizeSnapped)="onResizeSnapped('right', $event)"
+              (backdropClicked)="onBackdropClicked('right')">
   </berg-panel>
 
   <berg-panel slot="bottom"
               *ngIf="!layout.bottom?.remove!"
+              output-binding-mode="noop"
               [attr.absolute]="layout.bottom?.absolute!"
               [attr.collapsed]="layout.bottom?.collapsed!"
               [attr.resize-disabled]="layout.bottom?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('bottom')">
+              (resizeSnapped)="onResizeSnapped('bottom', $event)"
+              (backdropClicked)="onBackdropClicked('bottom')">
   </berg-panel>
 
   <berg-panel slot="left"
               *ngIf="!layout.left?.remove!"
+              output-binding-mode="noop"
               [attr.absolute]="layout.left?.absolute!"
               [attr.collapsed]="layout.left?.collapsed!"
               [attr.resize-disabled]="layout.left?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('left')">
+              [attr.resize-snap]="layout.left?.resizeSnap!"
+              (resizeSnapped)="onResizeSnapped('left', $event)"
+              (backdropClicked)="onBackdropClicked('left')">
   </berg-panel>
 
   <berg-panel>

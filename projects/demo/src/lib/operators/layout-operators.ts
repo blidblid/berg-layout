@@ -19,11 +19,23 @@ export class LayoutOperators {
     },
   });
 
+  layout = this.createLayout();
   top = this.createPanel('top');
   right = this.createPanel('right');
   bottom = this.createPanel('bottom');
-  left = this.createPanel('left');
-  layout = this.createLayout();
+  left = [
+    ...this.createPanel('left'),
+    component({
+      component: BergSelectComponent,
+      inputs: {
+        label: 'Resize snap',
+        connect: this.layoutRx.left.resizeSnap,
+        data: ['none', 'collapsed', 'expanded'],
+        pluckLabel: (value) => value.charAt(0).toUpperCase() + value.slice(1),
+        disabled: this.layoutRx.left.remove.asObservable(),
+      },
+    }),
+  ];
 
   private createPanel(slot: Slot) {
     return [

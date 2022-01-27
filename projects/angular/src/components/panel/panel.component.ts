@@ -22,6 +22,7 @@ import {
   EMPTY,
   fromEvent,
   merge,
+  Observable,
   of,
   ReplaySubject,
   Subject,
@@ -38,20 +39,27 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BergPanelResizeSnap } from '.';
 import { BERG_LAYOUT_ELEMENT } from '../layout';
 import { BergPanelControllerStore } from './panel-controller-store';
 import {
   BergPanel,
   BergPanelInputs,
+  BergPanelOutputs,
   BergPanelResizePosition,
   BergPanelResizeSize,
+  BergPanelResizeSnap,
   BergPanelSlot,
   BERG_PANEL_DEFAULT_INPUTS,
   BERG_PANEL_INPUTS,
-  BERG_RESIZE_EXPAND_PADDING,
+  BERG_RESIZE_SNAP_PADDING,
   BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE,
 } from './panel-model';
+import {
+  BergPanelOutputBinding,
+  BergPanelOutputBindingMode,
+  BERG_PANEL_OUTPUT_BINDINGS,
+} from './panel-output-bindings';
+import { filterSizeDirection } from './panel-util';
 
 @Component({
   selector: 'berg-panel',
@@ -65,8 +73,8 @@ import {
     '[class.berg-panel-hidden]': '_hidden',
     '[class.berg-panel-resizing]': '_resizing',
     '[class.berg-panel-previewing]': '_previewing',
-    '[class.berg-panel-resize-expanded]': '_resizeSnap === "expanded"',
-    '[class.berg-panel-resize-collapsed]': '_resizeSnap === "collapsed"',
+    '[class.berg-panel-resize-expanded]': 'resizeSnap === "expanded"',
+    '[class.berg-panel-resize-collapsed]': 'resizeSnap === "collapsed"',
     '[class.berg-panel-resize-disabled]': 'resizeDisabled',
     '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
     '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
@@ -82,7 +90,9 @@ import {
     '(transitionend)': '_onTransitionend()',
   },
 })
-export class BergPanelComponent implements BergPanel {
+export class BergPanelComponent
+  implements BergPanel, BergPanelInputs, BergPanelOutputs
+{
   /** Name of the content projection slot. */
   @Input('slot')
   get slot() {
@@ -103,6 +113,7 @@ export class BergPanelComponent implements BergPanel {
 
     this._slot = value;
     this.slotSub.next(value);
+    this.controller.push();
   }
   private _slot: BergPanelSlot = 'center';
   protected slotSub = new ReplaySubject<BergPanelSlot>(1);
@@ -115,6 +126,8 @@ export class BergPanelComponent implements BergPanel {
   }
   set absolute(value: boolean) {
     this._absolute = coerceBooleanProperty(value);
+    this.updateBackdrop();
+    this.controller.push();
   }
   private _absolute: boolean = this.getInput('collapsed');
 
@@ -125,6 +138,7 @@ export class BergPanelComponent implements BergPanel {
   }
   set collapsed(value: boolean) {
     this._collapsed = coerceBooleanProperty(value);
+    this.animateCollapsedChanges();
   }
   private _collapsed: boolean = this.getInput('collapsed');
 
@@ -138,9 +152,29 @@ export class BergPanelComponent implements BergPanel {
   }
   private _resizeDisabled: boolean;
 
+  /** Resizing snap location. */
+  @Input()
+  get resizeSnap() {
+    return this._resizeSnap;
+  }
+  set resizeSnap(value: BergPanelResizeSnap) {
+    this._resizeSnap = value;
+  }
+  private _resizeSnap: BergPanelResizeSnap = this.getInput('resizeSnap');
+
+  /**
+   * Controls how panel outputs update panel inputs.
+   * - `auto` - panel outputs automatically update panel inputs.
+   * - `noop` - panel outputs never updates panel inputs.
+   */
+  @Input()
+  set outputBindingMode(value: BergPanelOutputBindingMode) {
+    this._outputBindingMode = value;
+  }
+  private _outputBindingMode = this.getInput('outputBindingMode');
+
   _resizing = false;
   _previewing = false;
-  _resizeSnap: BergPanelResizeSnap = null;
   _size: BergPanelResizeSize;
   _margin: string | null;
   _backdropElement: HTMLElement;
@@ -201,9 +235,12 @@ export class BergPanelComponent implements BergPanel {
     share()
   );
 
-  private startResizeCollapse$ = this.resizedSize$.pipe(
+  private increasingSize$ = this.resizedSize$.pipe(filterSizeDirection());
+  private decreasingSize$ = this.resizedSize$.pipe(filterSizeDirection(false));
+
+  private startResizeCollapse$ = this.decreasingSize$.pipe(
     filter((size) => {
-      if (this._resizeSnap !== null) {
+      if (this._resizeSnap !== 'none') {
         return false;
       }
 
@@ -224,53 +261,42 @@ export class BergPanelComponent implements BergPanel {
     share()
   );
 
-  private stopResizeCollapse$ = this.resizedSize$.pipe(
-    withLatestFrom(this.startResizeCollapse$),
-    filter(([size, collapseAtSize]) => {
-      if (size.width !== undefined && collapseAtSize.width !== undefined) {
-        return size.width - BERG_RESIZE_EXPAND_PADDING > collapseAtSize.width;
+  private stopResizeCollapse$ = this.increasingSize$.pipe(
+    filter((size) => {
+      if (this._resizeSnap !== 'collapsed') {
+        return false;
       }
 
-      if (size.height !== undefined && collapseAtSize.height !== undefined) {
-        return size.height - BERG_RESIZE_EXPAND_PADDING > collapseAtSize.height;
+      if (size.width !== undefined) {
+        return size.width > this.controller.resizeCollapseOffset;
+      }
+
+      if (size.height !== undefined) {
+        return size.height > this.controller.resizeCollapseOffset;
       }
 
       return false;
     })
   );
 
-  /** Emits when a user resizes beyond where the element stops shrinking. */
-  @Output('resizeCollapsed')
-  resizeCollapsed$ = merge(
+  private resizeCollapsed$ = merge(
     this.startResizeCollapse$.pipe(map(() => true)),
     this.stopResizeCollapse$.pipe(map(() => false))
-  ).pipe(startWith(false), distinctUntilChanged());
+  ).pipe(startWith(false));
 
-  private startResizeExpand$ = this.resizedSize$.pipe(
-    withLatestFrom(this.startResizeCollapse$.pipe(startWith(null))),
-    filter(([size, collapseAtSize]) => {
-      if (this._resizeSnap !== null) {
+  private startResizeExpand$ = this.increasingSize$.pipe(
+    filter((size) => {
+      if (this._resizeSnap !== 'none') {
         return false;
       }
 
       if (size.width !== undefined) {
-        if (collapseAtSize?.width && collapseAtSize.rect.width > size.width) {
-          return false;
-        }
-
         return (
           size.width - size.rect.width >= this.controller.resizeExpandOffset
         );
       }
 
       if (size.height !== undefined) {
-        if (
-          collapseAtSize?.height &&
-          collapseAtSize.rect.height > size.height
-        ) {
-          return false;
-        }
-
         return (
           size.height - size.rect.height >= this.controller.resizeExpandOffset
         );
@@ -281,30 +307,54 @@ export class BergPanelComponent implements BergPanel {
     share()
   );
 
-  private stopResizeExpand$ = this.resizedSize$.pipe(
-    withLatestFrom(this.startResizeExpand$),
-    filter(([size, [expandAtSize]]) => {
-      if (size.width !== undefined && expandAtSize.width !== undefined) {
-        return expandAtSize.width - BERG_RESIZE_EXPAND_PADDING > size.width;
+  private stopResizeExpand$ = this.decreasingSize$.pipe(
+    withLatestFrom(this.startResizeExpand$.pipe(startWith(null))),
+    filter(([size, expandAtSize]) => {
+      if (this._resizeSnap !== 'expanded') {
+        return false;
       }
 
-      if (size.height !== undefined && expandAtSize.height !== undefined) {
-        return expandAtSize.height - BERG_RESIZE_EXPAND_PADDING > size.height;
+      const { width, height } =
+        expandAtSize ?? this.hostElem.getBoundingClientRect();
+
+      if (size.width !== undefined && width !== undefined) {
+        return width - BERG_RESIZE_SNAP_PADDING > size.width;
+      }
+
+      if (size.height !== undefined && height !== undefined) {
+        return height - BERG_RESIZE_SNAP_PADDING > size.height;
       }
 
       return false;
     })
   );
 
-  /** Emits when a user resizes beyond where the element stops expanding. */
-  @Output('resizeExpanded')
-  resizeExpanded$ = merge(
+  private resizeExpanded$ = merge(
     this.startResizeExpand$.pipe(map(() => true)),
     this.stopResizeExpand$.pipe(map(() => false))
-  ).pipe(startWith(false), distinctUntilChanged());
+  ).pipe(startWith(false));
+
+  private resizeSnapped$: Observable<BergPanelResizeSnap> = combineLatest([
+    this.resizeExpanded$,
+    this.resizeCollapsed$,
+  ]).pipe(
+    map(([expanded, collapsed]) => {
+      if (expanded && !collapsed) {
+        return 'expanded';
+      } else if (collapsed && !expanded) {
+        return 'collapsed';
+      } else {
+        return 'none';
+      }
+    }),
+    distinctUntilChanged((a, b) => a === b && b === this._resizeSnap)
+  );
+
+  /** Emits when a user resizes beyond where the panel changes its size. */
+  @Output() resizeSnapped = new EventEmitter<BergPanelResizeSnap>();
 
   /** Emits whenever a user clicks a panel backdrop. */
-  @Output() backdropClick = new EventEmitter<void>();
+  @Output() backdropClicked = new EventEmitter<MouseEvent>();
 
   get hostElem() {
     return this.elementRef.nativeElement;
@@ -405,9 +455,12 @@ export class BergPanelComponent implements BergPanel {
         ].join(' ')
       );
 
-      fromEvent(this._backdropElement, 'click')
+      fromEvent<MouseEvent>(this._backdropElement, 'click')
         .pipe(takeUntil(this.destroySub))
-        .subscribe(() => this.backdropClick.emit());
+        .subscribe((event) => {
+          this.backdropClicked.emit(event);
+          this.updateBindings('onBackdropClicked', event);
+        });
     }
 
     return this._backdropElement;
@@ -447,20 +500,6 @@ export class BergPanelComponent implements BergPanel {
     merge(fromEvent<DragEvent>(this.hostElem, 'dragstart'))
       .pipe(takeUntil(this.destroySub))
       .subscribe((event) => event.preventDefault());
-
-    combineLatest([this.resizeCollapsed$, this.resizeExpanded$])
-      .pipe(takeUntil(this.destroySub))
-      .subscribe(([collapsed, expanded]) => {
-        if (expanded && !collapsed) {
-          this._resizeSnap = 'expanded';
-        } else if (collapsed && !expanded) {
-          this._resizeSnap = 'collapsed';
-        } else {
-          this._resizeSnap = null;
-        }
-
-        this.changeDetectorRef.markForCheck();
-      });
 
     this.slotSub
       .pipe(
@@ -602,6 +641,38 @@ export class BergPanelComponent implements BergPanel {
           this._layoutElement.classList.remove(resizeClass);
         }
       });
+
+    this.resizeSnapped$
+      .pipe(takeUntil(this.destroySub))
+      .subscribe((resizeSnapped) => {
+        this.resizeSnapped.emit(resizeSnapped);
+        this.updateBindings('onResizeSnapped', resizeSnapped);
+      });
+  }
+
+  // too much weirdness for TS to handle
+  private updateBindings<T extends keyof BergPanelOutputBinding>(
+    binding: T,
+    ...params: Parameters<BergPanelOutputBinding[T]>
+  ): void {
+    const updates = BERG_PANEL_OUTPUT_BINDINGS[this._outputBindingMode][
+      binding
+    ](...(params as [any]));
+
+    for (const [key, value] of Object.entries(updates)) {
+      this[key as keyof this] = value as any;
+    }
+  }
+
+  private animateCollapsedChanges(): void {
+    this.updateBackdrop();
+    this.controller.push();
+
+    if (this.collapsed) {
+      this.collapse();
+    } else {
+      this.expand();
+    }
   }
 
   ngOnInit(): void {
@@ -609,31 +680,12 @@ export class BergPanelComponent implements BergPanel {
   }
 
   ngOnChanges(change: SimpleChanges): void {
-    if (change['absolute']) {
-      this.updateBackdrop();
-      this.controller.push();
-    }
-
-    if (change['slot']) {
-      this.controller.push();
-    }
-
     if (change['collapsed']) {
       // do not animate if the panel is initially collapsed
       if (this.collapsed && change['collapsed'].isFirstChange()) {
         this._hidden = true;
-        return;
       } else {
         this._hidden = false;
-      }
-
-      this.updateBackdrop();
-      this.controller.push();
-
-      if (this.collapsed) {
-        this.collapse();
-      } else {
-        this.expand();
       }
     }
   }

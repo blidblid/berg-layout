@@ -82,9 +82,9 @@ export class BergLayoutComponent
     @Inject(BERG_LAYOUT_INPUTS)
     @Optional()
     protected override inputs: BergLayoutInputs,
+    protected elementRef: ElementRef<HTMLElement>,
     private changeDetectorRef: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
-    private elementRef: ElementRef<HTMLElement>,
     private panelControllerStore: BergPanelControllerStore
   ) {
     super(elementRef.nativeElement, document, inputs);

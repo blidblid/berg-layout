@@ -1,4 +1,6 @@
 import { InjectionToken } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BergPanelOutputBindingMode } from './panel-output-bindings';
 
 export interface BergPanel {
   slot: BergPanelSlot;
@@ -9,30 +11,34 @@ export interface BergPanel {
 
 export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
 
-export interface BergPanelBreakpoints {
-  mobile: string;
-  small: string;
-  medium: string;
-}
-
 /** Inputs that can set on panels. */
 export interface BergPanelInputs {
   absolute: boolean;
   collapsed: boolean;
   resizeDisabled: boolean;
+  resizeSnap: BergPanelResizeSnap;
+  outputBindingMode: BergPanelOutputBindingMode;
+}
+
+/** Outputs that panels emit. */
+export interface BergPanelOutputs {
+  resizeSnapped: Observable<BergPanelResizeSnap>;
+  backdropClicked: Observable<MouseEvent>;
 }
 
 export const BERG_PANEL_DEFAULT_INPUTS: BergPanelInputs = {
   absolute: false,
   collapsed: false,
   resizeDisabled: false,
+  resizeSnap: 'none',
+  outputBindingMode: 'auto',
 };
 
 export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
   'BERG_PANEL_INPUTS'
 );
 
-export const BERG_RESIZE_EXPAND_PADDING = 16;
+export const BERG_RESIZE_SNAP_PADDING = 16;
 
 // Use a debounce to prevent rapid resizes from trigger resize toggling
 export const BERG_RESIZE_EXPAND_DEBOUNCE = 10;
@@ -46,7 +52,7 @@ export type BergPanelResizePosition =
   | 'before'
   | null;
 
-export type BergPanelResizeSnap = 'collapsed' | 'expanded' | null;
+export type BergPanelResizeSnap = 'collapsed' | 'expanded' | 'none';
 
 export interface BergPanelResizeSize {
   rect: DOMRect;

@@ -98,6 +98,12 @@
   position: absolute;
   z-index: 3;
 
+  &:host(.berg-panel-resize-collapsed) {
+    .berg-panel-resize-toggle {
+      display: none;
+    }
+  }
+
   &:host(.berg-panel-top) {
     top: 0;
   }

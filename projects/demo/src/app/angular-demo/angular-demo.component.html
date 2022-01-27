@@ -6,34 +6,46 @@
              [resizePreviewDelay]="layout.resizePreviewDelay!">
   <berg-panel slot="top"
               *ngIf="!layout.top?.remove!"
+              outputBindingMode="noop"
               [absolute]="layout.top?.absolute!"
               [collapsed]="layout.top?.collapsed!"
               [resizeDisabled]="layout.top?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('top')">
+              [resizeSnap]="layout.top?.resizeSnap!"
+              (resizeSnapped)="onResizeSnapped('top', $event)"
+              (backdropClicked)="onBackdropClicked('top')">
   </berg-panel>
 
   <berg-panel slot="right"
               *ngIf="!layout.right?.remove!"
+              outputBindingMode="noop"
               [absolute]="layout.right?.absolute!"
               [collapsed]="layout.right?.collapsed!"
               [resizeDisabled]="layout.right?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('right')">
+              [resizeSnap]="layout.right?.resizeSnap!"
+              (resizeSnapped)="onResizeSnapped('right', $event)"
+              (backdropClicked)="onBackdropClicked('right')">
   </berg-panel>
 
   <berg-panel slot="bottom"
               *ngIf="!layout.bottom?.remove!"
+              outputBindingMode="noop"
               [absolute]="layout.bottom?.absolute!"
               [collapsed]="layout.bottom?.collapsed!"
               [resizeDisabled]="layout.bottom?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('bottom')">
+              [resizeSnap]="layout.bottom?.resizeSnap!"
+              (resizeSnapped)="onResizeSnapped('bottom', $event)"
+              (backdropClicked)="onBackdropClicked('bottom')">
   </berg-panel>
 
   <berg-panel slot="left"
               *ngIf="!layout.left?.remove!"
+              outputBindingMode="noop"
               [absolute]="layout.left?.absolute!"
               [collapsed]="layout.left?.collapsed!"
               [resizeDisabled]="layout.left?.resizeDisabled!"
-              (backdropClick)="onBackdropClick('left')">
+              [resizeSnap]="layout.left?.resizeSnap!"
+              (resizeSnapped)="onResizeSnapped('left', $event)"
+              (backdropClicked)="onBackdropClicked('left')">
   </berg-panel>
 
   <berg-panel>

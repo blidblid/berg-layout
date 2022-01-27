@@ -18,7 +18,11 @@ export class WebComponentDemoComponent {
     require('@berg-layout/web-component');
   }
 
-  onBackdropClick(slot: Slot): void {
+  onBackdropClicked(slot: Slot): void {
     this.rx[slot].collapsed.next(true);
+  }
+
+  onResizeSnapped(slot: Slot, resizeSnap: any): void {
+    this.rx[slot].resizeSnap.next(resizeSnap);
   }
 }
