@@ -106,7 +106,7 @@ export type ReducerAction<T> =
   | UpdateAction<T>;
 
 export function filterSizeDirection(
-  increases = true
+  increases: boolean
 ): MonoTypeOperatorFunction<BergPanelResizeSize> {
   return (source) =>
     source.pipe(

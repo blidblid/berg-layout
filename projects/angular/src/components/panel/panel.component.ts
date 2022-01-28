@@ -235,7 +235,7 @@ export class BergPanelComponent
     share()
   );
 
-  private increasingSize$ = this.resizedSize$.pipe(filterSizeDirection());
+  private increasingSize$ = this.resizedSize$.pipe(filterSizeDirection(true));
   private decreasingSize$ = this.resizedSize$.pipe(filterSizeDirection(false));
 
   private startResizeCollapse$ = this.decreasingSize$.pipe(
@@ -339,9 +339,9 @@ export class BergPanelComponent
     this.resizeCollapsed$,
   ]).pipe(
     map(([expanded, collapsed]) => {
-      if (expanded && !collapsed) {
+      if (expanded && !collapsed && this._resizeSnap !== 'collapsed') {
         return 'expanded';
-      } else if (collapsed && !expanded) {
+      } else if (collapsed && !expanded && this._resizeSnap !== 'expanded') {
         return 'collapsed';
       } else {
         return 'none';
