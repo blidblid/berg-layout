@@ -17,8 +17,8 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   smallBreakpoint: '900px',
   mediumBreakpoint: '1100px',
   resizeDisabled: false,
-  resizeCollapseOffset: 36,
-  resizeExpandOffset: 36,
+  resizeCollapseOffset: 44,
+  resizeExpandOffset: 44,
   resizeTwoDimensions: true,
   resizePreviewDelay: 200,
 };

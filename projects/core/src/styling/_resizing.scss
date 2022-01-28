@@ -13,6 +13,12 @@
   $previewing-border: $resizing-indicator-width solid
     $previewing-indicator-color;
 
+  .berg-panel-resize-disabled {
+    .berg-panel-resize-toggle {
+      display: none;
+    }
+  }
+
   .berg-panel-resize-toggle-top,
   .berg-panel-resize-toggle-right,
   .berg-panel-resize-toggle-bottom,

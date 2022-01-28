@@ -13,6 +13,8 @@ export class DemoBase {
   }
 
   onResizeSnapped(slot: Slot, resizeSnap: any): void {
-    this.rx[slot].resizeSnap.next(resizeSnap);
+    this.rx[slot].resizeSnap.next(
+      resizeSnap instanceof CustomEvent ? resizeSnap.detail : resizeSnap
+    );
   }
 }

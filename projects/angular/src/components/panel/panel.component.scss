@@ -27,12 +27,6 @@
   min-width: 128px;
 }
 
-:host(.berg-panel-resize-disabled) {
-  .berg-panel-resize-toggle {
-    display: none;
-  }
-}
-
 // keep all collapsed css !important to prevent overrides
 :host(.berg-panel-resize-collapsed) {
   padding: 0 !important;
@@ -97,12 +91,6 @@
 :host(.berg-panel-absolute) {
   position: absolute;
   z-index: 3;
-
-  &:host(.berg-panel-resize-collapsed) {
-    .berg-panel-resize-toggle {
-      display: none;
-    }
-  }
 
   &:host(.berg-panel-top) {
     top: 0;

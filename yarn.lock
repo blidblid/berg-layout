@@ -1200,8 +1200,9 @@
     to-fast-properties "^2.0.0"
 
 "@berg-layout/angular@./dist/angular":
-  version "0.0.1"
+  version "0.0.4"
   dependencies:
+    "@berglund/rx" "^0.0.1"
     tslib "^2.3.0"
 
 "@berg-layout/builder-hooks@./projects/builder-hooks/dist":
@@ -1210,7 +1211,7 @@
     tslib "^2.3.0"
 
 "@berg-layout/core@./dist/core":
-  version "0.0.0-watch"
+  version "0.0.1"
   dependencies:
     tslib "^2.3.0"
 
@@ -1234,6 +1235,13 @@
   integrity sha512-X7Gy2l4aX8ZE+8U4+qQ7GjB6T8ErBTJAN21FjuOwg/qskydNfoUfylam80TH/6Dqn1lvIyanLUJE7CdAewdfoQ==
   dependencies:
     tslib "^2.2.0"
+
+"@berglund/rx@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@berglund/rx/-/rx-0.0.1.tgz#a6beac160f7d59c563d3ad5ae532d9043bd572df"
+  integrity sha512-TgfibhjSpafduNHZe51B0XBROSxWX8T7NZ6Qyzh7G0/dYb575GSm7wJ5Ghcvq5CCkYYk2Z1xkCDkSkcrgwMugg==
+  dependencies:
+    tslib "^2.1.0"
 
 "@berglund/rx@^0.0.6":
   version "0.0.6"

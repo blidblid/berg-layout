@@ -39,6 +39,6 @@ export class EditorNavComponent {
       this.view = view;
     }
 
-    this.viewChanged.next(view);
+    this.viewChanged.next(this.view);
   }
 }

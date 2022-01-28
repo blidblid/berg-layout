@@ -11,6 +11,7 @@
               [attr.absolute]="layout.top?.absolute!"
               [attr.collapsed]="layout.top?.collapsed!"
               [attr.resize-disabled]="layout.top?.resizeDisabled!"
+              [attr.resize-snap]="layout.top?.resizeSnap!"
               (resizeSnapped)="onResizeSnapped('top', $event)"
               (backdropClicked)="onBackdropClicked('top')">
   </berg-panel>
@@ -21,6 +22,7 @@
               [attr.absolute]="layout.right?.absolute!"
               [attr.collapsed]="layout.right?.collapsed!"
               [attr.resize-disabled]="layout.right?.resizeDisabled!"
+              [attr.resize-snap]="layout.right?.resizeSnap!"
               (resizeSnapped)="onResizeSnapped('right', $event)"
               (backdropClicked)="onBackdropClicked('right')">
   </berg-panel>
@@ -31,6 +33,7 @@
               [attr.absolute]="layout.bottom?.absolute!"
               [attr.collapsed]="layout.bottom?.collapsed!"
               [attr.resize-disabled]="layout.bottom?.resizeDisabled!"
+              [attr.resize-snap]="layout.bottom?.resizeSnap!"
               (resizeSnapped)="onResizeSnapped('bottom', $event)"
               (backdropClicked)="onBackdropClicked('bottom')">
   </berg-panel>
