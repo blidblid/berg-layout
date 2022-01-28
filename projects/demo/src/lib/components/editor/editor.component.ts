@@ -19,15 +19,8 @@ import { LayoutOperators } from '@demo/operators';
 export class EditorComponent {
   @Input() html: string | null;
 
+  @Input()
   view: 'none' | 'edit' | 'code' = 'none';
 
   constructor(public operators: LayoutOperators) {}
-
-  updateView(view: 'none' | 'edit' | 'code'): void {
-    if (view === this.view) {
-      this.view = 'none';
-    } else {
-      this.view = view;
-    }
-  }
 }

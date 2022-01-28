@@ -3,25 +3,19 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
-import { BergPanelResizeSnap } from '@berg-layout/angular';
 import { LayoutOperators } from '@demo/operators';
-import { LayoutRx, Slot } from '@demo/rx';
+import { LayoutRx } from '@demo/rx';
+import { DemoBase } from '../demo-base';
 
 @Component({
   selector: 'berg-angular-demo',
   templateUrl: './angular-demo.component.html',
-  styleUrls: ['./angular-demo.component.scss'],
+  styleUrls: ['../demo.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AngularDemoComponent {
-  constructor(public operators: LayoutOperators, public rx: LayoutRx) {}
-
-  onBackdropClicked(slot: Slot): void {
-    this.rx[slot].collapsed.next(true);
-  }
-
-  onResizeSnapped(slot: Slot, resizeSnap: BergPanelResizeSnap): void {
-    this.rx[slot].resizeSnap.next(resizeSnap);
+export class AngularDemoComponent extends DemoBase {
+  constructor(public operators: LayoutOperators, public override rx: LayoutRx) {
+    super(rx);
   }
 }

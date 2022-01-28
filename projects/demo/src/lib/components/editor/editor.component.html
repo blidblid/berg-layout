@@ -1,17 +1,3 @@
-<span>
-  <button mat-icon-button
-          (click)="updateView('edit')"
-          [color]="view === 'edit' ? 'primary' : null">
-    <mat-icon>edit</mat-icon>
-  </button>
-
-  <button mat-icon-button
-          (click)="updateView('code')"
-          [color]="view === 'code' ? 'primary' : null">
-    <mat-icon>code</mat-icon>
-  </button>
-</span>
-
 <div class="berg-editor-cards"
      *ngIf="view === 'edit'">
   <mat-card>

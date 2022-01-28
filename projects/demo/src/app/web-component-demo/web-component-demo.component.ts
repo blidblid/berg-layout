@@ -4,7 +4,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { LayoutOperators } from '@demo/operators';
-import { LayoutRx, Slot } from '@demo/rx';
+import { LayoutRx } from '@demo/rx';
+import { DemoBase } from '../demo-base';
 
 @Component({
   selector: 'berg-web-component-demo',
@@ -13,16 +14,9 @@ import { LayoutRx, Slot } from '@demo/rx';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WebComponentDemoComponent {
-  constructor(public operators: LayoutOperators, public rx: LayoutRx) {
+export class WebComponentDemoComponent extends DemoBase {
+  constructor(public operators: LayoutOperators, public override rx: LayoutRx) {
+    super(rx);
     require('@berg-layout/web-component');
-  }
-
-  onBackdropClicked(slot: Slot): void {
-    this.rx[slot].collapsed.next(true);
-  }
-
-  onResizeSnapped(slot: Slot, resizeSnap: any): void {
-    this.rx[slot].resizeSnap.next(resizeSnap);
   }
 }

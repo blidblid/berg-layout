@@ -44,9 +44,12 @@
               [attr.resize-snap]="layout.left?.resizeSnap!"
               (resizeSnapped)="onResizeSnapped('left', $event)"
               (backdropClicked)="onBackdropClicked('left')">
+    <berg-editor-nav (viewChanged)="view = $event"></berg-editor-nav>
   </berg-panel>
 
   <berg-panel>
-    <berg-editor [html]="rx.webComponentHtml$ | async"></berg-editor>
+    <berg-editor [html]="rx.webComponentHtml$ | async"
+                 [view]="view">
+    </berg-editor>
   </berg-panel>
 </berg-layout>
