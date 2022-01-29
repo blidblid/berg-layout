@@ -33,6 +33,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  pairwise,
   share,
   startWith,
   switchMap,
@@ -239,8 +240,13 @@ export class BergPanelComponent
   private decreasingSize$ = this.resizedSize$.pipe(filterSizeDirection(false));
 
   private startResizeCollapse$ = this.decreasingSize$.pipe(
-    filter((size) => {
-      if (this._resizeSnap !== 'none') {
+    pairwise(),
+    filter(([previous, size]) => {
+      if (
+        this._resizeSnap !== 'none' ||
+        previous.rect.width !== size.rect.width ||
+        previous.rect.height !== size.rect.height
+      ) {
         return false;
       }
 
@@ -258,6 +264,7 @@ export class BergPanelComponent
 
       return false;
     }),
+    map(([_, size]) => size),
     share()
   );
 
@@ -285,8 +292,13 @@ export class BergPanelComponent
   ).pipe(startWith(false));
 
   private startResizeExpand$ = this.increasingSize$.pipe(
-    filter((size) => {
-      if (this._resizeSnap !== 'none') {
+    pairwise(),
+    filter(([previous, size]) => {
+      if (
+        this._resizeSnap !== 'none' ||
+        previous.rect.width !== size.rect.width ||
+        previous.rect.height !== size.rect.height
+      ) {
         return false;
       }
 
@@ -304,6 +316,7 @@ export class BergPanelComponent
 
       return false;
     }),
+    map(([_, size]) => size),
     share()
   );
 
@@ -378,11 +391,6 @@ export class BergPanelComponent
 
   collapse(): void {
     if (!this.slot) {
-      return;
-    }
-
-    if (this._resizeSnap === 'collapsed') {
-      this._hidden = true;
       return;
     }
 
@@ -668,6 +676,14 @@ export class BergPanelComponent
     this.updateBackdrop();
     this.controller.push();
 
+    // do not animate if the panel it is resize snapped
+    if (this.collapsed && this._resizeSnap === 'collapsed') {
+      this._hidden = true;
+      return;
+    }
+
+    this._hidden = false;
+
     if (this.collapsed) {
       this.collapse();
     } else {
@@ -684,8 +700,6 @@ export class BergPanelComponent
       // do not animate if the panel is initially collapsed
       if (this.collapsed && change['collapsed'].isFirstChange()) {
         this._hidden = true;
-      } else {
-        this._hidden = false;
       }
     }
   }
