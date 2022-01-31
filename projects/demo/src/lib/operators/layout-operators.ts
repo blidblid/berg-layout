@@ -113,6 +113,14 @@ export class LayoutOperators {
           connect: this.layoutRx.layout.resizePreviewDelay,
         },
       }),
+      component({
+        component: BergSelectComponent,
+        inputs: {
+          label: 'Style',
+          connect: this.layoutRx.layoutStyle$,
+          data: ['Dark Shades', 'Light Shades'],
+        },
+      }),
     ];
   }
 

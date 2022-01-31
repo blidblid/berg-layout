@@ -6,6 +6,7 @@ import {
 import { userInput } from '@berglund/rx';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LayoutStyle } from '.';
 import { Layout, ObservableProperties, Panel, Slot } from './layout-model';
 import { toHtml } from './layout-util';
 
@@ -53,6 +54,8 @@ export class LayoutRx {
   webComponentHtml$: Observable<string> = this.layout$.pipe(
     map((layout) => toHtml(layout, true))
   );
+
+  layoutStyle$ = userInput<LayoutStyle>('Dark Shades');
 
   private createLayoutInputs() {
     return {

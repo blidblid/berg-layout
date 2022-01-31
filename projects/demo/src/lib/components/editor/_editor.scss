@@ -3,6 +3,7 @@
 @mixin theme($colors) {
   .mat-card,
   pre {
-    border: 1px solid map-get($map: $colors, $key: 'divider');
+    border: 1px solid map-get($colors, 'divider');
+    box-shadow: none !important;
   }
 }

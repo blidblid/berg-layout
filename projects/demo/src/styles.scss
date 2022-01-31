@@ -1,17 +1,16 @@
-@use './lib/components/editor/editor';
-@use './lib/components/card/card';
 @use 'sass:map';
 @use 'sass:math';
 @use '@angular/material' as mat;
 @use 'node_modules/@berg-layout/core' as layout;
+@use './app';
 
 @include mat.core();
 
-$primary: mat.define-palette(mat.$orange-palette, A400);
+$primary: mat.define-palette(mat.$blue-palette, A400);
 $accent: mat.define-palette(mat.$orange-palette, A400);
 $warn: mat.define-palette(mat.$red-palette);
 
-$theme: mat.define-dark-theme(
+$dark-theme: mat.define-dark-theme(
   (
     color: (
       primary: $primary,
@@ -21,27 +20,30 @@ $theme: mat.define-dark-theme(
   )
 );
 
-$config: mat.get-color-config($theme);
-$accent-palette: map.get($config, 'accent');
-$accent-color: mat.get-color-from-palette($accent-palette);
-
-// make a new color map since @angular/material has a tedious API.
-$colors: (
-  primary: #006eff,
-  secondary: $accent-color,
-  background: rgb(30, 30, 30),
-  background-low-contrast: rgb(37, 37, 38),
-  background-high-contrast: rgb(60, 60, 60),
-  background-backdrop: rgba(white, 0.3),
-  divider: rgb(65, 65, 65),
-  text: white,
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+    ),
+  )
 );
 
-@include layout.dark-shades();
+@include mat.all-component-themes($dark-theme);
 
-@include card.theme($colors);
-@include editor.theme($colors);
-@include mat.all-component-themes($theme);
+.app-root-dark-shades {
+  color: rgba(255, 255, 255, 0.7);
+  @include layout.dark-shades();
+  @include app.theme($dark-theme);
+}
+
+.app-root-light-shades {
+  color: #000000de;
+  @include layout.light-shades();
+  @include mat.all-component-colors($light-theme);
+  @include app.theme($light-theme);
+}
 
 html,
 body {
@@ -75,5 +77,4 @@ body {
 
 body {
   margin: 0;
-  color: rgba(255, 255, 255, 0.7);
 }
