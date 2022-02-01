@@ -56,6 +56,7 @@ export class DemoBase {
       .pipe(takeUntil(this.destroySub))
       .subscribe((breakpoints) => {
         this.rx.left.collapsed.next(breakpoints.tiny);
+        this.rx.left.resizeSnap.next(breakpoints.large ? 'none' : 'expanded');
         this.rx.right.collapsed.next(breakpoints.medium);
         this.rx.bottom.collapsed.next(!breakpoints.tiny);
       });
