@@ -1,3 +1,4 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +16,11 @@ import { DemoBase } from '../demo-base';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AngularDemoComponent extends DemoBase {
-  constructor(public operators: LayoutOperators, public override rx: LayoutRx) {
-    super(rx);
+  constructor(
+    public operators: LayoutOperators,
+    public override rx: LayoutRx,
+    protected override breakpointObserver: BreakpointObserver
+  ) {
+    super(rx, breakpointObserver);
   }
 }

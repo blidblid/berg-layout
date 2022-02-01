@@ -31,11 +31,11 @@ $light-theme: mat.define-light-theme(
 );
 
 @include mat.all-component-themes($dark-theme);
+@include layout.dark-shades();
+@include app.theme($dark-theme);
 
 .app-root-dark-shades {
   color: rgba(255, 255, 255, 0.7);
-  @include layout.dark-shades();
-  @include app.theme($dark-theme);
 }
 
 .app-root-light-shades {
@@ -67,12 +67,21 @@ body {
 }
 
 .berg-panel-right {
-  min-width: 10vw;
+  min-width: 20vw;
 }
 
-.berg-panel-top,
-.berg-panel-bottom {
+.berg-panel-top {
   min-height: 10vh;
+}
+
+.berg-panel-bottom {
+  min-height: 41px;
+  max-height: 41px;
+
+  &::part(content) {
+    display: flex;
+    padding: 0;
+  }
 }
 
 body {

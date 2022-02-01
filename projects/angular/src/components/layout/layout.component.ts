@@ -1,24 +1,14 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
-  Input,
   OnDestroy,
   Optional,
   ViewEncapsulation,
 } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  Subject,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { Subject } from 'rxjs';
 import { BergPanelController } from '../panel/panel-controller';
 import { BergPanelControllerStore } from '../panel/panel-controller-store';
 import {
@@ -38,43 +28,13 @@ import {
     { provide: BERG_LAYOUT_ELEMENT, useExisting: BergLayoutComponent },
   ],
   host: {
-    '[class]': '_hostClass',
-    '[class.berg-layout]': 'true',
+    class: 'berg-layout',
   },
 })
 export class BergLayoutComponent
   extends BergPanelController
   implements BergLayoutInputs, BergLayoutElement, OnDestroy
 {
-  /** Mobile resolution breakpoint. */
-  @Input()
-  set mobileBreakpoint(value: string) {
-    this.mobileBreakpointSub.next(value);
-  }
-  private mobileBreakpointSub = new BehaviorSubject<string>(
-    this.getInput('mobileBreakpoint')
-  );
-
-  /** Small resolution breakpoint. */
-  @Input()
-  set smallBreakpoint(value: string) {
-    this.smallBreakpointSub.next(value);
-  }
-  private smallBreakpointSub = new BehaviorSubject<string>(
-    this.getInput('smallBreakpoint')
-  );
-
-  /** Medium resolution breakpoint. */
-  @Input()
-  set mediumBreakpoint(value: string) {
-    this.mediumBreakpointSub.next(value);
-  }
-  private mediumBreakpointSub = new BehaviorSubject<string>(
-    this.getInput('mediumBreakpoint')
-  );
-
-  _hostClass: string;
-
   private destroySub = new Subject<void>();
 
   constructor(
@@ -83,53 +43,10 @@ export class BergLayoutComponent
     @Optional()
     protected override inputs: BergLayoutInputs,
     protected elementRef: ElementRef<HTMLElement>,
-    private changeDetectorRef: ChangeDetectorRef,
-    private breakpointObserver: BreakpointObserver,
     private panelControllerStore: BergPanelControllerStore
   ) {
     super(elementRef.nativeElement, document, inputs);
     this.panelControllerStore.add(this);
-    this.subscribe();
-  }
-
-  private hostClass$ = combineLatest([
-    this.mobileBreakpointSub,
-    this.smallBreakpointSub,
-    this.mediumBreakpointSub,
-  ]).pipe(
-    map((breakpoints) => breakpoints.map(this.getBreakpoint)),
-    switchMap(([mobile, small, medium]) => {
-      return this.breakpointObserver
-        .observe(
-          [mobile, small, medium].filter(
-            (breakpoint): breakpoint is string => !!breakpoint
-          )
-        )
-        .pipe(
-          map((state) => {
-            if (state.breakpoints[mobile]) {
-              return 'berg-layout-mobile';
-            } else if (state.breakpoints[small]) {
-              return 'berg-layout-small';
-            } else if (state.breakpoints[medium]) {
-              return 'berg-layout-medium';
-            }
-
-            return 'berg-layout-large';
-          })
-        );
-    })
-  );
-
-  private getBreakpoint(breakpoint?: string): string {
-    return breakpoint ? `(max-width: ${breakpoint})` : '';
-  }
-
-  private subscribe(): void {
-    this.hostClass$.pipe(takeUntil(this.destroySub)).subscribe((hostClass) => {
-      this._hostClass = hostClass;
-      this.changeDetectorRef.markForCheck();
-    });
   }
 
   ngOnDestroy(): void {

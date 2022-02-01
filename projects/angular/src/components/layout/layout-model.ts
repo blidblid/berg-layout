@@ -2,9 +2,6 @@ import { InjectionToken } from '@angular/core';
 
 /** Inputs that can set on only layouts. */
 export interface BergLayoutInputs {
-  mobileBreakpoint: string;
-  smallBreakpoint: string;
-  mediumBreakpoint: string;
   resizeDisabled: boolean;
   resizeTwoDimensions: boolean;
   resizeCollapseOffset: number;
@@ -13,9 +10,6 @@ export interface BergLayoutInputs {
 }
 
 export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
-  mobileBreakpoint: '800px',
-  smallBreakpoint: '900px',
-  mediumBreakpoint: '1100px',
   resizeDisabled: false,
   resizeCollapseOffset: 44,
   resizeExpandOffset: 44,

@@ -25,7 +25,7 @@ export class LayoutRx {
 
   top = this.createPanelInputs('top');
   right = this.createPanelInputs('right');
-  bottom = this.createPanelInputs('bottom');
+  bottom = this.createPanelInputs('bottom', true);
   left = this.createPanelInputs('left');
   layout = this.createLayoutInputs();
 
@@ -75,11 +75,11 @@ export class LayoutRx {
     };
   }
 
-  private createPanelInputs(slot: Slot) {
+  private createPanelInputs(slot: Slot, collapsed = false) {
     return {
       slot: of(slot),
       absolute: userInput(false),
-      collapsed: userInput(false),
+      collapsed: userInput(collapsed),
       remove: userInput(false),
       resizeDisabled: userInput(false),
       resizeSnap: userInput<BergPanelResizeSnap>('none'),

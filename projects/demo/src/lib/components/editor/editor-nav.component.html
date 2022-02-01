@@ -1,7 +1,7 @@
 <mat-nav-list>
   <mat-list-item *ngFor="let item of items"
                  (click)="updateView(item.view)">
-    <mat-icon [color]="this.view === item.view ? 'primary' : 'none'">{{item.icon}}</mat-icon>
+    <mat-icon [color]="view === item.view ? 'primary' : 'none'">{{item.icon}}</mat-icon>
     <div>{{item.description}}</div>
   </mat-list-item>
 </mat-nav-list>

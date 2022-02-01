@@ -35,6 +35,9 @@
               [resizeSnap]="layout.bottom?.resizeSnap!"
               (resizeSnapped)="onResizeSnapped('bottom', $event)"
               (backdropClicked)="onBackdropClicked('bottom')">
+    <berg-editor-icon-nav (viewChanged)="view = $event"
+                          [view]="view">
+    </berg-editor-icon-nav>
   </berg-panel>
 
   <berg-panel slot="left"

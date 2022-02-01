@@ -6,10 +6,9 @@ import {
 import { EditorIconNavBase } from './editor-nav-base';
 
 @Component({
-  selector: 'berg-editor-nav',
-  templateUrl: './editor-nav.component.html',
-  styleUrls: ['./editor-nav.component.scss'],
+  selector: 'berg-editor-icon-nav',
+  templateUrl: './editor-icon-nav.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditorNavComponent extends EditorIconNavBase {}
+export class EditorIconNavComponent extends EditorIconNavBase {}

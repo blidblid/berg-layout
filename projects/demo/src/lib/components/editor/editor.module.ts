@@ -7,10 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { BergOutletModule } from '@berglund/mixins';
 import { BergHighlightCodeModule } from '../code-highlighter';
+import { EditorIconNavComponent } from './editor-icon-nav.component';
 import { EditorNavComponent } from './editor-nav.component';
 import { EditorComponent } from './editor.component';
 
-const API = [EditorComponent, EditorNavComponent];
+const API = [EditorComponent, EditorNavComponent, EditorIconNavComponent];
 
 @NgModule({
   declarations: API,
