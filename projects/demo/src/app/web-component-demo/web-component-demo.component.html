@@ -11,8 +11,8 @@
               [attr.absolute]="layout.top?.absolute!"
               [attr.collapsed]="layout.top?.collapsed!"
               [attr.resize-disabled]="layout.top?.resizeDisabled!"
-              [attr.resize-snap]="layout.top?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('top', $event)"
+              [attr.resize-snap]="layout.top?.snap!"
+              (snapped)="onSnapped('top', $event)"
               (backdropClicked)="onBackdropClicked('top')">
   </berg-panel>
 
@@ -22,8 +22,8 @@
               [attr.absolute]="layout.right?.absolute!"
               [attr.collapsed]="layout.right?.collapsed!"
               [attr.resize-disabled]="layout.right?.resizeDisabled!"
-              [attr.resize-snap]="layout.right?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('right', $event)"
+              [attr.resize-snap]="layout.right?.snap!"
+              (snapped)="onSnapped('right', $event)"
               (backdropClicked)="onBackdropClicked('right')">
   </berg-panel>
 
@@ -33,8 +33,8 @@
               [attr.absolute]="layout.bottom?.absolute!"
               [attr.collapsed]="layout.bottom?.collapsed!"
               [attr.resize-disabled]="layout.bottom?.resizeDisabled!"
-              [attr.resize-snap]="layout.bottom?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('bottom', $event)"
+              [attr.resize-snap]="layout.bottom?.snap!"
+              (snapped)="onSnapped('bottom', $event)"
               (backdropClicked)="onBackdropClicked('bottom')">
     <berg-editor-icon-nav (viewChanged)="view = $event"
                           [view]="view">
@@ -47,8 +47,8 @@
               [attr.absolute]="layout.left?.absolute!"
               [attr.collapsed]="layout.left?.collapsed!"
               [attr.resize-disabled]="layout.left?.resizeDisabled!"
-              [attr.resize-snap]="layout.left?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('left', $event)"
+              [attr.resize-snap]="layout.left?.snap!"
+              (snapped)="onSnapped('left', $event)"
               (backdropClicked)="onBackdropClicked('left')">
     <berg-editor-nav (viewChanged)="view = $event"
                      [view]="view">

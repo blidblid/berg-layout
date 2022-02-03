@@ -13,7 +13,7 @@ import {
   shareReplay,
   startWith,
 } from 'rxjs/operators';
-import { BergPanelResizeSize } from './panel-model';
+import { BergPanelResizeSize } from './panel-model-private';
 
 export type UpdateValue<T> = { oldValue: T; newValue: T };
 

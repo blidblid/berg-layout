@@ -10,8 +10,8 @@
               [absolute]="layout.top?.absolute!"
               [collapsed]="layout.top?.collapsed!"
               [resizeDisabled]="layout.top?.resizeDisabled!"
-              [resizeSnap]="layout.top?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('top', $event)"
+              [snap]="layout.top?.snap!"
+              (snapped)="onSnapped('top', $event)"
               (backdropClicked)="onBackdropClicked('top')">
   </berg-panel>
 
@@ -21,8 +21,8 @@
               [absolute]="layout.right?.absolute!"
               [collapsed]="layout.right?.collapsed!"
               [resizeDisabled]="layout.right?.resizeDisabled!"
-              [resizeSnap]="layout.right?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('right', $event)"
+              [snap]="layout.right?.snap!"
+              (snapped)="onSnapped('right', $event)"
               (backdropClicked)="onBackdropClicked('right')">
   </berg-panel>
 
@@ -32,8 +32,8 @@
               [absolute]="layout.bottom?.absolute!"
               [collapsed]="layout.bottom?.collapsed!"
               [resizeDisabled]="layout.bottom?.resizeDisabled!"
-              [resizeSnap]="layout.bottom?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('bottom', $event)"
+              [snap]="layout.bottom?.snap!"
+              (snapped)="onSnapped('bottom', $event)"
               (backdropClicked)="onBackdropClicked('bottom')">
     <berg-editor-icon-nav (viewChanged)="view = $event"
                           [view]="view">
@@ -46,8 +46,8 @@
               [absolute]="layout.left?.absolute!"
               [collapsed]="layout.left?.collapsed!"
               [resizeDisabled]="layout.left?.resizeDisabled!"
-              [resizeSnap]="layout.left?.resizeSnap!"
-              (resizeSnapped)="onResizeSnapped('left', $event)"
+              [snap]="layout.left?.snap!"
+              (snapped)="onSnapped('left', $event)"
               (backdropClicked)="onBackdropClicked('left')">
     <berg-editor-nav (viewChanged)="view = $event"></berg-editor-nav>
   </berg-panel>

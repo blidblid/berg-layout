@@ -11,12 +11,8 @@ import {
 import { Subject } from 'rxjs';
 import { BergPanelController } from '../panel/panel-controller';
 import { BergPanelControllerStore } from '../panel/panel-controller-store';
-import {
-  BergLayoutElement,
-  BergLayoutInputs,
-  BERG_LAYOUT_ELEMENT,
-  BERG_LAYOUT_INPUTS,
-} from './layout-model';
+import { BergLayoutInputs, BERG_LAYOUT_INPUTS } from './layout-model';
+import { BergLayoutElement, BERG_LAYOUT_ELEMENT } from './layout-model-private';
 
 @Component({
   selector: 'berg-layout',
@@ -49,6 +45,7 @@ export class BergLayoutComponent
     this.panelControllerStore.add(this);
   }
 
+  /** @hidden */
   ngOnDestroy(): void {
     this.destroySub.next();
     this.destroySub.complete();

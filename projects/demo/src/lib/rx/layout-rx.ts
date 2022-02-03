@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-  BergPanelResizeSnap,
+  BergPanelSnap,
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '@berg-layout/angular';
 import { userInput } from '@berglund/rx';
@@ -82,7 +82,7 @@ export class LayoutRx {
       collapsed: userInput(collapsed),
       remove: userInput(false),
       resizeDisabled: userInput(false),
-      resizeSnap: userInput<BergPanelResizeSnap>('none'),
+      snap: userInput<BergPanelSnap>('none'),
     };
   }
 

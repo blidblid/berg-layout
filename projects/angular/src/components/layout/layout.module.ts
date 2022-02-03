@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BergPanelModule } from '../panel';
+import { BergPanelComponent } from '../panel';
 import { BergLayoutComponent } from './layout.component';
 
-const API = [BergLayoutComponent];
+const API = [BergLayoutComponent, BergPanelComponent];
 
 @NgModule({
   declarations: API,
-  exports: [...API, BergPanelModule],
-  imports: [BergPanelModule, CommonModule],
+  exports: [...API],
+  imports: [CommonModule],
 })
 export class BergLayoutModule {}

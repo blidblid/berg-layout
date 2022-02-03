@@ -1,24 +1,31 @@
-# Angular
+# @berg-layout/angular
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.0.
+This is the Angular version of berg-layout.
 
-## Code scaffolding
+Check out the demo [here](https://berg-layout.web.app/angular).
 
-Run `ng generate component component-name --project angular` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project angular`.
-> Note: Don't forget to add `--project angular` or else it will be added to the default project in your `angular.json` file. 
+## Usage
 
-## Build
+First import the module.
 
-Run `ng build angular` to build the project. The build artifacts will be stored in the `dist/` directory.
+```typescript
+import { BergLayoutModule } from '@berg-layout/angular';
 
-## Publishing
+@NgModule({
+  imports: [BergLayoutModule],
+})
+export class LayoutModule {}
+```
 
-After building your library with `ng build angular`, go to the dist folder `cd dist/angular` and run `npm publish`.
+Then add a layout and place panels using the [slot attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot).
 
-## Running unit tests
+```html
+<berg-layout>
+  <berg-panel slot="left" absolute="true"></berg-panel>
+  <berg-panel></berg-panel>
+</berg-layout>
+```
 
-Run `ng test angular` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## API
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+See https://berg-layout-api.web.app/angular/api.

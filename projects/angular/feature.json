@@ -1,0 +1,6 @@
+{
+  "category": "Components",
+  "tsconfig": "./tsconfig.lib.prod.json",
+  "entryPointPath": "./src/index.ts",
+  "name": "Angular component"
+}

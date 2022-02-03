@@ -1222,6 +1222,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@berglund/components@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@berglund/components/-/components-0.0.4.tgz#cf04635afc9358b0d1df1787d289d7568f7b7cf6"
+  integrity sha512-u9FkQK0Gsfb/OTBPXOGxO5/naYfl7vaqeca5jYfnva2lq/dCK3DHtK0Gkwz3mi9VQOFgBtqfWe3KpIQAfkJHWQ==
+  dependencies:
+    tslib "^2.1.0"
+
 "@berglund/material@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@berglund/material/-/material-0.0.7.tgz#3cc26e79d7e6cb6ca6c8ef170c1698db0552f17a"

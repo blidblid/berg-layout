@@ -13,58 +13,11 @@ import {
   Subject,
 } from 'rxjs';
 import { BergLayoutInputs, BERG_LAYOUT_DEFAULT_INPUTS } from '../layout';
-import { BergPanel, BergPanelSlot } from './panel-model';
+import { BergPanelInputs, BergPanelSlot } from './panel-model';
 import { arrayReducer } from './panel-util';
 
 @Directive()
 export class BergPanelController {
-  /**
-   * Px value to determine what resize events should collapse panels.
-   * If it's 16px, resizing will collapse a panel if its resized 16px smaller than it current width.
-   */
-  @Input()
-  get resizeCollapseOffset() {
-    return this._resizeCollapseOffset;
-  }
-  set resizeCollapseOffset(value: number) {
-    this._resizeCollapseOffset = coerceNumberProperty(value);
-  }
-  private _resizeCollapseOffset: number = this.getInput('resizeCollapseOffset');
-
-  /**
-   * Px value to determine what resize events should expand panels.
-   * If it's 16px, resizing will expand a panel if its resized 16px beyond than it current width.
-   */
-  @Input()
-  get resizeExpandOffset() {
-    return this._resizeExpandOffset;
-  }
-  set resizeExpandOffset(value: number) {
-    this._resizeExpandOffset = coerceNumberProperty(value);
-  }
-  private _resizeExpandOffset: number = this.getInput('resizeExpandOffset');
-
-  /** Delay before the resize preview is shown. */
-  @Input()
-  get resizePreviewDelay() {
-    return this._resizePreviewDelay;
-  }
-  set resizePreviewDelay(value: number) {
-    this._resizePreviewDelay = coerceNumberProperty(value);
-  }
-  private _resizePreviewDelay: number = this.getInput('resizePreviewDelay');
-
-  /** Delay before the resize preview is shown. */
-  @Input()
-  get resizeTwoDimensions() {
-    return this._resizeTwoDimensions;
-  }
-  set resizeTwoDimensions(value: boolean) {
-    this._resizeTwoDimensions = coerceBooleanProperty(value);
-  }
-  private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
-
-  /** Whether resizing is disabled. */
   @Input()
   get resizeDisabled() {
     return this._resizeDisabled;
@@ -74,9 +27,45 @@ export class BergPanelController {
   }
   private _resizeDisabled: boolean = this.getInput('resizeDisabled');
 
-  private addPanelSub = new Subject<BergPanel>();
+  @Input()
+  get resizeCollapseOffset() {
+    return this._resizeCollapseOffset;
+  }
+  set resizeCollapseOffset(value: number) {
+    this._resizeCollapseOffset = coerceNumberProperty(value);
+  }
+  private _resizeCollapseOffset: number = this.getInput('resizeCollapseOffset');
+
+  @Input()
+  get resizeExpandOffset() {
+    return this._resizeExpandOffset;
+  }
+  set resizeExpandOffset(value: number) {
+    this._resizeExpandOffset = coerceNumberProperty(value);
+  }
+  private _resizeExpandOffset: number = this.getInput('resizeExpandOffset');
+
+  @Input()
+  get resizePreviewDelay() {
+    return this._resizePreviewDelay;
+  }
+  set resizePreviewDelay(value: number) {
+    this._resizePreviewDelay = coerceNumberProperty(value);
+  }
+  private _resizePreviewDelay: number = this.getInput('resizePreviewDelay');
+
+  @Input()
+  get resizeTwoDimensions() {
+    return this._resizeTwoDimensions;
+  }
+  set resizeTwoDimensions(value: boolean) {
+    this._resizeTwoDimensions = coerceBooleanProperty(value);
+  }
+  private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
+
+  private addPanelSub = new Subject<BergPanelInputs>();
   private pushPanelSub = new Subject<void>();
-  private removePanelSub = new Subject<BergPanel>();
+  private removePanelSub = new Subject<BergPanelInputs>();
 
   private panels$ = arrayReducer({
     add: this.addPanelSub,
@@ -91,6 +80,7 @@ export class BergPanelController {
     left: this.createResizeToggleElement('left'),
   };
 
+  /** @hidden */
   resizeToggles: HTMLElement[] = Object.values(this.resizeTogglesRecord);
 
   constructor(
@@ -101,22 +91,27 @@ export class BergPanelController {
     this.panels$.subscribe(); // make shareReplay(1) eagerly cache panels
   }
 
-  add(panel: BergPanel): void {
+  /** @hidden */
+  add(panel: BergPanelInputs): void {
     this.addPanelSub.next(panel);
   }
 
+  /** @hidden */
   push(): void {
     this.pushPanelSub.next();
   }
 
-  remove(panel: BergPanel): void {
+  /** @hidden */
+  remove(panel: BergPanelInputs): void {
     this.removePanelSub.next(panel);
   }
 
+  /** @hidden */
   fromLayoutEvent<T extends Event>(eventName: string): Observable<T> {
     return fromEvent<T>(this.hostElem, eventName);
   }
 
+  /** @hidden */
   fromResizeTogglesEvent<T extends Event>(eventName: string): Observable<T> {
     return merge(
       ...this.resizeToggles.map((resizeToggle) => {
@@ -125,10 +120,12 @@ export class BergPanelController {
     );
   }
 
+  /** @hidden */
   getResizeToggle(slot: BergPanelSlot): HTMLElement | null {
     return slot === 'center' ? null : this.resizeTogglesRecord[slot];
   }
 
+  /** @hidden */
   getRenderedResizeToggles(slot: BergPanelSlot): Observable<HTMLElement[]> {
     return this.panels$.pipe(
       map((panels) => this.getResizeTogglesForSlot(slot, panels))
@@ -143,7 +140,7 @@ export class BergPanelController {
 
   private getResizeTogglesForSlot(
     slot: BergPanelSlot,
-    panels: BergPanel[]
+    panels: BergPanelInputs[]
   ): HTMLElement[] {
     if (slot === 'right') {
       return [this.resizeTogglesRecord.right];

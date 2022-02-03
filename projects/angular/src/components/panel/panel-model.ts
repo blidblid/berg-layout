@@ -2,60 +2,57 @@ import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BergPanelOutputBindingMode } from './panel-output-bindings';
 
-export interface BergPanel {
-  slot: BergPanelSlot;
-  absolute: boolean;
-  collapsed: boolean;
-  hostElem: HTMLElement;
-}
-
+/** Slots where panels can be inserted. */
 export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
 
-/** Inputs that can set on panels. */
+/** Inputs of berg-panel. */
 export interface BergPanelInputs {
+  /** Name of the content projection slot. */
+  slot: BergPanelSlot;
+
+  /** Whether the panel is absolutely positioned. */
   absolute: boolean;
+
+  /** Whether the panel is collapsed. */
   collapsed: boolean;
+
+  /** Whether resizing is disabled. */
   resizeDisabled: boolean;
-  resizeSnap: BergPanelResizeSnap;
+
+  /** Snap location. */
+  snap: BergPanelSnap;
+
+  /**
+   * Controls how panel outputs update panel inputs.
+   * With auto, panel outputs automatically update panel inputs.
+   * With noop, panel outputs never updates panel inputs.
+   */
   outputBindingMode: BergPanelOutputBindingMode;
 }
 
 /** Outputs that panels emit. */
 export interface BergPanelOutputs {
-  resizeSnapped: Observable<BergPanelResizeSnap>;
+  /** Emits when a user resizes beyond where the panel changes its size. */
+  snapped: Observable<BergPanelSnap>;
+
+  /** Emits whenever a user clicks a panel backdrop. */
   backdropClicked: Observable<MouseEvent>;
 }
 
+/** Default inputs of berg-panel. */
 export const BERG_PANEL_DEFAULT_INPUTS: BergPanelInputs = {
+  slot: 'center',
   absolute: false,
   collapsed: false,
   resizeDisabled: false,
-  resizeSnap: 'none',
+  snap: 'none',
   outputBindingMode: 'auto',
 };
 
+/** Injection token used to set the default berg-panel inputs. */
 export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
   'BERG_PANEL_INPUTS'
 );
 
-export const BERG_RESIZE_SNAP_PADDING = 16;
-
-// Use a debounce to prevent rapid resizes from trigger resize toggling
-export const BERG_RESIZE_EXPAND_DEBOUNCE = 10;
-
-export const BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE = 8;
-
-export type BergPanelResizePosition =
-  | 'above'
-  | 'after'
-  | 'below'
-  | 'before'
-  | null;
-
-export type BergPanelResizeSnap = 'collapsed' | 'expanded' | 'none';
-
-export interface BergPanelResizeSize {
-  rect: DOMRect;
-  width?: number;
-  height?: number;
-}
+/** Snap states of berg-panel. */
+export type BergPanelSnap = 'collapsed' | 'expanded' | 'none';

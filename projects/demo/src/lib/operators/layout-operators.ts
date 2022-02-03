@@ -28,8 +28,8 @@ export class LayoutOperators {
     component({
       component: BergSelectComponent,
       inputs: {
-        label: 'Resize snap',
-        connect: this.layoutRx.left.resizeSnap,
+        label: 'Snap',
+        connect: this.layoutRx.left.snap,
         data: ['none', 'collapsed', 'expanded'],
         pluckLabel: (value) => value.charAt(0).toUpperCase() + value.slice(1),
         disabled: this.layoutRx.left.remove.asObservable(),

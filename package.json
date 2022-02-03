@@ -1,6 +1,7 @@
 {
   "name": "berg-layout",
   "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,6 +25,7 @@
     "@angular/router": "~13.1.0",
     "@berg-layout/angular": "./dist/angular",
     "@berg-layout/core": "./dist/core",
+    "@berglund/components": "^0.0.4",
     "@berglund/material": "^0.0.7",
     "@berglund/mixins": "^0.0.5",
     "@berglund/rx": "^0.0.6",

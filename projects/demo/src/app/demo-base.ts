@@ -45,10 +45,8 @@ export class DemoBase {
     this.rx[slot].collapsed.next(true);
   }
 
-  onResizeSnapped(slot: Slot, resizeSnap: any): void {
-    this.rx[slot].resizeSnap.next(
-      resizeSnap instanceof CustomEvent ? resizeSnap.detail : resizeSnap
-    );
+  onSnapped(slot: Slot, snap: any): void {
+    this.rx[slot].snap.next(snap instanceof CustomEvent ? snap.detail : snap);
   }
 
   private subscribe(): void {
@@ -56,7 +54,7 @@ export class DemoBase {
       .pipe(takeUntil(this.destroySub))
       .subscribe((breakpoints) => {
         this.rx.left.collapsed.next(breakpoints.tiny);
-        this.rx.left.resizeSnap.next(breakpoints.large ? 'none' : 'expanded');
+        this.rx.left.snap.next(breakpoints.large ? 'none' : 'expanded');
         this.rx.right.collapsed.next(breakpoints.medium);
         this.rx.bottom.collapsed.next(!breakpoints.tiny);
       });

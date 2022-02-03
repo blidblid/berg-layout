@@ -1,9 +1,9 @@
-import { BergPanelInputs, BergPanelResizeSnap } from './panel-model';
+import { BergPanelInputs, BergPanelSnap } from './panel-model';
 
 type BergPanelInputUpdate = Partial<BergPanelInputs>;
 
 export interface BergPanelOutputBinding {
-  onResizeSnapped(resizeSnap: BergPanelResizeSnap): BergPanelInputUpdate;
+  onSnapped(snap: BergPanelSnap): BergPanelInputUpdate;
   onBackdropClicked(event: MouseEvent): BergPanelInputUpdate;
 }
 
@@ -14,9 +14,9 @@ export const BERG_PANEL_OUTPUT_BINDINGS: Record<
   BergPanelOutputBinding
 > = {
   auto: {
-    onResizeSnapped(resizeSnap: BergPanelResizeSnap) {
+    onSnapped(snap: BergPanelSnap) {
       return {
-        resizeSnap,
+        snap: snap,
       };
     },
     onBackdropClicked() {
@@ -26,7 +26,7 @@ export const BERG_PANEL_OUTPUT_BINDINGS: Record<
     },
   },
   noop: {
-    onResizeSnapped() {
+    onSnapped() {
       return {};
     },
     onBackdropClicked() {
