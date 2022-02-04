@@ -67,11 +67,15 @@ body {
 }
 
 .berg-panel-right {
-  min-width: 20vw;
+  min-width: 10vw;
 }
 
 .berg-panel-top {
-  min-height: 10vh;
+  min-height: 72px;
+
+  &::part(content) {
+    padding: 16px;
+  }
 }
 
 .berg-panel-bottom {

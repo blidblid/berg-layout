@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BergLayoutModule } from '@berg-layout/angular';
-import { EditorModule } from '@demo/components';
+import { EditorModule, ToolbarModule } from '@demo/components';
 import { AngularDemoComponent } from './angular-demo.component';
 
 @NgModule({
@@ -15,6 +15,7 @@ import { AngularDemoComponent } from './angular-demo.component';
     MatButtonModule,
     MatIconModule,
     EditorModule,
+    ToolbarModule,
   ],
 })
 export class AngularDemoModule {}

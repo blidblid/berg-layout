@@ -3,7 +3,7 @@ import {
   BergPanelSnap,
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '@berg-layout/angular';
-import { userInput } from '@berglund/rx';
+import { userValue } from '@berglund/rx';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LayoutStyle } from '.';
@@ -21,7 +21,7 @@ export class LayoutRx {
     { slot: 'left', name: 'Left' },
   ];
 
-  edit$ = userInput(this.slots[3]);
+  edit$ = userValue(this.slots[3]);
 
   top = this.createPanelInputs('top');
   right = this.createPanelInputs('right');
@@ -55,21 +55,21 @@ export class LayoutRx {
     map((layout) => toHtml(layout, true))
   );
 
-  layoutStyle$ = userInput<LayoutStyle>('Dark Shades');
+  layoutStyle$ = userValue<LayoutStyle>('Dark Shades');
 
   private createLayoutInputs() {
     return {
-      resizeDisabled: userInput(BERG_LAYOUT_DEFAULT_INPUTS.resizeDisabled),
-      resizeTwoDimensions: userInput(
+      resizeDisabled: userValue(BERG_LAYOUT_DEFAULT_INPUTS.resizeDisabled),
+      resizeTwoDimensions: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.resizeTwoDimensions
       ),
-      resizeCollapseOffset: userInput(
+      resizeCollapseOffset: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.resizeCollapseOffset
       ),
-      resizeExpandOffset: userInput(
+      resizeExpandOffset: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.resizeExpandOffset
       ),
-      resizePreviewDelay: userInput(
+      resizePreviewDelay: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.resizePreviewDelay
       ),
     };
@@ -78,11 +78,11 @@ export class LayoutRx {
   private createPanelInputs(slot: Slot, collapsed = false) {
     return {
       slot: of(slot),
-      absolute: userInput(false),
-      collapsed: userInput(collapsed),
-      remove: userInput(false),
-      resizeDisabled: userInput(false),
-      snap: userInput<BergPanelSnap>('none'),
+      absolute: userValue(false),
+      collapsed: userValue(collapsed),
+      remove: userValue(false),
+      resizeDisabled: userValue(false),
+      snap: userValue<BergPanelSnap>('none'),
     };
   }
 

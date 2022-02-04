@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +18,7 @@ import { WebComponentDemoModule } from './web-component-demo/web-component-demo.
     BrowserAnimationsModule,
     BrowserModule,
     HomeModule,
+    HttpClientModule,
     WebComponentDemoModule,
   ],
   bootstrap: [AppComponent],

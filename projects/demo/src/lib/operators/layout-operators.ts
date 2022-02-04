@@ -15,7 +15,7 @@ export class LayoutOperators {
       label: 'Edit panel',
       data: this.layoutRx.slots,
       pluckLabel: (value) => value.name,
-      connect: this.layoutRx.edit$,
+      connectToFormValue: this.layoutRx.edit$,
     },
   });
 
@@ -29,7 +29,7 @@ export class LayoutOperators {
       component: BergSelectComponent,
       inputs: {
         label: 'Snap',
-        connect: this.layoutRx.left.snap,
+        connectToFormValue: this.layoutRx.left.snap,
         data: ['none', 'collapsed', 'expanded'],
         pluckLabel: (value) => value.charAt(0).toUpperCase() + value.slice(1),
         disabled: this.layoutRx.left.remove.asObservable(),
@@ -43,14 +43,14 @@ export class LayoutOperators {
         component: BergCheckboxComponent,
         inputs: {
           label: 'Remove',
-          connect: this.layoutRx[slot].remove,
+          connectToFormValue: this.layoutRx[slot].remove,
         },
       }),
       component({
         component: BergCheckboxComponent,
         inputs: {
           label: 'Absolute',
-          connect: this.layoutRx[slot].absolute,
+          connectToFormValue: this.layoutRx[slot].absolute,
           disabled: this.layoutRx[slot].remove.asObservable(),
         },
       }),
@@ -58,7 +58,7 @@ export class LayoutOperators {
         component: BergCheckboxComponent,
         inputs: {
           label: 'Collapsed',
-          connect: this.layoutRx[slot].collapsed,
+          connectToFormValue: this.layoutRx[slot].collapsed,
           disabled: this.layoutRx[slot].remove.asObservable(),
         },
       }),
@@ -66,7 +66,7 @@ export class LayoutOperators {
         component: BergCheckboxComponent,
         inputs: {
           label: 'Resize disabled',
-          connect: this.layoutRx[slot].resizeDisabled,
+          connectToFormValue: this.layoutRx[slot].resizeDisabled,
           disabled: this.layoutRx[slot].remove.asObservable(),
         },
       }),
@@ -79,14 +79,14 @@ export class LayoutOperators {
         component: BergCheckboxComponent,
         inputs: {
           label: 'Resize disabled',
-          connect: this.layoutRx.layout.resizeDisabled,
+          connectToFormValue: this.layoutRx.layout.resizeDisabled,
         },
       }),
       component({
         component: BergCheckboxComponent,
         inputs: {
           label: 'Resize two dimensions',
-          connect: this.layoutRx.layout.resizeTwoDimensions,
+          connectToFormValue: this.layoutRx.layout.resizeTwoDimensions,
         },
       }),
       component({
@@ -94,7 +94,7 @@ export class LayoutOperators {
         inputs: {
           label: 'Resize collapse offset',
           type: 'number',
-          connect: this.layoutRx.layout.resizeCollapseOffset,
+          connectToFormValue: this.layoutRx.layout.resizeCollapseOffset,
         },
       }),
       component({
@@ -102,7 +102,7 @@ export class LayoutOperators {
         inputs: {
           label: 'Resize expand offset',
           type: 'number',
-          connect: this.layoutRx.layout.resizeExpandOffset,
+          connectToFormValue: this.layoutRx.layout.resizeExpandOffset,
         },
       }),
       component({
@@ -110,14 +110,14 @@ export class LayoutOperators {
         inputs: {
           label: 'Resize preview delay',
           type: 'number',
-          connect: this.layoutRx.layout.resizePreviewDelay,
+          connectToFormValue: this.layoutRx.layout.resizePreviewDelay,
         },
       }),
       component({
         component: BergSelectComponent,
         inputs: {
           label: 'Style',
-          connect: this.layoutRx.layoutStyle$,
+          connectToFormValue: this.layoutRx.layoutStyle$,
           data: ['Dark Shades', 'Light Shades'],
         },
       }),

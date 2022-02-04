@@ -1,0 +1,12 @@
+.berg-toolbar {
+  display: flex;
+  justify-content: space-between;
+
+  .berg-toolbar-logo {
+    font-size: 20px;
+  }
+
+  .mat-icon {
+    filter: grayscale(1);
+  }
+}
