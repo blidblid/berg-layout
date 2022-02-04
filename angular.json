@@ -191,23 +191,23 @@
         }
       }
     },
-    "core": {
+    "styling": {
       "projectType": "library",
-      "root": "projects/core",
-      "sourceRoot": "projects/core/src",
+      "root": "projects/styling",
+      "sourceRoot": "projects/styling/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/core/ng-package.json"
+            "project": "projects/styling/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/core/tsconfig.lib.prod.json"
+              "tsConfig": "projects/styling/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/core/tsconfig.lib.json"
+              "tsConfig": "projects/styling/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -215,9 +215,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/core/src/test.ts",
-            "tsConfig": "projects/core/tsconfig.spec.json",
-            "karmaConfig": "projects/core/karma.conf.js"
+            "main": "projects/styling/src/test.ts",
+            "tsConfig": "projects/styling/tsconfig.spec.json",
+            "karmaConfig": "projects/styling/karma.conf.js"
           }
         }
       }

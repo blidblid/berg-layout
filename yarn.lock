@@ -1398,7 +1398,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@berg-layout/core@./dist/core":
+"@berg-layout/styling@./dist/core":
   version "0.0.1"
   dependencies:
     tslib "^2.3.0"

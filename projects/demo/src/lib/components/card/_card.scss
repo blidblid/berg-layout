@@ -1,4 +1,4 @@
-@use 'node_modules/@berg-layout/core' as layout;
+@use 'node_modules/@berg-layout/styling' as layout;
 
 @mixin theme($colors) {
   .app-card {

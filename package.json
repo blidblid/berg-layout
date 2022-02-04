@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~13.2.1",
     "@angular/platform-browser-dynamic": "~13.2.1",
     "@angular/router": "~13.2.1",
-    "@berg-layout/core": "./dist/core",
+    "@berg-layout/styling": "./dist/core",
     "@berglund/components": "^0.0.4",
     "@berglund/material": "^0.0.8",
     "@berglund/mixins": "^0.0.12",
