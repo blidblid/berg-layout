@@ -4,9 +4,10 @@
 
 All styles in berg-layout are applied through css-classes. If you're looking to customize a layout from scratch, just add styles to these classes.
 
-- Host classes
+- Static classes
   - `.berg-layout`
   - `.berg-panel`
+  - `.berg-panel-backdrop`
 - Panel parts
   - `.berg-panel::part(overflow)`
   - `.berg-panel::part(content)`
@@ -19,6 +20,11 @@ All styles in berg-layout are applied through css-classes. If you're looking to 
   - `.berg-panel-resize-resizing`
   - `.berg-panel-resize-previewing`
   - `.berg-panel-resize-disabled`
+  - `.berg-panel-resize-toggle`
+  - `.berg-panel-resize-toggle-top`
+  - `.berg-panel-resize-toggle-right`
+  - `.berg-panel-resize-toggle-bottom`
+  - `.berg-panel-resize-toggle-left`
 - Positional classes
   - `.berg-panel-vertical`
   - `.berg-panel-horizontal`
@@ -28,27 +34,44 @@ All styles in berg-layout are applied through css-classes. If you're looking to 
   - `.berg-panel-bottom`
   - `.berg-panel-center`
 
-## SASS API
+## Prebuilt themes
 
-To style berg-layout using SASS, first import the API.
+The quickest way to style berg-layout is to use prebuilt css. Start with importing `core.css`.
 
-```scss
-@use 'node_modules/@berg-layout/styling' as layout;
+```css
+@import '~@berg-layout/styling/core.css';
 ```
 
-### SASS themes
+Then, import a theme.
 
-berg-layout comes with several pre-made themes.
+```css
+@import '~@berg-layout/styling/dark-shades.css';
+```
+
+## SASS API
+
+### Core styles
+
+To style berg-layout using SASS, first use the layout API. Then, include the core-mixin, optionally passing options.
 
 ```scss
 @use 'node_modules/@berg-layout/styling' as layout;
 
-// dark themes
-@include layout.abyss();
-@include layout.dark-shades();
+@include layout.core(
+  $options: (
+    $resizing-indicator-size: 6px,
+  )
+);
+```
 
-// light themes
-@include layout.light-shades();
+### Themes
+
+Then, add a theme.
+
+```scss
+@use 'node_modules/@berg-layout/styling' as layout;
+
+@include layout.dark-shades();
 ```
 
 Another way of creating themes is to call `theme` passing a `map` of colors.
@@ -63,11 +86,13 @@ Another way of creating themes is to call `theme` passing a `map` of colors.
     background-high-contrast: rgb(60, 60, 60),
     background-backdrop: rgba(255, 255, 255, 0.3),
     divider: rgb(65, 65, 65),
+    resizing-indicator-color: #ff9100,
+    previewing-indicator-color: #006eff,
   )
 );
 ```
 
-### SASS borders
+### Borders
 
 To add borders, use the `borders` mixin.
 
@@ -77,7 +102,7 @@ To add borders, use the `borders` mixin.
 @include layout.borders(1px solid grey);
 ```
 
-### SASS elevation
+### Elevation
 
 To add elevation, use the `elevation` mixin.
 
@@ -88,20 +113,4 @@ To add elevation, use the `elevation` mixin.
 .berg-panel-top {
   @include layout.elevation(4);
 }
-```
-
-### SASS resizing
-
-To customize resizing styles, use the `resizing` mixin, passing a `map` of styles.
-
-```scss
-@use 'node_modules/@berg-layout/styling' as layout;
-
-@include layout.resizing(
-  (
-    'resizing-indicator-width': 6px,
-    'previewing-indicator-color': orange,
-    'resizing-indicator-color': blue,
-  )
-);
 ```

@@ -1,6 +1,7 @@
 @forward './src/styling/border';
+@forward './src/styling/core';
 @forward './src/styling/elevation';
-@forward './src/styling/resizing';
+@forward './src/styling/theme';
 
 @forward './src/themes/abyss';
 @forward './src/themes/dark-shades';

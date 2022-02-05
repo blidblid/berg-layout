@@ -1,22 +1,15 @@
-@use '../styling/resizing';
-@use './common';
+@use '../styling/theme';
 
 @mixin light-shades() {
-  @include common.theme(
+  @include theme.theme(
     $colors: (
       background: rgb(255, 255, 255),
       background-low-contrast: rgb(243, 243, 243),
       background-high-contrast: rgb(221, 221, 221),
       background-backdrop: rgba(black, 0.3),
       divider: rgb(211, 211, 211),
-    )
-  );
-
-  @include resizing.resizing(
-    (
-      'resizing-indicator-width': 6px,
-      'previewing-indicator-color': rgb(68, 144, 237),
-      'resizing-indicator-color': rgb(237, 161, 68),
+      previewing-indicator-color: rgb(68, 144, 237),
+      resizing-indicator-color: rgb(237, 161, 68),
     )
   );
 }

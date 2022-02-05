@@ -27,8 +27,8 @@ export interface BergLayoutInputs {
 /** Default inputs of berg-layout. */
 export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   resizeDisabled: false,
-  resizeCollapseOffset: 44,
-  resizeExpandOffset: 44,
+  resizeCollapseOffset: 36,
+  resizeExpandOffset: 36,
   resizeTwoDimensions: true,
   resizePreviewDelay: 200,
 };

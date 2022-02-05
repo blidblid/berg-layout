@@ -5,6 +5,7 @@
 @use './app';
 
 @include mat.core();
+@include layout.core();
 
 $primary: mat.define-palette(mat.$blue-palette, A400);
 $accent: mat.define-palette(mat.$orange-palette, A400);
@@ -31,8 +32,9 @@ $light-theme: mat.define-light-theme(
 );
 
 @include mat.all-component-themes($dark-theme);
-@include layout.dark-shades();
 @include app.theme($dark-theme);
+
+@include layout.dark-shades();
 
 .app-root-dark-shades {
   color: rgba(255, 255, 255, 0.7);

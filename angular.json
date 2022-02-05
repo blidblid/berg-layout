@@ -198,7 +198,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@berglund/angular-cli-hooks:ng-packagr",
           "options": {
             "project": "projects/styling/ng-package.json"
           },

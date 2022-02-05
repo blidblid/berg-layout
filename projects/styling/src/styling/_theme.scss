@@ -1,0 +1,119 @@
+@use 'sass:map';
+@use '../styling/elevation' as elevation;
+
+@mixin theme($colors) {
+  @include panel-theme($colors);
+  @include resizing-theme($colors);
+}
+
+@mixin panel-theme($colors) {
+  $divider: map-get(
+    $map: $colors,
+    $key: 'divider',
+  );
+
+  $background: map-get(
+    $map: $colors,
+    $key: 'background',
+  );
+
+  $background-low-contrast: map-get(
+    $map: $colors,
+    $key: 'background-low-contrast',
+  );
+
+  $background-high-contrast: map-get(
+    $map: $colors,
+    $key: 'background-high-contrast',
+  );
+
+  $background-backdrop: map-get(
+    $map: $colors,
+    $key: 'background-backdrop',
+  );
+
+  .berg-panel-backdrop {
+    background: $background-backdrop;
+  }
+
+  .berg-panel-top {
+    background: $background-high-contrast;
+  }
+
+  .berg-panel-bottom {
+    border-top: 1px solid $divider;
+  }
+
+  .berg-panel-left,
+  .berg-panel-right {
+    background: $background-low-contrast;
+  }
+
+  body,
+  .berg-panel-center,
+  .berg-panel-bottom {
+    background: $background;
+  }
+
+  .berg-panel-left,
+  .berg-panel-right,
+  .berg-panel-top,
+  .berg-panel-bottom {
+    @include elevation.elevation(4);
+  }
+}
+
+@mixin resizing-theme($map) {
+  $resizing-indicator-color: map-get($map, 'resizing-indicator-color');
+  $previewing-indicator-color: map-get($map, 'previewing-indicator-color') or
+    $resizing-indicator-color;
+
+  .berg-panel-resize-toggle-top,
+  .berg-panel-resize-toggle-right,
+  .berg-panel-resize-toggle-bottom,
+  .berg-panel-resize-toggle-left {
+    .berg-panel-resize-previewing & {
+      background: $previewing-indicator-color;
+    }
+
+    .berg-panel-resize-resizing & {
+      background: $resizing-indicator-color;
+    }
+  }
+
+  .berg-panel-top {
+    &.berg-panel-resize-previewing {
+      ~ .berg-panel-center {
+        .berg-panel-resize-toggle-top {
+          background: $previewing-indicator-color;
+        }
+      }
+    }
+
+    &.berg-panel-resize-resizing {
+      ~ .berg-panel-center {
+        .berg-panel-resize-toggle-top {
+          background: $resizing-indicator-color;
+        }
+      }
+    }
+  }
+
+  .berg-panel-left {
+    &.berg-panel-resize-previewing {
+      ~ .berg-panel-center {
+        .berg-panel-resize-toggle-left {
+          background: $previewing-indicator-color;
+        }
+      }
+    }
+
+    &.berg-panel-resize-resizing {
+      ~ .berg-panel-center {
+        .berg-panel-resize-toggle-left {
+          background: $resizing-indicator-color;
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,10 @@ import {
   unlinkSync,
   writeFileSync,
 } from 'fs';
-import { join } from 'path';
+import { sync } from 'glob';
+import { join, parse } from 'path';
+import { basename } from 'path/posix';
+import { compile } from 'sass';
 
 export default [
   hook({
@@ -17,11 +20,38 @@ export default [
       return { success: true };
     },
   }),
+  hook({
+    name: 'build-lib',
+    after: async ({}, { workspaceRoot, target }): Promise<BuilderOutput> => {
+      preBuildThemes(workspaceRoot, target);
+      return { success: true };
+    },
+  }),
 ];
 
-function webComponentBuildHook(workspaceRoot: string, target?: Target) {
+function preBuildThemes(workspaceRoot: string, target?: Target) {
+  if (target?.project !== 'styling') {
+    return;
+  }
+
+  const stylingDist = join(workspaceRoot, 'dist', 'styling');
+
+  for (const preBuiltThemePath of sync(
+    join(workspaceRoot, 'projects/styling/src/prebuilt/*.scss')
+  )) {
+    const cssFileName =
+      basename(preBuiltThemePath, parse(preBuiltThemePath).ext) + '.css';
+
+    writeFileSync(
+      join(stylingDist, cssFileName),
+      compile(preBuiltThemePath).css
+    );
+  }
+}
+
+function webComponentBuildHook(workspaceRoot: string, target?: Target): void {
   if (target?.project !== 'web-component') {
-    return { success: true };
+    return;
   }
 
   concatBundle(workspaceRoot);
