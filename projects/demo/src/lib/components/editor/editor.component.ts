@@ -20,7 +20,7 @@ export class EditorComponent {
   @Input() html: string | null;
 
   @Input()
-  view: 'none' | 'edit' | 'code' = 'none';
+  view: 'none' | 'edit' | 'code' = 'code';
 
   constructor(public operators: LayoutOperators) {}
 }

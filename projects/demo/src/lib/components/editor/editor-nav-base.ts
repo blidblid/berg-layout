@@ -3,7 +3,7 @@ import { EditorNavItem, EditorView } from './editor-model';
 
 @Directive()
 export class EditorIconNavBase {
-  @Input() view: EditorView = 'none';
+  @Input() view: EditorView = 'code';
   @Output() viewChanged = new EventEmitter<EditorView>();
 
   items: EditorNavItem[] = [

@@ -7,7 +7,7 @@ import { map, takeUntil } from 'rxjs/operators';
 
 @Directive()
 export class DemoBase {
-  view: EditorView = 'none';
+  view: EditorView = 'code';
 
   private tiny = this.getBreakpoint('700px');
   private small = this.getBreakpoint('900px');

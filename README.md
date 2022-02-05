@@ -32,15 +32,15 @@ The component is packaged as a [web component](https://developer.mozilla.org/en-
 
 ### Web component
 
-See the [web component usage docs](https://layout.albinberglund.com/web-component).
+See the [web component usage docs](https://berg-layout-api.web.app/web-component).
 
 ### Angular component
 
-See the [web Angular component docs](https://layout.albinberglund.com/angular).
+See the [web Angular component docs](https://berg-layout-api.web.app/angular).
 
 ## API
 
-See https://layout.albinberglund.com/angular/api.
+See https://berg-layout-api.web.app/angular/api.
 
 ## Demo
 
