@@ -2,7 +2,7 @@
   "name": "@berg-layout/builder-hooks",
   "author": "Albin Berglund",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "src/index.js",
   "peerDependencies": {
     "@berglund/angular-cli-hooks": "^0.0.1"
