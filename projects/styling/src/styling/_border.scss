@@ -1,4 +1,4 @@
-@mixin borders($border) {
+@mixin border($border) {
   .berg-panel-top {
     border-bottom: $border;
   }

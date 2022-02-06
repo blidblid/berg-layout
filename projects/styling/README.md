@@ -45,14 +45,24 @@ The quickest way to style berg-layout is to use prebuilt css. Start with importi
 Then, import a theme.
 
 ```css
-@import '~@berg-layout/styling/dark-shades.css';
+@import '~@berg-layout/styling/dark.css';
 ```
+
+There are 7 different themes to choose from
+
+- Abyss
+- Dark
+- High Contrast
+- Light
+- Quiet Light
+- Solarized Dark
+- Solarized Light
 
 ## SASS API
 
 ### Core styles
 
-To style berg-layout using SASS, first use the layout API. Then, include the core-mixin, optionally passing options.
+To style berg-layout using SASS, first `@use` the layout API. Then, include the core-mixin, optionally passing options.
 
 ```scss
 @use 'node_modules/@berg-layout/styling' as layout;
@@ -66,15 +76,19 @@ To style berg-layout using SASS, first use the layout API. Then, include the cor
 
 ### Themes
 
-Then, add a theme.
+Pick a theme and include it using its theme-mixin. Optionally, pass overrides.
 
 ```scss
 @use 'node_modules/@berg-layout/styling' as layout;
 
-@include layout.dark-shades();
+@include layout.dark(
+  $override: (
+    resizing-indicator-color: #3b7fd0,
+  )
+);
 ```
 
-Another way of creating themes is to call `theme` passing a `map` of colors.
+A lower level way of creating themes is to call the `theme`-mixin with `map` of colors.
 
 ```scss
 @use 'node_modules/@berg-layout/styling' as layout;
@@ -94,12 +108,12 @@ Another way of creating themes is to call `theme` passing a `map` of colors.
 
 ### Borders
 
-To add borders, use the `borders` mixin.
+To add border, use the `border` mixin.
 
 ```scss
 @use 'node_modules/@berg-layout/styling' as layout;
 
-@include layout.borders(1px solid grey);
+@include layout.border(1px solid grey);
 ```
 
 ### Elevation

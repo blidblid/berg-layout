@@ -1,0 +1,19 @@
+@use 'sass:map';
+@use '../styling/theme';
+
+@mixin solarized-light($overrides: ()) {
+  @include theme.theme(
+    map.merge(
+      (
+        background: rgb(252, 246, 228),
+        background-low-contrast: rgb(237, 232, 214),
+        background-high-contrast: rgb(237, 232, 214),
+        background-backdrop: rgba(black, 0.3),
+        divider: rgb(220, 214, 194),
+        resizing-indicator-color: #89a5cc,
+        previewing-indicator-color: #ccb089,
+      ),
+      $overrides
+    )
+  );
+}

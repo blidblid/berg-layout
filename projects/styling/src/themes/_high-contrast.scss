@@ -1,0 +1,21 @@
+@use 'sass:map';
+@use '../styling/theme';
+@use '../styling/border';
+
+@mixin high-contrast($overrides: ()) {
+  $combined: map.merge(
+    (
+      background: black,
+      background-low-contrast: black,
+      background-high-contrast: black,
+      background-backdrop: rgba(white, 0.3),
+      divider: white,
+      resizing-indicator-color: white,
+      previewing-indicator-color: white,
+    ),
+    $overrides
+  );
+
+  @include theme.theme($combined);
+  @include border.border(2px solid map-get($combined, divider));
+}

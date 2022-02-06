@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~13.2.1",
     "@angular/platform-browser-dynamic": "~13.2.1",
     "@angular/router": "~13.2.1",
-    "@berg-layout/styling": "./dist/styling",
+    "@berg-layout/styling": "^0.0.2",
     "@berglund/components": "^0.0.4",
     "@berglund/material": "^0.0.8",
     "@berglund/mixins": "^0.0.14",
@@ -39,8 +39,8 @@
     "@angular-devkit/core": "~13.2.2",
     "@angular/cli": "~13.2.2",
     "@angular/compiler-cli": "~13.2.1",
-    "@berg-layout/builder-hooks": "./projects/builder-hooks/dist",
-    "@berglund/angular-cli-hooks": "^0.0.4",
+    "@berg-layout/builder-hooks": "^0.0.2",
+    "@berglund/angular-cli-hooks": "^0.0.5",
     "@types/jasmine": "~3.10.3",
     "@types/node": "^17.0.14",
     "fs-extra": "^10.0.0",
@@ -56,6 +56,7 @@
     "prettier-plugin-organize-imports": "^2.3.4",
     "sass": "^1.49.7",
     "sass-loader": "^12.4.0",
-    "typescript": "~4.5.5"
+    "typescript": "~4.5.5",
+    "webpack": "^5.68.0"
   }
 }

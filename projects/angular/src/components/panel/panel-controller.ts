@@ -181,6 +181,7 @@ export class BergPanelController {
       'berg-panel-resize-toggle',
       `berg-panel-resize-toggle-${slot}`
     );
+
     return div;
   }
 }

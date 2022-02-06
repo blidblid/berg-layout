@@ -1,0 +1,19 @@
+@use 'sass:map';
+@use '../styling/theme';
+
+@mixin quiet-light($overrides: ()) {
+  @include theme.theme(
+    map.merge(
+      (
+        background: rgb(245, 245, 245),
+        background-low-contrast: rgb(242, 242, 242),
+        background-high-contrast: rgb(236, 236, 236),
+        background-backdrop: rgba(black, 0.3),
+        divider: rgb(169, 178, 156),
+        resizing-indicator-color: #9cb5a9,
+        previewing-indicator-color: #a9b29c,
+      ),
+      $overrides
+    )
+  );
+}

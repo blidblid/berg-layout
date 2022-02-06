@@ -68,15 +68,20 @@
   $previewing-indicator-color: map-get($map, 'previewing-indicator-color') or
     $resizing-indicator-color;
 
-  .berg-panel-resize-toggle-top,
-  .berg-panel-resize-toggle-right,
-  .berg-panel-resize-toggle-bottom,
-  .berg-panel-resize-toggle-left {
-    .berg-panel-resize-previewing & {
+  .berg-panel-resize-previewing {
+    .berg-panel-resize-toggle-top,
+    .berg-panel-resize-toggle-right,
+    .berg-panel-resize-toggle-bottom,
+    .berg-panel-resize-toggle-left {
       background: $previewing-indicator-color;
     }
+  }
 
-    .berg-panel-resize-resizing & {
+  .berg-panel-resize-resizing {
+    .berg-panel-resize-toggle-top,
+    .berg-panel-resize-toggle-right,
+    .berg-panel-resize-toggle-bottom,
+    .berg-panel-resize-toggle-left {
       background: $resizing-indicator-color;
     }
   }

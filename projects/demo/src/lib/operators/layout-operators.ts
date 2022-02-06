@@ -118,7 +118,15 @@ export class LayoutOperators {
         inputs: {
           label: 'Style',
           connectToFormValue: this.layoutRx.layoutStyle$,
-          data: ['Dark Shades', 'Light Shades'],
+          data: [
+            'Abyss',
+            'Dark',
+            'High Contrast',
+            'Light',
+            'Quiet Light',
+            'Solarized Dark',
+            'Solarized Light',
+          ],
         },
       }),
     ];

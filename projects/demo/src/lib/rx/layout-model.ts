@@ -18,5 +18,3 @@ export interface Panel extends Partial<BergPanelInputs> {
 export type ObservableProperties<T> = {
   [P in keyof T]: Observable<T[P]>;
 };
-
-export type LayoutStyle = 'Dark Shades' | 'Light Shades';

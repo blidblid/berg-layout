@@ -34,17 +34,49 @@ $light-theme: mat.define-light-theme(
 @include mat.all-component-themes($dark-theme);
 @include app.theme($dark-theme);
 
-@include layout.dark-shades();
+@include layout.dark();
 
-.app-root-dark-shades {
+.app-root-abyss,
+.app-root-dark,
+.app-root-high-contrast,
+.app-root-solarized-dark {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.app-root-light-shades {
+.app-root-high-contrast {
+  color: white;
+}
+
+.app-root-light,
+.app-root-quiet-light,
+.app-root-solarized-light {
   color: #000000de;
-  @include layout.light-shades();
   @include mat.all-component-colors($light-theme);
   @include app.theme($light-theme);
+}
+
+.app-root-abyss {
+  @include layout.abyss();
+}
+
+.app-root-high-contrast {
+  @include layout.high-contrast();
+}
+
+.app-root-light {
+  @include layout.light();
+}
+
+.app-root-quiet-light {
+  @include layout.quiet-light();
+}
+
+.app-root-solarized-light {
+  @include layout.solarized-light();
+}
+
+.app-root-solarized-dark {
+  @include layout.solarized-dark();
 }
 
 html,
