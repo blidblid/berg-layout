@@ -1424,10 +1424,10 @@
   dependencies:
     tslib "^2.1.0"
 
-"@berglund/mixins@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@berglund/mixins/-/mixins-0.0.12.tgz#4fdcec79f44634e67faf32f1cbe9027fc0953682"
-  integrity sha512-f3Y4f12Y2jOkPGK/rm5430PVX4jhDrgg0ArXdmPB9WZ4HIDu0QcIPF3l0Kzv7Kn2mWKl2BaNe+NB3iT/Bl1r4Q==
+"@berglund/mixins@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@berglund/mixins/-/mixins-0.0.14.tgz#c099c73a9033aac8de8fd21210e5d4c281add43f"
+  integrity sha512-p38E7cSxQvz55lxK9Wx457CZsI8JwIv5sD43GEQImAxRSQl5e3SM+RYUcDhNdVddyg10h8zlA2XxCuvif4JdFA==
   dependencies:
     tslib "^2.2.0"
 

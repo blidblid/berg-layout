@@ -26,7 +26,7 @@
     "@berg-layout/styling": "./dist/styling",
     "@berglund/components": "^0.0.4",
     "@berglund/material": "^0.0.8",
-    "@berglund/mixins": "^0.0.12",
+    "@berglund/mixins": "^0.0.14",
     "@berglund/rx": "^0.0.10",
     "highlight.js": "^11.4.0",
     "rxjs": "~7.5.2",
