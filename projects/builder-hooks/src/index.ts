@@ -8,8 +8,7 @@ import {
   writeFileSync,
 } from 'fs';
 import { sync } from 'glob';
-import { join, parse } from 'path';
-import { basename } from 'path/posix';
+import { basename, join, parse } from 'path';
 import { compile } from 'sass';
 
 export default [
