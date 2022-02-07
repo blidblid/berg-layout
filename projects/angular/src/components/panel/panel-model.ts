@@ -1,6 +1,5 @@
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BergPanelOutputBindingMode } from './panel-output-bindings';
 
 /** Slots where panels can be inserted. */
 export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
@@ -24,8 +23,8 @@ export interface BergPanelInputs {
 
   /**
    * Controls how panel outputs update panel inputs.
-   * With auto, panel outputs automatically update panel inputs.
-   * With noop, panel outputs never updates panel inputs.
+   * With "auto", panel outputs automatically update panel inputs.
+   * With "noop", panel outputs never update panel inputs.
    */
   outputBindingMode: BergPanelOutputBindingMode;
 }
@@ -56,3 +55,6 @@ export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
 
 /** Snap states of berg-panel. */
 export type BergPanelSnap = 'collapsed' | 'expanded' | 'none';
+
+/** Binding modes that controls how outputs update inputs. */
+export type BergPanelOutputBindingMode = 'auto' | 'noop';

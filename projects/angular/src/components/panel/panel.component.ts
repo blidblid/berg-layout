@@ -44,6 +44,7 @@ import { BERG_LAYOUT_ELEMENT } from '../layout/layout-model-private';
 import { BergPanelControllerStore } from './panel-controller-store';
 import {
   BergPanelInputs,
+  BergPanelOutputBindingMode,
   BergPanelOutputs,
   BergPanelSlot,
   BergPanelSnap,
@@ -58,7 +59,6 @@ import {
 } from './panel-model-private';
 import {
   BergPanelOutputBinding,
-  BergPanelOutputBindingMode,
   BERG_PANEL_OUTPUT_BINDINGS,
 } from './panel-output-bindings';
 import { filterSizeDirection } from './panel-util';
