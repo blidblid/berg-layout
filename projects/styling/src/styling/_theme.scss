@@ -1,5 +1,4 @@
 @use 'sass:map';
-@use '../styling/elevation' as elevation;
 
 @mixin theme($colors) {
   @include panel-theme($colors);
@@ -57,13 +56,6 @@
 
   @at-root body#{&} {
     background: $background;
-  }
-
-  .berg-panel-left,
-  .berg-panel-right,
-  .berg-panel-top,
-  .berg-panel-bottom {
-    @include elevation.elevation(4);
   }
 }
 

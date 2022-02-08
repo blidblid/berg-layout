@@ -26,7 +26,12 @@
   </mat-card>
 </div>
 
-
 <ng-container *ngIf="view === 'code'">
   <pre><code class="language-html" bergHighlightCode>{{ html }}</code></pre>
+
+  <h4>Style it with SASS...</h4>
+  <pre><code class="language-scss" bergHighlightCode>{{ scss }}</code></pre>
+
+  <h4>...or prebuilt CSS</h4>
+  <pre><code class="language-css" bergHighlightCode>{{ css }}</code></pre>
 </ng-container>

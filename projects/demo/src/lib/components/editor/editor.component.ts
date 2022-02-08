@@ -17,7 +17,9 @@ import { LayoutOperators } from '@demo/operators';
   },
 })
 export class EditorComponent {
+  @Input() css: string | null;
   @Input() html: string | null;
+  @Input() scss: string | null;
 
   @Input()
   view: 'none' | 'edit' | 'code' = 'code';

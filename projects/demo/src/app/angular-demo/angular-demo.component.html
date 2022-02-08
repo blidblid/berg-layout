@@ -54,7 +54,9 @@
   </berg-panel>
 
   <berg-panel>
-    <berg-editor [html]="rx.angularHtml$ | async"
+    <berg-editor [css]="rx.css$ | async"
+                 [html]="rx.angularHtml$ | async"
+                 [scss]="rx.scss$ | async"
                  [view]="view">
     </berg-editor>
   </berg-panel>

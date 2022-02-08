@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use '../styling/elevation' as elevation;
 @use '../styling/theme';
 
 @mixin solarized-light($overrides: ()) {
@@ -16,4 +17,8 @@
       $overrides
     )
   );
+
+  .berg-panel-top {
+    @include elevation.elevation(1);
+  }
 }

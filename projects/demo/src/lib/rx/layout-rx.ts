@@ -7,7 +7,7 @@ import { userValue } from '@berglund/rx';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Layout, ObservableProperties, Panel, Slot } from './layout-model';
-import { toHtml } from './layout-util';
+import { toCss, toHtml, toScss } from './layout-util';
 
 @Injectable({
   providedIn: 'root',
@@ -55,6 +55,14 @@ export class LayoutRx {
   );
 
   layoutStyle$ = userValue<string>('Dark');
+
+  css$: Observable<string> = this.layoutStyle$.pipe(
+    map((style) => toCss(style))
+  );
+
+  scss$: Observable<string> = this.layoutStyle$.pipe(
+    map((style) => toScss(style))
+  );
 
   private createLayoutInputs() {
     return {
