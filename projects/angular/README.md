@@ -26,6 +26,17 @@ Then add a layout and place panels using the [slot attribute](https://developer.
 </berg-layout>
 ```
 
+## Styles
+
+To style the layout, install the `@berg-layout/styling` [package](https://www.npmjs.com/package/@berg-layout/styling). Then use prebuilt `css` or `SASS`, for example:
+
+```css
+@import '~@berg-layout/styling/core.css';
+@import '~@berg-layout/styling/dark.css';
+```
+
+For complete docs on styling, go to https://github.com/blidblid/berg-layout/tree/main/projects/styling.
+
 ## API
 
 See https://berg-layout-api.web.app/angular/api.

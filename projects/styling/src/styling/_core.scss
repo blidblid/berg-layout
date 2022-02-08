@@ -1,9 +1,10 @@
-@mixin core($map: ()) {
-  @include resizing-core($map);
+@mixin core($overrides: ()) {
+  @include resizing-core($overrides);
 }
 
-@mixin resizing-core($map) {
-  $resizing-indicator-size: map-get($map, 'resizing-indicator-size') or 6px;
+@mixin resizing-core($overrides) {
+  $resizing-indicator-size: map-get($overrides, 'resizing-indicator-size') or
+    6px;
 
   .berg-panel-snap-collapsed {
     .berg-panel-resize-toggle-right {
