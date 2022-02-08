@@ -18,7 +18,6 @@ import {
 import {
   animationFrameScheduler,
   combineLatest,
-  defer,
   EMPTY,
   fromEvent,
   merge,
@@ -181,20 +180,27 @@ export class BergPanelComponent
     map((slot) => this.controller.getResizeToggle(slot))
   );
 
-  private previewing$ = defer(() => {
-    return merge(
-      this.controller.fromResizeTogglesEvent<MouseEvent>('mousemove').pipe(
-        withLatestFrom(this.resizeToggle$),
-        filter(() => !this.resizeDisabled),
-        map(([event, resizeToggle]) => {
-          return this.checkResizeThreshold(event, resizeToggle);
-        })
-      ),
-      this.controller
-        .fromResizeTogglesEvent<MouseEvent>('mouseleave')
-        .pipe(map(() => false))
-    ).pipe(startWith(false), distinctUntilChanged(), share());
-  });
+  private previewing$ = this.slotSub.pipe(
+    switchMap((slot) => {
+      return merge(
+        this.controller
+          .fromResizeTogglesEvent<MouseEvent>('mousemove', slot)
+          .pipe(
+            withLatestFrom(this.resizeToggle$),
+            filter(() => !this.resizeDisabled),
+            map(([event, resizeToggle]) => {
+              return this.checkResizeThreshold(event, resizeToggle);
+            })
+          ),
+        this.controller
+          .fromResizeTogglesEvent<MouseEvent>('mouseleave', slot)
+          .pipe(map(() => false))
+      );
+    }),
+    startWith(false),
+    distinctUntilChanged(),
+    share()
+  );
 
   private resizeEvent$ = this.previewing$.pipe(
     filter(() => !this.resizeDisabled),
@@ -595,6 +601,9 @@ export class BergPanelComponent
       return injected.hostElem;
     }
 
+    // In Angular, the panel can find its layout using dependency injection.
+    // But this will not work when the component runs as a web-component.
+    // Use the DOM to grab the layout instead.
     let elem: HTMLElement | null = this.hostElem;
 
     while (elem) {

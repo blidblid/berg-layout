@@ -80,9 +80,6 @@ export class BergPanelController {
     left: this.createResizeToggleElement('left'),
   };
 
-  /** @hidden */
-  resizeToggles: HTMLElement[] = Object.values(this.resizeTogglesRecord);
-
   constructor(
     public hostElem: HTMLElement,
     protected document: Document,
@@ -112,9 +109,12 @@ export class BergPanelController {
   }
 
   /** @hidden */
-  fromResizeTogglesEvent<T extends Event>(eventName: string): Observable<T> {
+  fromResizeTogglesEvent<T extends Event>(
+    eventName: string,
+    slot: BergPanelSlot
+  ): Observable<T> {
     return merge(
-      ...this.resizeToggles.map((resizeToggle) => {
+      ...this.getAdjacentResizeTogglesForSlot(slot).map((resizeToggle) => {
         return fromEvent<T>(resizeToggle, eventName);
       })
     );
@@ -173,6 +173,42 @@ export class BergPanelController {
     function isPositionedPanel(slot: BergPanelSlot): boolean {
       return panels.some((panel) => panel.slot === slot && !panel.absolute);
     }
+  }
+
+  private getAdjacentResizeTogglesForSlot(slot: BergPanelSlot): HTMLElement[] {
+    if (slot === 'top') {
+      return [
+        this.resizeTogglesRecord.top,
+        this.resizeTogglesRecord.left,
+        this.resizeTogglesRecord.right,
+      ];
+    }
+
+    if (slot === 'right') {
+      return [
+        this.resizeTogglesRecord.right,
+        this.resizeTogglesRecord.bottom,
+        this.resizeTogglesRecord.top,
+      ];
+    }
+
+    if (slot === 'bottom') {
+      return [
+        this.resizeTogglesRecord.bottom,
+        this.resizeTogglesRecord.right,
+        this.resizeTogglesRecord.left,
+      ];
+    }
+
+    if (slot === 'left') {
+      return [
+        this.resizeTogglesRecord.left,
+        this.resizeTogglesRecord.bottom,
+        this.resizeTogglesRecord.top,
+      ];
+    }
+
+    return [];
   }
 
   private createResizeToggleElement(slot: BergPanelSlot): HTMLElement {
