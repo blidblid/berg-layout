@@ -1,7 +1,7 @@
 :host {
   display: block;
   position: relative;
-  transition: margin 0.2s ease-in;
+  transition: margin 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .berg-panel-overflow {
     overflow: auto;
