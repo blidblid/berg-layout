@@ -12,7 +12,10 @@ import {
   shareReplay,
   Subject,
 } from 'rxjs';
-import { BergLayoutInputs, BERG_LAYOUT_DEFAULT_INPUTS } from '../layout';
+import {
+  BergLayoutInputs,
+  BERG_LAYOUT_DEFAULT_INPUTS,
+} from '../layout/layout-model';
 import { BergPanelInputs, BergPanelSlot } from './panel-model';
 import { arrayReducer } from './panel-util';
 
