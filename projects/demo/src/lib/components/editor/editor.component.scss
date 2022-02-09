@@ -21,10 +21,13 @@
   }
 
   pre {
+    overflow: auto;
+    min-width: max-content;
+    box-sizing: border-box;
+    border-radius: 4px;
     padding: 16px;
     margin: 0;
-    border-radius: 4px;
-    min-width: max-content;
+    min-width: 0;
   }
 
   .mat-card {
