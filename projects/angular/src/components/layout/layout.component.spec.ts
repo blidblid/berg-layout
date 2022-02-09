@@ -56,7 +56,13 @@ describe('LayoutComponent', () => {
     });
   });
 
-  describe('with absolute panels', () => {
+  describe('with absolute an panel', () => {
+    it('should create a backdrop that covers the layout', () => {
+      c.top.absolute = true;
+      fixture.detectChanges();
+      expect(c.layoutRect).toEqual(getBackdrop().getBoundingClientRect());
+    });
+
     it('should position top over center, left and right', () => {
       c.top.absolute = true;
       fixture.detectChanges();
@@ -88,12 +94,60 @@ describe('LayoutComponent', () => {
       expect(c.leftRect.top).toBe(c.topRect.top);
       expect(c.leftRect.bottom).toBe(c.bottomRect.bottom);
     });
+
+    it('should emit backdropClicked event when clicking backdrop.', () => {
+      c.left.absolute = true;
+      fixture.detectChanges();
+
+      getBackdrop().click();
+      fixture.detectChanges();
+
+      expect(c.backdropClick).toEqual({ left: true });
+    });
+
+    it('should close the panel when clicking the backdrop in "auto"-binding mode.', () => {
+      c.left.absolute = true;
+      fixture.detectChanges();
+
+      getBackdrop().click();
+      fixture.detectChanges();
+
+      expect(checkIfPanelIsCollapsed('left')).toBe(true);
+    });
+
+    it('should not close the panel when clicking the backdrop in "noop"-binding mode.', () => {
+      c.left.absolute = true;
+      c.left.outputBindingMode = 'noop';
+      fixture.detectChanges();
+
+      getBackdrop().click();
+      fixture.detectChanges();
+
+      expect(checkIfPanelIsCollapsed('left')).toBe(false);
+    });
   });
+
+  function checkIfPanelIsCollapsed(slot: BergPanelSlot): boolean {
+    return (
+      fixture.nativeElement.querySelector(`.berg-panel-${slot}`).style
+        .margin !== ''
+    );
+  }
+
+  function getBackdrop(): HTMLElement {
+    const backdrop = fixture.nativeElement.querySelector(
+      '.berg-panel-backdrop'
+    );
+
+    expect(backdrop).withContext('expected a backdrop').toBeTruthy();
+    return backdrop;
+  }
 });
 
 @Component({
   template: `
     <berg-layout
+      #layoutRef
       [resizeDisabled]="layout.resizeDisabled"
       [resizeTwoDimensions]="layout.resizeTwoDimensions"
       [resizeExpandOffset]="layout.resizeExpandOffset"
@@ -161,6 +215,15 @@ describe('LayoutComponent', () => {
   `,
 })
 export class LayoutTestComponent {
+  @ViewChild('layoutRef', { read: ElementRef })
+  private layoutElementRef: ElementRef<HTMLElement>;
+  get layoutElem() {
+    return this.layoutElementRef.nativeElement;
+  }
+  get layoutRect() {
+    return this.layoutElem.getBoundingClientRect();
+  }
+
   @ViewChild('topRef', { read: ElementRef })
   private topElementRef: ElementRef<HTMLElement>;
   get topElem() {
