@@ -1,7 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { BergPanelSlot, BergPanelSnap } from 'dist/angular/components';
 import { BERG_PANEL_DEFAULT_INPUTS } from '../panel/panel-model';
+import { BergPanelComponent } from '../panel/panel.component';
 import { BERG_LAYOUT_DEFAULT_INPUTS } from './layout-model';
 import { BergLayoutModule } from './layout.module';
 
@@ -126,6 +132,58 @@ describe('LayoutComponent', () => {
       expect(checkIfPanelIsCollapsed('left')).toBe(false);
     });
   });
+
+  describe('with a collapsed panel', () => {
+    it('should not be collapsed initially', () => {
+      fixture.detectChanges();
+      expect(checkIfPanelIsCollapsed('left')).toBe(false);
+    });
+
+    it('should start collapsing when using the collapsed attribute', () => {
+      c.left.collapsed = true;
+      fixture.detectChanges();
+      expect(checkIfPanelIsCollapsed('left')).toBe(true);
+    });
+
+    it('should start expanding when setting the collapsed attribute to true', fakeAsync(() => {
+      c.left.collapsed = true;
+      fixture.detectChanges();
+      c.left.collapsed = false;
+      fixture.detectChanges();
+      tick(REQUEST_ANIMATION_FRAME_TICK);
+      fixture.detectChanges();
+      expect(checkIfPanelIsCollapsed('left')).toBe(false);
+    }));
+
+    it('should start collapsing when collapsing programmatically', () => {
+      fixture.detectChanges();
+      c.leftPanel.collapse();
+      fixture.detectChanges();
+      expect(checkIfPanelIsCollapsed('left')).toBe(true);
+    });
+
+    it('should start expanding when setting the collapsed attribute to false', fakeAsync(() => {
+      c.left.collapsed = true;
+      fixture.detectChanges();
+      c.left.collapsed = false;
+      fixture.detectChanges();
+      tick(REQUEST_ANIMATION_FRAME_TICK);
+      fixture.detectChanges();
+      expect(checkIfPanelIsCollapsed('left')).toBe(false);
+    }));
+
+    it('should start expanding when expanding programmatically', fakeAsync(() => {
+      c.left.collapsed = true;
+      fixture.detectChanges();
+      c.leftPanel.expand();
+      fixture.detectChanges();
+      tick(REQUEST_ANIMATION_FRAME_TICK);
+      fixture.detectChanges();
+      expect(checkIfPanelIsCollapsed('left')).toBe(false);
+    }));
+  });
+
+  const REQUEST_ANIMATION_FRAME_TICK = 16;
 
   function checkIfPanelIsCollapsed(slot: BergPanelSlot): boolean {
     return (
@@ -268,6 +326,8 @@ export class LayoutTestComponent {
   get centerRect() {
     return this.centerElem.getBoundingClientRect();
   }
+
+  @ViewChild('leftRef') leftPanel: BergPanelComponent;
 
   showTop = true;
   showRight = true;
