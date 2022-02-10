@@ -27,11 +27,11 @@
 </div>
 
 <ng-container *ngIf="view === 'code'">
-  <pre><code class="language-html" bergHighlightCode>{{ html }}</code></pre>
+  <pre><code class="language-html"><berg-highlight-code [code]="html"></berg-highlight-code></code></pre>
 
   <h4>Style it with SASS...</h4>
-  <pre><code class="language-scss" bergHighlightCode>{{ scss }}</code></pre>
+  <pre><code class="language-scss"><berg-highlight-code [code]="scss"></berg-highlight-code></code></pre>
 
   <h4>...or prebuilt CSS</h4>
-  <pre><code class="language-css" bergHighlightCode>{{ css }}</code></pre>
+  <pre><code class="language-css"><berg-highlight-code [code]="css"></berg-highlight-code></code></pre>
 </ng-container>

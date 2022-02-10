@@ -86,7 +86,6 @@ import { filterSizeDirection } from './panel-util';
     '[class.berg-panel-center]': 'slot === "center"',
     '[style.width.px]': '_size?.width',
     '[style.height.px]': '_size?.height',
-    '[style.box-sizing]': '"border-box"',
     '[style.margin]': '_margin',
     '(transitionend)': '_onTransitionend()',
   },

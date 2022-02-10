@@ -1,6 +1,7 @@
 :host {
   display: block;
   position: relative;
+  box-sizing: border-box;
   transition: margin 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .berg-panel-overflow {

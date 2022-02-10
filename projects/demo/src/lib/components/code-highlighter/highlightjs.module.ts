@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BergHighlightCodeDirective } from './highlightjs.directive';
+import { BergHighlightCodeComponent } from './highlightjs.component';
 
 @NgModule({
-  declarations: [BergHighlightCodeDirective],
-  exports: [BergHighlightCodeDirective],
+  declarations: [BergHighlightCodeComponent],
+  exports: [BergHighlightCodeComponent],
   imports: [CommonModule],
 })
 export class BergHighlightCodeModule {}
