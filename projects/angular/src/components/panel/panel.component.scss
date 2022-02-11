@@ -20,14 +20,6 @@
   }
 }
 
-:host(.berg-panel-vertical) {
-  min-height: 64px;
-}
-
-:host(.berg-panel-horizontal) {
-  min-width: 128px;
-}
-
 // keep all collapsed css !important to prevent overrides
 :host(.berg-panel-snap-collapsed) {
   padding: 0 !important;
@@ -35,12 +27,14 @@
   overflow: visible !important;
 
   &:host(.berg-panel-vertical) {
+    height: 100%;
     width: 0 !important;
     min-width: 0 !important;
     max-width: 0 !important;
   }
 
   &:host(.berg-panel-horizontal) {
+    width: 100%;
     height: 0 !important;
     min-height: 0 !important;
     max-height: 0 !important;
@@ -51,14 +45,10 @@
   }
 
   &:host(.berg-panel-right) {
-    top: 0 !important;
-    bottom: 0 !important;
     left: 100% !important;
   }
 
   &:host(.berg-panel-bottom) {
-    left: 0 !important;
-    right: 0 !important;
     top: 100% !important;
   }
 
@@ -70,6 +60,8 @@
 :host(.berg-panel-center) {
   max-height: 100%;
   max-width: 100vw;
+  min-height: 0;
+  min-width: 0;
   flex: 1;
 }
 
@@ -77,22 +69,29 @@
   flex: 1;
 }
 
-:host(.berg-panel-left),
-:host(.berg-panel-right) {
+// Use explicit z-index to make sure box-shadow looks good
+// and resize-toggles lie on top of other panels.
+:host(.berg-panel-center) {
   z-index: 0;
 }
 
-:host(.berg-panel-bottom) {
-  z-index: 1;
+:host(.berg-panel-left),
+:host(.berg-panel-right) {
+  z-index: 2;
 }
 
+:host(.berg-panel-bottom),
 :host(.berg-panel-top) {
-  z-index: 2;
+  z-index: 3;
+}
+
+:host(.berg-panel-between) {
+  z-index: 1;
 }
 
 :host(.berg-panel-absolute) {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
 
   &:host(.berg-panel-top) {
     top: 0;

@@ -6,14 +6,15 @@ import { Directive, Input } from '@angular/core';
 import {
   debounceTime,
   fromEvent,
-  map,
   merge,
   Observable,
   shareReplay,
   Subject,
 } from 'rxjs';
 import {
+  BergLayoutBottomPosition,
   BergLayoutInputs,
+  BergLayoutTopPosition,
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '../layout/layout-model';
 import { BergPanelInputs, BergPanelSlot } from './panel-model';
@@ -66,6 +67,18 @@ export class BergPanelController {
   }
   private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
 
+  @Input() topPosition: BergLayoutTopPosition = this.getInput('topPosition');
+
+  @Input() bottomPosition: BergLayoutBottomPosition =
+    this.getInput('bottomPosition');
+
+  resizeToggles = {
+    top: this.createResizeToggleElement('top'),
+    right: this.createResizeToggleElement('right'),
+    bottom: this.createResizeToggleElement('bottom'),
+    left: this.createResizeToggleElement('left'),
+  };
+
   private addPanelSub = new Subject<BergPanelInputs>();
   private pushPanelSub = new Subject<void>();
   private removePanelSub = new Subject<BergPanelInputs>();
@@ -75,13 +88,6 @@ export class BergPanelController {
     push: this.pushPanelSub,
     remove: this.removePanelSub,
   }).pipe(debounceTime(0), shareReplay(1));
-
-  private resizeTogglesRecord = {
-    top: this.createResizeToggleElement('top'),
-    right: this.createResizeToggleElement('right'),
-    bottom: this.createResizeToggleElement('bottom'),
-    left: this.createResizeToggleElement('left'),
-  };
 
   constructor(
     public hostElem: HTMLElement,
@@ -123,91 +129,42 @@ export class BergPanelController {
     );
   }
 
-  /** @hidden */
-  getResizeToggle(slot: BergPanelSlot): HTMLElement | null {
-    return slot === 'center' ? null : this.resizeTogglesRecord[slot];
-  }
-
-  /** @hidden */
-  getRenderedResizeToggles(slot: BergPanelSlot): Observable<HTMLElement[]> {
-    return this.panels$.pipe(
-      map((panels) => this.getResizeTogglesForSlot(slot, panels))
-    );
-  }
-
   protected getInput<T extends keyof BergLayoutInputs>(
     input: T
   ): BergLayoutInputs[T] {
     return this.inputs ? this.inputs[input] : BERG_LAYOUT_DEFAULT_INPUTS[input];
   }
 
-  private getResizeTogglesForSlot(
-    slot: BergPanelSlot,
-    panels: BergPanelInputs[]
-  ): HTMLElement[] {
-    if (slot === 'right') {
-      return [this.resizeTogglesRecord.right];
-    }
-
-    if (slot === 'bottom') {
-      return [this.resizeTogglesRecord.bottom];
-    }
-
-    if (slot === 'left' && isAbsolutePanel('left')) {
-      return [this.resizeTogglesRecord.left];
-    }
-
-    if (slot === 'top' && isAbsolutePanel('top')) {
-      return [this.resizeTogglesRecord.top];
-    }
-
-    if (slot === 'center') {
-      return (['left', 'top'] as const)
-        .filter((s) => isPositionedPanel(s))
-        .map((s) => this.resizeTogglesRecord[s]);
-    }
-
-    return [];
-
-    function isAbsolutePanel(slot: BergPanelSlot): boolean {
-      return panels.some((panel) => panel.slot === slot && panel.absolute);
-    }
-
-    function isPositionedPanel(slot: BergPanelSlot): boolean {
-      return panels.some((panel) => panel.slot === slot && !panel.absolute);
-    }
-  }
-
   private getAdjacentResizeTogglesForSlot(slot: BergPanelSlot): HTMLElement[] {
     if (slot === 'top') {
       return [
-        this.resizeTogglesRecord.top,
-        this.resizeTogglesRecord.left,
-        this.resizeTogglesRecord.right,
+        this.resizeToggles.top,
+        this.resizeToggles.left,
+        this.resizeToggles.right,
       ];
     }
 
     if (slot === 'right') {
       return [
-        this.resizeTogglesRecord.right,
-        this.resizeTogglesRecord.bottom,
-        this.resizeTogglesRecord.top,
+        this.resizeToggles.right,
+        this.resizeToggles.bottom,
+        this.resizeToggles.top,
       ];
     }
 
     if (slot === 'bottom') {
       return [
-        this.resizeTogglesRecord.bottom,
-        this.resizeTogglesRecord.right,
-        this.resizeTogglesRecord.left,
+        this.resizeToggles.bottom,
+        this.resizeToggles.right,
+        this.resizeToggles.left,
       ];
     }
 
     if (slot === 'left') {
       return [
-        this.resizeTogglesRecord.left,
-        this.resizeTogglesRecord.bottom,
-        this.resizeTogglesRecord.top,
+        this.resizeToggles.left,
+        this.resizeToggles.bottom,
+        this.resizeToggles.top,
       ];
     }
 

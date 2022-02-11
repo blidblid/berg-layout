@@ -28,7 +28,7 @@ Then add a layout and place panels using the [slot attribute](https://developer.
 
 ## Styles
 
-To style the layout, install the `@berg-layout/styling` [package](https://www.npmjs.com/package/@berg-layout/styling). Then use prebuilt `css` or `SASS`, for example:
+To style the layout, install the [package](https://www.npmjs.com/package/@berg-layout/styling) `@berg-layout/styling`. Then use prebuilt `css` or `SASS`, for example:
 
 ```css
 @import '~@berg-layout/styling/core.css';

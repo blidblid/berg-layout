@@ -19,12 +19,13 @@ export class LayoutOperators {
     },
   });
 
-  layout = this.createLayout();
-  top = this.createPanel('top');
-  right = this.createPanel('right');
-  bottom = this.createPanel('bottom');
+  layout = this.getLayoutComponents();
+  resizing = this.getResizingComponents();
+  top = this.getPanelComponents('top');
+  right = this.getPanelComponents('right');
+  bottom = this.getPanelComponents('bottom');
   left = [
-    ...this.createPanel('left'),
+    ...this.getPanelComponents('left'),
     component({
       component: BergSelectComponent,
       inputs: {
@@ -37,7 +38,7 @@ export class LayoutOperators {
     }),
   ];
 
-  private createPanel(slot: Slot) {
+  private getPanelComponents(slot: Slot) {
     return [
       component({
         component: BergCheckboxComponent,
@@ -73,7 +74,7 @@ export class LayoutOperators {
     ];
   }
 
-  private createLayout() {
+  private getResizingComponents() {
     return [
       component({
         component: BergCheckboxComponent,
@@ -113,6 +114,11 @@ export class LayoutOperators {
           connectToFormValue: this.layoutRx.layout.resizePreviewDelay,
         },
       }),
+    ];
+  }
+
+  private getLayoutComponents() {
+    return [
       component({
         component: BergSelectComponent,
         inputs: {
@@ -129,8 +135,30 @@ export class LayoutOperators {
           ],
         },
       }),
+      component({
+        component: BergSelectComponent,
+        inputs: {
+          label: 'Top position',
+          pluckLabel: (value) => this.capitalize(value),
+          connectToFormValue: this.layoutRx.layout.topPosition,
+          data: ['above', 'between'],
+        },
+      }),
+      component({
+        component: BergSelectComponent,
+        inputs: {
+          label: 'Bottom position',
+          pluckLabel: (value) => this.capitalize(value),
+          connectToFormValue: this.layoutRx.layout.bottomPosition,
+          data: ['below', 'between'],
+        },
+      }),
     ];
   }
 
   constructor(private layoutRx: LayoutRx) {}
+
+  private capitalize(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 }

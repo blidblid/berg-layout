@@ -81,40 +81,4 @@
       background: $resizing-indicator-color;
     }
   }
-
-  .berg-panel-top {
-    &.berg-panel-resize-previewing {
-      ~ .berg-panel-center {
-        .berg-panel-resize-toggle-top {
-          background: $previewing-indicator-color;
-        }
-      }
-    }
-
-    &.berg-panel-resize-resizing {
-      ~ .berg-panel-center {
-        .berg-panel-resize-toggle-top {
-          background: $resizing-indicator-color;
-        }
-      }
-    }
-  }
-
-  .berg-panel-left {
-    &.berg-panel-resize-previewing {
-      ~ .berg-panel-center {
-        .berg-panel-resize-toggle-left {
-          background: $previewing-indicator-color;
-        }
-      }
-    }
-
-    &.berg-panel-resize-resizing {
-      ~ .berg-panel-center {
-        .berg-panel-resize-toggle-left {
-          background: $resizing-indicator-color;
-        }
-      }
-    }
-  }
 }

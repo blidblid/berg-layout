@@ -84,6 +84,8 @@ import { filterSizeDirection } from './panel-util';
     '[class.berg-panel-right]': 'slot === "right"',
     '[class.berg-panel-bottom]': 'slot === "bottom"',
     '[class.berg-panel-center]': 'slot === "center"',
+    '[class.berg-panel-between]':
+      'slot === "top" && controller.topPosition === "between" || slot === "bottom" && controller.bottomPosition === "between"',
     '[style.width.px]': '_size?.width',
     '[style.height.px]': '_size?.height',
     '[style.margin]': '_margin',
@@ -109,7 +111,6 @@ export class BergPanelComponent
 
     this._slot = value;
     this.slotSub.next(value);
-    this.controller.push();
   }
   get slot() {
     return this._slot;
@@ -122,7 +123,6 @@ export class BergPanelComponent
   set absolute(value: boolean) {
     this._absolute = coerceBooleanProperty(value);
     this.updateBackdrop();
-    this.controller.push();
   }
   get absolute() {
     return this._absolute;
@@ -176,7 +176,9 @@ export class BergPanelComponent
   private destroySub = new Subject<void>();
 
   private resizeToggle$ = this.slotSub.pipe(
-    map((slot) => this.controller.getResizeToggle(slot))
+    map((slot) => {
+      return slot === 'center' ? null : this.controller.resizeToggles[slot];
+    })
   );
 
   private previewing$ = this.slotSub.pipe(
@@ -199,6 +201,14 @@ export class BergPanelComponent
     startWith(false),
     distinctUntilChanged(),
     share()
+  );
+
+  private delayedPreviewing$ = this.previewing$.pipe(
+    switchMap((previewing) => {
+      return of(previewing).pipe(
+        delay(previewing ? this.controller.resizePreviewDelay : 0)
+      );
+    })
   );
 
   private resizeEvent$ = this.previewing$.pipe(
@@ -453,7 +463,7 @@ export class BergPanelComponent
           'right: 0;',
           'bottom: 0;',
           'left: 0;',
-          'z-index: 2;',
+          'z-index: 3;',
           'cursor: pointer;',
         ].join(' ')
       );
@@ -469,35 +479,28 @@ export class BergPanelComponent
     return this._backdropElement;
   }
 
-  private subscribeToResize(): void {
+  private subscribeToResizing(): void {
     if (this.resizePosition === null) {
       return;
     }
 
-    this.resizing$.pipe(takeUntil(this.destroySub)).subscribe((resizing) => {
-      this._resizing = resizing;
-      this.changeDetectorRef.markForCheck();
-    });
+    this.subscribeForAssignment('_resizing', this.resizing$);
+    this.subscribeForAssignment('_previewing', this.delayedPreviewing$);
+    this.subscribeForAssignment('_size', this.resizedSize$);
 
-    this.previewing$
-      .pipe(
-        switchMap((previewing) => {
-          return of(previewing).pipe(
-            delay(previewing ? this.controller.resizePreviewDelay : 0)
-          );
-        }),
-        takeUntil(this.destroySub)
-      )
-      .subscribe((previewing) => {
-        this._previewing = previewing;
-        this.changeDetectorRef.markForCheck();
-      });
+    combineLatest([this.previewing$, this.resizing$])
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(([previewing, resizing]) => {
+        const resizeClass =
+          this.resizePosition === 'above' || this.resizePosition === 'below'
+            ? 'berg-layout-resizing-vertical'
+            : 'berg-layout-resizing-horizontal';
 
-    this.resizedSize$
-      .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
-      .subscribe((size) => {
-        this._size = size;
-        this.changeDetectorRef.markForCheck();
+        if (previewing || resizing) {
+          this._layoutElement.classList.add(resizeClass);
+        } else {
+          this._layoutElement.classList.remove(resizeClass);
+        }
       });
 
     merge(fromEvent<DragEvent>(this.hostElem, 'dragstart'))
@@ -505,12 +508,12 @@ export class BergPanelComponent
       .subscribe((event) => event.preventDefault());
 
     this.slotSub
-      .pipe(
-        startWith(this._slot),
-        switchMap((slot) => this.controller.getRenderedResizeToggles(slot)),
-        takeUntil(this.destroySub)
-      )
-      .subscribe((resizeToggles) => this.appendResizeToggles(resizeToggles));
+      .pipe(startWith(this._slot), takeUntil(this.destroySub))
+      .subscribe((slot) => {
+        if (slot !== 'center') {
+          this.hostElem.appendChild(this.controller.resizeToggles[slot]);
+        }
+      });
   }
 
   private calculateSize(event: MouseEvent): BergPanelResizeSize {
@@ -575,12 +578,6 @@ export class BergPanelComponent
     );
   }
 
-  private appendResizeToggles(resizeToggles: HTMLElement[]): void {
-    for (const resizeToggle of resizeToggles) {
-      this.hostElem.appendChild(resizeToggle);
-    }
-  }
-
   protected getLayoutElement(): HTMLElement {
     if (!this._layoutElement) {
       this._layoutElement = this.findLayoutElement();
@@ -633,25 +630,22 @@ export class BergPanelComponent
   }
 
   private subscribe(): void {
-    combineLatest([this.previewing$, this.resizing$])
-      .pipe(takeUntil(this.destroySub))
-      .subscribe(([previewing, resizing]) => {
-        const resizeClass =
-          this.resizePosition === 'above' || this.resizePosition === 'below'
-            ? 'berg-layout-resize-vertical'
-            : 'berg-layout-resize-horizontal';
-
-        if (previewing || resizing) {
-          this._layoutElement.classList.add(resizeClass);
-        } else {
-          this._layoutElement.classList.remove(resizeClass);
-        }
-      });
-
     this.snapped$.pipe(takeUntil(this.destroySub)).subscribe((snapped) => {
       this.snapped.emit(snapped);
       this.updateBindings('onSnapped', snapped);
     });
+  }
+
+  private subscribeForAssignment<T extends keyof this>(
+    key: T,
+    observable$: Observable<this[T]>
+  ): void {
+    observable$
+      .pipe(distinctUntilChanged(), takeUntil(this.destroySub))
+      .subscribe((value) => {
+        this[key] = value;
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   // too much weirdness for TS to handle
@@ -670,7 +664,6 @@ export class BergPanelComponent
 
   private animateCollapsedChanges(): void {
     this.updateBackdrop();
-    this.controller.push();
 
     // do not animate if the panel it is snapped
     if (this.collapsed && this._snap === 'collapsed') {
@@ -689,7 +682,7 @@ export class BergPanelComponent
 
   /** @hidden */
   ngOnInit(): void {
-    this.subscribeToResize();
+    this.subscribeToResizing();
   }
 
   /** @hidden */
@@ -699,6 +692,11 @@ export class BergPanelComponent
       if (this.collapsed && change['collapsed'].isFirstChange()) {
         this._hidden = true;
       }
+    }
+
+    // since panels mutate through @Input, push here to update the panel$-stream
+    if (change['absolute'] || change['collapsed'] || change['slot']) {
+      this.controller.push();
     }
   }
 

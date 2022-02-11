@@ -6,23 +6,32 @@
   height: 100%;
   width: 100%;
 
-  .berg-layout-flex {
+  .berg-layout-flex,
+  .berg-layout-inner-flex {
     display: flex;
     justify-content: space-between;
-    min-height: 100px;
     flex: 1;
   }
 
-  &:host(.berg-layout-resize-horizontal) {
+  .berg-layout-flex {
+    min-height: 10vh;
+  }
+
+  .berg-layout-inner-flex {
+    flex-direction: column;
+    min-width: 10vw;
+  }
+
+  &:host(.berg-layout-resizing-horizontal) {
     user-select: none;
     cursor: ew-resize;
   }
 
-  &:host(.berg-layout-resize-vertical) {
+  &:host(.berg-layout-resizing-vertical) {
     user-select: none;
     cursor: ns-resize;
 
-    &:host(.berg-layout-resize-horizontal) {
+    &:host(.berg-layout-resizing-horizontal) {
       cursor: move;
     }
   }
