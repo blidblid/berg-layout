@@ -2,7 +2,7 @@ import {
   coerceBooleanProperty,
   coerceNumberProperty,
 } from '@angular/cdk/coercion';
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, SimpleChanges } from '@angular/core';
 import {
   debounceTime,
   fromEvent,
@@ -13,7 +13,9 @@ import {
   Subject,
 } from 'rxjs';
 import {
+  BergLayoutBottomPosition,
   BergLayoutInputs,
+  BergLayoutTopPosition,
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '../layout/layout-model';
 import { BergPanelInputs, BergPanelSlot } from './panel-model';
@@ -66,6 +68,11 @@ export class BergPanelController {
   }
   private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
 
+  @Input() topPosition: BergLayoutTopPosition = this.getInput('topPosition');
+
+  @Input() bottomPosition: BergLayoutBottomPosition =
+    this.getInput('bottomPosition');
+
   private addPanelSub = new Subject<BergPanelInputs>();
   private pushPanelSub = new Subject<void>();
   private removePanelSub = new Subject<BergPanelInputs>();
@@ -75,6 +82,10 @@ export class BergPanelController {
     push: this.pushPanelSub,
     remove: this.removePanelSub,
   }).pipe(debounceTime(0), shareReplay(1));
+
+  private expandedPanels$ = this.panels$.pipe(
+    map((panels) => panels.filter((panel) => !panel.collapsed))
+  );
 
   private resizeTogglesRecord = {
     top: this.createResizeToggleElement('top'),
@@ -129,9 +140,11 @@ export class BergPanelController {
   }
 
   /** @hidden */
-  getRenderedResizeToggles(slot: BergPanelSlot): Observable<HTMLElement[]> {
-    return this.panels$.pipe(
-      map((panels) => this.getResizeTogglesForSlot(slot, panels))
+  getRenderedResizeToggles(
+    slot: BergPanelSlot
+  ): Observable<HTMLElement | null> {
+    return this.expandedPanels$.pipe(
+      map((panels) => this.getResizeToggleForSlot(slot, panels))
     );
   }
 
@@ -141,40 +154,64 @@ export class BergPanelController {
     return this.inputs ? this.inputs[input] : BERG_LAYOUT_DEFAULT_INPUTS[input];
   }
 
-  private getResizeTogglesForSlot(
+  protected getResizeToggleForFlexContainer(): Observable<HTMLElement | null> {
+    return this.expandedPanels$.pipe(
+      map((panels) => {
+        return this.isPositionedPanel('top', panels) &&
+          this.topPosition === 'above'
+          ? this.resizeTogglesRecord.top
+          : null;
+      })
+    );
+  }
+
+  protected getResizeToggleForInnerFlexContainer(): Observable<HTMLElement | null> {
+    return this.expandedPanels$.pipe(
+      map((panels) => {
+        return this.isPositionedPanel('left', panels)
+          ? this.resizeTogglesRecord.left
+          : null;
+      })
+    );
+  }
+
+  private getResizeToggleForSlot(
     slot: BergPanelSlot,
     panels: BergPanelInputs[]
-  ): HTMLElement[] {
+  ): HTMLElement | null {
+    if (!this.isRenderedPanel(slot, panels)) {
+      return null;
+    }
+
     if (slot === 'right') {
-      return [this.resizeTogglesRecord.right];
+      return this.resizeTogglesRecord.right;
     }
 
     if (slot === 'bottom') {
-      return [this.resizeTogglesRecord.bottom];
+      return this.resizeTogglesRecord.bottom;
     }
 
     if (slot === 'left' && isAbsolutePanel('left')) {
-      return [this.resizeTogglesRecord.left];
+      return this.resizeTogglesRecord.left;
     }
 
     if (slot === 'top' && isAbsolutePanel('top')) {
-      return [this.resizeTogglesRecord.top];
+      return this.resizeTogglesRecord.top;
     }
 
     if (slot === 'center') {
-      return (['left', 'top'] as const)
-        .filter((s) => isPositionedPanel(s))
-        .map((s) => this.resizeTogglesRecord[s]);
+      if (
+        this.isPositionedPanel('top', panels) &&
+        this.topPosition === 'between'
+      ) {
+        return this.resizeTogglesRecord.top;
+      }
     }
 
-    return [];
+    return null;
 
     function isAbsolutePanel(slot: BergPanelSlot): boolean {
       return panels.some((panel) => panel.slot === slot && panel.absolute);
-    }
-
-    function isPositionedPanel(slot: BergPanelSlot): boolean {
-      return panels.some((panel) => panel.slot === slot && !panel.absolute);
     }
   }
 
@@ -214,13 +251,33 @@ export class BergPanelController {
     return [];
   }
 
+  private isPositionedPanel(
+    slot: BergPanelSlot,
+    panels: BergPanelInputs[]
+  ): boolean {
+    return panels.some((panel) => panel.slot === slot && !panel.absolute);
+  }
+
+  private isRenderedPanel(
+    slot: BergPanelSlot,
+    panels: BergPanelInputs[]
+  ): boolean {
+    return panels.some((panel) => panel.slot === slot && !panel.collapsed);
+  }
+
   private createResizeToggleElement(slot: BergPanelSlot): HTMLElement {
     const div = this.document.createElement('div');
-    div.classList.add(
-      'berg-panel-resize-toggle',
-      `berg-panel-resize-toggle-${slot}`
-    );
+    const part = `resize-toggle-${slot}`;
+
+    div.setAttribute('part', part);
+    div.classList.add('berg-panel-resize-toggle', `berg-panel-${part}`);
 
     return div;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['topPosition'] && !changes['topPosition'].isFirstChange()) {
+      this.push();
+    }
   }
 }

@@ -74,8 +74,6 @@ import { filterSizeDirection } from './panel-util';
     '[class.berg-panel-hidden]': '_hidden',
     '[class.berg-panel-snap-expanded]': 'snap === "expanded"',
     '[class.berg-panel-snap-collapsed]': 'snap === "collapsed"',
-    '[class.berg-panel-resize-resizing]': '_resizing',
-    '[class.berg-panel-resize-previewing]': '_previewing',
     '[class.berg-panel-resize-disabled]': 'resizeDisabled',
     '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
     '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
@@ -109,7 +107,6 @@ export class BergPanelComponent
 
     this._slot = value;
     this.slotSub.next(value);
-    this.controller.push();
   }
   get slot() {
     return this._slot;
@@ -122,7 +119,6 @@ export class BergPanelComponent
   set absolute(value: boolean) {
     this._absolute = coerceBooleanProperty(value);
     this.updateBackdrop();
-    this.controller.push();
   }
   get absolute() {
     return this._absolute;
@@ -163,8 +159,6 @@ export class BergPanelComponent
   }
   private _outputBindingMode = this.getInput('outputBindingMode');
 
-  _resizing = false;
-  _previewing = false;
   _size: BergPanelResizeSize;
   _margin: string | null;
   _backdropElement: HTMLElement;
@@ -469,14 +463,18 @@ export class BergPanelComponent
     return this._backdropElement;
   }
 
-  private subscribeToResize(): void {
+  private subscribeToResizing(): void {
     if (this.resizePosition === null) {
       return;
     }
 
     this.resizing$.pipe(takeUntil(this.destroySub)).subscribe((resizing) => {
-      this._resizing = resizing;
-      this.changeDetectorRef.markForCheck();
+      const className = `berg-layout-resizing-${this.slot}`;
+      if (resizing) {
+        this._layoutElement.classList.add(className);
+      } else {
+        this._layoutElement.classList.remove(className);
+      }
     });
 
     this.previewing$
@@ -489,8 +487,27 @@ export class BergPanelComponent
         takeUntil(this.destroySub)
       )
       .subscribe((previewing) => {
-        this._previewing = previewing;
-        this.changeDetectorRef.markForCheck();
+        const className = `berg-layout-previewing-${this.slot}`;
+        if (previewing) {
+          this._layoutElement.classList.add(className);
+        } else {
+          this._layoutElement.classList.remove(className);
+        }
+      });
+
+    combineLatest([this.previewing$, this.resizing$])
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(([previewing, resizing]) => {
+        const resizeClass =
+          this.resizePosition === 'above' || this.resizePosition === 'below'
+            ? 'berg-layout-resizing-vertical'
+            : 'berg-layout-resizing-horizontal';
+
+        if (previewing || resizing) {
+          this._layoutElement.classList.add(resizeClass);
+        } else {
+          this._layoutElement.classList.remove(resizeClass);
+        }
       });
 
     this.resizedSize$
@@ -508,9 +525,19 @@ export class BergPanelComponent
       .pipe(
         startWith(this._slot),
         switchMap((slot) => this.controller.getRenderedResizeToggles(slot)),
+        startWith(null),
+        pairwise(),
         takeUntil(this.destroySub)
       )
-      .subscribe((resizeToggles) => this.appendResizeToggles(resizeToggles));
+      .subscribe(([previous, elem]) => {
+        if (previous && !elem) {
+          this.hostElem.removeChild(previous);
+        }
+
+        if (elem) {
+          this.hostElem.appendChild(elem);
+        }
+      });
   }
 
   private calculateSize(event: MouseEvent): BergPanelResizeSize {
@@ -575,12 +602,6 @@ export class BergPanelComponent
     );
   }
 
-  private appendResizeToggles(resizeToggles: HTMLElement[]): void {
-    for (const resizeToggle of resizeToggles) {
-      this.hostElem.appendChild(resizeToggle);
-    }
-  }
-
   protected getLayoutElement(): HTMLElement {
     if (!this._layoutElement) {
       this._layoutElement = this.findLayoutElement();
@@ -633,21 +654,6 @@ export class BergPanelComponent
   }
 
   private subscribe(): void {
-    combineLatest([this.previewing$, this.resizing$])
-      .pipe(takeUntil(this.destroySub))
-      .subscribe(([previewing, resizing]) => {
-        const resizeClass =
-          this.resizePosition === 'above' || this.resizePosition === 'below'
-            ? 'berg-layout-resize-vertical'
-            : 'berg-layout-resize-horizontal';
-
-        if (previewing || resizing) {
-          this._layoutElement.classList.add(resizeClass);
-        } else {
-          this._layoutElement.classList.remove(resizeClass);
-        }
-      });
-
     this.snapped$.pipe(takeUntil(this.destroySub)).subscribe((snapped) => {
       this.snapped.emit(snapped);
       this.updateBindings('onSnapped', snapped);
@@ -670,7 +676,6 @@ export class BergPanelComponent
 
   private animateCollapsedChanges(): void {
     this.updateBackdrop();
-    this.controller.push();
 
     // do not animate if the panel it is snapped
     if (this.collapsed && this._snap === 'collapsed') {
@@ -689,7 +694,7 @@ export class BergPanelComponent
 
   /** @hidden */
   ngOnInit(): void {
-    this.subscribeToResize();
+    this.subscribeToResizing();
   }
 
   /** @hidden */
@@ -699,6 +704,11 @@ export class BergPanelComponent
       if (this.collapsed && change['collapsed'].isFirstChange()) {
         this._hidden = true;
       }
+    }
+
+    // since panels mutate through @Input, push here to update the panel$-stream
+    if (change['absolute'] || change['collapsed'] || change['slot']) {
+      this.controller.push();
     }
   }
 

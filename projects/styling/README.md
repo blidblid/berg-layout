@@ -8,6 +8,9 @@ All styles in berg-layout are applied through css-classes. If you're looking to 
   - `.berg-layout`
   - `.berg-panel`
   - `.berg-panel-backdrop`
+- Layout parts
+  - `.berg-layout::part(flex)`
+  - `.berg-layout::part(inner-flex)`
 - Panel parts
   - `.berg-panel::part(overflow)`
   - `.berg-panel::part(content)`

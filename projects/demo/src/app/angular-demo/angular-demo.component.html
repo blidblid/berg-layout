@@ -1,4 +1,6 @@
 <berg-layout *ngIf="rx.layout$ | async as layout"
+             [topPosition]="layout.topPosition!"
+             [bottomPosition]="layout.bottomPosition!"
              [resizeDisabled]="layout.resizeDisabled!"
              [resizeTwoDimensions]="layout.resizeTwoDimensions!"
              [resizeExpandOffset]="layout.resizeExpandOffset!"

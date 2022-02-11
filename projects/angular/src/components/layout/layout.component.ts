@@ -6,9 +6,10 @@ import {
   Inject,
   OnDestroy,
   Optional,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { pairwise, startWith, Subject, takeUntil } from 'rxjs';
 import { BergPanelController } from '../panel/panel-controller';
 import { BergPanelControllerStore } from '../panel/panel-controller-store';
 import { BergLayoutInputs, BERG_LAYOUT_INPUTS } from './layout-model';
@@ -31,6 +32,22 @@ export class BergLayoutComponent
   extends BergPanelController
   implements BergLayoutInputs, BergLayoutElement, OnDestroy
 {
+  @ViewChild('flexContainer', { read: ElementRef })
+  private flexContainerRef: ElementRef<HTMLElement>;
+
+  /** Flex container element containing the left and the right panel. */
+  get flexContainer() {
+    return this.flexContainerRef.nativeElement;
+  }
+
+  @ViewChild('innerFlexContainer', { read: ElementRef })
+  private innerFlexContainerRef: ElementRef<HTMLElement>;
+
+  /** Flex container element containing the center panel. */
+  get innerFlexContainer() {
+    return this.innerFlexContainerRef.nativeElement;
+  }
+
   private destroySub = new Subject<void>();
 
   constructor(
@@ -43,6 +60,29 @@ export class BergLayoutComponent
   ) {
     super(elementRef.nativeElement, document, inputs);
     this.panelControllerStore.add(this);
+    this.subscribe();
+  }
+
+  private subscribe(): void {
+    this.getResizeToggleForFlexContainer()
+      .pipe(startWith(null), pairwise(), takeUntil(this.destroySub))
+      .subscribe(([previous, elem]) => {
+        if (previous && !elem) {
+          this.flexContainer.removeChild(previous);
+        }
+
+        if (elem) {
+          this.flexContainer.appendChild(elem);
+        }
+      });
+
+    this.getResizeToggleForInnerFlexContainer()
+      .pipe(takeUntil(this.destroySub))
+      .subscribe((elem) => {
+        if (elem) {
+          this.innerFlexContainer.appendChild(elem);
+        }
+      });
   }
 
   /** @hidden */

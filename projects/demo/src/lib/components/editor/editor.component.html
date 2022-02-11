@@ -24,6 +24,11 @@
     <mat-card-title>Layout</mat-card-title>
     <berg-outlet [component]="operators.layout"></berg-outlet>
   </mat-card>
+
+  <mat-card>
+    <mat-card-title>Resizing</mat-card-title>
+    <berg-outlet [component]="operators.resizing"></berg-outlet>
+  </mat-card>
 </div>
 
 <ng-container *ngIf="view === 'code'">

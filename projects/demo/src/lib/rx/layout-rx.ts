@@ -79,6 +79,8 @@ export class LayoutRx {
       resizePreviewDelay: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.resizePreviewDelay
       ),
+      topPosition: userValue(BERG_LAYOUT_DEFAULT_INPUTS.topPosition),
+      bottomPosition: userValue(BERG_LAYOUT_DEFAULT_INPUTS.bottomPosition),
     };
   }
 
