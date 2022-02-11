@@ -32,11 +32,11 @@ The component is packaged as a [web component](https://developer.mozilla.org/en-
 
 ### Web component
 
-See the [web component usage docs](https://berg-layout-api.web.app/web-component).
+See the [web component docs](https://github.com/blidblid/berg-layout/tree/main/projects/web-component).
 
 ### Angular component
 
-See the [web Angular component docs](https://berg-layout-api.web.app/angular).
+See the [Angular component docs](https://github.com/blidblid/berg-layout/tree/main/projects/angular).
 
 ## API
 
