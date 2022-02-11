@@ -64,19 +64,21 @@
   $previewing-indicator-color: map-get($map, 'previewing-indicator-color') or
     $resizing-indicator-color;
 
-  .berg-layout-previewing-top .berg-panel-resize-toggle-top,
-  .berg-layout-previewing-right .berg-panel-resize-toggle-right,
-  .berg-layout-previewing-bottom .berg-panel-resize-toggle-bottom,
-  .berg-layout-previewing-top::part(resize-toggle-top),
-  .berg-layout-previewing-left::part(resize-toggle-left) {
-    background: $previewing-indicator-color;
+  .berg-panel-resize-previewing {
+    .berg-panel-resize-toggle-top,
+    .berg-panel-resize-toggle-right,
+    .berg-panel-resize-toggle-bottom,
+    .berg-panel-resize-toggle-left {
+      background: $previewing-indicator-color;
+    }
   }
 
-  .berg-layout-resizing-top .berg-panel-resize-toggle-top,
-  .berg-layout-resizing-right .berg-panel-resize-toggle-right,
-  .berg-layout-resizing-bottom .berg-panel-resize-toggle-bottom,
-  .berg-layout-resizing-top::part(resize-toggle-top),
-  .berg-layout-resizing-left::part(resize-toggle-left) {
-    background: $resizing-indicator-color;
+  .berg-panel-resize-resizing {
+    .berg-panel-resize-toggle-top,
+    .berg-panel-resize-toggle-right,
+    .berg-panel-resize-toggle-bottom,
+    .berg-panel-resize-toggle-left {
+      background: $resizing-indicator-color;
+    }
   }
 }

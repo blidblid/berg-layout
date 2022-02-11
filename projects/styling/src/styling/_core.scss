@@ -16,50 +16,50 @@
     }
   }
 
-  .berg-panel-top {
-    .berg-panel-resize-toggle-top {
-      top: auto;
-      bottom: -#{$resizing-indicator-size};
-    }
-  }
-
-  .berg-panel-left {
-    .berg-panel-resize-toggle-left {
-      left: auto;
-      right: -#{$resizing-indicator-size};
-    }
-  }
-
-  .berg-panel-resize-toggle-top,
-  .berg-layout::part(resize-toggle-top),
-  .berg-panel-resize-toggle-bottom {
-    height: $resizing-indicator-size;
-  }
-
-  .berg-layout::part(resize-toggle-left),
-  .berg-panel-resize-toggle-right {
-    width: $resizing-indicator-size;
-  }
-
-  .berg-layout::part(resize-toggle-left),
-  .berg-layout::part(resize-toggle-top),
   .berg-panel-resize-toggle {
     position: absolute;
     z-index: 2;
   }
 
-  .berg-layout::part(resize-toggle-left),
+  .berg-layout-top-between {
+    .berg-panel-top {
+      z-index: 1;
+    }
+  }
+
+  .berg-layout-bottom-between {
+    .berg-panel-bottom {
+      z-index: 1;
+    }
+  }
+
+  .berg-panel-resize-toggle-left,
   .berg-panel-resize-toggle-right {
     top: 0;
     bottom: 0;
+    width: $resizing-indicator-size;
+  }
+
+  .berg-panel-resize-toggle-right {
     left: 0;
   }
 
+  .berg-panel-resize-toggle-left {
+    right: -#{$resizing-indicator-size};
+  }
+
   .berg-panel-resize-toggle-top,
-  .berg-layout::part(resize-toggle-top),
   .berg-panel-resize-toggle-bottom {
-    left: 0;
     right: 0;
+    left: 0;
+    height: $resizing-indicator-size;
+  }
+
+  .berg-panel-resize-toggle-top {
+    bottom: -#{$resizing-indicator-size};
+  }
+
+  .berg-panel-resize-toggle-bottom {
     top: 0;
   }
 }

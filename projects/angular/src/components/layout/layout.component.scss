@@ -10,7 +10,6 @@
   .berg-layout-inner-flex {
     display: flex;
     justify-content: space-between;
-    position: relative;
     flex: 1;
   }
 
@@ -20,6 +19,12 @@
 
   .berg-layout-inner-flex {
     flex-direction: column;
+  }
+
+  &:host(.berg-layout-top-between) {
+    .berg-layout-inner-flex {
+      position: relative;
+    }
   }
 
   &:host(.berg-layout-resizing-horizontal) {
