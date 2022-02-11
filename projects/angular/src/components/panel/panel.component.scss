@@ -20,14 +20,6 @@
   }
 }
 
-:host(.berg-panel-vertical) {
-  min-height: 64px;
-}
-
-:host(.berg-panel-horizontal) {
-  min-width: 128px;
-}
-
 // keep all collapsed css !important to prevent overrides
 :host(.berg-panel-snap-collapsed) {
   padding: 0 !important;
@@ -68,6 +60,8 @@
 :host(.berg-panel-center) {
   max-height: 100%;
   max-width: 100vw;
+  min-height: 0;
+  min-width: 0;
   flex: 1;
 }
 

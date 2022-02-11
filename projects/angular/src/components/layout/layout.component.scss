@@ -14,11 +14,12 @@
   }
 
   .berg-layout-flex {
-    min-height: 100px;
+    min-height: 10vh;
   }
 
   .berg-layout-inner-flex {
     flex-direction: column;
+    min-width: 10vw;
   }
 
   &:host(.berg-layout-resizing-horizontal) {
