@@ -25,8 +25,6 @@ import { BergLayoutElement, BERG_LAYOUT_ELEMENT } from './layout-model-private';
   ],
   host: {
     class: 'berg-layout',
-    '[class.berg-layout-top-between]': 'topPosition === "between"',
-    '[class.berg-layout-bottom-between]': 'bottomPosition === "between"',
   },
 })
 export class BergLayoutComponent

@@ -75,6 +75,8 @@
   flex: 1;
 }
 
+// Use explicit z-index to make sure box-shadow looks good
+// and resize-toggles lie on top of other panels.
 :host(.berg-panel-center) {
   z-index: 0;
 }
@@ -87,6 +89,10 @@
 :host(.berg-panel-bottom),
 :host(.berg-panel-top) {
   z-index: 3;
+}
+
+:host(.berg-panel-between) {
+  z-index: 1;
 }
 
 :host(.berg-panel-absolute) {

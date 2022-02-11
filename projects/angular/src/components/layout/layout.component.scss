@@ -21,12 +21,6 @@
     flex-direction: column;
   }
 
-  &:host(.berg-layout-top-between) {
-    .berg-layout-inner-flex {
-      position: relative;
-    }
-  }
-
   &:host(.berg-layout-resizing-horizontal) {
     user-select: none;
     cursor: ew-resize;

@@ -84,6 +84,8 @@ import { filterSizeDirection } from './panel-util';
     '[class.berg-panel-right]': 'slot === "right"',
     '[class.berg-panel-bottom]': 'slot === "bottom"',
     '[class.berg-panel-center]': 'slot === "center"',
+    '[class.berg-panel-between]':
+      'slot === "top" && controller.topPosition === "between" || slot === "bottom" && controller.bottomPosition === "between"',
     '[style.width.px]': '_size?.width',
     '[style.height.px]': '_size?.height',
     '[style.margin]': '_margin',
