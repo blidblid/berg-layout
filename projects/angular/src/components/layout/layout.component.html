@@ -3,13 +3,11 @@
 </slot>
 
 <div class="berg-layout-flex"
-     #flexContainer
      part="flex">
   <slot name="left">
   </slot>
 
   <div class="berg-layout-inner-flex"
-       #innerFlexContainer
        part="inner-flex">
     <slot name="top"
           *ngIf="topPosition === 'between'">
