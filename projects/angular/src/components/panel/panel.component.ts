@@ -463,7 +463,7 @@ export class BergPanelComponent
           'right: 0;',
           'bottom: 0;',
           'left: 0;',
-          'z-index: 3;',
+          'z-index: 4;',
           'cursor: pointer;',
         ].join(' ')
       );

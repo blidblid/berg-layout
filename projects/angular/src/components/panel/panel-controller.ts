@@ -72,6 +72,7 @@ export class BergPanelController {
   @Input() bottomPosition: BergLayoutBottomPosition =
     this.getInput('bottomPosition');
 
+  /** @hidden */
   resizeToggles = {
     top: this.createResizeToggleElement('top'),
     right: this.createResizeToggleElement('right'),
