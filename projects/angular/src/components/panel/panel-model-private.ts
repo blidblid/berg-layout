@@ -7,13 +7,7 @@ export const BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE = 8;
 
 export interface BergPanelResizeSize {
   rect: DOMRect;
+  event: MouseEvent;
   width?: number;
   height?: number;
 }
-
-export type BergPanelResizePosition =
-  | 'above'
-  | 'after'
-  | 'below'
-  | 'before'
-  | null;

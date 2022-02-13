@@ -51,7 +51,6 @@ import {
   BERG_PANEL_INPUTS,
 } from './panel-model';
 import {
-  BergPanelResizePosition,
   BergPanelResizeSize,
   BERG_RESIZE_SNAP_PADDING,
   BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE,
@@ -97,18 +96,6 @@ export class BergPanelComponent
 {
   @Input('slot')
   set slot(value: BergPanelSlot) {
-    if (value === 'top') {
-      this.resizePosition = 'below';
-    } else if (value === 'right') {
-      this.resizePosition = 'before';
-    } else if (value === 'bottom') {
-      this.resizePosition = 'above';
-    } else if (value === 'left') {
-      this.resizePosition = 'after';
-    } else {
-      this.resizePosition = null;
-    }
-
     this._slot = value;
     this.slotSub.next(value);
   }
@@ -117,7 +104,6 @@ export class BergPanelComponent
   }
   private _slot: BergPanelSlot = 'center';
   protected slotSub = new ReplaySubject<BergPanelSlot>(1);
-  private resizePosition: BergPanelResizePosition;
 
   @Input()
   set absolute(value: boolean) {
@@ -247,12 +233,8 @@ export class BergPanelComponent
 
   private startResizeCollapse$ = this.decreasingSize$.pipe(
     pairwise(),
-    filter(([previous, size]) => {
-      if (
-        this._snap !== 'none' ||
-        previous.rect.width !== size.rect.width ||
-        previous.rect.height !== size.rect.height
-      ) {
+    map(([previous, size]) => {
+      if (!this.canSizeSnap(previous, size)) {
         return false;
       }
 
@@ -270,6 +252,10 @@ export class BergPanelComponent
 
       return false;
     }),
+    pairwise(),
+    // only snap on two subsequent snapping resizes
+    // to prevent users from snapping by rapidly resizing from an expanded snap
+    filter(([previous, current]) => previous && current),
     map(([_, size]) => size),
     share()
   );
@@ -300,11 +286,7 @@ export class BergPanelComponent
   private startResizeExpand$ = this.increasingSize$.pipe(
     pairwise(),
     filter(([previous, size]) => {
-      if (
-        this._snap !== 'none' ||
-        previous.rect.width !== size.rect.width ||
-        previous.rect.height !== size.rect.height
-      ) {
+      if (!this.canSizeSnap(previous, size)) {
         return false;
       }
 
@@ -480,7 +462,7 @@ export class BergPanelComponent
   }
 
   private subscribeToResizing(): void {
-    if (this.resizePosition === null) {
+    if (this.slot === 'center') {
       return;
     }
 
@@ -492,7 +474,7 @@ export class BergPanelComponent
       .pipe(takeUntil(this.destroySub))
       .subscribe(([previewing, resizing]) => {
         const resizeClass =
-          this.resizePosition === 'above' || this.resizePosition === 'below'
+          this.slot === 'bottom' || this.slot === 'top'
             ? 'berg-layout-resizing-vertical'
             : 'berg-layout-resizing-horizontal';
 
@@ -519,26 +501,26 @@ export class BergPanelComponent
   private calculateSize(event: MouseEvent): BergPanelResizeSize {
     const rect = this.hostElem.getBoundingClientRect();
 
-    if (this.resizePosition === 'above') {
-      return { rect, height: rect.height + rect.y - event.pageY };
+    if (this.slot === 'bottom') {
+      return { rect, event, height: rect.height + rect.y - event.pageY };
     }
 
-    if (this.resizePosition === 'after') {
-      return { rect, width: event.pageX - rect.x };
+    if (this.slot === 'left') {
+      return { rect, event, width: event.pageX - rect.x };
     }
 
-    if (this.resizePosition === 'below') {
-      return { rect, height: event.pageY - rect.y };
+    if (this.slot === 'top') {
+      return { rect, event, height: event.pageY - rect.y };
     }
 
-    return { rect, width: rect.width + rect.x - event.pageX };
+    return { rect, event, width: rect.width + rect.x - event.pageX };
   }
 
   private checkResizeThreshold(
     event: MouseEvent,
     resizeToggle: HTMLElement | null
   ): boolean {
-    if (resizeToggle === null || !this.resizePosition) {
+    if (resizeToggle === null || this.slot === 'center') {
       return false;
     }
 
@@ -559,16 +541,16 @@ export class BergPanelComponent
       return false;
     }
 
-    if (this.resizePosition === 'above') {
+    if (this.slot === 'bottom') {
       mouse = event.pageY;
       origin = y;
-    } else if (this.resizePosition === 'after') {
+    } else if (this.slot === 'left') {
       mouse = event.pageX;
       origin = x + width;
-    } else if (this.resizePosition === 'below') {
+    } else if (this.slot === 'top') {
       mouse = event.pageY;
       origin = height + y;
-    } else if (this.resizePosition === 'before') {
+    } else if (this.slot === 'right') {
       mouse = event.pageX;
       origin = x;
     }
@@ -617,6 +599,17 @@ export class BergPanelComponent
     }
 
     throw new Error('<berg-panel> could not find a <berg-layout> element');
+  }
+
+  private canSizeSnap(
+    previousSize: BergPanelResizeSize,
+    size: BergPanelResizeSize
+  ): boolean {
+    return (
+      this._snap === 'none' &&
+      previousSize.rect.width === size.rect.width &&
+      previousSize.rect.height === size.rect.height
+    );
   }
 
   private getInput<T extends keyof BergPanelInputs>(

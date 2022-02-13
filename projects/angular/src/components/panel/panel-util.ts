@@ -106,7 +106,7 @@ export type ReducerAction<T> =
   | UpdateAction<T>;
 
 export function filterSizeDirection(
-  increases: boolean
+  increasing: boolean
 ): MonoTypeOperatorFunction<BergPanelResizeSize> {
   return (source) =>
     source.pipe(
@@ -117,7 +117,7 @@ export function filterSizeDirection(
           return true;
         }
 
-        return increases ? isLargerSize(curr, prev) : isLargerSize(prev, curr);
+        return increasing ? isLargerSize(curr, prev) : isLargerSize(prev, curr);
       }),
       map(([_, curr]) => curr as BergPanelResizeSize)
     );
