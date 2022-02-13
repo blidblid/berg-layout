@@ -1,6 +1,6 @@
 # berg-layout
 
-berg-layout is simple, powerful and customizable layout component.
+An open-source layout with responsiveness, resizing, styling and more.
 
 Check out the demo [here](https://berg-layout.web.app/).
 
