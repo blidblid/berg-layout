@@ -1,5 +1,6 @@
 {
   "name": "@berg-layout/builder-hooks",
+  "repository": "https://github.com/blidblid/berg-layout",
   "author": "Albin Berglund",
   "license": "MIT",
   "version": "0.0.3",

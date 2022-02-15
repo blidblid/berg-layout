@@ -1,6 +1,8 @@
 {
   "name": "@berg-layout/web-component",
+  "repository": "https://github.com/blidblid/berg-layout",
   "version": "0.0.6",
+  "license": "MIT",
   "main": "main.js",
   "peerDependencies": {
     "@angular/common": "^13.1.0",

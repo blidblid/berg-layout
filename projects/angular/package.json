@@ -1,5 +1,6 @@
 {
   "name": "@berg-layout/angular",
+  "repository": "https://github.com/blidblid/berg-layout",
   "version": "0.0.9",
   "license": "MIT",
   "peerDependencies": {

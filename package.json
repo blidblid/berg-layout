@@ -1,5 +1,6 @@
 {
   "name": "berg-layout",
+  "repository": "https://github.com/blidblid/berg-layout",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {

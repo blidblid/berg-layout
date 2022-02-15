@@ -1,5 +1,6 @@
 {
   "name": "@berg-layout/styling",
+  "repository": "https://github.com/blidblid/berg-layout",
   "version": "0.0.4",
   "license": "MIT",
   "peerDependencies": {
