@@ -129,6 +129,8 @@ export class LayoutOperators {
             'Dark',
             'High Contrast',
             'Light',
+            'Material Dark',
+            'Material Light',
             'Quiet Light',
             'Solarized Dark',
             'Solarized Light',

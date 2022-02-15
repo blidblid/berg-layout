@@ -1403,10 +1403,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@berg-layout/builder-hooks@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@berg-layout/builder-hooks/-/builder-hooks-0.0.2.tgz#0241e9bbeaec42d9c684e08efcdfea6cfb3792c3"
-  integrity sha512-fZNbJsG+yWKgkUravMshMMZvv2eFfsTe3lAsjjsu/XyTMPQGMmk2y0g3mLxWZYO90O3bH6bhPMfYzu/WheVs+A==
+"@berg-layout/builder-hooks@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@berg-layout/builder-hooks/-/builder-hooks-0.0.3.tgz#ec2c04f8ced7b4fde29ebcc3b8bcbd446cd70423"
+  integrity sha512-M0j6srtp41Em1mD4hENLLfThCly2klusjsscIpBPbfVWupjo/xCZcsFeDd2J67ViYbfRSIP8ZqRqKYtlSH271g==
   dependencies:
     tslib "^2.3.0"
 
@@ -6221,7 +6221,7 @@ rxjs@6.6.7, rxjs@^6.0.0:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.0.0, rxjs@~7.5.2:
+rxjs@^7.0.0:
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.2.tgz#11e4a3a1dfad85dbf7fb6e33cbba17668497490b"
   integrity sha512-PwDt186XaL3QN5qXj/H9DGyHhP3/RYYgZZwqBv9Tv8rsAaiwFH1IsJJlcgD37J7UW5a6O67qX0KWKS3/pu0m4w==
@@ -6234,6 +6234,13 @@ rxjs@^7.2.0:
   integrity sha512-7SQDi7xeTMCJpqViXh8gL/lebcwlp3d831F05+9B44A4B0WfsEwUQHR64gsH1kvJ+Ep/J9K2+n1hVl1CsGN23w==
   dependencies:
     tslib "~2.1.0"
+
+rxjs@~7.5.4:
+  version "7.5.4"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.4.tgz#3d6bd407e6b7ce9a123e76b1e770dc5761aa368d"
+  integrity sha512-h5M3Hk78r6wAheJF0a5YahB1yRQKCsZ4MsGdZ5O9ETbVtjPcScGfrMmoOq7EBsCRzd4BDkvDJ7ogP8Sz5tTFiQ==
+  dependencies:
+    tslib "^2.1.0"
 
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"

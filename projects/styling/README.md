@@ -51,12 +51,14 @@ Then, import a theme.
 @import '~@berg-layout/styling/dark.css';
 ```
 
-There are 7 different themes to choose from
+There are 9 themes to choose from
 
 - Abyss
 - Dark
 - High Contrast
 - Light
+- Material Dark
+- Material Light
 - Quiet Light
 - Solarized Dark
 - Solarized Light
@@ -84,9 +86,10 @@ Pick a theme and include it using its theme-mixin. Optionally, pass overrides.
 ```scss
 @use 'node_modules/@berg-layout/styling' as layout;
 
-@include layout.dark(
+@include layout.solarized-light(
   $overrides: (
     resizing-indicator-color: #3b7fd0,
+    elevation: 0,
   )
 );
 ```

@@ -29,7 +29,7 @@
     "@berglund/mixins": "^0.0.14",
     "@berglund/rx": "^0.0.10",
     "highlight.js": "^11.4.0",
-    "rxjs": "~7.5.2",
+    "rxjs": "~7.5.4",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

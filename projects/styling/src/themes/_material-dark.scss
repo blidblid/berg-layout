@@ -2,24 +2,27 @@
 @use '../styling/elevation' as elevation;
 @use '../styling/theme';
 
-@mixin solarized-dark($overrides: ()) {
+@mixin material-dark($overrides: ()) {
   $theme: map.merge(
     (
-      background: rgb(15, 42, 53),
-      background-low-contrast: rgb(18, 25, 43),
-      background-high-contrast: rgb(10, 32, 42),
+      background: #303030,
+      background-low-contrast: #424242,
+      background-high-contrast: #212121,
       background-backdrop: rgba(white, 0.3),
-      divider: rgb(43, 44, 73),
+      divider: rgba(white, 0.12),
       resizing-indicator-color: #6c376c,
       previewing-indicator-color: #376c6c,
-      elevation: 2,
+      elevation: 4,
     ),
     $overrides
   );
 
   @include theme.theme($theme);
 
-  .berg-panel-top {
+  .berg-panel-top,
+  .berg-panel-left,
+  .berg-panel-right,
+  .berg-panel-bottom {
     @include elevation.elevation(map-get($theme, elevation));
   }
 }

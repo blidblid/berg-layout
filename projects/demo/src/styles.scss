@@ -38,6 +38,7 @@ $light-theme: mat.define-light-theme(
 
 .app-root-abyss,
 .app-root-dark,
+.app-root-material-dark,
 .app-root-high-contrast,
 .app-root-solarized-dark {
   color: rgba(255, 255, 255, 0.7);
@@ -48,6 +49,7 @@ $light-theme: mat.define-light-theme(
 }
 
 .app-root-light,
+.app-root-material-light,
 .app-root-quiet-light,
 .app-root-solarized-light {
   color: #000000de;
@@ -65,6 +67,14 @@ $light-theme: mat.define-light-theme(
 
 .app-root-light {
   @include layout.light();
+}
+
+.app-root-material-light {
+  @include layout.material-light();
+}
+
+.app-root-material-dark {
+  @include layout.material-dark();
 }
 
 .app-root-quiet-light {
