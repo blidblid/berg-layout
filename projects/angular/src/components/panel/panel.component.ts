@@ -51,9 +51,11 @@ import {
   BERG_PANEL_INPUTS,
 } from './panel-model';
 import {
+  BACKDROP_ANIMATION_DURATION,
+  BACKDROP_Z_INDEX,
   BergPanelResizeSize,
-  BERG_RESIZE_SNAP_PADDING,
-  BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE,
+  SNAP_PADDING,
+  TWO_DIMENSION_COLLECTION_DISTANCE,
 } from './panel-model-private';
 import {
   BergPanelOutputBinding,
@@ -319,11 +321,11 @@ export class BergPanelComponent
         expandAtSize ?? this.hostElem.getBoundingClientRect();
 
       if (size.width !== undefined && width !== undefined) {
-        return width - BERG_RESIZE_SNAP_PADDING > size.width;
+        return width - SNAP_PADDING > size.width;
       }
 
       if (size.height !== undefined && height !== undefined) {
-        return height - BERG_RESIZE_SNAP_PADDING > size.height;
+        return height - SNAP_PADDING > size.height;
       }
 
       return false;
@@ -414,14 +416,20 @@ export class BergPanelComponent
   }
 
   private showBackdrop(): void {
-    this._layoutElement.appendChild(this.getBackdropElement());
+    const backdrop = this.getBackdropElement();
+    this._layoutElement.appendChild(backdrop);
+    requestAnimationFrame(() => (backdrop.style.opacity = '1'));
   }
 
   private hideBackdrop(): void {
     const backdrop = this.getBackdropElement();
-
     if (this._layoutElement.contains(backdrop)) {
-      this._layoutElement.removeChild(backdrop);
+      this._backdropElement.style.opacity = '0';
+
+      setTimeout(
+        () => this._layoutElement.removeChild(backdrop),
+        BACKDROP_ANIMATION_DURATION
+      );
     }
   }
 
@@ -437,18 +445,16 @@ export class BergPanelComponent
     if (!this._backdropElement) {
       this._backdropElement = this.document.createElement('div');
       this._backdropElement.classList.add('berg-panel-backdrop');
-      this._backdropElement.setAttribute(
-        'style',
-        [
-          'position: absolute;',
-          'top: 0;',
-          'right: 0;',
-          'bottom: 0;',
-          'left: 0;',
-          'z-index: 4;',
-          'cursor: pointer;',
-        ].join(' ')
-      );
+      this._backdropElement.style.transition = `opacity ${BACKDROP_ANIMATION_DURATION}ms ease-in`;
+      this._backdropElement.style.zIndex = BACKDROP_Z_INDEX.toString();
+      this._backdropElement.style.position = 'absolute';
+      this._backdropElement.style.cursor = 'pointer';
+      this._backdropElement.style.opacity = '0';
+      this._backdropElement.style.top =
+        this._backdropElement.style.right =
+        this._backdropElement.style.bottom =
+        this._backdropElement.style.left =
+          '0';
 
       fromEvent<MouseEvent>(this._backdropElement, 'click')
         .pipe(takeUntil(this.destroySub))
@@ -555,9 +561,7 @@ export class BergPanelComponent
       origin = x;
     }
 
-    return (
-      BERG_RESIZE_TWO_DIMENSION_COLLECTION_DISTANCE > Math.abs(origin - mouse)
-    );
+    return TWO_DIMENSION_COLLECTION_DISTANCE > Math.abs(origin - mouse);
   }
 
   protected getLayoutElement(): HTMLElement {
