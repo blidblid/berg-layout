@@ -74,7 +74,7 @@ To style berg-layout using SASS, first `@use` the layout API. Then, include the 
 
 @include layout.core(
   $overrides: (
-    $resizing-indicator-size: 6px,
+    resizing-indicator-size: 6px,
   )
 );
 ```

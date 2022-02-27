@@ -419,12 +419,14 @@ export class BergPanelComponent
     const backdrop = this.getBackdropElement();
     this._layoutElement.appendChild(backdrop);
     requestAnimationFrame(() => (backdrop.style.opacity = '1'));
+    this._backdropElement.style.pointerEvents = 'auto';
   }
 
   private hideBackdrop(): void {
     const backdrop = this.getBackdropElement();
     if (this._layoutElement.contains(backdrop)) {
       this._backdropElement.style.opacity = '0';
+      this._backdropElement.style.pointerEvents = 'none';
 
       setTimeout(
         () => this._layoutElement.removeChild(backdrop),
