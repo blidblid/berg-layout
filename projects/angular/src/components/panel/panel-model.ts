@@ -29,6 +29,10 @@ export interface BergPanelInputs {
   outputBindingMode: BergPanelOutputBindingMode;
 }
 
+export type BergPanelComponentInputs = {
+  [P in keyof BergPanelInputs]: BergPanelInputs[P] | null;
+};
+
 /** Outputs that panels emit. */
 export interface BergPanelOutputs {
   /** Emits when a user resizes beyond where the panel changes its size. */

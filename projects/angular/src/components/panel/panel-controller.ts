@@ -3,6 +3,7 @@ import {
   coerceNumberProperty,
 } from '@angular/cdk/coercion';
 import { Directive, Input } from '@angular/core';
+import { BergLayoutTopPosition } from 'dist/angular/components';
 import {
   debounceTime,
   fromEvent,
@@ -14,63 +15,83 @@ import {
 import {
   BergLayoutBottomPosition,
   BergLayoutInputs,
-  BergLayoutTopPosition,
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '../layout/layout-model';
-import { BergPanelInputs, BergPanelSlot } from './panel-model';
+import { BergPanelComponentInputs, BergPanelSlot } from './panel-model';
 import { arrayReducer } from './panel-util';
 
 @Directive()
 export class BergPanelController {
   @Input()
-  get resizeDisabled() {
+  get resizeDisabled(): boolean {
     return this._resizeDisabled;
   }
-  set resizeDisabled(value: boolean) {
+  set resizeDisabled(value: boolean | null) {
     this._resizeDisabled = coerceBooleanProperty(value);
   }
-  private _resizeDisabled: boolean = this.getInput('resizeDisabled');
+  private _resizeDisabled: boolean = this.getDefaultInput('resizeDisabled');
 
   @Input()
-  get resizeCollapseOffset() {
+  get resizeCollapseOffset(): number {
     return this._resizeCollapseOffset;
   }
-  set resizeCollapseOffset(value: number) {
+  set resizeCollapseOffset(value: number | null) {
     this._resizeCollapseOffset = coerceNumberProperty(value);
   }
-  private _resizeCollapseOffset: number = this.getInput('resizeCollapseOffset');
+  private _resizeCollapseOffset: number = this.getDefaultInput(
+    'resizeCollapseOffset'
+  );
 
   @Input()
-  get resizeExpandOffset() {
+  get resizeExpandOffset(): number {
     return this._resizeExpandOffset;
   }
-  set resizeExpandOffset(value: number) {
+  set resizeExpandOffset(value: number | null) {
     this._resizeExpandOffset = coerceNumberProperty(value);
   }
-  private _resizeExpandOffset: number = this.getInput('resizeExpandOffset');
+  private _resizeExpandOffset: number =
+    this.getDefaultInput('resizeExpandOffset');
 
   @Input()
-  get resizePreviewDelay() {
+  get resizePreviewDelay(): number {
     return this._resizePreviewDelay;
   }
-  set resizePreviewDelay(value: number) {
+  set resizePreviewDelay(value: number | null) {
     this._resizePreviewDelay = coerceNumberProperty(value);
   }
-  private _resizePreviewDelay: number = this.getInput('resizePreviewDelay');
+  private _resizePreviewDelay: number =
+    this.getDefaultInput('resizePreviewDelay');
 
   @Input()
-  get resizeTwoDimensions() {
+  get resizeTwoDimensions(): boolean {
     return this._resizeTwoDimensions;
   }
-  set resizeTwoDimensions(value: boolean) {
+  set resizeTwoDimensions(value: boolean | null) {
     this._resizeTwoDimensions = coerceBooleanProperty(value);
   }
-  private _resizeTwoDimensions: boolean = this.getInput('resizeTwoDimensions');
+  private _resizeTwoDimensions: boolean = this.getDefaultInput(
+    'resizeTwoDimensions'
+  );
 
-  @Input() topPosition: BergLayoutTopPosition = this.getInput('topPosition');
+  @Input()
+  get topPosition() {
+    return this._topPosition;
+  }
+  set topPosition(value: BergLayoutTopPosition | null) {
+    this._topPosition = value ?? this.getDefaultInput('topPosition');
+  }
+  private _topPosition: BergLayoutTopPosition =
+    this.getDefaultInput('topPosition');
 
-  @Input() bottomPosition: BergLayoutBottomPosition =
-    this.getInput('bottomPosition');
+  @Input()
+  get bottomPosition() {
+    return this._bottomPosition;
+  }
+  set bottomPosition(value: BergLayoutBottomPosition | null) {
+    this._bottomPosition = value ?? this.getDefaultInput('bottomPosition');
+  }
+  private _bottomPosition: BergLayoutBottomPosition =
+    this.getDefaultInput('bottomPosition');
 
   /** @hidden */
   resizeToggles = {
@@ -80,9 +101,9 @@ export class BergPanelController {
     left: this.createResizeToggleElement('left'),
   };
 
-  private addPanelSub = new Subject<BergPanelInputs>();
+  private addPanelSub = new Subject<BergPanelComponentInputs>();
   private pushPanelSub = new Subject<void>();
-  private removePanelSub = new Subject<BergPanelInputs>();
+  private removePanelSub = new Subject<BergPanelComponentInputs>();
 
   private panels$ = arrayReducer({
     add: this.addPanelSub,
@@ -99,7 +120,7 @@ export class BergPanelController {
   }
 
   /** @hidden */
-  add(panel: BergPanelInputs): void {
+  add(panel: BergPanelComponentInputs): void {
     this.addPanelSub.next(panel);
   }
 
@@ -109,7 +130,7 @@ export class BergPanelController {
   }
 
   /** @hidden */
-  remove(panel: BergPanelInputs): void {
+  remove(panel: BergPanelComponentInputs): void {
     this.removePanelSub.next(panel);
   }
 
@@ -130,7 +151,7 @@ export class BergPanelController {
     );
   }
 
-  protected getInput<T extends keyof BergLayoutInputs>(
+  protected getDefaultInput<T extends keyof BergLayoutInputs>(
     input: T
   ): BergLayoutInputs[T] {
     return this.inputs ? this.inputs[input] : BERG_LAYOUT_DEFAULT_INPUTS[input];

@@ -11,7 +11,11 @@ import {
 import { Subject } from 'rxjs';
 import { BergPanelController } from '../panel/panel-controller';
 import { BergPanelControllerStore } from '../panel/panel-controller-store';
-import { BergLayoutInputs, BERG_LAYOUT_INPUTS } from './layout-model';
+import {
+  BergLayoutComponentInputs,
+  BergLayoutInputs,
+  BERG_LAYOUT_INPUTS,
+} from './layout-model';
 import { BergLayoutElement, BERG_LAYOUT_ELEMENT } from './layout-model-private';
 
 @Component({
@@ -29,7 +33,7 @@ import { BergLayoutElement, BERG_LAYOUT_ELEMENT } from './layout-model-private';
 })
 export class BergLayoutComponent
   extends BergPanelController
-  implements BergLayoutInputs, BergLayoutElement, OnDestroy
+  implements BergLayoutComponentInputs, BergLayoutElement, OnDestroy
 {
   private destroySub = new Subject<void>();
 

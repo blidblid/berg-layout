@@ -30,6 +30,10 @@ export interface BergLayoutInputs {
   bottomPosition: BergLayoutBottomPosition;
 }
 
+export type BergLayoutComponentInputs = {
+  [P in keyof BergLayoutInputs]: BergLayoutInputs[P] | null;
+};
+
 /** Positions of the top panel. */
 export type BergLayoutTopPosition = 'above' | 'between';
 

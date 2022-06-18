@@ -42,6 +42,7 @@ import {
 import { BERG_LAYOUT_ELEMENT } from '../layout/layout-model-private';
 import { BergPanelControllerStore } from './panel-controller-store';
 import {
+  BergPanelComponentInputs,
   BergPanelInputs,
   BergPanelOutputBindingMode,
   BergPanelOutputs,
@@ -94,62 +95,69 @@ import { filterSizeDirection } from './panel-util';
   },
 })
 export class BergPanelComponent
-  implements BergPanelInputs, BergPanelInputs, BergPanelOutputs
+  implements BergPanelComponentInputs, BergPanelOutputs
 {
   @Input('slot')
-  set slot(value: BergPanelSlot) {
-    this._slot = value;
-    this.slotSub.next(value);
-  }
-  get slot() {
+  get slot(): BergPanelSlot {
     return this._slot;
+  }
+  set slot(value: BergPanelSlot | null) {
+    this._slot = value ?? this.getDefaultInput('slot');
+    this.slotSub.next(this._slot);
   }
   private _slot: BergPanelSlot = 'center';
   protected slotSub = new ReplaySubject<BergPanelSlot>(1);
 
   @Input()
-  set absolute(value: boolean) {
-    this._absolute = coerceBooleanProperty(value);
-    this.updateBackdrop();
-  }
-  get absolute() {
+  get absolute(): boolean {
     return this._absolute;
   }
-  private _absolute: boolean = this.getInput('collapsed');
+  set absolute(value: boolean | null) {
+    this._absolute = coerceBooleanProperty(
+      value ?? this.getDefaultInput('absolute')
+    );
+    this.updateBackdrop();
+  }
+  private _absolute: boolean = this.getDefaultInput('absolute');
 
   @Input()
-  set collapsed(value: boolean) {
-    this._collapsed = coerceBooleanProperty(value);
-    this.animateCollapsedChanges();
-  }
-  get collapsed() {
+  get collapsed(): boolean {
     return this._collapsed;
   }
-  private _collapsed: boolean = this.getInput('collapsed');
+  set collapsed(value: boolean | null) {
+    this._collapsed = coerceBooleanProperty(
+      value ?? this.getDefaultInput('collapsed')
+    );
+    this.animateCollapsedChanges();
+  }
+  private _collapsed: boolean = this.getDefaultInput('collapsed');
 
   @Input()
-  set resizeDisabled(value: boolean) {
-    this._resizeDisabled = coerceBooleanProperty(value);
-  }
-  get resizeDisabled() {
+  get resizeDisabled(): boolean {
     return this._resizeDisabled || this.controller.resizeDisabled;
+  }
+  set resizeDisabled(value: boolean | null) {
+    this._resizeDisabled = coerceBooleanProperty(
+      value ?? this.getDefaultInput('resizeDisabled')
+    );
   }
   private _resizeDisabled: boolean;
 
   @Input()
-  set snap(value: BergPanelSnap) {
-    this._snap = value;
-  }
-  get snap() {
+  get snap(): BergPanelSnap {
     return this._snap;
   }
-  private _snap: BergPanelSnap = this.getInput('snap');
+  set snap(value: BergPanelSnap | null) {
+    this._snap = value ?? this.getDefaultInput('snap');
+  }
+  private _snap: BergPanelSnap = this.getDefaultInput('snap');
 
   @Input()
-  set outputBindingMode(value: BergPanelOutputBindingMode) {
-    this._outputBindingMode = value;
+  set outputBindingMode(value: BergPanelOutputBindingMode | null) {
+    this._outputBindingMode =
+      value ?? this.getDefaultInput('outputBindingMode');
   }
-  private _outputBindingMode = this.getInput('outputBindingMode');
+  private _outputBindingMode = this.getDefaultInput('outputBindingMode');
 
   _resizing = false;
   _previewing = false;
@@ -618,7 +626,7 @@ export class BergPanelComponent
     );
   }
 
-  private getInput<T extends keyof BergPanelInputs>(
+  private getDefaultInput<T extends keyof BergPanelInputs>(
     input: T
   ): BergPanelInputs[T] {
     if (this.inputs) {
