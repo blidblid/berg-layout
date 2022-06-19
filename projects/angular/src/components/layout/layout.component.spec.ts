@@ -5,7 +5,11 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { BergPanelSlot, BERG_PANEL_DEFAULT_INPUTS } from '../panel/panel-model';
+import {
+  BergPanelSlot,
+  BergPanelSnap,
+  BERG_PANEL_DEFAULT_INPUTS,
+} from '../panel/panel-model';
 import { BergPanelComponent } from '../panel/panel.component';
 import { BERG_LAYOUT_DEFAULT_INPUTS } from './layout-model';
 import { BergLayoutModule } from './layout.module';
@@ -138,13 +142,15 @@ describe('LayoutComponent', () => {
       expect(checkIfPanelIsCollapsed('left')).toBe(false);
     });
 
-    it('should start collapsing when using the collapsed attribute', () => {
+    it('should start collapsed when using the collapsed attribute', fakeAsync(() => {
       c.left.collapsed = true;
       fixture.detectChanges();
+      tick(REQUEST_ANIMATION_FRAME_TICK);
+      fixture.detectChanges();
       expect(checkIfPanelIsCollapsed('left')).toBe(true);
-    });
+    }));
 
-    it('should start expanding when setting the collapsed attribute to true', fakeAsync(() => {
+    it('should start expanding when setting the collapsed attribute to false', fakeAsync(() => {
       c.left.collapsed = true;
       fixture.detectChanges();
       c.left.collapsed = false;

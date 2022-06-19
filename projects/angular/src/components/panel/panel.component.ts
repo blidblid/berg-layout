@@ -664,7 +664,15 @@ export class BergPanelComponent
     ](...(params as [any]));
 
     for (const [key, value] of Object.entries(updates)) {
+      if (value === undefined) {
+        continue;
+      }
+
       this[key as keyof this] = value as any;
+
+      if (key === 'collapsed') {
+        this.animateCollapsedChanges();
+      }
     }
   }
 
