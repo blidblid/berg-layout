@@ -5,8 +5,7 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { BergPanelSlot, BergPanelSnap } from 'dist/angular/components';
-import { BERG_PANEL_DEFAULT_INPUTS } from '../panel/panel-model';
+import { BergPanelSlot, BERG_PANEL_DEFAULT_INPUTS } from '../panel/panel-model';
 import { BergPanelComponent } from '../panel/panel.component';
 import { BERG_LAYOUT_DEFAULT_INPUTS } from './layout-model';
 import { BergLayoutModule } from './layout.module';

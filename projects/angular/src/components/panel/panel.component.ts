@@ -128,7 +128,6 @@ export class BergPanelComponent
     this._collapsed = coerceBooleanProperty(
       value ?? this.getDefaultInput('collapsed')
     );
-    this.animateCollapsedChanges();
   }
   private _collapsed: boolean = this.getDefaultInput('collapsed');
 
@@ -384,7 +383,7 @@ export class BergPanelComponent
     this.controller.add(this);
   }
 
-  /** Collapses the panel programmatically. Consider using the collapse-input instead. */
+  /** Collapses the panel programmatically. Consider using the collapsed-input instead. */
   collapse(): void {
     if (!this.slot) {
       return;
@@ -405,7 +404,7 @@ export class BergPanelComponent
     this.changeDetectorRef.markForCheck();
   }
 
-  /** Expands the panel programmatically. Consider using the collapse-input instead. */
+  /** Expands the panel programmatically. Consider using the collapsed-input instead. */
   expand(): void {
     if (!this.slot) {
       return;
@@ -695,9 +694,16 @@ export class BergPanelComponent
   /** @hidden */
   ngOnChanges(change: SimpleChanges): void {
     if (change['collapsed']) {
-      // do not animate if the panel is initially collapsed
-      if (this.collapsed && change['collapsed'].isFirstChange()) {
-        this._hidden = true;
+      // do not animate if the panel if it is initially collapsed, just set the margins and hide it
+      if (change['collapsed'].isFirstChange()) {
+        if (this.collapsed) {
+          requestAnimationFrame(() => {
+            this.collapse();
+            this._hidden = true;
+          });
+        }
+      } else {
+        this.animateCollapsedChanges();
       }
     }
 

@@ -3,7 +3,6 @@ import {
   coerceNumberProperty,
 } from '@angular/cdk/coercion';
 import { Directive, Input } from '@angular/core';
-import { BergLayoutTopPosition } from 'dist/angular/components';
 import {
   debounceTime,
   fromEvent,
@@ -15,6 +14,7 @@ import {
 import {
   BergLayoutBottomPosition,
   BergLayoutInputs,
+  BergLayoutTopPosition,
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '../layout/layout-model';
 import { BergPanelComponentInputs, BergPanelSlot } from './panel-model';
