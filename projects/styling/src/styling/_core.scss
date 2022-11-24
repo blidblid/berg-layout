@@ -23,6 +23,7 @@
     top: 0;
     right: var(--berg-panel-right-width);
     left: var(--berg-panel-left-width);
+    height: var(--berg-panel-top-height);
     min-height: var(--berg-panel-top-height);
     max-height: var(--berg-panel-top-height);
 
@@ -45,6 +46,7 @@
     right: 0;
     top: 0;
     bottom: 0;
+    width: var(--berg-panel-right-width);
     min-width: var(--berg-panel-right-width);
     max-width: var(--berg-panel-right-width);
 
@@ -75,6 +77,7 @@
     bottom: 0;
     right: var(--berg-panel-right-width);
     left: var(--berg-panel-left-width);
+    height: var(--berg-panel-bottom-height);
     min-height: var(--berg-panel-bottom-height);
     max-height: var(--berg-panel-bottom-height);
 
@@ -100,6 +103,7 @@
     left: 0;
     top: 0;
     bottom: 0;
+    width: var(--berg-panel-left-width);
     min-width: var(--berg-panel-left-width);
     max-width: var(--berg-panel-left-width);
 
