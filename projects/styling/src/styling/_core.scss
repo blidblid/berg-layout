@@ -1,4 +1,12 @@
+// applies global styles that cannot be applied from within the shadow dom
 @mixin core($overrides: ()) {
+  .berg-layout-resizing-vertical,
+  .berg-layout-resizing-horizontal {
+    .berg-panel {
+      transition-property: none;
+    }
+  }
+
   @include resizing-core($overrides);
   @include positioning-core();
 }

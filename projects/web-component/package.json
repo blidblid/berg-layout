@@ -1,7 +1,7 @@
 {
   "name": "@berg-layout/web-component",
   "repository": "https://github.com/blidblid/berg-layout",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "main": "main.js",
   "peerDependencies": {
