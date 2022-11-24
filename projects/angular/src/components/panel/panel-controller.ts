@@ -2,7 +2,7 @@ import {
   coerceBooleanProperty,
   coerceNumberProperty,
 } from '@angular/cdk/coercion';
-import { Directive, Input } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, OnDestroy } from '@angular/core';
 import {
   debounceTime,
   fromEvent,
@@ -18,10 +18,18 @@ import {
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '../layout/layout-model';
 import { BergPanelComponentInputs, BergPanelSlot } from './panel-model';
+import { BergPanelVariables } from './panel-model-private';
 import { arrayReducer } from './panel-util';
 
-@Directive()
-export class BergPanelController {
+@Directive({
+  host: {
+    '[style.--berg-panel-top-height]': 'variables.top + "px"',
+    '[style.--berg-panel-right-width]': 'variables.right + "px"',
+    '[style.--berg-panel-bottom-height]': 'variables.bottom + "px"',
+    '[style.--berg-panel-left-width]': 'variables.left + "px"',
+  },
+})
+export class BergPanelController implements OnDestroy {
   @Input()
   get resizeDisabled(): boolean {
     return this._resizeDisabled;
@@ -74,24 +82,47 @@ export class BergPanelController {
   );
 
   @Input()
-  get topPosition() {
-    return this._topPosition;
+  get topLeftPosition() {
+    return this._topLeftPosition;
   }
-  set topPosition(value: BergLayoutTopPosition | null) {
-    this._topPosition = value ?? this.getDefaultInput('topPosition');
+  set topLeftPosition(value: BergLayoutTopPosition | null) {
+    this._topLeftPosition = value ?? this.getDefaultInput('topLeftPosition');
   }
-  private _topPosition: BergLayoutTopPosition =
-    this.getDefaultInput('topPosition');
+  private _topLeftPosition: BergLayoutTopPosition =
+    this.getDefaultInput('topLeftPosition');
 
   @Input()
-  get bottomPosition() {
-    return this._bottomPosition;
+  get topRightPosition() {
+    return this._topRightPosition;
   }
-  set bottomPosition(value: BergLayoutBottomPosition | null) {
-    this._bottomPosition = value ?? this.getDefaultInput('bottomPosition');
+  set topRightPosition(value: BergLayoutTopPosition | null) {
+    this._topRightPosition = value ?? this.getDefaultInput('topRightPosition');
   }
-  private _bottomPosition: BergLayoutBottomPosition =
-    this.getDefaultInput('bottomPosition');
+  private _topRightPosition: BergLayoutTopPosition =
+    this.getDefaultInput('topRightPosition');
+
+  @Input()
+  get bottomLeftPosition() {
+    return this._bottomLeftPosition;
+  }
+  set bottomLeftPosition(value: BergLayoutBottomPosition | null) {
+    this._bottomLeftPosition =
+      value ?? this.getDefaultInput('bottomLeftPosition');
+  }
+  private _bottomLeftPosition: BergLayoutBottomPosition =
+    this.getDefaultInput('bottomLeftPosition');
+
+  @Input()
+  get bottomRightPosition() {
+    return this._bottomRightPosition;
+  }
+  set bottomRightPosition(value: BergLayoutBottomPosition | null) {
+    this._bottomRightPosition =
+      value ?? this.getDefaultInput('bottomRightPosition');
+  }
+  private _bottomRightPosition: BergLayoutBottomPosition = this.getDefaultInput(
+    'bottomRightPosition'
+  );
 
   /** @hidden */
   resizeToggles = {
@@ -101,6 +132,8 @@ export class BergPanelController {
     left: this.createResizeToggleElement('left'),
   };
 
+  variables: BergPanelVariables = {};
+
   private addPanelSub = new Subject<BergPanelComponentInputs>();
   private pushPanelSub = new Subject<void>();
   private removePanelSub = new Subject<BergPanelComponentInputs>();
@@ -109,14 +142,17 @@ export class BergPanelController {
     add: this.addPanelSub,
     push: this.pushPanelSub,
     remove: this.removePanelSub,
-  }).pipe(debounceTime(0), shareReplay(1));
+  }).pipe(debounceTime(0), shareReplay({ bufferSize: 1, refCount: true }));
+
+  protected destroySub = new Subject<void>();
 
   constructor(
     public hostElem: HTMLElement,
+    protected changeDetectorRef: ChangeDetectorRef,
     protected document: Document,
     protected inputs: BergLayoutInputs
   ) {
-    this.panels$.subscribe(); // make shareReplay(1) eagerly cache panels
+    this.subscribe();
   }
 
   /** @hidden */
@@ -151,10 +187,19 @@ export class BergPanelController {
     );
   }
 
+  updateVariable(slot: BergPanelSlot, size: number): void {
+    this.variables[slot] = size;
+    this.changeDetectorRef.markForCheck();
+  }
+
   protected getDefaultInput<T extends keyof BergLayoutInputs>(
     input: T
   ): BergLayoutInputs[T] {
     return this.inputs ? this.inputs[input] : BERG_LAYOUT_DEFAULT_INPUTS[input];
+  }
+
+  private subscribe(): void {
+    this.panels$.subscribe(); // make shareReplay(1) eagerly cache panels
   }
 
   private getAdjacentResizeTogglesForSlot(slot: BergPanelSlot): HTMLElement[] {
@@ -201,5 +246,10 @@ export class BergPanelController {
     );
 
     return div;
+  }
+
+  ngOnDestroy(): void {
+    this.destroySub.next();
+    this.destroySub.complete();
   }
 }

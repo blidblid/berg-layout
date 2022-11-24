@@ -1,13 +1,12 @@
 {
   "name": "berg-layout",
   "repository": "https://github.com/blidblid/berg-layout",
-  "version": "2.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng b styling && ng b angular && ng b web-component && ng b demo",
-    "watch": "ng build --watch --configuration development",
+    "watch-styles": "ng build styling --watch --configuration development",
     "test": "ng test angular --watch=false --browsers=ChromeHeadlessCustom",
     "upgrade-hooks": "cd projects/builder-hooks && tsc && cd ../.. && yarn upgrade @berg-layout/builder-hooks"
   },
@@ -47,7 +46,7 @@
     "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
     "jasmine-core": "~3.10.0",
-    "karma": "~6.3.13",
+    "karma": "^6.3.20",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",

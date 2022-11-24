@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use 'sass:math';
 @use '@angular/material' as mat;
-@use 'node_modules/@berg-layout/styling' as layout;
+@use 'styling' as layout;
 @use './app';
 
 @include mat.core();
@@ -89,46 +89,30 @@ $light-theme: mat.define-light-theme(
   @include layout.solarized-dark();
 }
 
-html,
-body {
-  height: 100%;
-}
-
 .berg-panel-left {
-  min-width: 56px;
-  max-width: 56px;
-
   &::part(content) {
     display: flex;
     flex-direction: column;
     padding: 0;
   }
-
-  &.berg-panel-snap-expanded {
-    min-width: 150px;
-    max-width: 150px;
-  }
-}
-
-.berg-panel-right {
-  min-width: 10vw;
 }
 
 .berg-panel-top {
-  min-height: 72px;
-
   &::part(content) {
     padding: 16px;
   }
 }
 
 .berg-panel-bottom {
-  min-height: 41px;
-  max-height: 41px;
-
   &::part(content) {
     display: flex;
     padding: 0;
+  }
+}
+
+.berg-panel-center {
+  &::part(content) {
+    padding: 32px;
   }
 }
 

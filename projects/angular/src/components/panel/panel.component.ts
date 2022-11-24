@@ -55,7 +55,6 @@ import {
   BACKDROP_ANIMATION_DURATION,
   BACKDROP_Z_INDEX,
   BergPanelResizeSize,
-  SNAP_PADDING,
   TWO_DIMENSION_COLLECTION_DISTANCE,
 } from './panel-model-private';
 import {
@@ -79,15 +78,21 @@ import { filterSizeDirection } from './panel-util';
     '[class.berg-panel-resize-resizing]': '_resizing',
     '[class.berg-panel-resize-previewing]': '_previewing',
     '[class.berg-panel-resize-disabled]': 'resizeDisabled',
-    '[class.berg-panel-vertical]': 'slot === "left" || slot === "right"',
-    '[class.berg-panel-horizontal]': 'slot === "top" || slot === "bottom"',
+    '[class.berg-panel-vertical]': 'isVertical',
+    '[class.berg-panel-horizontal]': 'isHorizontal',
     '[class.berg-panel-top]': 'slot === "top"',
     '[class.berg-panel-left]': 'slot === "left"',
     '[class.berg-panel-right]': 'slot === "right"',
     '[class.berg-panel-bottom]': 'slot === "bottom"',
     '[class.berg-panel-center]': 'slot === "center"',
-    '[class.berg-panel-between]':
-      'slot === "top" && controller.topPosition === "between" || slot === "bottom" && controller.bottomPosition === "between"',
+    '[class.berg-panel-top-above-left]':
+      'controller.topLeftPosition === "above"',
+    '[class.berg-panel-top-above-right]':
+      'controller.topRightPosition === "above"',
+    '[class.berg-panel-bottom-below-left]':
+      'controller.bottomLeftPosition === "below"',
+    '[class.berg-panel-bottom-below-right]':
+      'controller.bottomRightPosition === "below"',
     '[style.width.px]': '_size?.width',
     '[style.height.px]': '_size?.height',
     '[style.margin]': '_margin',
@@ -152,6 +157,36 @@ export class BergPanelComponent
   private _snap: BergPanelSnap = this.getDefaultInput('snap');
 
   @Input()
+  get initialSize(): number {
+    return this._initialSize;
+  }
+  set initialSize(value: number | null) {
+    this._initialSize = value ?? this.getDefaultInput('initialSize');
+  }
+  private _initialSize: number = this.getDefaultInput('initialSize');
+
+  @Input()
+  get resizeCollapseSize(): number | null {
+    return this._resizeCollapseSize;
+  }
+  set resizeCollapseSize(value: number | null) {
+    this._resizeCollapseSize =
+      value ?? this.getDefaultInput('resizeCollapseSize');
+  }
+  private _resizeCollapseSize: number | null =
+    this.getDefaultInput('resizeCollapseSize');
+
+  @Input()
+  get resizeExpandSize(): number | null {
+    return this._resizeExpandSize;
+  }
+  set resizeExpandSize(value: number | null) {
+    this._resizeExpandSize = value ?? this.getDefaultInput('resizeExpandSize');
+  }
+  private _resizeExpandSize: number | null =
+    this.getDefaultInput('resizeExpandSize');
+
+  @Input()
   set outputBindingMode(value: BergPanelOutputBindingMode | null) {
     this._outputBindingMode =
       value ?? this.getDefaultInput('outputBindingMode');
@@ -160,11 +195,19 @@ export class BergPanelComponent
 
   _resizing = false;
   _previewing = false;
-  _size: BergPanelResizeSize;
+  _size: number;
   _margin: string | null;
   _backdropElement: HTMLElement;
   _layoutElement: HTMLElement;
   _hidden: boolean;
+
+  get isVertical(): boolean {
+    return this.slot === 'left' || this.slot === 'right';
+  }
+
+  get isHorizontal(): boolean {
+    return this.slot === 'top' || this.slot === 'bottom';
+  }
 
   private controller = this.panelControllerStore.get(this.getLayoutElement());
 
@@ -241,21 +284,22 @@ export class BergPanelComponent
   private decreasingSize$ = this.resizedSize$.pipe(filterSizeDirection(false));
 
   private startResizeCollapse$ = this.decreasingSize$.pipe(
-    pairwise(),
-    map(([previous, size]) => {
-      if (!this.canSizeSnap(previous, size)) {
+    map((size) => {
+      if (!this.canSnap() || !this.resizeCollapseSize) {
         return false;
       }
 
       if (size.width !== undefined) {
         return (
-          size.rect.width - size.width >= this.controller.resizeCollapseOffset
+          this.resizeCollapseSize - this.controller.resizeCollapseOffset >=
+          size.width
         );
       }
 
       if (size.height !== undefined) {
         return (
-          size.rect.height - size.height >= this.controller.resizeCollapseOffset
+          this.resizeCollapseSize - this.controller.resizeCollapseOffset >=
+          size.height
         );
       }
 
@@ -271,16 +315,16 @@ export class BergPanelComponent
 
   private stopResizeCollapse$ = this.increasingSize$.pipe(
     filter((size) => {
-      if (this._snap !== 'collapsed') {
+      if (this._snap !== 'collapsed' || !this.resizeCollapseSize) {
         return false;
       }
 
       if (size.width !== undefined) {
-        return size.width > this.controller.resizeCollapseOffset;
+        return size.width >= this.resizeCollapseSize;
       }
 
       if (size.height !== undefined) {
-        return size.height > this.controller.resizeCollapseOffset;
+        return size.height >= this.resizeCollapseSize;
       }
 
       return false;
@@ -293,46 +337,42 @@ export class BergPanelComponent
   ).pipe(startWith(false));
 
   private startResizeExpand$ = this.increasingSize$.pipe(
-    pairwise(),
-    filter(([previous, size]) => {
-      if (!this.canSizeSnap(previous, size)) {
+    filter((size) => {
+      if (!this.canSnap() || !this.resizeExpandSize) {
         return false;
       }
 
       if (size.width !== undefined) {
         return (
-          size.width - size.rect.width >= this.controller.resizeExpandOffset
+          size.width >=
+          this.resizeExpandSize - this.controller.resizeExpandOffset
         );
       }
 
       if (size.height !== undefined) {
         return (
-          size.height - size.rect.height >= this.controller.resizeExpandOffset
+          size.height >=
+          this.resizeExpandSize - this.controller.resizeExpandOffset
         );
       }
 
       return false;
     }),
-    map(([_, size]) => size),
     share()
   );
 
   private stopResizeExpand$ = this.decreasingSize$.pipe(
-    withLatestFrom(this.startResizeExpand$.pipe(startWith(null))),
-    filter(([size, expandAtSize]) => {
-      if (this._snap !== 'expanded') {
+    filter((size) => {
+      if (this._snap !== 'expanded' || !this.resizeExpandSize) {
         return false;
       }
 
-      const { width, height } =
-        expandAtSize ?? this.hostElem.getBoundingClientRect();
-
-      if (size.width !== undefined && width !== undefined) {
-        return width - SNAP_PADDING > size.width;
+      if (size.width !== undefined) {
+        return size.width <= this.resizeExpandSize;
       }
 
-      if (size.height !== undefined && height !== undefined) {
-        return height - SNAP_PADDING > size.height;
+      if (size.height !== undefined) {
+        return size.height <= this.resizeExpandSize;
       }
 
       return false;
@@ -344,7 +384,7 @@ export class BergPanelComponent
     this.stopResizeExpand$.pipe(map(() => false))
   ).pipe(startWith(false));
 
-  private snapped$: Observable<BergPanelSnap> = combineLatest([
+  private snap$: Observable<BergPanelSnap> = combineLatest([
     this.resizeExpanded$,
     this.resizeCollapsed$,
   ]).pipe(
@@ -401,6 +441,7 @@ export class BergPanelComponent
       this._margin = `0 0 -${height}px 0`;
     }
 
+    this.controller.updateVariable(this.slot, 0);
     this.changeDetectorRef.markForCheck();
   }
 
@@ -412,6 +453,7 @@ export class BergPanelComponent
 
     requestAnimationFrame(() => {
       this._margin = null;
+      this.controller.updateVariable(this.slot, this._size);
       this.changeDetectorRef.markForCheck();
     });
   }
@@ -456,7 +498,7 @@ export class BergPanelComponent
       this._backdropElement.classList.add('berg-panel-backdrop');
       this._backdropElement.style.transition = `opacity ${BACKDROP_ANIMATION_DURATION}ms ease-in`;
       this._backdropElement.style.zIndex = BACKDROP_Z_INDEX.toString();
-      this._backdropElement.style.position = 'absolute';
+      this._backdropElement.style.position = 'fixed';
       this._backdropElement.style.cursor = 'pointer';
       this._backdropElement.style.opacity = '0';
       this._backdropElement.style.top =
@@ -483,7 +525,15 @@ export class BergPanelComponent
 
     this.subscribeForAssignment('_resizing', this.resizing$);
     this.subscribeForAssignment('_previewing', this.delayedPreviewing$);
-    this.subscribeForAssignment('_size', this.resizedSize$);
+
+    this.resizedSize$.pipe(takeUntil(this.destroySub)).subscribe((size) => {
+      const directionalSize = this.isHorizontal ? size.height : size.width;
+
+      if (directionalSize !== undefined) {
+        this._size = directionalSize;
+        this.updateClampedVariable();
+      }
+    });
 
     combineLatest([this.previewing$, this.resizing$])
       .pipe(takeUntil(this.destroySub))
@@ -517,7 +567,15 @@ export class BergPanelComponent
     const rect = this.hostElem.getBoundingClientRect();
 
     if (this.slot === 'bottom') {
-      return { rect, event, height: rect.height + rect.y - event.pageY };
+      return {
+        rect,
+        event,
+        height:
+          rect.height +
+          this.document.documentElement.scrollTop +
+          rect.y -
+          event.pageY,
+      };
     }
 
     if (this.slot === 'left') {
@@ -525,7 +583,11 @@ export class BergPanelComponent
     }
 
     if (this.slot === 'top') {
-      return { rect, event, height: event.pageY - rect.y };
+      return {
+        rect,
+        event,
+        height: event.pageY - rect.y - this.document.documentElement.scrollTop,
+      };
     }
 
     return { rect, event, width: rect.width + rect.x - event.pageX };
@@ -614,15 +676,8 @@ export class BergPanelComponent
     throw new Error('<berg-panel> could not find a <berg-layout> element');
   }
 
-  private canSizeSnap(
-    previousSize: BergPanelResizeSize,
-    size: BergPanelResizeSize
-  ): boolean {
-    return (
-      this._snap === 'none' &&
-      previousSize.rect.width === size.rect.width &&
-      previousSize.rect.height === size.rect.height
-    );
+  private canSnap(): boolean {
+    return this._snap === 'none';
   }
 
   private getDefaultInput<T extends keyof BergPanelInputs>(
@@ -635,10 +690,28 @@ export class BergPanelComponent
     return BERG_PANEL_DEFAULT_INPUTS[input];
   }
 
+  private updateClampedVariable(): void {
+    if (this.resizeExpandSize && this._size > this.resizeExpandSize) {
+      return;
+    }
+
+    if (this.resizeCollapseSize && this._size < this.resizeCollapseSize) {
+      return;
+    }
+
+    this.controller.updateVariable(this.slot, this._size);
+  }
+
   private subscribe(): void {
-    this.snapped$.pipe(takeUntil(this.destroySub)).subscribe((snapped) => {
-      this.snapped.emit(snapped);
-      this.updateBindings('onSnapped', snapped);
+    this.snap$.pipe(takeUntil(this.destroySub)).subscribe((snap) => {
+      this.snapped.emit(snap);
+      this.updateBindings('onSnapped', snap);
+
+      if (snap === 'collapsed') {
+        this.controller.updateVariable(this.slot, 0);
+      } else if (snap === 'expanded') {
+        this.controller.updateVariable(this.slot, this._size);
+      }
     });
   }
 
@@ -697,6 +770,8 @@ export class BergPanelComponent
   /** @hidden */
   ngOnInit(): void {
     this.subscribeToResizing();
+    this._size = this.initialSize;
+    this.controller.updateVariable(this.slot, this._size);
   }
 
   /** @hidden */
@@ -726,6 +801,7 @@ export class BergPanelComponent
     this.destroySub.next();
     this.destroySub.complete();
     this.controller.remove(this);
+    this.controller.updateVariable(this.slot, 0);
   }
 }
 

@@ -140,18 +140,36 @@ export class LayoutOperators {
       component({
         component: BergSelectComponent,
         inputs: {
-          label: 'Top position',
+          label: 'Top left position',
           pluckLabel: (value) => this.capitalize(value),
-          connectToFormValue: this.layoutRx.layout.topPosition,
+          connectToFormValue: this.layoutRx.layout.topLeftPosition,
           data: ['above', 'between'],
         },
       }),
       component({
         component: BergSelectComponent,
         inputs: {
-          label: 'Bottom position',
+          label: 'Top right position',
           pluckLabel: (value) => this.capitalize(value),
-          connectToFormValue: this.layoutRx.layout.bottomPosition,
+          connectToFormValue: this.layoutRx.layout.topRightPosition,
+          data: ['above', 'between'],
+        },
+      }),
+      component({
+        component: BergSelectComponent,
+        inputs: {
+          label: 'Bottom left position',
+          pluckLabel: (value) => this.capitalize(value),
+          connectToFormValue: this.layoutRx.layout.bottomLeftPosition,
+          data: ['below', 'between'],
+        },
+      }),
+      component({
+        component: BergSelectComponent,
+        inputs: {
+          label: 'Bottom right position',
+          pluckLabel: (value) => this.capitalize(value),
+          connectToFormValue: this.layoutRx.layout.bottomRightPosition,
           data: ['below', 'between'],
         },
       }),
