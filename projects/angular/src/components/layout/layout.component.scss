@@ -1,26 +1,5 @@
 :host {
-  display: flex;
-  flex-direction: column;
   position: relative;
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
-
-  .berg-layout-flex,
-  .berg-layout-inner-flex {
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-  }
-
-  .berg-layout-flex {
-    min-height: 10vh;
-  }
-
-  .berg-layout-inner-flex {
-    flex-direction: column;
-    min-width: 10vw;
-  }
 
   &:host(.berg-layout-resizing-horizontal) {
     user-select: none;

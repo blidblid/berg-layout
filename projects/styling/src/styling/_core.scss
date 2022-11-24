@@ -1,5 +1,129 @@
 @mixin core($overrides: ()) {
   @include resizing-core($overrides);
+  @include positioning-core();
+}
+
+@mixin positioning-core() {
+  .berg-panel-top,
+  .berg-panel-right,
+  .berg-panel-bottom,
+  .berg-panel-left {
+    position: fixed;
+  }
+
+  .berg-panel-top {
+    top: 0;
+    right: var(--berg-panel-right-width);
+    left: var(--berg-panel-left-width);
+    min-height: var(--berg-panel-top-height);
+    max-height: var(--berg-panel-top-height);
+
+    &.berg-panel-top-above-left {
+      left: 0;
+    }
+
+    &.berg-panel-top-above-right {
+      right: 0;
+    }
+
+    &.berg-panel-absolute {
+      ~ .berg-panel-center {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .berg-panel-right {
+    right: 0;
+    top: 0;
+    bottom: 0;
+    min-width: var(--berg-panel-right-width);
+    max-width: var(--berg-panel-right-width);
+
+    &.berg-panel-top-above-right {
+      top: var(--berg-panel-top-height);
+    }
+
+    &.berg-panel-bottom-below-right {
+      bottom: var(--berg-panel-bottom-height);
+    }
+
+    &.berg-panel-absolute {
+      top: 0;
+      bottom: 0;
+
+      ~ .berg-panel-top,
+      ~ .berg-panel-bottom {
+        right: 0;
+      }
+
+      ~ .berg-panel-center {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .berg-panel-bottom {
+    bottom: 0;
+    right: var(--berg-panel-right-width);
+    left: var(--berg-panel-left-width);
+    min-height: var(--berg-panel-bottom-height);
+    max-height: var(--berg-panel-bottom-height);
+
+    &.berg-panel-bottom-below-left {
+      left: 0;
+    }
+
+    &.berg-panel-bottom-below-right {
+      right: 0;
+    }
+
+    &.berg-panel-absolute {
+      left: 0;
+      right: 0;
+
+      ~ .berg-panel-center {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .berg-panel-left {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    min-width: var(--berg-panel-left-width);
+    max-width: var(--berg-panel-left-width);
+
+    &.berg-panel-top-above-left {
+      top: var(--berg-panel-top-height);
+    }
+
+    &.berg-panel-bottom-below-left {
+      bottom: var(--berg-panel-bottom-height);
+    }
+
+    &.berg-panel-absolute {
+      top: 0;
+      bottom: 0;
+
+      ~ .berg-panel-top,
+      ~ .berg-panel-bottom {
+        left: 0;
+      }
+
+      ~ .berg-panel-center {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .berg-panel-center {
+    margin-top: var(--berg-panel-top-height);
+    margin-right: var(--berg-panel-right-width);
+    margin-bottom: var(--berg-panel-bottom-height);
+    margin-left: var(--berg-panel-left-width);
+  }
 }
 
 @mixin resizing-core($overrides) {

@@ -11,7 +11,6 @@ import { DemoBase } from '../demo-base';
 @Component({
   selector: 'berg-angular-demo',
   templateUrl: './angular-demo.component.html',
-  styleUrls: ['../demo.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

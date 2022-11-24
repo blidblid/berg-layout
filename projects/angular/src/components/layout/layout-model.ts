@@ -23,11 +23,17 @@ export interface BergLayoutInputs {
   /** Delay before the resize preview is shown. */
   resizePreviewDelay: number;
 
-  /** Top panel position relative to the left panel and the right panel. */
-  topPosition: BergLayoutTopPosition;
+  /** Top panel position relative to the left panel. */
+  topLeftPosition: BergLayoutTopPosition;
 
-  /** Bottom panel position relative to the left panel and the right panel. */
-  bottomPosition: BergLayoutBottomPosition;
+  /** Top panel position relative to the right panel. */
+  topRightPosition: BergLayoutTopPosition;
+
+  /** Bottom panel position relative to the left panel. */
+  bottomLeftPosition: BergLayoutBottomPosition;
+
+  /** Bottom panel position relative to the right panel. */
+  bottomRightPosition: BergLayoutBottomPosition;
 }
 
 export type BergLayoutComponentInputs = {
@@ -47,8 +53,10 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   resizeExpandOffset: 36,
   resizeTwoDimensions: true,
   resizePreviewDelay: 200,
-  topPosition: 'above',
-  bottomPosition: 'below',
+  topLeftPosition: 'above',
+  topRightPosition: 'above',
+  bottomLeftPosition: 'below',
+  bottomRightPosition: 'below',
 };
 
 /** Injection token used to set the default berg-layout inputs. */

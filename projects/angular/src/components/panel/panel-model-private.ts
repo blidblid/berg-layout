@@ -1,3 +1,5 @@
+import { BergPanelSlot } from './panel-model';
+
 export const SNAP_PADDING = 16;
 export const BACKDROP_ANIMATION_DURATION = 120;
 export const TWO_DIMENSION_COLLECTION_DISTANCE = 8;
@@ -9,3 +11,10 @@ export interface BergPanelResizeSize {
   width?: number;
   height?: number;
 }
+
+export interface BergPanelSlotSize {
+  slot: BergPanelSlot;
+  size: number;
+}
+
+export type BergPanelVariables = Partial<Record<BergPanelSlot, number>>;

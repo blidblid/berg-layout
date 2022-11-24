@@ -33,35 +33,40 @@ describe('LayoutComponent', () => {
   describe('alignment', () => {
     beforeEach(() => fixture.detectChanges());
 
-    it('should render top panel next to left, center and right', () => {
-      expect(c.topRect.bottom).toBe(c.leftRect.top);
-      expect(c.topRect.bottom).toBe(c.centerRect.top);
-      expect(c.topRect.bottom).toBe(c.rightRect.top);
+    it('should render top panel next to left and right', () => {
+      expect(c.topRect.bottom).withContext('top and left').toBe(c.leftRect.top);
+
+      expect(c.topRect.bottom)
+        .withContext('top and right')
+        .toBe(c.rightRect.top);
     });
 
-    it('should render right panel next to top, bottom and center', () => {
-      expect(c.rightRect.top).toBe(c.topRect.bottom);
-      expect(c.rightRect.bottom).toBe(c.bottomRect.top);
-      expect(c.rightRect.left).toBe(c.centerRect.right);
+    it('should render right panel next to top and bottom', () => {
+      expect(c.rightRect.top)
+        .withContext('right and top')
+        .toBe(c.topRect.bottom);
+
+      expect(c.rightRect.bottom)
+        .withContext('right and bottom')
+        .toBe(c.bottomRect.top);
     });
 
-    it('should render bottom panel next to left, center and right', () => {
-      expect(c.bottomRect.top).toBe(c.leftRect.bottom);
-      expect(c.bottomRect.top).toBe(c.centerRect.bottom);
-      expect(c.bottomRect.top).toBe(c.rightRect.bottom);
+    it('should render bottom panel next to left and right', () => {
+      expect(c.bottomRect.top)
+        .withContext('bottom and left')
+        .toBe(c.leftRect.bottom);
+
+      expect(c.bottomRect.top)
+        .withContext('bottom and right')
+        .toBe(c.rightRect.bottom);
     });
 
-    it('should render left panel next to center, top and bottom', () => {
-      expect(c.leftRect.right).toBe(c.centerRect.left);
-      expect(c.leftRect.top).toBe(c.topRect.bottom);
-      expect(c.leftRect.bottom).toBe(c.bottomRect.top);
-    });
+    it('should render left panel next to top and bottom', () => {
+      expect(c.leftRect.top).withContext('left and top').toBe(c.topRect.bottom);
 
-    it('should render center next to all other panels', () => {
-      expect(c.centerRect.top).toBe(c.topRect.bottom);
-      expect(c.centerRect.right).toBe(c.rightRect.left);
-      expect(c.centerRect.bottom).toBe(c.bottomRect.top);
-      expect(c.centerRect.left).toBe(c.leftRect.right);
+      expect(c.leftRect.bottom)
+        .withContext('left and bottom')
+        .toBe(c.bottomRect.top);
     });
   });
 
@@ -72,36 +77,28 @@ describe('LayoutComponent', () => {
       expect(c.layoutRect).toEqual(getBackdrop().getBoundingClientRect());
     });
 
-    it('should position top over center, left and right', () => {
+    it('should position top over center', () => {
       c.top.absolute = true;
       fixture.detectChanges();
-      expect(c.topRect.top).toBe(c.centerRect.top);
-      expect(c.topRect.left).toBe(c.leftRect.left);
-      expect(c.topRect.right).toBe(c.rightRect.right);
+      expect(getComputedStyle(c.centerElem).marginTop).toBe('0px');
     });
 
-    it('should position right over center, top and bottom', () => {
+    it('should position right over center', () => {
       c.right.absolute = true;
       fixture.detectChanges();
-      expect(c.rightRect.right).toBe(c.centerRect.right);
-      expect(c.rightRect.top).toBe(c.topRect.top);
-      expect(c.rightRect.bottom).toBe(c.bottomRect.bottom);
+      expect(getComputedStyle(c.centerElem).marginRight).toBe('0px');
     });
 
-    it('should position bottom over center, left and right', () => {
+    it('should position bottom over center', () => {
       c.bottom.absolute = true;
       fixture.detectChanges();
-      expect(c.bottomRect.bottom).toBe(c.centerRect.bottom);
-      expect(c.bottomRect.left).toBe(c.leftRect.left);
-      expect(c.bottomRect.right).toBe(c.rightRect.right);
+      expect(getComputedStyle(c.centerElem).marginBottom).toBe('0px');
     });
 
-    it('should position left over center, top and bottom', () => {
+    it('should position left over center', () => {
       c.left.absolute = true;
       fixture.detectChanges();
-      expect(c.leftRect.left).toBe(c.centerRect.left);
-      expect(c.leftRect.top).toBe(c.topRect.top);
-      expect(c.leftRect.bottom).toBe(c.bottomRect.bottom);
+      expect(getComputedStyle(c.centerElem).marginLeft).toBe('0px');
     });
 
     it('should emit backdropClicked event when clicking backdrop.', () => {

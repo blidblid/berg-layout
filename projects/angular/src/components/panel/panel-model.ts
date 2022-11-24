@@ -21,6 +21,15 @@ export interface BergPanelInputs {
   /** Snap location. */
   snap: BergPanelSnap;
 
+  /** Initial size of the panel. */
+  initialSize: number;
+
+  /** Size of panel that causes a resize expand. */
+  resizeExpandSize: number | null;
+
+  /** Size of panel that causes a resize collapse. */
+  resizeCollapseSize: number | null;
+
   /**
    * Controls how panel outputs update panel inputs.
    * With "auto", panel outputs automatically update panel inputs.
@@ -50,6 +59,9 @@ export const BERG_PANEL_DEFAULT_INPUTS: BergPanelInputs = {
   resizeDisabled: false,
   snap: 'none',
   outputBindingMode: 'auto',
+  initialSize: 100,
+  resizeExpandSize: null,
+  resizeCollapseSize: null,
 };
 
 /** Injection token used to set the default berg-panel inputs. */

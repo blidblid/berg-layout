@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Inject,
@@ -8,7 +9,6 @@ import {
   Optional,
   ViewEncapsulation,
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { BergPanelController } from '../panel/panel-controller';
 import { BergPanelControllerStore } from '../panel/panel-controller-store';
 import {
@@ -35,23 +35,16 @@ export class BergLayoutComponent
   extends BergPanelController
   implements BergLayoutComponentInputs, BergLayoutElement, OnDestroy
 {
-  private destroySub = new Subject<void>();
-
   constructor(
     @Inject(DOCUMENT) protected override document: Document,
     @Inject(BERG_LAYOUT_INPUTS)
     @Optional()
     protected override inputs: BergLayoutInputs,
+    protected override changeDetectorRef: ChangeDetectorRef,
     protected elementRef: ElementRef<HTMLElement>,
     private panelControllerStore: BergPanelControllerStore
   ) {
-    super(elementRef.nativeElement, document, inputs);
+    super(elementRef.nativeElement, changeDetectorRef, document, inputs);
     this.panelControllerStore.add(this);
-  }
-
-  /** @hidden */
-  ngOnDestroy(): void {
-    this.destroySub.next();
-    this.destroySub.complete();
   }
 }
