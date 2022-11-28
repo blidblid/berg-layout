@@ -23,10 +23,14 @@ import { arrayReducer } from './panel-util';
 
 @Directive({
   host: {
-    '[style.--berg-panel-top-height]': 'variables.top + "px"',
-    '[style.--berg-panel-right-width]': 'variables.right + "px"',
-    '[style.--berg-panel-bottom-height]': 'variables.bottom + "px"',
-    '[style.--berg-panel-left-width]': 'variables.left + "px"',
+    '[style.--berg-panel-top-height]':
+      'variables.top === undefined ? null : variables.top + "px"',
+    '[style.--berg-panel-right-width]':
+      'variables.right === undefined ? null : variables.right + "px"',
+    '[style.--berg-panel-bottom-height]':
+      'variables.bottom === undefined ? null : variables.bottom + "px"',
+    '[style.--berg-panel-left-width]':
+      'variables.left === undefined ? null : variables.left + "px"',
   },
 })
 export class BergPanelController implements OnDestroy {
