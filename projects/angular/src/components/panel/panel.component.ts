@@ -770,6 +770,8 @@ export class BergPanelComponent
   /** @hidden */
   ngOnInit(): void {
     this.subscribeToResizing();
+    this._size = this.initialSize;
+    this.controller.updateVariable(this.slot, this._size);
   }
 
   /** @hidden */
@@ -788,7 +790,7 @@ export class BergPanelComponent
       }
     }
 
-    if (change['initialSize']) {
+    if (change['initialSize'] && !change['initialSize'].isFirstChange()) {
       this._size = this.initialSize;
       this.controller.updateVariable(this.slot, this._size);
     }

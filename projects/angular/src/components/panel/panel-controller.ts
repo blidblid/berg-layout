@@ -21,18 +21,7 @@ import { BergPanelComponentInputs, BergPanelSlot } from './panel-model';
 import { BergPanelVariables } from './panel-model-private';
 import { arrayReducer } from './panel-util';
 
-@Directive({
-  host: {
-    '[style.--berg-panel-top-height]':
-      'variables.top === undefined ? null : variables.top + "px"',
-    '[style.--berg-panel-right-width]':
-      'variables.right === undefined ? null : variables.right + "px"',
-    '[style.--berg-panel-bottom-height]':
-      'variables.bottom === undefined ? null : variables.bottom + "px"',
-    '[style.--berg-panel-left-width]':
-      'variables.left === undefined ? null : variables.left + "px"',
-  },
-})
+@Directive()
 export class BergPanelController implements OnDestroy {
   @Input()
   get resizeDisabled(): boolean {
@@ -192,8 +181,10 @@ export class BergPanelController implements OnDestroy {
   }
 
   updateVariable(slot: BergPanelSlot, size: number): void {
-    this.variables[slot] = size;
-    this.changeDetectorRef.markForCheck();
+    this.document.documentElement.style.setProperty(
+      `--berg-panel-${slot}-size`,
+      `${size}px`
+    );
   }
 
   protected getDefaultInput<T extends keyof BergLayoutInputs>(

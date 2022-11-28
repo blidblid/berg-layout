@@ -80,25 +80,25 @@ describe('LayoutComponent', () => {
     it('should position top over center', () => {
       c.top.absolute = true;
       fixture.detectChanges();
-      expect(getComputedStyle(c.centerElem).marginTop).toBe('0px');
+      expect(getComputedStyle(c.centerElem).paddingTop).toBe('0px');
     });
 
     it('should position right over center', () => {
       c.right.absolute = true;
       fixture.detectChanges();
-      expect(getComputedStyle(c.centerElem).marginRight).toBe('0px');
+      expect(getComputedStyle(c.centerElem).paddingRight).toBe('0px');
     });
 
     it('should position bottom over center', () => {
       c.bottom.absolute = true;
       fixture.detectChanges();
-      expect(getComputedStyle(c.centerElem).marginBottom).toBe('0px');
+      expect(getComputedStyle(c.centerElem).paddingBottom).toBe('0px');
     });
 
     it('should position left over center', () => {
       c.left.absolute = true;
       fixture.detectChanges();
-      expect(getComputedStyle(c.centerElem).marginLeft).toBe('0px');
+      expect(getComputedStyle(c.centerElem).paddingLeft).toBe('0px');
     });
 
     it('should emit backdropClicked event when clicking backdrop.', () => {

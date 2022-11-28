@@ -3,7 +3,7 @@
   position: relative;
   box-sizing: border-box;
   transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition-property: margin, top, left, right, bottom;
+  transition-property: margin, padding, top, left, right, bottom;
 
   .berg-panel-overflow {
     overflow: auto;
