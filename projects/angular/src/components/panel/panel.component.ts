@@ -1,4 +1,7 @@
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import {
+  coerceBooleanProperty,
+  coerceNumberProperty,
+} from '@angular/cdk/coercion';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -10,6 +13,7 @@ import {
   InjectFlags,
   Injector,
   Input,
+  NgZone,
   Optional,
   Output,
   SimpleChanges,
@@ -36,6 +40,7 @@ import {
   share,
   startWith,
   switchMap,
+  take,
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -96,6 +101,7 @@ import { filterSizeDirection } from './panel-util';
     '[style.width.px]': '_size?.width',
     '[style.height.px]': '_size?.height',
     '[style.margin]': '_margin',
+    '[style.transition]': '_enableTransition ? null : "none"',
     '(transitionend)': '_onTransitionend()',
   },
 })
@@ -161,7 +167,8 @@ export class BergPanelComponent
     return this._initialSize;
   }
   set initialSize(value: number | null) {
-    this._initialSize = value ?? this.getDefaultInput('initialSize');
+    this._initialSize =
+      coerceNumberProperty(value) ?? this.getDefaultInput('initialSize');
   }
   private _initialSize: number = this.getDefaultInput('initialSize');
 
@@ -200,6 +207,7 @@ export class BergPanelComponent
   _backdropElement: HTMLElement;
   _layoutElement: HTMLElement;
   _hidden: boolean;
+  _enableTransition: boolean;
 
   get isVertical(): boolean {
     return this.slot === 'left' || this.slot === 'right';
@@ -413,6 +421,7 @@ export class BergPanelComponent
     private document: Document,
     private panelControllerStore: BergPanelControllerStore,
     private elementRef: ElementRef<HTMLElement>,
+    private zone: NgZone,
     protected injector: Injector,
     @Inject(BERG_PANEL_INPUTS)
     @Optional()
@@ -713,6 +722,13 @@ export class BergPanelComponent
         this.controller.updateVariable(this.slot, this._size);
       }
     });
+
+    this.zone.onStable
+      .pipe(delay(0), take(1), takeUntil(this.destroySub))
+      .subscribe(() => {
+        this._enableTransition = true;
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   private subscribeForAssignment<T extends keyof this>(
