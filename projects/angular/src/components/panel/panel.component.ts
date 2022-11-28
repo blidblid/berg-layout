@@ -770,8 +770,6 @@ export class BergPanelComponent
   /** @hidden */
   ngOnInit(): void {
     this.subscribeToResizing();
-    this._size = this.initialSize;
-    this.controller.updateVariable(this.slot, this._size);
   }
 
   /** @hidden */
@@ -788,6 +786,11 @@ export class BergPanelComponent
       } else {
         this.animateCollapsedChanges();
       }
+    }
+
+    if (change['initialSize']) {
+      this._size = this.initialSize;
+      this.controller.updateVariable(this.slot, this._size);
     }
 
     // since panels mutate through @Input, push here to update the panel$-stream
