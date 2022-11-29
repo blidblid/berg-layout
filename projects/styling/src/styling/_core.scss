@@ -36,6 +36,9 @@
     }
 
     &.berg-panel-absolute {
+      left: 0;
+      right: 0;
+
       ~ .berg-panel-center {
         padding-top: 0;
       }

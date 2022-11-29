@@ -146,6 +146,7 @@ export class BergPanelController implements OnDestroy {
     protected inputs: BergLayoutInputs
   ) {
     this.subscribe();
+    this.setInitialVariables();
   }
 
   /** @hidden */
@@ -191,6 +192,12 @@ export class BergPanelController implements OnDestroy {
     input: T
   ): BergLayoutInputs[T] {
     return this.inputs ? this.inputs[input] : BERG_LAYOUT_DEFAULT_INPUTS[input];
+  }
+
+  private setInitialVariables(): void {
+    for (const slot of ['top', 'right', 'bottom', 'left'] as const) {
+      this.updateVariable(slot, 0);
+    }
   }
 
   private subscribe(): void {

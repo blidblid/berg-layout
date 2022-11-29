@@ -1,7 +1,7 @@
 {
   "name": "@berg-layout/styling",
   "repository": "https://github.com/blidblid/berg-layout",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^14.0.0",
