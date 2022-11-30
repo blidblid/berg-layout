@@ -450,7 +450,7 @@ export class BergPanelComponent
       this._margin = `0 0 -${height}px 0`;
     }
 
-    this.controller.updateVariable(this.slot, 0);
+    this.controller.updateSize(this.slot, 0);
     this.changeDetectorRef.markForCheck();
   }
 
@@ -462,7 +462,7 @@ export class BergPanelComponent
 
     requestAnimationFrame(() => {
       this._margin = null;
-      this.controller.updateVariable(this.slot, this._size);
+      this.controller.updateSize(this.slot, this._size);
       this.changeDetectorRef.markForCheck();
     });
   }
@@ -708,7 +708,7 @@ export class BergPanelComponent
       return;
     }
 
-    this.controller.updateVariable(this.slot, this._size);
+    this.controller.updateSize(this.slot, this._size);
   }
 
   private subscribe(): void {
@@ -717,9 +717,9 @@ export class BergPanelComponent
       this.updateBindings('onSnapped', snap);
 
       if (snap === 'collapsed') {
-        this.controller.updateVariable(this.slot, 0);
+        this.controller.updateSize(this.slot, 0);
       } else if (snap === 'expanded') {
-        this.controller.updateVariable(this.slot, this._size);
+        this.controller.updateSize(this.slot, this._size);
       }
     });
 
@@ -787,7 +787,7 @@ export class BergPanelComponent
   ngOnInit(): void {
     this.subscribeToResizing();
     this._size = this.initialSize;
-    this.controller.updateVariable(this.slot, this._size);
+    this.controller.updateSize(this.slot, this._size);
   }
 
   /** @hidden */
@@ -808,7 +808,11 @@ export class BergPanelComponent
 
     if (change['initialSize'] && !change['initialSize'].isFirstChange()) {
       this._size = this.initialSize;
-      this.controller.updateVariable(this.slot, this._size);
+      this.controller.updateSize(this.slot, this._size);
+    }
+
+    if (change['absolute']) {
+      this.controller.updateAbsolute(this.slot, this.absolute);
     }
 
     // since panels mutate through @Input, push here to update the panel$-stream
@@ -822,7 +826,7 @@ export class BergPanelComponent
     this.destroySub.next();
     this.destroySub.complete();
     this.controller.remove(this);
-    this.controller.updateVariable(this.slot, 0);
+    this.controller.updateSize(this.slot, 0);
   }
 }
 

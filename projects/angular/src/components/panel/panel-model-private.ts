@@ -17,4 +17,4 @@ export interface BergPanelSlotSize {
   size: number;
 }
 
-export type BergPanelVariables = Partial<Record<BergPanelSlot, number>>;
+export type BergPanelVariables<T> = Partial<Record<BergPanelSlot, T>>;

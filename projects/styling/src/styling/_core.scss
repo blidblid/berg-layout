@@ -38,10 +38,14 @@
     &.berg-panel-absolute {
       left: 0;
       right: 0;
+    }
 
-      ~ .berg-panel-center {
-        padding-top: 0;
-      }
+    .berg-layout-right-absolute & {
+      right: 0;
+    }
+
+    .berg-layout-left-absolute & {
+      top: 0;
     }
   }
 
@@ -64,15 +68,14 @@
     &.berg-panel-absolute {
       top: 0;
       bottom: 0;
+    }
 
-      ~ .berg-panel-top,
-      ~ .berg-panel-bottom {
-        right: 0;
-      }
+    .berg-layout-top-absolute & {
+      top: 0;
+    }
 
-      ~ .berg-panel-center {
-        padding-right: 0;
-      }
+    .berg-layout-bottom-absolute & {
+      bottom: 0;
     }
   }
 
@@ -95,10 +98,14 @@
     &.berg-panel-absolute {
       left: 0;
       right: 0;
+    }
 
-      ~ .berg-panel-center {
-        padding-bottom: 0;
-      }
+    .berg-layout-right-absolute & {
+      right: 0;
+    }
+
+    .berg-layout-left-absolute & {
+      left: 0;
     }
   }
 
@@ -121,15 +128,14 @@
     &.berg-panel-absolute {
       top: 0;
       bottom: 0;
+    }
 
-      ~ .berg-panel-top,
-      ~ .berg-panel-bottom {
-        left: 0;
-      }
+    .berg-layout-top-absolute & {
+      top: 0;
+    }
 
-      ~ .berg-panel-center {
-        padding-left: 0;
-      }
+    .berg-layout-bottom-absolute & {
+      bottom: 0;
     }
   }
 
@@ -138,6 +144,22 @@
     padding-right: var(--berg-panel-right-size);
     padding-bottom: var(--berg-panel-bottom-size);
     padding-left: var(--berg-panel-left-size);
+
+    .berg-layout-top-absolute & {
+      padding-top: 0;
+    }
+
+    .berg-layout-right-absolute & {
+      padding-right: 0;
+    }
+
+    .berg-layout-bottom-absolute & {
+      padding-bottom: 0;
+    }
+
+    .berg-layout-left-absolute & {
+      padding-left: 0;
+    }
   }
 }
 

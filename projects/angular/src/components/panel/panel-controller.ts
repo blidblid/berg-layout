@@ -21,7 +21,14 @@ import { BergPanelComponentInputs, BergPanelSlot } from './panel-model';
 import { BergPanelVariables } from './panel-model-private';
 import { arrayReducer } from './panel-util';
 
-@Directive()
+@Directive({
+  host: {
+    '[class.berg-layout-top-absolute]': 'absolutes.top',
+    '[class.berg-layout-right-absolute]': 'absolutes.right',
+    '[class.berg-layout-bottom-absolute]': 'absolutes.bottom',
+    '[class.berg-layout-left-absolute]': 'absolutes.left',
+  },
+})
 export class BergPanelController implements OnDestroy {
   @Input()
   get resizeDisabled(): boolean {
@@ -125,7 +132,8 @@ export class BergPanelController implements OnDestroy {
     left: this.createResizeToggleElement('left'),
   };
 
-  variables: BergPanelVariables = {};
+  sizes: BergPanelVariables<number> = {};
+  absolutes: BergPanelVariables<boolean> = {};
 
   private addPanelSub = new Subject<BergPanelComponentInputs>();
   private pushPanelSub = new Subject<void>();
@@ -181,11 +189,16 @@ export class BergPanelController implements OnDestroy {
     );
   }
 
-  updateVariable(slot: BergPanelSlot, size: number): void {
+  updateSize(slot: BergPanelSlot, size: number): void {
     this.document.documentElement.style.setProperty(
       `--berg-panel-${slot}-size`,
       `${size}px`
     );
+  }
+
+  updateAbsolute(slot: BergPanelSlot, absolute: boolean): void {
+    this.absolutes[slot] = absolute;
+    this.changeDetectorRef.markForCheck();
   }
 
   protected getDefaultInput<T extends keyof BergLayoutInputs>(
@@ -196,7 +209,7 @@ export class BergPanelController implements OnDestroy {
 
   private setInitialVariables(): void {
     for (const slot of ['top', 'right', 'bottom', 'left'] as const) {
-      this.updateVariable(slot, 0);
+      this.updateSize(slot, 0);
     }
   }
 
