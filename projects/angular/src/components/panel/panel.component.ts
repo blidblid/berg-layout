@@ -516,6 +516,10 @@ export class BergPanelComponent
         this._backdropElement.style.left =
           '0';
 
+      // non-standard property to disable tap highlights
+      (this._backdropElement.style as any).webkitTapHighlightColor =
+        'rgba(0, 0, 0, 0)';
+
       fromEvent<MouseEvent>(this._backdropElement, 'click')
         .pipe(takeUntil(this.destroySub))
         .subscribe((event) => {
