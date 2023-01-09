@@ -15,3 +15,34 @@
     border-right: $border;
   }
 }
+
+@mixin border-parts($borders: ()) {
+  $border-top: map-get($borders, top);
+  $border-right: map-get($borders, right);
+  $border-bottom: map-get($borders, bottom);
+  $border-left: map-get($borders, left);
+
+  @if $border-top != null {
+    .berg-panel-top {
+      border-bottom: $border-top;
+    }
+  }
+
+  @if $border-right != null {
+    .berg-panel-right {
+      border-left: $border-right;
+    }
+  }
+
+  @if $border-bottom != null {
+    .berg-panel-bottom {
+      border-top: $border-bottom;
+    }
+  }
+
+  @if $border-left != null {
+    .berg-panel-left {
+      border-right: $border-left;
+    }
+  }
+}

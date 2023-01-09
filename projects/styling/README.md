@@ -114,12 +114,24 @@ A lower level way of creating themes is to call the `theme`-mixin with `map` of 
 
 ### Borders
 
-To add border, use the `border` mixin.
+To add borders, use the `border` mixin.
 
 ```scss
 @use 'node_modules/@berg-layout/styling' as layout;
 
 @include layout.border(1px solid grey);
+```
+
+To add borders to some panels, use the `border-parts` mixin.
+
+```scss
+@use 'node_modules/@berg-layout/styling' as layout;
+
+@include layout.border-parts(
+  (
+    top: 1px solid grey,
+  )
+);
 ```
 
 ### Elevation
