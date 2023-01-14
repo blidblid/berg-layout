@@ -157,27 +157,10 @@ describe('LayoutComponent', () => {
       expect(checkIfPanelIsCollapsed('left')).toBe(false);
     }));
 
-    it('should start collapsing when collapsing programmatically', () => {
-      fixture.detectChanges();
-      c.leftPanel.collapse();
-      fixture.detectChanges();
-      expect(checkIfPanelIsCollapsed('left')).toBe(true);
-    });
-
     it('should start expanding when setting the collapsed attribute to false', fakeAsync(() => {
       c.left.collapsed = true;
       fixture.detectChanges();
       c.left.collapsed = false;
-      fixture.detectChanges();
-      tick(REQUEST_ANIMATION_FRAME_TICK);
-      fixture.detectChanges();
-      expect(checkIfPanelIsCollapsed('left')).toBe(false);
-    }));
-
-    it('should start expanding when expanding programmatically', fakeAsync(() => {
-      c.left.collapsed = true;
-      fixture.detectChanges();
-      c.leftPanel.expand();
       fixture.detectChanges();
       tick(REQUEST_ANIMATION_FRAME_TICK);
       fixture.detectChanges();
@@ -188,9 +171,8 @@ describe('LayoutComponent', () => {
   const REQUEST_ANIMATION_FRAME_TICK = 16;
 
   function checkIfPanelIsCollapsed(slot: BergPanelSlot): boolean {
-    return (
-      fixture.nativeElement.querySelector(`.berg-panel-${slot}`).style
-        .margin !== ''
+    return !!fixture.nativeElement.querySelector(
+      `.berg-panel-${slot}.berg-panel-collapsed`
     );
   }
 

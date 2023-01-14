@@ -77,7 +77,7 @@ import { filterSizeDirection } from './panel-util';
   host: {
     class: 'berg-panel',
     '[class.berg-panel-absolute]': 'absolute',
-    '[class.berg-panel-hidden]': '_hidden',
+    '[class.berg-panel-collapsed]': 'collapsed',
     '[class.berg-panel-snap-expanded]': 'snap === "expanded"',
     '[class.berg-panel-snap-collapsed]': 'snap === "collapsed"',
     '[class.berg-panel-resize-resizing]': '_resizing',
@@ -100,7 +100,6 @@ import { filterSizeDirection } from './panel-util';
       'controller.bottomRightPosition === "below"',
     '[style.width.px]': '_size?.width',
     '[style.height.px]': '_size?.height',
-    '[style.margin]': '_margin',
     '[style.transition]': '_enableTransition ? null : "none"',
     '(transitionend)': '_onTransitionend()',
   },
@@ -203,7 +202,6 @@ export class BergPanelComponent
   _resizing = false;
   _previewing = false;
   _size: number;
-  _margin: string | null;
   _backdropElement: HTMLElement;
   _layoutElement: HTMLElement;
   _hidden: boolean;
@@ -430,41 +428,6 @@ export class BergPanelComponent
     this._layoutElement = this.getLayoutElement();
     this.subscribe();
     this.controller.add(this);
-  }
-
-  /** Collapses the panel programmatically. Consider using the collapsed-input instead. */
-  collapse(): void {
-    if (!this.slot) {
-      return;
-    }
-
-    const { width, height } = this.hostElem.getBoundingClientRect();
-
-    if (this.slot === 'left') {
-      this._margin = `0 0 0 -${width}px`;
-    } else if (this.slot === 'right') {
-      this._margin = `0 -${width}px 0 0`;
-    } else if (this.slot === 'top') {
-      this._margin = `-${height}px 0 0 0`;
-    } else {
-      this._margin = `0 0 -${height}px 0`;
-    }
-
-    this.controller.updateSize(this.slot, 0);
-    this.changeDetectorRef.markForCheck();
-  }
-
-  /** Expands the panel programmatically. Consider using the collapsed-input instead. */
-  expand(): void {
-    if (!this.slot) {
-      return;
-    }
-
-    requestAnimationFrame(() => {
-      this._margin = null;
-      this.controller.updateSize(this.slot, this._size);
-      this.changeDetectorRef.markForCheck();
-    });
   }
 
   _onTransitionend() {
@@ -779,12 +742,6 @@ export class BergPanelComponent
     }
 
     this._hidden = false;
-
-    if (this.collapsed) {
-      this.collapse();
-    } else {
-      this.expand();
-    }
   }
 
   /** @hidden */
@@ -797,11 +754,12 @@ export class BergPanelComponent
   /** @hidden */
   ngOnChanges(change: SimpleChanges): void {
     if (change['collapsed']) {
+      this.controller.updateCollapsed(this.slot, this.collapsed);
+
       // do not animate if the panel if it is initially collapsed, just set the margins and hide it
       if (change['collapsed'].isFirstChange()) {
         if (this.collapsed) {
           requestAnimationFrame(() => {
-            this.collapse();
             this._hidden = true;
           });
         }

@@ -23,10 +23,14 @@ import { arrayReducer } from './panel-util';
 
 @Directive({
   host: {
-    '[class.berg-layout-top-absolute]': 'absolutes.top',
-    '[class.berg-layout-right-absolute]': 'absolutes.right',
-    '[class.berg-layout-bottom-absolute]': 'absolutes.bottom',
-    '[class.berg-layout-left-absolute]': 'absolutes.left',
+    '[class.berg-layout-top-absolute]': 'absolutePanels.top',
+    '[class.berg-layout-right-absolute]': 'absolutePanels.right',
+    '[class.berg-layout-bottom-absolute]': 'absolutePanels.bottom',
+    '[class.berg-layout-left-absolute]': 'absolutePanels.left',
+    '[class.berg-layout-top-collapsed]': 'collapsedPanels.top',
+    '[class.berg-layout-right-collapsed]': 'collapsedPanels.right',
+    '[class.berg-layout-bottom-collapsed]': 'collapsedPanels.bottom',
+    '[class.berg-layout-left-collapsed]': 'collapsedPanels.left',
   },
 })
 export class BergPanelController implements OnDestroy {
@@ -132,8 +136,8 @@ export class BergPanelController implements OnDestroy {
     left: this.createResizeToggleElement('left'),
   };
 
-  sizes: BergPanelVariables<number> = {};
-  absolutes: BergPanelVariables<boolean> = {};
+  collapsedPanels: BergPanelVariables<boolean> = {};
+  absolutePanels: BergPanelVariables<boolean> = {};
 
   private addPanelSub = new Subject<BergPanelComponentInputs>();
   private pushPanelSub = new Subject<void>();
@@ -197,7 +201,12 @@ export class BergPanelController implements OnDestroy {
   }
 
   updateAbsolute(slot: BergPanelSlot, absolute: boolean): void {
-    this.absolutes[slot] = absolute;
+    this.absolutePanels[slot] = absolute;
+    this.changeDetectorRef.markForCheck();
+  }
+
+  updateCollapsed(slot: BergPanelSlot, collapsed: boolean): void {
+    this.collapsedPanels[slot] = collapsed;
     this.changeDetectorRef.markForCheck();
   }
 

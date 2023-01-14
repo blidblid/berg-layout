@@ -1,16 +1,17 @@
 {
   "name": "berg-layout",
+  "private": true,
   "repository": "https://github.com/blidblid/berg-layout",
   "license": "MIT",
   "scripts": {
+    "build": "ng b styling && ng b angular && ng b web-component && ng b demo",
+    "deploy": "npx firebase deploy",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng b styling && ng b angular && ng b web-component && ng b demo",
-    "watch-styles": "ng build styling --watch --configuration development",
     "test": "ng test angular --watch=false --browsers=ChromeHeadlessCustom",
-    "upgrade-hooks": "cd projects/builder-hooks && tsc && cd ../.. && yarn upgrade @berg-layout/builder-hooks"
+    "upgrade-hooks": "cd projects/builder-hooks && tsc && cd ../.. && yarn upgrade @berg-layout/builder-hooks",
+    "watch-styles": "ng build styling --watch --configuration development"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^14.0.3",
     "@angular/cdk": "13.2.1",
