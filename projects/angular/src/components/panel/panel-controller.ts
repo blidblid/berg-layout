@@ -194,10 +194,7 @@ export class BergPanelController implements OnDestroy {
   }
 
   updateSize(slot: BergPanelSlot, size: number): void {
-    this.document.documentElement.style.setProperty(
-      `--berg-panel-${slot}-size`,
-      `${size}px`
-    );
+    this.hostElem.style.setProperty(`--berg-panel-${slot}-size`, `${size}px`);
   }
 
   updateAbsolute(slot: BergPanelSlot, absolute: boolean): void {
