@@ -10,7 +10,7 @@ import { map, takeUntil } from 'rxjs/operators';
 export class DemoBase {
   view: EditorView = 'code';
 
-  private collapseLeftAtSize = 25;
+  private collapsePanelAtSize = 25;
   private initialLeftSize = 55;
   private expandedLeftSize = 160;
 
@@ -49,14 +49,14 @@ export class DemoBase {
   }
 
   onResized(slot: Slot, resizeEvent: BergPanelResizeEvent): void {
-    if (slot !== 'left') {
-      return;
+    if (resizeEvent.size < this.collapsePanelAtSize) {
+      this.rx[slot].collapsed.next(true);
+    } else if (resizeEvent.size > this.collapsePanelAtSize) {
+      this.rx[slot].collapsed.next(false);
     }
 
-    if (resizeEvent.size < this.collapseLeftAtSize) {
-      this.rx[slot].collapsed.next(true);
-    } else if (resizeEvent.size > this.initialLeftSize) {
-      this.rx[slot].collapsed.next(false);
+    if (slot !== 'left') {
+      return;
     }
 
     if (resizeEvent.size > this.expandedLeftSize) {

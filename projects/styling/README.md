@@ -16,7 +16,6 @@ All styles in berg-layout are applied through css-classes. If you're looking to 
   - `.berg-panel::part(content)`
 - State classes
   - `.berg-panel-absolute`
-  - `.berg-panel-hidden`
 - Resize classes
   - `.berg-panel-resize-resizing`
   - `.berg-panel-resize-previewing`

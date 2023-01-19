@@ -7,11 +7,12 @@
     }
   }
 
-  @include resizing-core($overrides);
-  @include positioning-core();
+  @include z-index();
+  @include resizing($overrides);
+  @include positioning();
 }
 
-@mixin positioning-core() {
+@mixin positioning() {
   .berg-panel-top,
   .berg-panel-right,
   .berg-panel-bottom,
@@ -219,7 +220,7 @@
   }
 }
 
-@mixin resizing-core($overrides) {
+@mixin resizing($overrides) {
   $resizing-indicator-size: map-get($overrides, 'resizing-indicator-size') or
     6px;
 
@@ -256,5 +257,52 @@
 
   .berg-panel-resize-toggle-bottom {
     top: 0;
+  }
+}
+
+@mixin z-index() {
+  .berg-panel-right {
+    z-index: 6;
+
+    &.berg-panel-top-above-right {
+      z-index: 4;
+    }
+
+    &.berg-panel-top-above-right {
+      z-index: 2;
+    }
+
+    &.berg-panel-top-above-right.berg-panel-bottom-below-right {
+      z-index: 1;
+    }
+  }
+
+  .berg-panel-left {
+    z-index: 6;
+
+    .berg-panel-top-above-left {
+      z-index: 4;
+    }
+
+    .berg-panel-top-above-left {
+      z-index: 2;
+    }
+
+    .berg-panel-top-above-left.berg-panel-bottom-below-left {
+      z-index: 1;
+    }
+  }
+
+  .berg-panel-bottom {
+    z-index: 3;
+  }
+
+  .berg-panel-top {
+    z-index: 5;
+  }
+
+  .berg-panel-absolute {
+    // should be one above the backdrop z-index
+    z-index: 8 !important;
   }
 }

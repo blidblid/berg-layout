@@ -15,10 +15,6 @@
     padding: 32px;
     box-sizing: border-box;
   }
-
-  &:host(.berg-panel-hidden) {
-    display: none;
-  }
 }
 
 :host(.berg-panel-center) {
@@ -32,46 +28,4 @@
   .berg-panel-overflow {
     overflow: visible;
   }
-}
-
-// Use explicit z-index to make sure box-shadow looks good
-// and resize-toggles lie on top of other panels.
-:host(.berg-panel-right) {
-  z-index: 3;
-
-  &:host(.berg-panel-top-above-right),
-  &:host(.berg-panel-bottom-below-right) {
-    z-index: 2;
-  }
-}
-
-:host(.berg-panel-left) {
-  z-index: 3;
-
-  &:host(.berg-panel-top-above-left),
-  &:host(.berg-panel-bottom-below-left) {
-    z-index: 2;
-  }
-}
-
-:host(.berg-panel-bottom) {
-  z-index: 1;
-
-  &:host(.berg-panel-bottom-below-left),
-  &:host(.berg-panel-bottom-below-right) {
-    z-index: 4;
-  }
-}
-
-:host(.berg-panel-top) {
-  z-index: 1;
-
-  &:host(.berg-panel-top-above-left),
-  &:host(.berg-panel-top-above-right) {
-    z-index: 4;
-  }
-}
-
-:host(.berg-panel-absolute) {
-  z-index: 5 !important;
 }

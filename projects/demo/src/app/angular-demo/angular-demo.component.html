@@ -17,6 +17,7 @@
     [absolute]="layout.top?.absolute!"
     [collapsed]="layout.top?.collapsed!"
     [resizeDisabled]="layout.top?.resizeDisabled!"
+    (resized)="onResized('top', $event)"
     (backdropClicked)="onBackdropClicked('top')"
   >
     <berg-toolbar></berg-toolbar>
@@ -29,6 +30,7 @@
     [absolute]="layout.right?.absolute!"
     [collapsed]="layout.right?.collapsed!"
     [resizeDisabled]="layout.right?.resizeDisabled!"
+    (resized)="onResized('right', $event)"
     (backdropClicked)="onBackdropClicked('right')"
   >
   </berg-panel>
@@ -42,6 +44,7 @@
     [absolute]="layout.bottom?.absolute!"
     [collapsed]="layout.bottom?.collapsed!"
     [resizeDisabled]="layout.bottom?.resizeDisabled!"
+    (resized)="onResized('bottom', $event)"
     (backdropClicked)="onBackdropClicked('bottom')"
   >
     <berg-editor-icon-nav (viewChanged)="view = $event" [view]="view">
