@@ -20,6 +20,10 @@
     position: fixed;
   }
 
+  .berg-panel-center {
+    z-index: 0;
+  }
+
   .berg-panel-top {
     top: 0;
     right: var(--berg-panel-right-size);
@@ -238,6 +242,10 @@
 
   .berg-panel-resize-toggle-right {
     left: 0;
+
+    .berg-panel-collapsed & {
+      left: -#{$resizing-indicator-size};
+    }
   }
 
   .berg-panel-resize-toggle-left {
@@ -257,6 +265,10 @@
 
   .berg-panel-resize-toggle-bottom {
     top: 0;
+
+    .berg-panel-collapsed & {
+      top: -#{$resizing-indicator-size};
+    }
   }
 }
 

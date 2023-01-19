@@ -12,19 +12,11 @@
   }
 
   .berg-panel-content {
-    padding: 32px;
     box-sizing: border-box;
   }
 }
 
 :host(.berg-panel-center) {
-  max-height: 100%;
-  max-width: 100vw;
-  min-height: 0;
-  min-width: 0;
-  flex: 1;
-  z-index: 0;
-
   .berg-panel-overflow {
     overflow: visible;
   }

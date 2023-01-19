@@ -93,7 +93,6 @@ $light-theme: mat.define-light-theme(
   &::part(content) {
     display: flex;
     flex-direction: column;
-    padding: 0;
   }
 }
 
@@ -106,7 +105,6 @@ $light-theme: mat.define-light-theme(
 .berg-panel-bottom {
   &::part(content) {
     display: flex;
-    padding: 0;
   }
 }
 
