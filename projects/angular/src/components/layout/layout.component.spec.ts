@@ -5,11 +5,7 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import {
-  BergPanelSlot,
-  BergPanelSnap,
-  BERG_PANEL_DEFAULT_INPUTS,
-} from '../panel/panel-model';
+import { BergPanelSlot, BERG_PANEL_DEFAULT_INPUTS } from '../panel/panel-model';
 import { BergPanelComponent } from '../panel/panel.component';
 import { BERG_LAYOUT_DEFAULT_INPUTS } from './layout-model';
 import { BergLayoutModule } from './layout.module';
@@ -192,8 +188,6 @@ describe('LayoutComponent', () => {
       #layoutRef
       [resizeDisabled]="layout.resizeDisabled"
       [resizeTwoDimensions]="layout.resizeTwoDimensions"
-      [resizeExpandOffset]="layout.resizeExpandOffset"
-      [resizeCollapseOffset]="layout.resizeCollapseOffset"
       [resizePreviewDelay]="layout.resizePreviewDelay"
     >
       <berg-panel
@@ -204,8 +198,6 @@ describe('LayoutComponent', () => {
         [absolute]="top.absolute"
         [collapsed]="top.collapsed"
         [resizeDisabled]="top.resizeDisabled"
-        [snap]="top.snap"
-        (snapped)="onSnapped('top', $event)"
         (backdropClicked)="onBackdropClicked('top')"
       >
       </berg-panel>
@@ -218,8 +210,6 @@ describe('LayoutComponent', () => {
         [absolute]="right.absolute"
         [collapsed]="right.collapsed"
         [resizeDisabled]="right.resizeDisabled"
-        [snap]="right.snap"
-        (snapped)="onSnapped('right', $event)"
         (backdropClicked)="onBackdropClicked('right')"
       >
       </berg-panel>
@@ -232,8 +222,6 @@ describe('LayoutComponent', () => {
         [absolute]="bottom.absolute"
         [collapsed]="bottom.collapsed"
         [resizeDisabled]="bottom.resizeDisabled"
-        [snap]="bottom.snap"
-        (snapped)="onSnapped('bottom', $event)"
         (backdropClicked)="onBackdropClicked('bottom')"
       >
       </berg-panel>
@@ -246,8 +234,6 @@ describe('LayoutComponent', () => {
         [absolute]="left.absolute"
         [collapsed]="left.collapsed"
         [resizeDisabled]="left.resizeDisabled"
-        [snap]="left.snap"
-        (snapped)="onSnapped('left', $event)"
         (backdropClicked)="onBackdropClicked('left')"
       >
       </berg-panel>
@@ -325,12 +311,7 @@ export class LayoutTestComponent {
 
   layout = { ...BERG_LAYOUT_DEFAULT_INPUTS };
 
-  snap: Partial<Record<BergPanelSlot, BergPanelSnap>> = {};
   backdropClick: Partial<Record<BergPanelSlot, true>> = {};
-
-  onSnapped(slot: BergPanelSlot, snap: BergPanelSnap) {
-    this.snap[slot] = snap;
-  }
 
   onBackdropClicked(slot: BergPanelSlot) {
     this.backdropClick[slot] = true;

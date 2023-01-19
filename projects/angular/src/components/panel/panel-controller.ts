@@ -44,27 +44,6 @@ export class BergPanelController implements OnDestroy {
   private _resizeDisabled: boolean = this.getDefaultInput('resizeDisabled');
 
   @Input()
-  get resizeCollapseOffset(): number {
-    return this._resizeCollapseOffset;
-  }
-  set resizeCollapseOffset(value: number | null) {
-    this._resizeCollapseOffset = coerceNumberProperty(value);
-  }
-  private _resizeCollapseOffset: number = this.getDefaultInput(
-    'resizeCollapseOffset'
-  );
-
-  @Input()
-  get resizeExpandOffset(): number {
-    return this._resizeExpandOffset;
-  }
-  set resizeExpandOffset(value: number | null) {
-    this._resizeExpandOffset = coerceNumberProperty(value);
-  }
-  private _resizeExpandOffset: number =
-    this.getDefaultInput('resizeExpandOffset');
-
-  @Input()
   get resizePreviewDelay(): number {
     return this._resizePreviewDelay;
   }

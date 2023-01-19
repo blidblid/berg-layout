@@ -1,5 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Directive } from '@angular/core';
+import { BergPanelResizeEvent } from '@berg-layout/angular';
 import { EditorView } from '@demo/components';
 import { LayoutRx, Slot } from '@demo/rx';
 import { Subject } from 'rxjs';
@@ -8,6 +9,12 @@ import { map, takeUntil } from 'rxjs/operators';
 @Directive()
 export class DemoBase {
   view: EditorView = 'code';
+
+  private collapseLeftAtSize = 25;
+  private initialLeftSize = 55;
+  private expandedLeftSize = 160;
+
+  leftSize = this.initialLeftSize;
 
   private tiny = this.getBreakpoint('700px');
   private small = this.getBreakpoint('900px');
@@ -41,12 +48,26 @@ export class DemoBase {
     this.subscribe();
   }
 
-  onBackdropClicked(slot: Slot): void {
-    this.rx[slot].collapsed.next(true);
+  onResized(slot: Slot, resizeEvent: BergPanelResizeEvent): void {
+    if (slot !== 'left') {
+      return;
+    }
+
+    if (resizeEvent.size < this.collapseLeftAtSize) {
+      this.rx[slot].collapsed.next(true);
+    } else if (resizeEvent.size > this.initialLeftSize) {
+      this.rx[slot].collapsed.next(false);
+    }
+
+    if (resizeEvent.size > this.expandedLeftSize) {
+      this.leftSize = this.expandedLeftSize;
+    } else {
+      this.leftSize = this.initialLeftSize;
+    }
   }
 
-  onSnapped(slot: Slot, snap: any): void {
-    this.rx[slot].snap.next(snap instanceof CustomEvent ? snap.detail : snap);
+  onBackdropClicked(slot: Slot): void {
+    this.rx[slot].collapsed.next(true);
   }
 
   private subscribe(): void {

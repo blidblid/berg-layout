@@ -223,16 +223,6 @@
   $resizing-indicator-size: map-get($overrides, 'resizing-indicator-size') or
     6px;
 
-  .berg-panel-snap-collapsed {
-    .berg-panel-resize-toggle-right {
-      left: -#{$resizing-indicator-size};
-    }
-
-    .berg-panel-resize-toggle-bottom {
-      top: -#{$resizing-indicator-size};
-    }
-  }
-
   .berg-panel-resize-toggle {
     position: absolute;
     z-index: 2;

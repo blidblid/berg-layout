@@ -18,17 +18,14 @@ export interface BergPanelInputs {
   /** Whether resizing is disabled. */
   resizeDisabled: boolean;
 
-  /** Snap location. */
-  snap: BergPanelSnap;
+  /** Size of the panel. */
+  size: number;
 
-  /** Initial size of the panel. */
-  initialSize: number;
+  /** Min size of the panel */
+  minSize: number | null;
 
-  /** Size of panel that causes a resize expand. */
-  resizeExpandSize: number | null;
-
-  /** Size of panel that causes a resize collapse. */
-  resizeCollapseSize: number | null;
+  /** Max size of the panel. */
+  maxSize: number | null;
 
   /**
    * Controls how panel outputs update panel inputs.
@@ -44,8 +41,8 @@ export type BergPanelComponentInputs = {
 
 /** Outputs that panels emit. */
 export interface BergPanelOutputs {
-  /** Emits when a user resizes beyond where the panel changes its size. */
-  snapped: Observable<BergPanelSnap>;
+  /** Emits when a user resizes the panel. */
+  resized: Observable<BergPanelResizeEvent>;
 
   /** Emits whenever a user clicks a panel backdrop. */
   backdropClicked: Observable<MouseEvent>;
@@ -57,11 +54,10 @@ export const BERG_PANEL_DEFAULT_INPUTS: BergPanelInputs = {
   absolute: false,
   collapsed: false,
   resizeDisabled: false,
-  snap: 'none',
   outputBindingMode: 'auto',
-  initialSize: 100,
-  resizeExpandSize: null,
-  resizeCollapseSize: null,
+  size: 100,
+  minSize: 50,
+  maxSize: null,
 };
 
 /** Injection token used to set the default berg-panel inputs. */
@@ -69,8 +65,11 @@ export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
   'BERG_PANEL_INPUTS'
 );
 
-/** Snap states of berg-panel. */
-export type BergPanelSnap = 'collapsed' | 'expanded' | 'none';
-
 /** Binding modes that controls how outputs update inputs. */
 export type BergPanelOutputBindingMode = 'auto' | 'noop';
+
+export interface BergPanelResizeEvent {
+  rect: DOMRect;
+  event: MouseEvent;
+  size: number;
+}

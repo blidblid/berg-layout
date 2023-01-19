@@ -1,19 +1,5 @@
-import {
-  EMPTY,
-  merge,
-  MonoTypeOperatorFunction,
-  Observable,
-  OperatorFunction,
-} from 'rxjs';
-import {
-  filter,
-  map,
-  pairwise,
-  scan,
-  shareReplay,
-  startWith,
-} from 'rxjs/operators';
-import { BergPanelResizeSize } from './panel-model-private';
+import { EMPTY, merge, Observable, OperatorFunction } from 'rxjs';
+import { map, scan, shareReplay } from 'rxjs/operators';
 
 export type UpdateValue<T> = { oldValue: T; newValue: T };
 
@@ -104,36 +90,3 @@ export type ReducerAction<T> =
   | PushAction
   | RemoveAction<T>
   | UpdateAction<T>;
-
-export function filterSizeDirection(
-  increasing: boolean
-): MonoTypeOperatorFunction<BergPanelResizeSize> {
-  return (source) =>
-    source.pipe(
-      startWith(null),
-      pairwise(),
-      filter(([prev, curr]) => {
-        if (curr === null || prev === null) {
-          return true;
-        }
-
-        return increasing ? isLargerSize(curr, prev) : isLargerSize(prev, curr);
-      }),
-      map(([_, curr]) => curr as BergPanelResizeSize)
-    );
-}
-
-export function isLargerSize(
-  size: BergPanelResizeSize,
-  compareWith: BergPanelResizeSize
-): boolean {
-  if (size.width && compareWith.width) {
-    return size.width > compareWith.width;
-  }
-
-  if (size.height && compareWith.height) {
-    return size.height > compareWith.height;
-  }
-
-  return false;
-}

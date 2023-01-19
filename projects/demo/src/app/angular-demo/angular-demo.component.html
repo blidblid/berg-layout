@@ -6,21 +6,17 @@
   [bottomRightPosition]="layout.bottomRightPosition!"
   [resizeDisabled]="layout.resizeDisabled!"
   [resizeTwoDimensions]="layout.resizeTwoDimensions!"
-  [resizeExpandOffset]="layout.resizeExpandOffset!"
-  [resizeCollapseOffset]="layout.resizeCollapseOffset!"
   [resizePreviewDelay]="layout.resizePreviewDelay!"
 >
   <berg-panel
     slot="top"
     *ngIf="!layout.top?.remove!"
     outputBindingMode="noop"
-    [initialSize]="72"
-    [resizeCollapseSize]="72"
+    [size]="72"
+    [minSize]="72"
     [absolute]="layout.top?.absolute!"
     [collapsed]="layout.top?.collapsed!"
     [resizeDisabled]="layout.top?.resizeDisabled!"
-    [snap]="layout.top?.snap!"
-    (snapped)="onSnapped('top', $event)"
     (backdropClicked)="onBackdropClicked('top')"
   >
     <berg-toolbar></berg-toolbar>
@@ -33,8 +29,6 @@
     [absolute]="layout.right?.absolute!"
     [collapsed]="layout.right?.collapsed!"
     [resizeDisabled]="layout.right?.resizeDisabled!"
-    [snap]="layout.right?.snap!"
-    (snapped)="onSnapped('right', $event)"
     (backdropClicked)="onBackdropClicked('right')"
   >
   </berg-panel>
@@ -43,13 +37,11 @@
     slot="bottom"
     *ngIf="!layout.bottom?.remove!"
     outputBindingMode="noop"
-    [resizeCollapseSize]="40"
-    [initialSize]="40"
+    [size]="40"
+    [minSize]="40"
     [absolute]="layout.bottom?.absolute!"
     [collapsed]="layout.bottom?.collapsed!"
     [resizeDisabled]="layout.bottom?.resizeDisabled!"
-    [snap]="layout.bottom?.snap!"
-    (snapped)="onSnapped('bottom', $event)"
     (backdropClicked)="onBackdropClicked('bottom')"
   >
     <berg-editor-icon-nav (viewChanged)="view = $event" [view]="view">
@@ -60,14 +52,13 @@
     slot="left"
     *ngIf="!layout.left?.remove!"
     outputBindingMode="noop"
-    [resizeCollapseSize]="55"
-    [resizeExpandSize]="55"
-    [initialSize]="55"
+    [size]="leftSize"
+    [minSize]="leftSize"
+    [maxSize]="leftSize"
     [absolute]="layout.left?.absolute!"
     [collapsed]="layout.left?.collapsed!"
     [resizeDisabled]="layout.left?.resizeDisabled!"
-    [snap]="layout.left?.snap!"
-    (snapped)="onSnapped('left', $event)"
+    (resized)="onResized('left', $event)"
     (backdropClicked)="onBackdropClicked('left')"
   >
     <berg-editor-nav (viewChanged)="view = $event"></berg-editor-nav>

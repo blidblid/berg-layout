@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BergPanelSnap,
-  BERG_LAYOUT_DEFAULT_INPUTS,
-} from '@berg-layout/angular';
+import { BERG_LAYOUT_DEFAULT_INPUTS } from '@berg-layout/angular';
 import { userValue } from '@berglund/rx';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -70,12 +67,6 @@ export class LayoutRx {
       resizeTwoDimensions: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.resizeTwoDimensions
       ),
-      resizeCollapseOffset: userValue(
-        BERG_LAYOUT_DEFAULT_INPUTS.resizeCollapseOffset
-      ),
-      resizeExpandOffset: userValue(
-        BERG_LAYOUT_DEFAULT_INPUTS.resizeExpandOffset
-      ),
       resizePreviewDelay: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.resizePreviewDelay
       ),
@@ -97,7 +88,6 @@ export class LayoutRx {
       collapsed: userValue(collapsed),
       remove: userValue(false),
       resizeDisabled: userValue(false),
-      snap: userValue<BergPanelSnap>('none'),
     };
   }
 

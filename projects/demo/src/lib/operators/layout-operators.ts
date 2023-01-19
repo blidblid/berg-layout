@@ -24,19 +24,7 @@ export class LayoutOperators {
   top = this.getPanelComponents('top');
   right = this.getPanelComponents('right');
   bottom = this.getPanelComponents('bottom');
-  left = [
-    ...this.getPanelComponents('left'),
-    component({
-      component: BergSelectComponent,
-      inputs: {
-        label: 'Snap',
-        connectToFormValue: this.layoutRx.left.snap,
-        data: ['none', 'collapsed', 'expanded'],
-        pluckLabel: (value) => value.charAt(0).toUpperCase() + value.slice(1),
-        disabled: this.layoutRx.left.remove.asObservable(),
-      },
-    }),
-  ];
+  left = this.getPanelComponents('left');
 
   private getPanelComponents(slot: Slot) {
     return [
@@ -88,22 +76,6 @@ export class LayoutOperators {
         inputs: {
           label: 'Resize two dimensions',
           connectToFormValue: this.layoutRx.layout.resizeTwoDimensions,
-        },
-      }),
-      component({
-        component: BergInputComponent,
-        inputs: {
-          label: 'Resize collapse offset',
-          type: 'number',
-          connectToFormValue: this.layoutRx.layout.resizeCollapseOffset,
-        },
-      }),
-      component({
-        component: BergInputComponent,
-        inputs: {
-          label: 'Resize expand offset',
-          type: 'number',
-          connectToFormValue: this.layoutRx.layout.resizeExpandOffset,
         },
       }),
       component({
