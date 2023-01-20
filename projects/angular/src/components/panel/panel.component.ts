@@ -159,7 +159,8 @@ export class BergPanelComponent
     return this._minSize;
   }
   set minSize(value: number | null | undefined) {
-    this._minSize = value ?? this.getDefaultInput('minSize');
+    this._minSize =
+      coerceNumberProperty(value) ?? this.getDefaultInput('minSize');
   }
   private _minSize: number | null = this.getDefaultInput('minSize');
 
@@ -168,7 +169,8 @@ export class BergPanelComponent
     return this._maxSize;
   }
   set maxSize(value: number | null | undefined) {
-    this._maxSize = value ?? this.getDefaultInput('maxSize');
+    this._maxSize =
+      coerceNumberProperty(value) ?? this.getDefaultInput('maxSize');
   }
   private _maxSize: number | null = this.getDefaultInput('maxSize');
 

@@ -48,7 +48,9 @@ export class DemoBase {
     this.subscribe();
   }
 
-  onResized(slot: Slot, resizeEvent: BergPanelResizeEvent): void {
+  onResized(slot: Slot, event: BergPanelResizeEvent | Event): void {
+    const resizeEvent = event instanceof CustomEvent ? event.detail : event;
+
     if (resizeEvent.size < this.collapsePanelAtSize) {
       this.rx[slot].collapsed.next(true);
     } else if (resizeEvent.size > this.collapsePanelAtSize) {

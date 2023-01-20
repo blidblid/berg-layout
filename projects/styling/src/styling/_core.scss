@@ -292,15 +292,15 @@
   .berg-panel-left {
     z-index: 6;
 
-    .berg-panel-top-above-left {
+    &.berg-panel-top-above-left {
       z-index: 4;
     }
 
-    .berg-panel-top-above-left {
+    & .berg-panel-top-above-left {
       z-index: 2;
     }
 
-    .berg-panel-top-above-left.berg-panel-bottom-below-left {
+    &.berg-panel-top-above-left.berg-panel-bottom-below-left {
       z-index: 1;
     }
   }

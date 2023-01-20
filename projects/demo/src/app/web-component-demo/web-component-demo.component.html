@@ -12,11 +12,12 @@
     slot="top"
     *ngIf="!layout.top?.remove!"
     output-binding-mode="noop"
-    [attr.initial-size]="72"
-    [attr.resize-collapse-size]="72"
+    [attr.size]="72"
+    [attr.min-size]="72"
     [attr.absolute]="layout.top?.absolute!"
     [attr.collapsed]="layout.top?.collapsed!"
     [attr.resize-disabled]="layout.top?.resizeDisabled!"
+    (resized)="onResized('top', $event)"
     (backdropClicked)="onBackdropClicked('top')"
   >
     <berg-toolbar></berg-toolbar>
@@ -29,6 +30,7 @@
     [attr.absolute]="layout.right?.absolute!"
     [attr.collapsed]="layout.right?.collapsed!"
     [attr.resize-disabled]="layout.right?.resizeDisabled!"
+    (resized)="onResized('right', $event)"
     (backdropClicked)="onBackdropClicked('right')"
   >
   </berg-panel>
@@ -37,11 +39,12 @@
     slot="bottom"
     *ngIf="!layout.bottom?.remove!"
     output-binding-mode="noop"
-    [attr.resize-collapse-size]="40"
-    [attr.initial-size]="40"
+    [attr.resize-collapse-size]="44"
+    [attr.initial-size]="44"
     [attr.absolute]="layout.bottom?.absolute!"
     [attr.collapsed]="layout.bottom?.collapsed!"
     [attr.resize-disabled]="layout.bottom?.resizeDisabled!"
+    (resized)="onResized('bottom', $event)"
     (backdropClicked)="onBackdropClicked('bottom')"
   >
     <berg-editor-icon-nav (viewChanged)="view = $event" [view]="view">
@@ -52,15 +55,16 @@
     slot="left"
     *ngIf="!layout.left?.remove!"
     output-binding-mode="noop"
-    [attr.resize-collapse-size]="55"
-    [attr.initial-size]="55"
+    [attr.size]="leftSize"
+    [attr.min-size]="leftSize"
+    [attr.max-size]="leftSize"
     [attr.absolute]="layout.left?.absolute!"
     [attr.collapsed]="layout.left?.collapsed!"
     [attr.resize-disabled]="layout.left?.resizeDisabled!"
+    (resized)="onResized('left', $event)"
     (backdropClicked)="onBackdropClicked('left')"
   >
-    <berg-editor-nav (viewChanged)="view = $event" [view]="view">
-    </berg-editor-nav>
+    <berg-editor-nav (viewChanged)="view = $event"></berg-editor-nav>
   </berg-panel>
 
   <berg-panel>
