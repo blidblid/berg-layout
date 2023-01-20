@@ -1,13 +1,15 @@
 @use 'sass:map';
-@use '../styling/theme';
 @use '../styling/border';
+@use '../styling/theme';
 
 @mixin high-contrast($overrides: ()) {
   $combined: map.merge(
     (
-      background: black,
-      background-low-contrast: black,
-      background-high-contrast: black,
+      background-center: black,
+      background-bottom: black,
+      background-left: black,
+      background-right: black,
+      background-top: black,
       background-backdrop: rgba(white, 0.3),
       divider: white,
       resizing-indicator-color: white,

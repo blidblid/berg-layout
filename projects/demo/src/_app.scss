@@ -20,7 +20,7 @@
     primary: $primary-color,
     secondary: $accent-color,
     divider: $divider-color,
-    background-high-contrast: $card-color,
+    background-top: $card-color,
   );
 
   @include card.theme($colors);

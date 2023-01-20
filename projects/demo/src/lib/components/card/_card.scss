@@ -3,7 +3,7 @@
 @mixin theme($colors) {
   .app-card {
     color: map-get($colors, text);
-    background: map-get($colors, background-high-contrast);
+    background: map-get($colors, background-top);
     @include layout.elevation(4);
 
     &:hover {

@@ -11,19 +11,29 @@
     $key: 'divider',
   );
 
-  $background: map-get(
+  $background-center: map-get(
     $map: $colors,
-    $key: 'background',
+    $key: 'background-center',
   );
 
-  $background-low-contrast: map-get(
+  $background-top: map-get(
     $map: $colors,
-    $key: 'background-low-contrast',
+    $key: 'background-top',
   );
 
-  $background-high-contrast: map-get(
+  $background-right: map-get(
     $map: $colors,
-    $key: 'background-high-contrast',
+    $key: 'background-right',
+  );
+
+  $background-bottom: map-get(
+    $map: $colors,
+    $key: 'background-bottom',
+  );
+
+  $background-left: map-get(
+    $map: $colors,
+    $key: 'background-left',
   );
 
   $background-backdrop: map-get(
@@ -31,31 +41,41 @@
     $key: 'background-backdrop',
   );
 
+  :root & {
+    --berg-panel-center-background: #{$background-center};
+    --berg-panel-top-background: #{$background-top};
+    --berg-panel-right-background: #{$background-right};
+    --berg-panel-bottom-background: #{$background-bottom};
+    --berg-panel-left-background: #{$background-left};
+  }
+
+  .berg-panel-top {
+    background: var(--berg-panel-top-background);
+  }
+
+  .berg-panel-right {
+    background: var(--berg-panel-right-background);
+  }
+
+  .berg-panel-bottom {
+    background: var(--berg-panel-bottom-background);
+  }
+
+  .berg-panel-left {
+    background: var(--berg-panel-left-background);
+  }
+
   .berg-panel-backdrop {
     background: $background-backdrop;
   }
 
-  .berg-panel-top {
-    background: $background-high-contrast;
-  }
-
-  .berg-panel-bottom {
-    border-top: 1px solid $divider;
-  }
-
-  .berg-panel-left,
-  .berg-panel-right {
-    background: $background-low-contrast;
-  }
-
   body,
-  .berg-panel-center,
-  .berg-panel-bottom {
-    background: $background;
+  .berg-panel-center {
+    background: var(--berg-panel-center-background);
   }
 
   @at-root body#{&} {
-    background: $background;
+    background: var(--berg-panel-center-background);
   }
 }
 

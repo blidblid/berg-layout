@@ -1,19 +1,28 @@
 @use 'sass:map';
+@use '../styling/border';
 @use '../styling/theme';
 
 @mixin abyss($overrides: ()) {
-  @include theme.theme(
-    map.merge(
-      (
-        background: rgb(2, 12, 23),
-        background-low-contrast: rgb(6, 7, 32),
-        background-high-contrast: rgb(18, 25, 43),
-        background-backdrop: rgba(white, 0.3),
-        divider: rgb(43, 44, 73),
-        resizing-indicator-color: rgb(94, 151, 94),
-        previewing-indicator-color: rgb(94, 111, 151),
-      ),
-      $overrides
+  $theme: map.merge(
+    (
+      background-center: rgb(2, 12, 23),
+      background-bottom: rgb(2, 12, 23),
+      background-left: rgb(6, 7, 32),
+      background-right: rgb(6, 7, 32),
+      background-top: rgb(18, 25, 43),
+      background-backdrop: rgba(white, 0.3),
+      divider: rgb(43, 44, 73),
+      resizing-indicator-color: rgb(94, 151, 94),
+      previewing-indicator-color: rgb(94, 111, 151),
+    ),
+    $overrides
+  );
+
+  @include theme.theme($theme);
+
+  @include border.border-parts(
+    (
+      bottom: 1px solid map-get($theme, divider),
     )
   );
 }

@@ -8,9 +8,6 @@ All styles in berg-layout are applied through css-classes. If you're looking to 
   - `.berg-layout`
   - `.berg-panel`
   - `.berg-panel-backdrop`
-- Layout parts
-  - `.berg-layout::part(flex)`
-  - `.berg-layout::part(inner-flex)`
 - Panel parts
   - `.berg-panel::part(overflow)`
   - `.berg-panel::part(content)`
@@ -98,9 +95,11 @@ A lower level way of creating themes is to call the `theme`-mixin with `map` of 
 
 @include layout.theme(
   $colors: (
-    background: rgb(30, 30, 30),
-    background-low-contrast: rgb(37, 37, 38),
-    background-high-contrast: rgb(60, 60, 60),
+    background-center: rgb(30, 30, 30),
+    background-bottom: rgb(30, 30, 30),
+    background-left: rgb(37, 37, 38),
+    background-right: rgb(37, 37, 38),
+    background-top: rgb(60, 60, 60),
     background-backdrop: rgba(255, 255, 255, 0.3),
     divider: rgb(65, 65, 65),
     resizing-indicator-color: #ff9100,

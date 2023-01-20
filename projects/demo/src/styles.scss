@@ -34,8 +34,6 @@ $light-theme: mat.define-light-theme(
 @include mat.all-component-themes($dark-theme);
 @include app.theme($dark-theme);
 
-@include layout.dark();
-
 .app-root-abyss,
 .app-root-dark,
 .app-root-material-dark,
@@ -59,6 +57,10 @@ $light-theme: mat.define-light-theme(
 
 .app-root-abyss {
   @include layout.abyss();
+}
+
+.app-root-dark {
+  @include layout.dark();
 }
 
 .app-root-high-contrast {

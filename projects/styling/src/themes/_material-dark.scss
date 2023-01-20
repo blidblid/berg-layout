@@ -1,13 +1,16 @@
 @use 'sass:map';
-@use '../styling/elevation' as elevation;
+@use '../styling/border';
+@use '../styling/elevation';
 @use '../styling/theme';
 
 @mixin material-dark($overrides: ()) {
   $theme: map.merge(
     (
-      background: #303030,
-      background-low-contrast: #424242,
-      background-high-contrast: #212121,
+      background-center: #303030,
+      background-bottom: #303030,
+      background-left: #424242,
+      background-right: #424242,
+      background-top: #303030,
       background-backdrop: rgba(white, 0.3),
       divider: rgba(white, 0.12),
       resizing-indicator-color: #6c376c,
@@ -18,6 +21,12 @@
   );
 
   @include theme.theme($theme);
+
+  @include border.border-parts(
+    (
+      bottom: 1px solid map-get($theme, divider),
+    )
+  );
 
   .berg-panel-top,
   .berg-panel-left,
