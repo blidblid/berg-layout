@@ -21,13 +21,13 @@ import {
 } from '@angular/core';
 import {
   animationFrameScheduler,
+  BehaviorSubject,
   combineLatest,
   EMPTY,
   fromEvent,
   merge,
   Observable,
   of,
-  ReplaySubject,
   Subject,
 } from 'rxjs';
 import {
@@ -102,14 +102,12 @@ export class BergPanelComponent
 {
   @Input('slot')
   get slot(): BergPanelSlot {
-    return this._slot;
+    return this.slotSub.value;
   }
   set slot(value: BergPanelSlot | null) {
-    this._slot = value ?? this.getDefaultInput('slot');
-    this.slotSub.next(this._slot);
+    this.slotSub.next(value ?? this.getDefaultInput('slot'));
   }
-  private _slot: BergPanelSlot = 'center';
-  protected slotSub = new ReplaySubject<BergPanelSlot>(1);
+  protected slotSub = new BehaviorSubject<BergPanelSlot>('center');
 
   @Input()
   get absolute(): boolean {
@@ -136,14 +134,14 @@ export class BergPanelComponent
 
   @Input()
   get resizeDisabled(): boolean {
-    return this._resizeDisabled || this.controller.resizeDisabled;
+    return this.resizeDisabledSub.value || this.controller.resizeDisabled;
   }
   set resizeDisabled(value: boolean | null) {
-    this._resizeDisabled = coerceBooleanProperty(
-      value ?? this.getDefaultInput('resizeDisabled')
+    this.resizeDisabledSub.next(
+      coerceBooleanProperty(value ?? this.getDefaultInput('resizeDisabled'))
     );
   }
-  private _resizeDisabled: boolean;
+  private resizeDisabledSub = new BehaviorSubject<boolean>(false);
 
   @Input()
   get size(): number {
@@ -246,9 +244,8 @@ export class BergPanelComponent
   );
 
   private stopResizeEvent$ = merge(
-    fromEvent<MouseEvent>(this.document.body, 'mouseup'),
-    fromEvent<MouseEvent>(this.document.body, 'mouseleave'),
-    fromEvent<DragEvent>(this.document.body, 'dragend')
+    fromEvent<MouseEvent>(this.document.documentElement, 'mouseup'),
+    fromEvent<MouseEvent>(this.document.documentElement, 'mouseleave')
   );
 
   private resizing$ = merge(
@@ -385,53 +382,54 @@ export class BergPanelComponent
         }
       });
 
-    merge(fromEvent<DragEvent>(this.hostElem, 'dragstart'))
+    combineLatest([this.slotSub, this.resizeDisabledSub])
       .pipe(takeUntil(this.destroySub))
-      .subscribe((event) => event.preventDefault());
+      .subscribe(([slot, resizeDisabled]) => {
+        if (slot === 'center') {
+          return;
+        }
 
-    this.slotSub
-      .pipe(startWith(this._slot), takeUntil(this.destroySub))
-      .subscribe((slot) => {
-        if (slot !== 'center') {
+        if (resizeDisabled) {
+          this.hostElem.removeChild(this.controller.resizeToggles[slot]);
+        } else {
           this.hostElem.appendChild(this.controller.resizeToggles[slot]);
         }
       });
   }
 
   private createResizeEvent(event: MouseEvent): BergPanelResizeEvent {
-    const rect = this.hostElem.getBoundingClientRect();
-    const layoutRect = this.controller.hostElem.getBoundingClientRect();
-
     const create = (size: number) => {
       return {
-        rect,
         event,
         size: Math.max(size),
       };
     };
 
+    if (this.slot === 'top') {
+      return create(event.pageY - this.document.documentElement.scrollTop);
+    }
+
+    if (this.slot === 'left') {
+      return create(event.pageX - this.document.documentElement.scrollLeft);
+    }
+
     if (this.slot === 'bottom') {
       return create(
-        rect.height +
-          this.document.documentElement.scrollTop +
-          (layoutRect.y - rect.height) -
+        this.document.documentElement.scrollTop +
+          window.innerHeight -
           event.pageY
       );
     }
 
-    if (this.slot === 'left') {
+    if (this.slot === 'right') {
       return create(
-        event.pageX - layoutRect.x - this.document.documentElement.scrollLeft
+        this.document.documentElement.scrollLeft +
+          window.innerWidth -
+          event.pageX
       );
     }
 
-    if (this.slot === 'top') {
-      return create(
-        event.pageY - layoutRect.y - this.document.documentElement.scrollTop
-      );
-    }
-
-    return create(rect.width + (layoutRect.width - rect.width) - event.pageX);
+    return create(0);
   }
 
   private checkResizeThreshold(

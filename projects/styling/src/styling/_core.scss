@@ -7,6 +7,7 @@
     }
   }
 
+  @include colors();
   @include z-index();
   @include resizing($overrides);
   @include positioning();
@@ -316,5 +317,54 @@
   .berg-panel-absolute {
     // should be one above the backdrop z-index
     z-index: 8 !important;
+  }
+}
+
+@mixin colors {
+  .berg-panel-top {
+    background: var(--berg-panel-top-background);
+  }
+
+  .berg-panel-right {
+    background: var(--berg-panel-right-background);
+  }
+
+  .berg-panel-bottom {
+    background: var(--berg-panel-bottom-background);
+  }
+
+  .berg-panel-left {
+    background: var(--berg-panel-left-background);
+  }
+
+  .berg-panel-backdrop {
+    background: var(--berg-panel-backdrop-background);
+  }
+
+  body,
+  .berg-panel-center {
+    background: var(--berg-panel-center-background);
+  }
+
+  @at-root body#{&} {
+    background: var(--berg-panel-center-background);
+  }
+
+  .berg-panel-resize-previewing {
+    .berg-panel-resize-toggle-top,
+    .berg-panel-resize-toggle-right,
+    .berg-panel-resize-toggle-bottom,
+    .berg-panel-resize-toggle-left {
+      background: var(--berg-panel-resize-previewing-indicator-color);
+    }
+  }
+
+  .berg-panel-resize-resizing {
+    .berg-panel-resize-toggle-top,
+    .berg-panel-resize-toggle-right,
+    .berg-panel-resize-toggle-bottom,
+    .berg-panel-resize-toggle-left {
+      background: var(--berg-panel-resize-indicator-color);
+    }
   }
 }

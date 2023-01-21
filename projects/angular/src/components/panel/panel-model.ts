@@ -69,7 +69,6 @@ export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
 export type BergPanelOutputBindingMode = 'auto' | 'noop';
 
 export interface BergPanelResizeEvent {
-  rect: DOMRect;
   event: MouseEvent;
   size: number;
 }
