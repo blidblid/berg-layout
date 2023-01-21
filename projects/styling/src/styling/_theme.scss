@@ -41,7 +41,7 @@
     $key: 'border-color',
   );
 
-  :root & {
+  @at-root :root {
     --berg-panel-backdrop-background: #{$background-backdrop};
     --berg-panel-border-color: #{$border-color};
 
@@ -87,7 +87,7 @@
   $previewing-indicator-color: map-get($map, 'previewing-indicator-color') or
     $resizing-indicator-color;
 
-  :root & {
+  @at-root :root {
     --berg-panel-resize-indicator-color: #{$resizing-indicator-color};
     --berg-panel-resize-previewing-indicator-color: #{$previewing-indicator-color};
   }
