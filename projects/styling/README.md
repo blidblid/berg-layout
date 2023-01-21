@@ -101,7 +101,7 @@ A lower level way of creating themes is to call the `theme`-mixin with `map` of 
     background-right: rgb(37, 37, 38),
     background-top: rgb(60, 60, 60),
     background-backdrop: rgba(255, 255, 255, 0.3),
-    divider: rgb(65, 65, 65),
+    border-color: rgb(65, 65, 65),
     resizing-indicator-color: #ff9100,
     previewing-indicator-color: #006eff,
   )

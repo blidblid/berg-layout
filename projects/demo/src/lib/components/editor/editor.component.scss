@@ -5,6 +5,12 @@
     gap: 16px;
   }
 
+  .mat-card,
+  pre {
+    border: 1px solid var(--berg-panel-border-color);
+    box-shadow: none !important;
+  }
+
   .berg-outlet {
     display: grid !important;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));

@@ -12,7 +12,7 @@
       background-right: rgb(242, 242, 242),
       background-top: rgb(236, 236, 236),
       background-backdrop: rgba(black, 0.3),
-      divider: rgb(169, 178, 156),
+      border-color: rgb(169, 178, 156),
       resizing-indicator-color: #9cb5a9,
       previewing-indicator-color: #a9b29c,
       elevation: 2,
@@ -24,7 +24,7 @@
 
   @include border.border-parts(
     (
-      bottom: 1px solid map-get($theme, divider),
+      bottom: 1px solid map-get($theme, border-color),
     )
   );
 

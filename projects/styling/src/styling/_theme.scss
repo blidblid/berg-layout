@@ -6,11 +6,6 @@
 }
 
 @mixin panel-theme($colors) {
-  $divider: map-get(
-    $map: $colors,
-    $key: 'divider',
-  );
-
   $background-center: map-get(
     $map: $colors,
     $key: 'background-center',
@@ -41,7 +36,15 @@
     $key: 'background-backdrop',
   );
 
+  $border-color: map-get(
+    $map: $colors,
+    $key: 'border-color',
+  );
+
   :root & {
+    --berg-panel-backdrop-background: #{$background-backdrop};
+    --berg-panel-border-color: #{$border-color};
+
     --berg-panel-center-background: #{$background-center};
     --berg-panel-top-background: #{$background-top};
     --berg-panel-right-background: #{$background-right};
@@ -66,7 +69,7 @@
   }
 
   .berg-panel-backdrop {
-    background: $background-backdrop;
+    background: var(--berg-panel-backdrop-background);
   }
 
   body,
@@ -84,12 +87,17 @@
   $previewing-indicator-color: map-get($map, 'previewing-indicator-color') or
     $resizing-indicator-color;
 
+  :root & {
+    --berg-panel-resize-indicator-color: #{$resizing-indicator-color};
+    --berg-panel-resize-previewing-indicator-color: #{$previewing-indicator-color};
+  }
+
   .berg-panel-resize-previewing {
     .berg-panel-resize-toggle-top,
     .berg-panel-resize-toggle-right,
     .berg-panel-resize-toggle-bottom,
     .berg-panel-resize-toggle-left {
-      background: $previewing-indicator-color;
+      background: var(--berg-panel-resize-previewing-indicator-color);
     }
   }
 
@@ -98,7 +106,7 @@
     .berg-panel-resize-toggle-right,
     .berg-panel-resize-toggle-bottom,
     .berg-panel-resize-toggle-left {
-      background: $resizing-indicator-color;
+      background: var(--berg-panel-resize-indicator-color);
     }
   }
 }

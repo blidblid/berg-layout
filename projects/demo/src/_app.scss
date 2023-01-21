@@ -1,6 +1,5 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@use './lib/components/editor/editor';
 @use './lib/components/card/card';
 
 @mixin theme($theme) {
@@ -24,5 +23,4 @@
   );
 
   @include card.theme($colors);
-  @include editor.theme($colors);
 }

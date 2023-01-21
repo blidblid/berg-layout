@@ -11,7 +11,7 @@
       background-right: rgb(6, 7, 32),
       background-top: rgb(18, 25, 43),
       background-backdrop: rgba(white, 0.3),
-      divider: rgb(43, 44, 73),
+      border-color: rgb(43, 44, 73),
       resizing-indicator-color: rgb(94, 151, 94),
       previewing-indicator-color: rgb(94, 111, 151),
     ),
@@ -22,7 +22,7 @@
 
   @include border.border-parts(
     (
-      bottom: 1px solid map-get($theme, divider),
+      bottom: 1px solid map-get($theme, border-color),
     )
   );
 }

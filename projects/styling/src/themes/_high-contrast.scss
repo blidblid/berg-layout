@@ -11,7 +11,7 @@
       background-right: black,
       background-top: black,
       background-backdrop: rgba(white, 0.3),
-      divider: white,
+      border-color: white,
       resizing-indicator-color: white,
       previewing-indicator-color: white,
     ),
@@ -19,5 +19,5 @@
   );
 
   @include theme.theme($combined);
-  @include border.border(2px solid map-get($combined, divider));
+  @include border.border(2px solid map-get($combined, border-color));
 }
