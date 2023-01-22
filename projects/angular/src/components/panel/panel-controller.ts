@@ -31,6 +31,10 @@ import { arrayReducer } from './panel-util';
     '[class.berg-layout-right-collapsed]': 'collapsedPanels.right',
     '[class.berg-layout-bottom-collapsed]': 'collapsedPanels.bottom',
     '[class.berg-layout-left-collapsed]': 'collapsedPanels.left',
+    '[style.--berg-layout-top-inset]': 'topInset + "px"',
+    '[style.--berg-layout-right-inset]': 'rightInset + "px"',
+    '[style.--berg-layout-bottom-inset]': 'bottomInset + "px"',
+    '[style.--berg-layout-left-inset]': 'leftInset + "px"',
   },
 })
 export class BergPanelController implements OnDestroy {
@@ -107,6 +111,46 @@ export class BergPanelController implements OnDestroy {
     'bottomRightPosition'
   );
 
+  @Input()
+  get topInset(): number {
+    return this._topInset;
+  }
+  set topInset(value: number | null | undefined) {
+    this._topInset =
+      coerceNumberProperty(value) ?? this.getDefaultInput('topInset');
+  }
+  private _topInset: number = this.getDefaultInput('topInset');
+
+  @Input()
+  get rightInset(): number {
+    return this._rightInset;
+  }
+  set rightInset(value: number | null | undefined) {
+    this._rightInset =
+      coerceNumberProperty(value) ?? this.getDefaultInput('rightInset');
+  }
+  private _rightInset: number = this.getDefaultInput('rightInset');
+
+  @Input()
+  get bottomInset(): number {
+    return this._bottomInset;
+  }
+  set bottomInset(value: number | null | undefined) {
+    this._bottomInset =
+      coerceNumberProperty(value) ?? this.getDefaultInput('bottomInset');
+  }
+  private _bottomInset: number = this.getDefaultInput('bottomInset');
+
+  @Input()
+  get leftInset(): number {
+    return this._leftInset;
+  }
+  set leftInset(value: number | null | undefined) {
+    this._leftInset =
+      coerceNumberProperty(value) ?? this.getDefaultInput('leftInset');
+  }
+  private _leftInset: number = this.getDefaultInput('leftInset');
+
   /** @hidden */
   resizeToggles = {
     top: this.createResizeToggleElement('top'),
@@ -172,7 +216,7 @@ export class BergPanelController implements OnDestroy {
     );
   }
 
-  updateSize(slot: BergPanelSlot, size: number): void {
+  updateSizeCssVariable(slot: BergPanelSlot, size: number): void {
     this.hostElem.style.setProperty(`--berg-panel-${slot}-size`, `${size}px`);
   }
 
@@ -186,6 +230,26 @@ export class BergPanelController implements OnDestroy {
     this.changeDetectorRef.markForCheck();
   }
 
+  getSlotInset(slot: BergPanelSlot): number {
+    if (slot === 'top') {
+      return this.topInset;
+    }
+
+    if (slot === 'right') {
+      return this.rightInset;
+    }
+
+    if (slot === 'bottom') {
+      return this.bottomInset;
+    }
+
+    if (slot === 'left') {
+      return this.leftInset;
+    }
+
+    return 0;
+  }
+
   protected getDefaultInput<T extends keyof BergLayoutInputs>(
     input: T
   ): BergLayoutInputs[T] {
@@ -194,7 +258,7 @@ export class BergPanelController implements OnDestroy {
 
   private setInitialVariables(): void {
     for (const slot of ['top', 'right', 'bottom', 'left'] as const) {
-      this.updateSize(slot, 0);
+      this.updateSizeCssVariable(slot, 0);
     }
   }
 

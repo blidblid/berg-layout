@@ -1,5 +1,4 @@
-<div class="berg-editor-cards"
-     *ngIf="view === 'edit'">
+<div class="berg-editor-cards" *ngIf="view === 'edit'">
   <mat-card>
     <mat-card-title>Top</mat-card-title>
     <berg-outlet [component]="operators.top"></berg-outlet>
@@ -28,6 +27,11 @@
   <mat-card>
     <mat-card-title>Resizing</mat-card-title>
     <berg-outlet [component]="operators.resizing"></berg-outlet>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Insets</mat-card-title>
+    <berg-outlet [component]="operators.insets"></berg-outlet>
   </mat-card>
 </div>
 

@@ -22,6 +22,18 @@ export interface BergLayoutInputs {
 
   /** Bottom panel position relative to the right panel. */
   bottomRightPosition: BergLayoutBottomPosition;
+
+  /** Layout inset from the top of the viewport. */
+  topInset: number;
+
+  /** Layout inset from the right of the viewport. */
+  rightInset: number;
+
+  /** Layout inset from the bottom of the viewport. */
+  bottomInset: number;
+
+  /** Layout inset from the left of the viewport. */
+  leftInset: number;
 }
 
 export type BergLayoutComponentInputs = {
@@ -43,6 +55,10 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   topRightPosition: 'above',
   bottomLeftPosition: 'below',
   bottomRightPosition: 'below',
+  topInset: 0,
+  rightInset: 0,
+  bottomInset: 0,
+  leftInset: 0,
 };
 
 /** Injection token used to set the default berg-layout inputs. */

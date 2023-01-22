@@ -78,6 +78,10 @@ export class LayoutRx {
       bottomRightPosition: userValue(
         BERG_LAYOUT_DEFAULT_INPUTS.bottomRightPosition
       ),
+      topInset: userValue(BERG_LAYOUT_DEFAULT_INPUTS.topInset),
+      rightInset: userValue(BERG_LAYOUT_DEFAULT_INPUTS.rightInset),
+      bottomInset: userValue(BERG_LAYOUT_DEFAULT_INPUTS.bottomInset),
+      leftInset: userValue(BERG_LAYOUT_DEFAULT_INPUTS.leftInset),
     };
   }
 

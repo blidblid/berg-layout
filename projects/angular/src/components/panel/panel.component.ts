@@ -332,11 +332,10 @@ export class BergPanelComponent
       this._backdropElement.style.position = 'fixed';
       this._backdropElement.style.cursor = 'pointer';
       this._backdropElement.style.opacity = '0';
-      this._backdropElement.style.top =
-        this._backdropElement.style.right =
-        this._backdropElement.style.bottom =
-        this._backdropElement.style.left =
-          '0';
+      this._backdropElement.style.top = 'var(--berg-layout-top-inset)';
+      this._backdropElement.style.right = 'var(--berg-layout-right-inset)';
+      this._backdropElement.style.bottom = 'var(--berg-layout-bottom-inset)';
+      this._backdropElement.style.left = 'var(--berg-layout-left-inset)';
 
       // non-standard property to disable tap highlights
       (this._backdropElement.style as any).webkitTapHighlightColor =
@@ -405,18 +404,25 @@ export class BergPanelComponent
       };
     };
 
+    const inset = this.controller.getSlotInset(this.slot);
+
     if (this.slot === 'top') {
-      return create(event.pageY - this.document.documentElement.scrollTop);
+      return create(
+        event.pageY - inset - this.document.documentElement.scrollTop
+      );
     }
 
     if (this.slot === 'left') {
-      return create(event.pageX - this.document.documentElement.scrollLeft);
+      return create(
+        event.pageX - inset - this.document.documentElement.scrollLeft
+      );
     }
 
     if (this.slot === 'bottom') {
       return create(
         this.document.documentElement.scrollTop +
           window.innerHeight -
+          inset -
           event.pageY
       );
     }
@@ -425,6 +431,7 @@ export class BergPanelComponent
       return create(
         this.document.documentElement.scrollLeft +
           window.innerWidth -
+          inset -
           event.pageX
       );
     }
@@ -586,7 +593,7 @@ export class BergPanelComponent
       size = this._maxSize;
     }
 
-    this.controller.updateSize(this.slot, size);
+    this.controller.updateSizeCssVariable(this.slot, size);
   }
 
   /** @hidden */
@@ -594,7 +601,7 @@ export class BergPanelComponent
     this.subscribeToResizing();
 
     // set the initial size using the default value if no other value has been set
-    this.controller.updateSize(this.slot, this._size);
+    this.controller.updateSizeCssVariable(this.slot, this._size);
   }
 
   /** @hidden */
@@ -633,7 +640,7 @@ export class BergPanelComponent
     this.destroySub.next();
     this.destroySub.complete();
     this.controller.remove(this);
-    this.controller.updateSize(this.slot, 0);
+    this.controller.updateSizeCssVariable(this.slot, 0);
   }
 }
 
