@@ -1,19 +1,27 @@
-// applies global styles that cannot be applied from within the shadow dom
+// applies styles outside of the shadow dom
 @mixin core($overrides: ()) {
-  .berg-layout-resizing-vertical,
-  .berg-layout-resizing-horizontal {
-    .berg-panel {
-      transition-property: none;
-    }
-  }
-
+  @include panel();
   @include colors();
   @include z-index();
   @include resizing($overrides);
   @include positioning();
 }
 
-@mixin positioning() {
+@mixin panel {
+  .berg-panel {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-property: padding, top, left, right, bottom;
+
+    .berg-layout-resizing & {
+      transition-property: none;
+    }
+  }
+}
+
+@mixin positioning {
   .berg-panel-top,
   .berg-panel-right,
   .berg-panel-bottom,
@@ -374,16 +382,16 @@
     background: var(--berg-panel-center-background);
   }
 
-  .berg-panel-resize-previewing {
+  .berg-panel-previewing {
     .berg-panel-resize-toggle-top,
     .berg-panel-resize-toggle-right,
     .berg-panel-resize-toggle-bottom,
     .berg-panel-resize-toggle-left {
-      background: var(--berg-panel-resize-previewing-indicator-color);
+      background: var(--berg-panel-previewing-indicator-color);
     }
   }
 
-  .berg-panel-resize-resizing {
+  .berg-panel-resizing {
     .berg-panel-resize-toggle-top,
     .berg-panel-resize-toggle-right,
     .berg-panel-resize-toggle-bottom,

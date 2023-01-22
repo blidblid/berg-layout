@@ -6,6 +6,9 @@ All styles in berg-layout are applied through css-classes. If you're looking to 
 
 - Static classes
   - `.berg-layout`
+  - `.berg-layout-resizing`
+  - `.berg-layout-resizing-horizontal`
+  - `.berg-layout-resizing-vertical`
   - `.berg-panel`
   - `.berg-panel-backdrop`
 - Panel parts
@@ -14,8 +17,8 @@ All styles in berg-layout are applied through css-classes. If you're looking to 
 - State classes
   - `.berg-panel-absolute`
 - Resize classes
-  - `.berg-panel-resize-resizing`
-  - `.berg-panel-resize-previewing`
+  - `.berg-panel-resizing`
+  - `.berg-panel-previewing`
   - `.berg-panel-resize-disabled`
   - `.berg-panel-resize-toggle`
   - `.berg-panel-resize-toggle-top`

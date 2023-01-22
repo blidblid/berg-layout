@@ -3,23 +3,15 @@ import {
   coerceNumberProperty,
 } from '@angular/cdk/coercion';
 import { ChangeDetectorRef, Directive, Input, OnDestroy } from '@angular/core';
-import {
-  debounceTime,
-  fromEvent,
-  merge,
-  Observable,
-  shareReplay,
-  Subject,
-} from 'rxjs';
+import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import {
   BergLayoutBottomPosition,
   BergLayoutInputs,
   BergLayoutTopPosition,
   BERG_LAYOUT_DEFAULT_INPUTS,
 } from '../layout/layout-model';
-import { BergPanelComponentInputs, BergPanelSlot } from './panel-model';
+import { BergPanelSlot } from './panel-model';
 import { BergPanelVariables } from './panel-model-private';
-import { arrayReducer } from './panel-util';
 
 @Directive({
   host: {
@@ -162,16 +154,6 @@ export class BergPanelController implements OnDestroy {
   collapsedPanels: BergPanelVariables<boolean> = {};
   absolutePanels: BergPanelVariables<boolean> = {};
 
-  private addPanelSub = new Subject<BergPanelComponentInputs>();
-  private pushPanelSub = new Subject<void>();
-  private removePanelSub = new Subject<BergPanelComponentInputs>();
-
-  private panels$ = arrayReducer({
-    add: this.addPanelSub,
-    push: this.pushPanelSub,
-    remove: this.removePanelSub,
-  }).pipe(debounceTime(0), shareReplay({ bufferSize: 1, refCount: true }));
-
   protected destroySub = new Subject<void>();
 
   constructor(
@@ -180,23 +162,7 @@ export class BergPanelController implements OnDestroy {
     protected document: Document,
     protected inputs: BergLayoutInputs
   ) {
-    this.subscribe();
     this.setInitialVariables();
-  }
-
-  /** @hidden */
-  add(panel: BergPanelComponentInputs): void {
-    this.addPanelSub.next(panel);
-  }
-
-  /** @hidden */
-  push(): void {
-    this.pushPanelSub.next();
-  }
-
-  /** @hidden */
-  remove(panel: BergPanelComponentInputs): void {
-    this.removePanelSub.next(panel);
   }
 
   /** @hidden */
@@ -260,10 +226,6 @@ export class BergPanelController implements OnDestroy {
     for (const slot of ['top', 'right', 'bottom', 'left'] as const) {
       this.updateSizeCssVariable(slot, 0);
     }
-  }
-
-  private subscribe(): void {
-    this.panels$.subscribe(); // make shareReplay(1) eagerly cache panels
   }
 
   private getAdjacentResizeTogglesForSlot(slot: BergPanelSlot): HTMLElement[] {
