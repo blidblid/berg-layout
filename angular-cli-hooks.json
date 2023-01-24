@@ -1,4 +1,0 @@
-{
-  "$schema": "node_modules/@berglund/angular-cli-hooks/schema.json",
-  "hookPackage": "@berg-layout/builder-hooks"
-}

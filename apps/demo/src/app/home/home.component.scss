@@ -1,0 +1,16 @@
+.app-home {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 100vw;
+
+  .app-list {
+    width: 90vw;
+    max-width: 500px;
+  }
+
+  .app-card {
+    cursor: pointer;
+  }
+}

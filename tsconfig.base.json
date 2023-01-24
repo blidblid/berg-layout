@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@berg-layout/angular": ["libs/angular/src/index.ts"],
+      "@berg-layout/core": ["libs/core/src/index.ts"],
+      "@berg-layout/styling": ["libs/styling/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

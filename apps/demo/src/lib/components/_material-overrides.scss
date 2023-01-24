@@ -1,0 +1,30 @@
+@use 'styling' as layout;
+
+@mixin theme($theme) {
+  .mat-mdc-form-field {
+    width: 100% !important;
+
+    .mat-mdc-form-field-infix {
+      width: 100% !important;
+    }
+  }
+
+  .mdc-card {
+    background: none !important;
+    border: 1px solid var(--berg-panel-border-color) !important;
+
+    .mat-mdc-card-header {
+      padding: 16px !important;
+    }
+  }
+
+  .mat-mdc-select {
+    .mat-mdc-select-trigger {
+      text-transform: capitalize;
+    }
+  }
+
+  .mat-mdc-option {
+    text-transform: capitalize;
+  }
+}
