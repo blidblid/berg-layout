@@ -21,5 +21,10 @@ export class HomeComponent {
       routerLink: '/angular',
       iconUrl: 'assets/angular.png',
     },
+    {
+      name: 'Web component',
+      routerLink: '/web-component',
+      iconUrl: 'assets/web-component.png',
+    },
   ];
 }

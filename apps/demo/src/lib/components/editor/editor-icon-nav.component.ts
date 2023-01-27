@@ -6,7 +6,7 @@ import {
 import { EditorIconNavBase } from './editor-nav-base';
 
 @Component({
-  selector: 'berg-editor-icon-nav',
+  selector: 'app-editor-icon-nav',
   templateUrl: './editor-icon-nav.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

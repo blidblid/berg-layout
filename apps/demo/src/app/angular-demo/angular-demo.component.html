@@ -16,8 +16,8 @@
     slot="top"
     *ngIf="!layout.top?.remove!"
     outputBindingMode="noop"
-    [size]="80"
-    [minSize]="80"
+    [size]="topSize"
+    [minSize]="topSize"
     [absolute]="layout.top?.absolute!"
     [collapsed]="layout.top?.collapsed!"
     [resizeDisabled]="layout.top?.resizeDisabled!"
@@ -43,16 +43,16 @@
     slot="bottom"
     *ngIf="!layout.bottom?.remove!"
     outputBindingMode="noop"
-    [size]="44"
-    [minSize]="44"
+    [size]="bottomSize"
+    [minSize]="bottomSize"
     [absolute]="layout.bottom?.absolute!"
     [collapsed]="layout.bottom?.collapsed!"
     [resizeDisabled]="layout.bottom?.resizeDisabled!"
     (resized)="onResized('bottom', $event)"
     (backdropClicked)="onBackdropClicked('bottom')"
   >
-    <berg-editor-icon-nav (viewChanged)="view = $event" [view]="view">
-    </berg-editor-icon-nav>
+    <app-editor-icon-nav (viewChanged)="view = $event" [view]="view">
+    </app-editor-icon-nav>
   </berg-panel>
 
   <berg-panel

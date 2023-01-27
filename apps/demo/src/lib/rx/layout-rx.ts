@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { BERG_LAYOUT_DEFAULT_INPUTS } from '@berg-layout/angular';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Layout, ObservableProperties, Panel, Slot } from './layout-model';
+import {
+  Layout,
+  ObservableProperties,
+  Panel,
+  SlotWithInputs,
+} from './layout-model';
 import { toCss, toHtml, toScss } from './layout-util';
 
 @Injectable({
@@ -86,7 +91,7 @@ export class LayoutRx {
     map((style) => toScss(style))
   );
 
-  private createPanelInputs(slot: Slot, collapsed = false) {
+  private createPanelInputs(slot: SlotWithInputs, collapsed = false) {
     return {
       slot: of(slot),
       absolute: new BehaviorSubject(false),

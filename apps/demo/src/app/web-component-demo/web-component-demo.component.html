@@ -1,0 +1,83 @@
+<berg-layout
+  *ngIf="rx.layout$ | async as layout"
+  [attr.top-left-position]="layout.topLeftPosition!"
+  [attr.top-right-position]="layout.topRightPosition!"
+  [attr.bottom-left-position]="layout.bottomLeftPosition!"
+  [attr.bottom-right-position]="layout.bottomRightPosition!"
+  [attr.resize-disabled]="layout.resizeDisabled!"
+  [attr.resize-two-dimensions]="layout.resizeTwoDimensions!"
+  [attr.resize-preview-delay]="layout.resizePreviewDelay!"
+  [attr.top-inset]="layout.topInset!"
+  [attr.right-inset]="layout.rightInset!"
+  [attr.bottom-inset]="layout.bottomInset!"
+  [attr.left-inset]="layout.leftInset!"
+>
+  <berg-panel
+    slot="top"
+    *ngIf="!layout.top?.remove!"
+    output-binding-mode="noop"
+    [attr.size]="topSize"
+    [attr.min-size]="topSize"
+    [attr.absolute]="layout.top?.absolute!"
+    [attr.collapsed]="layout.top?.collapsed!"
+    [attr.resize-disabled]="layout.top?.resizeDisabled!"
+    (resized)="onResized('top', $event)"
+    (backdropClicked)="onBackdropClicked('top')"
+  >
+    <berg-toolbar></berg-toolbar>
+  </berg-panel>
+
+  <berg-panel
+    slot="right"
+    *ngIf="!layout.right?.remove!"
+    output-binding-mode="noop"
+    [attr.absolute]="layout.right?.absolute!"
+    [attr.collapsed]="layout.right?.collapsed!"
+    [attr.resize-disabled]="layout.right?.resizeDisabled!"
+    (resized)="onResized('right', $event)"
+    (backdropClicked)="onBackdropClicked('right')"
+  >
+  </berg-panel>
+
+  <berg-panel
+    slot="bottom"
+    *ngIf="!layout.bottom?.remove!"
+    output-binding-mode="noop"
+    [attr.min-size]="bottomSize"
+    [attr.size]="bottomSize"
+    [attr.absolute]="layout.bottom?.absolute!"
+    [attr.collapsed]="layout.bottom?.collapsed!"
+    [attr.resize-disabled]="layout.bottom?.resizeDisabled!"
+    (resized)="onResized('bottom', $event)"
+    (backdropClicked)="onBackdropClicked('bottom')"
+  >
+    <app-editor-icon-nav (viewChanged)="view = $event" [view]="view">
+    </app-editor-icon-nav>
+  </berg-panel>
+
+  <berg-panel
+    slot="left"
+    *ngIf="!layout.left?.remove!"
+    output-binding-mode="noop"
+    [attr.size]="leftSize"
+    [attr.min-size]="leftSize"
+    [attr.max-size]="leftSize"
+    [attr.absolute]="layout.left?.absolute!"
+    [attr.collapsed]="layout.left?.collapsed!"
+    [attr.resize-disabled]="layout.left?.resizeDisabled!"
+    (resized)="onResized('left', $event)"
+    (backdropClicked)="onBackdropClicked('left')"
+  >
+    <app-editor-nav (viewChanged)="view = $event"></app-editor-nav>
+  </berg-panel>
+
+  <berg-panel>
+    <app-editor
+      [css]="rx.css$ | async"
+      [html]="rx.webComponentHtml$ | async"
+      [scss]="rx.scss$ | async"
+      [view]="view"
+    >
+    </app-editor>
+  </berg-panel>
+</berg-layout>

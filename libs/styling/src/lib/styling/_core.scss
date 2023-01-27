@@ -1,10 +1,17 @@
 // applies styles outside of the shadow dom
 @mixin core($overrides: ()) {
+  @include layout();
   @include panel();
   @include colors();
   @include z-index();
   @include resizing($overrides);
   @include positioning();
+}
+
+@mixin layout {
+  .berg-layout {
+    position: relative;
+  }
 }
 
 @mixin panel {
@@ -15,6 +22,10 @@
     transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-property: padding, top, left, right, bottom;
 
+    &.berg-panel-no-transition {
+      transition: none;
+    }
+
     .berg-layout-resizing & {
       transition-property: none;
     }
@@ -22,6 +33,13 @@
 }
 
 @mixin positioning {
+  .berg-layout {
+    --berg-panel-top-size: 0;
+    --berg-panel-right-size: 0;
+    --berg-panel-bottom-size: 0;
+    --berg-panel-left-size: 0;
+  }
+
   .berg-panel-top,
   .berg-panel-right,
   .berg-panel-bottom,
@@ -46,11 +64,11 @@
       bottom: calc(100% - var(--berg-layout-top-inset));
     }
 
-    &.berg-panel-top-above-left {
+    .berg-layout-top-above-left & {
       left: var(--berg-layout-left-inset);
     }
 
-    &.berg-panel-top-above-right {
+    .berg-layout-top-above-right & {
       right: var(--berg-layout-right-inset);
     }
 
@@ -83,11 +101,11 @@
       left: calc(100% - var(--berg-layout-right-inset));
     }
 
-    &.berg-panel-top-above-right {
+    .berg-layout-top-above-right & {
       top: calc(var(--berg-panel-top-size) + var(--berg-layout-top-inset));
     }
 
-    &.berg-panel-bottom-below-right {
+    .berg-layout-bottom-below-right & {
       bottom: calc(
         var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset)
       );
@@ -122,11 +140,11 @@
       top: calc(100% - var(--berg-layout-bottom-inset));
     }
 
-    &.berg-panel-bottom-below-left {
+    .berg-layout-bottom-below-left & {
       left: var(--berg-layout-left-inset);
     }
 
-    &.berg-panel-bottom-below-right {
+    .berg-layout-bottom-below-right & {
       right: var(--berg-layout-right-inset);
     }
 
@@ -157,11 +175,11 @@
       right: calc(100% - var(--berg-layout-left-inset));
     }
 
-    &.berg-panel-top-above-left {
+    .berg-layout-top-above-left & {
       top: calc(var(--berg-panel-top-size) + var(--berg-layout-top-inset));
     }
 
-    &.berg-panel-bottom-below-left {
+    .berg-layout-bottom-below-left & {
       bottom: calc(
         var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset)
       );
@@ -261,6 +279,20 @@
   $resizing-indicator-size: map-get($overrides, 'resizing-indicator-size') or
     6px;
 
+  .berg-layout-resizing-horizontal {
+    user-select: none;
+    cursor: ew-resize;
+  }
+
+  .berg-layout-resizing-vertical {
+    user-select: none;
+    cursor: ns-resize;
+
+    &.berg-layout-resizing-horizontal {
+      cursor: move;
+    }
+  }
+
   .berg-panel-resize-toggle {
     position: absolute;
     z-index: 2;
@@ -309,15 +341,15 @@
   .berg-panel-right {
     z-index: 6;
 
-    &.berg-panel-top-above-right {
+    .berg-layout-top-above-right & {
       z-index: 4;
     }
 
-    &.berg-panel-top-above-right {
+    .berg-layout-top-above-right & {
       z-index: 2;
     }
 
-    &.berg-panel-top-above-right.berg-panel-bottom-below-right {
+    .berg-layout-top-above-right.berg-layout-bottom-below-right & {
       z-index: 1;
     }
   }
@@ -325,15 +357,15 @@
   .berg-panel-left {
     z-index: 6;
 
-    &.berg-panel-top-above-left {
+    .berg-layout-top-above-left & {
       z-index: 4;
     }
 
-    & .berg-panel-top-above-left {
+    .berg-layout-top-above-left & {
       z-index: 2;
     }
 
-    &.berg-panel-top-above-left.berg-panel-bottom-below-left {
+    .berg-layout-top-above-left.berg-layout-bottom-below-left & {
       z-index: 1;
     }
   }

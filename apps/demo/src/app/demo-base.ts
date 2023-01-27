@@ -4,11 +4,14 @@ import { BergPanelResizeEvent } from '@berg-layout/angular';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { EditorView } from '../lib/components';
-import { LayoutRx, Slot } from '../lib/rx';
+import { LayoutRx, SlotWithInputs } from '../lib/rx';
 
 @Directive()
 export class DemoBase {
   view: EditorView = 'code';
+
+  topSize = 80;
+  bottomSize = 49;
 
   private collapsePanelAtSize = 25;
   private initialLeftSize = 55;
@@ -48,7 +51,7 @@ export class DemoBase {
     this.subscribe();
   }
 
-  onResized(slot: Slot, event: BergPanelResizeEvent | Event): void {
+  onResized(slot: SlotWithInputs, event: BergPanelResizeEvent | Event): void {
     const resizeEvent = event instanceof CustomEvent ? event.detail : event;
 
     if (resizeEvent.size < this.collapsePanelAtSize) {
@@ -68,7 +71,7 @@ export class DemoBase {
     }
   }
 
-  onBackdropClicked(slot: Slot): void {
+  onBackdropClicked(slot: SlotWithInputs): void {
     this.rx[slot].collapsed.next(true);
   }
 

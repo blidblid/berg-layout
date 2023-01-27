@@ -6,6 +6,7 @@ import { AngularDemoModule } from './angular-demo/angular-demo.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
+import { WebComponentDemoModule } from './web-component-demo/web-component-demo.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import { HomeModule } from './home/home.module';
     BrowserModule,
     HomeModule,
     HttpClientModule,
+    WebComponentDemoModule,
   ],
   bootstrap: [AppComponent],
 })

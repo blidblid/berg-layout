@@ -1,4 +1,8 @@
-import { BergLayoutInputs, BergPanelInputs } from '@berg-layout/angular';
+import {
+  BergLayoutInputs,
+  BergPanelInputs,
+  BergPanelSlot,
+} from '@berg-layout/angular';
 import { Observable } from 'rxjs';
 
 export interface Layout extends Partial<BergLayoutInputs> {
@@ -8,10 +12,10 @@ export interface Layout extends Partial<BergLayoutInputs> {
   left?: Panel;
 }
 
-export type Slot = 'top' | 'right' | 'bottom' | 'left';
+export type SlotWithInputs = Exclude<BergPanelSlot, 'center'>;
 
 export interface Panel extends Partial<BergPanelInputs> {
-  slot: Slot;
+  slot: SlotWithInputs;
   remove: boolean;
 }
 
