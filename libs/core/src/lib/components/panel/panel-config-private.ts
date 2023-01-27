@@ -18,5 +18,5 @@ export const BERG_PANEL_CLASSES_BY_SLOT: Record<BergPanelSlot, string> = {
   left: 'berg-panel-left',
 };
 
-export const BERG_LAYOUT_TAGNAME = 'BERG-LAYOUT';
 export const BERG_PANEL_ENABLE_ANIMATION_DELAY = 1000;
+export const BERG_PANEL_TAG_NAME = 'berg-panel-web-component';

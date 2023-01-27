@@ -26,32 +26,46 @@ function toThemeId(theme: string): string {
   return theme.toLowerCase().replace(/\s/g, '-');
 }
 
-export function toHtml(layout: Layout, isWebComponent: boolean): string {
+export function toHtml(
+  layout: Layout,
+  inputPrinter: (key: string, value: unknown) => string,
+  panelTagName: string,
+  layoutTagName: string
+): string {
   const layoutInputs = toInputs(layout, BERG_LAYOUT_DEFAULT_INPUTS);
-  const printer = isWebComponent
-    ? webComponentInputPrinter
-    : angularInputPrinter;
 
   const panelElements = [layout.top, layout.left, layout.right, layout.bottom]
     .filter((panel): panel is Panel => !!panel && !panel.remove)
     .map((panel) => {
       return (
         startElement(
-          'berg-panel',
+          panelTagName,
           toInputs(panel, BERG_PANEL_DEFAULT_INPUTS),
-          printer,
+          inputPrinter,
           2
-        ) + endElement('berg-panel', 2)
+        ) + endElement(panelTagName, 2)
       );
     });
 
-  let html = startElement('berg-layout', layoutInputs, printer) + '\n';
+  let html = startElement(layoutTagName, layoutInputs, inputPrinter) + '\n';
 
   for (const panelElement of panelElements) {
     html += panelElement;
   }
 
-  return html + endElement('berg-layout').trim();
+  return html + endElement(layoutTagName).trim();
+}
+
+export function angularInputPrinter(key: string, value: unknown): string {
+  if (typeof value !== 'string') {
+    key = `[${key}]`;
+  }
+
+  return `${key}="${value}"`;
+}
+
+export function webComponentInputPrinter(key: string, value: unknown): string {
+  return `${camelCaseToKebabCase(key)}="${value}"`;
 }
 
 function startElement(
@@ -87,18 +101,6 @@ function toIndentation(level: number): string {
 
 function camelCaseToKebabCase(str: string): string {
   return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
-}
-
-function angularInputPrinter(key: string, value: any): string {
-  if (typeof value !== 'string') {
-    key = `[${key}]`;
-  }
-
-  return `${key}="${value}"`;
-}
-
-function webComponentInputPrinter(key: string, value: any): string {
-  return `${camelCaseToKebabCase(key)}="${value}"`;
 }
 
 function toInputs(

@@ -1,8 +1,5 @@
-import {
-  BergLayoutInputs,
-  BergPanelInputs,
-  BergPanelSlot,
-} from '@berg-layout/angular';
+import { BergLayoutInputs, BergPanelInputs } from '@berg-layout/angular';
+import { BergPanelSlot } from '@berg-layout/core';
 import { Observable } from 'rxjs';
 
 export interface Layout extends Partial<BergLayoutInputs> {

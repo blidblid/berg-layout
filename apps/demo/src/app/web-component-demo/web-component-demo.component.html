@@ -1,4 +1,4 @@
-<berg-layout
+<berg-layout-web-component
   *ngIf="rx.layout$ | async as layout"
   [attr.top-left-position]="layout.topLeftPosition!"
   [attr.top-right-position]="layout.topRightPosition!"
@@ -12,7 +12,7 @@
   [attr.bottom-inset]="layout.bottomInset!"
   [attr.left-inset]="layout.leftInset!"
 >
-  <berg-panel
+  <berg-panel-web-component
     slot="top"
     *ngIf="!layout.top?.remove!"
     output-binding-mode="noop"
@@ -25,9 +25,9 @@
     (backdropClicked)="onBackdropClicked('top')"
   >
     <berg-toolbar></berg-toolbar>
-  </berg-panel>
+  </berg-panel-web-component>
 
-  <berg-panel
+  <berg-panel-web-component
     slot="right"
     *ngIf="!layout.right?.remove!"
     output-binding-mode="noop"
@@ -37,9 +37,9 @@
     (resized)="onResized('right', $event)"
     (backdropClicked)="onBackdropClicked('right')"
   >
-  </berg-panel>
+  </berg-panel-web-component>
 
-  <berg-panel
+  <berg-panel-web-component
     slot="bottom"
     *ngIf="!layout.bottom?.remove!"
     output-binding-mode="noop"
@@ -53,9 +53,9 @@
   >
     <app-editor-icon-nav (viewChanged)="view = $event" [view]="view">
     </app-editor-icon-nav>
-  </berg-panel>
+  </berg-panel-web-component>
 
-  <berg-panel
+  <berg-panel-web-component
     slot="left"
     *ngIf="!layout.left?.remove!"
     output-binding-mode="noop"
@@ -69,9 +69,9 @@
     (backdropClicked)="onBackdropClicked('left')"
   >
     <app-editor-nav (viewChanged)="view = $event"></app-editor-nav>
-  </berg-panel>
+  </berg-panel-web-component>
 
-  <berg-panel>
+  <berg-panel-web-component>
     <app-editor
       [css]="rx.css$ | async"
       [html]="rx.webComponentHtml$ | async"
@@ -79,5 +79,5 @@
       [view]="view"
     >
     </app-editor>
-  </berg-panel>
-</berg-layout>
+  </berg-panel-web-component>
+</berg-layout-web-component>

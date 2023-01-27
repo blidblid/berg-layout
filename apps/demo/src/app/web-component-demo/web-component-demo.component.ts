@@ -4,12 +4,8 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
-import { BergLayout, BergPanel } from '@berg-layout/core';
 import { LayoutRx } from '../../lib/rx';
 import { DemoBase } from '../demo-base';
-
-customElements.define('berg-layout', BergLayout);
-customElements.define('berg-panel', BergPanel);
 
 @Component({
   selector: 'app-web-component-demo',

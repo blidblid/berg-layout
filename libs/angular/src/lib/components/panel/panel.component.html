@@ -1,7 +1,14 @@
-<div class="berg-panel-overflow"
-     part="overflow">
-  <div class="berg-panel-content"
-       part="content">
-    <slot></slot>
-  </div>
-</div>
+<berg-panel-web-component
+  [attr.slot]="slot"
+  [attr.absolute]="absolute"
+  [attr.collapsed]="collapsed"
+  [attr.resize-disabled]="resizeDisabled"
+  [attr.size]="size"
+  [attr.min-size]="minSize"
+  [attr.max-size]="maxSize"
+  [attr.output-binding-mode]="outputBindingMode"
+  (backdropClicked)="onBackdropClicked($event)"
+  (resized)="onResized($event)"
+>
+  <ng-content></ng-content>
+</berg-panel-web-component>

@@ -1,8 +1,6 @@
 import { InjectionToken } from '@angular/core';
+import { BergPanelSlot } from '@berg-layout/core';
 import { Observable } from 'rxjs';
-
-/** Slots where panels can be inserted. */
-export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
 
 /** Inputs of berg-panel. */
 export interface BergPanelInputs {

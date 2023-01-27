@@ -6,9 +6,10 @@ import {
   BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS,
   BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS,
   BERG_LAYOUT_CLASS,
+  BERG_LAYOUT_TAG_NAME,
   BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS,
-} from './layout-config';
+} from './layout-config-private';
 import { BergLayoutAttributes, BERG_LAYOUT_DEFAULTS } from './layout-model';
 import {
   validateBergLayoutBottomPosition,
@@ -231,4 +232,14 @@ export class BergLayout extends WebComponent<BergLayoutAttributes> {
   static get observedAttributes(): (keyof BergLayoutAttributes)[] {
     return Object.keys(BERG_LAYOUT_DEFAULTS) as (keyof BergLayoutAttributes)[];
   }
+}
+
+try {
+  customElements.define(BERG_LAYOUT_TAG_NAME, BergLayout);
+} catch (e) {
+  console.warn(
+    `${BERG_LAYOUT_TAG_NAME} is already defined as a web component.`
+  );
+
+  throw e;
 }

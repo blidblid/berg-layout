@@ -8,7 +8,13 @@ import {
   Panel,
   SlotWithInputs,
 } from './layout-model';
-import { toCss, toHtml, toScss } from './layout-util';
+import {
+  angularInputPrinter,
+  toCss,
+  toHtml,
+  toScss,
+  webComponentInputPrinter,
+} from './layout-util';
 
 @Injectable({
   providedIn: 'root',
@@ -76,11 +82,20 @@ export class LayoutRx {
   );
 
   angularHtml$: Observable<string> = this.layout$.pipe(
-    map((layout) => toHtml(layout, false))
+    map((layout) =>
+      toHtml(layout, angularInputPrinter, 'berg-panel', 'berg-layout')
+    )
   );
 
   webComponentHtml$: Observable<string> = this.layout$.pipe(
-    map((layout) => toHtml(layout, true))
+    map((layout) =>
+      toHtml(
+        layout,
+        webComponentInputPrinter,
+        'berg-panel-web-component',
+        'berg-layout-web-component'
+      )
+    )
   );
 
   css$: Observable<string> = this.layout.theme.pipe(

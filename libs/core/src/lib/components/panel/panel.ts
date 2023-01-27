@@ -22,9 +22,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { BergLayout } from '../layout';
+import { BERG_LAYOUT_TAG_NAME } from '../layout/layout-config-private';
 import { WebComponent } from '../web-component';
 import {
-  BERG_LAYOUT_TAGNAME,
   BERG_PANEL_ABSOLUTE_CLASS,
   BERG_PANEL_CLASS,
   BERG_PANEL_CLASSES_BY_SLOT,
@@ -35,6 +35,7 @@ import {
   BERG_PANEL_PREVIEWING_CLASS,
   BERG_PANEL_RESIZE_DISABLED_CLASS,
   BERG_PANEL_RESIZING_CLASS,
+  BERG_PANEL_TAG_NAME,
   BERG_PANEL_VERTICAL_CLASS,
 } from './panel-config-private';
 import {
@@ -432,8 +433,10 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let elem: HTMLElement | null = this;
 
+    const layoutTagName = BERG_LAYOUT_TAG_NAME.toUpperCase();
+
     while (elem) {
-      if (elem.tagName === BERG_LAYOUT_TAGNAME) {
+      if (elem.tagName === layoutTagName) {
         return elem as BergLayout;
       }
 
@@ -441,11 +444,10 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
     }
 
     throw new Error(
-      '<berg-panel> could not find a parent <berg-layout> element'
+      `<${BERG_PANEL_TAG_NAME}> could not find a parent <${BERG_LAYOUT_TAG_NAME}> element`
     );
   }
 
-  // too much weirdness for TS to handle
   private updateBindings<T extends keyof BergPanelOutputBinding>(
     binding: T,
     ...params: Parameters<BergPanelOutputBinding[T]>
@@ -527,4 +529,11 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
   static get observedAttributes(): (keyof BergPanelAttributes)[] {
     return Object.keys(BERG_PANEL_DEFAULTS) as (keyof BergPanelAttributes)[];
   }
+}
+
+try {
+  customElements.define(BERG_PANEL_TAG_NAME, BergPanel);
+} catch (e) {
+  console.warn(`${BERG_PANEL_TAG_NAME} is already defined as a web component.`);
+  throw e;
 }
