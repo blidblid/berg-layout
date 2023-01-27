@@ -12,26 +12,20 @@ import {
 } from '@angular/core';
 import {
   BergLayoutBottomPosition,
+  BergLayoutTopPosition,
+} from '@berg-layout/core';
+import {
   BergLayoutComponentInputs,
   BergLayoutInputs,
-  BergLayoutTopPosition,
   BERG_LAYOUT_DEFAULT_INPUTS,
   BERG_LAYOUT_INPUTS,
 } from './layout-model';
-import { BERG_LAYOUT_ELEMENT } from './layout-model-private';
 
 @Component({
   selector: 'berg-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    { provide: BERG_LAYOUT_ELEMENT, useExisting: BergLayoutComponent },
-  ],
-  host: {
-    class: 'berg-layout',
-  },
 })
 export class BergLayoutComponent implements BergLayoutComponentInputs {
   @Input()

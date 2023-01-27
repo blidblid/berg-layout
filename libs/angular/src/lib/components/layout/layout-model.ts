@@ -1,4 +1,8 @@
 import { InjectionToken } from '@angular/core';
+import {
+  BergLayoutBottomPosition,
+  BergLayoutTopPosition,
+} from '@berg-layout/core';
 
 /** Inputs of berg-layout. */
 export interface BergLayoutInputs {
@@ -39,12 +43,6 @@ export interface BergLayoutInputs {
 export type BergLayoutComponentInputs = {
   [P in keyof BergLayoutInputs]: BergLayoutInputs[P] | null;
 };
-
-/** Positions of the top panel. */
-export type BergLayoutTopPosition = 'above' | 'between';
-
-/** Positions of the bottom panel. */
-export type BergLayoutBottomPosition = 'below' | 'between';
 
 /** Default inputs of berg-layout. */
 export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {

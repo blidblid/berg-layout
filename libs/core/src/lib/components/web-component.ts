@@ -28,6 +28,7 @@ export class WebComponent<T extends object> extends HTMLElement {
   private attributeChangedSub = new Subject<WebComponentAttributeChanged<T>>();
   protected disconnectedSub = new Subject<void>();
 
+  // bufferTime 0 is not great, flickers
   private attributeChanges$ = this.attributeChangedSub.pipe(bufferTime(0));
 
   constructor(

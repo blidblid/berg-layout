@@ -33,7 +33,7 @@ export interface BergPanelInputs {
   outputBindingMode: BergPanelOutputBindingMode;
 }
 
-export type BergPanelComponentInputs = {
+export type BergPanelNullableInputs = {
   [P in keyof BergPanelInputs]: BergPanelInputs[P] | null;
 };
 

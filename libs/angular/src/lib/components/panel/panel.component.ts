@@ -14,8 +14,8 @@ import {
 } from '@angular/core';
 import { BergPanelSlot } from '@berg-layout/core';
 import {
-  BergPanelComponentInputs,
   BergPanelInputs,
+  BergPanelNullableInputs,
   BergPanelOutputBindingMode,
   BergPanelOutputs,
   BergPanelResizeEvent,
@@ -26,12 +26,11 @@ import {
 @Component({
   selector: 'berg-panel',
   templateUrl: './panel.component.html',
-  styleUrls: ['./panel.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BergPanelComponent
-  implements BergPanelComponentInputs, BergPanelOutputs
+  implements BergPanelNullableInputs, BergPanelOutputs
 {
   @Input()
   get slot(): BergPanelSlot {
