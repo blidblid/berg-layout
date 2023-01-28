@@ -127,6 +127,8 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
     share()
   );
 
+  private showingBackdrop = false;
+
   constructor() {
     super(
       BERG_PANEL_DEFAULTS,
@@ -203,24 +205,35 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
   }
 
   private showBackdrop(): void {
+    if (this.showingBackdrop) {
+      return;
+    }
+
     const backdrop = this.getBackdropElement();
     this.layout.appendChild(backdrop);
     requestAnimationFrame(() => (backdrop.style.opacity = '1'));
     this.backdropElement.style.pointerEvents = 'auto';
+    this.showingBackdrop = true;
   }
 
   private hideBackdrop(): void {
+    if (!this.showingBackdrop) {
+      return;
+    }
+
     const backdrop = this.getBackdropElement();
 
-    if (this.layout.contains(backdrop)) {
-      this.backdropElement.style.opacity = '0';
-      this.backdropElement.style.pointerEvents = 'none';
-
-      setTimeout(
-        () => this.layout.removeChild(backdrop),
-        BACKDROP_ANIMATION_DURATION
-      );
+    if (!this.layout.contains(backdrop)) {
+      return;
     }
+
+    this.backdropElement.style.opacity = '0';
+    this.backdropElement.style.pointerEvents = 'none';
+    this.showingBackdrop = false;
+
+    setTimeout(() => {
+      this.layout.removeChild(backdrop);
+    }, BACKDROP_ANIMATION_DURATION);
   }
 
   private updateBackdrop(): void {

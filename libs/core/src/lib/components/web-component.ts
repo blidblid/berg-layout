@@ -1,4 +1,15 @@
-import { BehaviorSubject, bufferTime, Subject, takeUntil } from 'rxjs';
+import {
+  asapScheduler,
+  BehaviorSubject,
+  buffer,
+  debounceTime,
+  filter,
+  Observable,
+  OperatorFunction,
+  share,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import {
   WebComponentAttributeChanged,
   WebComponentEffects,
@@ -25,11 +36,12 @@ export class WebComponent<T extends object> extends HTMLElement {
     {} as WebComponentObservables<T>
   );
 
-  private attributeChangedSub = new Subject<WebComponentAttributeChanged<T>>();
   protected disconnectedSub = new Subject<void>();
+  private attributeChangedSub = new Subject<WebComponentAttributeChanged<T>>();
 
-  // bufferTime 0 is not great, flickers
-  private attributeChanges$ = this.attributeChangedSub.pipe(bufferTime(0));
+  private attributeChanges$ = this.attributeChangedSub.pipe(
+    this.bufferDebounceTime(0)
+  );
 
   constructor(
     private defaults: T,
@@ -47,13 +59,13 @@ export class WebComponent<T extends object> extends HTMLElement {
 
     this.attributeChangedSub.next({
       name,
-      value: newValue,
+      value: this.parsers[name](newValue),
     });
   }
 
   connectedCallback(): void {
-    for (const [key, value] of Object.entries(this.defaults)) {
-      this.updateValue(key as keyof T, value);
+    for (const key of Object.keys(this.defaults)) {
+      this.callEffect(key as keyof T);
     }
   }
 
@@ -65,23 +77,34 @@ export class WebComponent<T extends object> extends HTMLElement {
   private subscribeToAttributeChanges(): void {
     this.attributeChanges$
       .pipe(takeUntil(this.disconnectedSub))
-      .subscribe((attributeChanges) => {
-        for (const attributeChange of attributeChanges) {
-          this.updateValue(
-            attributeChange.name,
-            this.parsers[attributeChange.name](attributeChange.value)
-          );
+      .subscribe((attributes) => {
+        for (const { name, value } of attributes) {
+          this.values[name] = value;
+          this.subjects[name].next(value);
+        }
+
+        for (const attribute of attributes) {
+          this.callEffect(attribute.name);
         }
       });
   }
 
-  private updateValue<K extends keyof T>(name: K, value: T[K]): void {
-    this.values[name] = value;
-    this.subjects[name].next(value);
-
+  private callEffect(name: keyof T): void {
     const effect = this.effects[name];
+
     if (effect) {
-      effect(value);
+      effect();
     }
+  }
+
+  private bufferDebounceTime<T>(duration: number): OperatorFunction<T, T[]> {
+    return (source: Observable<T>) => {
+      const shared = source.pipe(share());
+
+      return shared.pipe(
+        buffer(shared.pipe(debounceTime(duration, asapScheduler))),
+        filter((buffer) => buffer.length > 0)
+      );
+    };
   }
 }

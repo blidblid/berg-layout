@@ -13,10 +13,10 @@ export type WebComponentObservables<T> = {
 };
 
 export type WebComponentEffects<T> = {
-  [P in keyof T]: (value: T[P]) => void;
+  [P in keyof T]: () => void;
 };
 
 export interface WebComponentAttributeChanged<T> {
   name: keyof T;
-  value: string;
+  value: T[keyof T];
 }
