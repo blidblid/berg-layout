@@ -498,11 +498,9 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
     this.layout.updateSizeCssVariable(this.values['slot'], size);
   }
 
-  override connectedCallback(): void {
+  connectedCallback(): void {
     this.temporarilyDisableTransitions();
     this.layout = this.findLayoutElement();
-
-    super.connectedCallback();
 
     this.classList.add(BERG_PANEL_CLASS);
     this.subscribeToResizing();

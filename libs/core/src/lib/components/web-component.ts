@@ -50,6 +50,13 @@ export class WebComponent<T extends object> extends HTMLElement {
   ) {
     super();
     this.subscribeToAttributeChanges();
+
+    for (const [key, value] of Object.entries(this.defaults)) {
+      this.attributeChangedSub.next({
+        name: key as keyof T,
+        value,
+      });
+    }
   }
 
   attributeChangedCallback(name: keyof T, oldValue: string, newValue: string) {
@@ -61,12 +68,6 @@ export class WebComponent<T extends object> extends HTMLElement {
       name,
       value: this.parsers[name](newValue),
     });
-  }
-
-  connectedCallback(): void {
-    for (const key of Object.keys(this.defaults)) {
-      this.callEffect(key as keyof T);
-    }
   }
 
   disconnectedCallback(): void {

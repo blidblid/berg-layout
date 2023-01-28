@@ -213,9 +213,7 @@ export class BergLayout extends WebComponent<BergLayoutAttributes> {
     return div;
   }
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-
+  connectedCallback(): void {
     this.classList.add(BERG_LAYOUT_CLASS);
     this.setInitialVariables();
 
