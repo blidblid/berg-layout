@@ -20,7 +20,7 @@
     position: relative;
     box-sizing: border-box;
     transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-property: padding, top, left, right, bottom;
+    transition-property: padding, top, left, right, bottom, box-shadow;
 
     &.berg-panel-no-transition {
       transition: none;
