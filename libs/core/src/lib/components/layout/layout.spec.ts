@@ -5,8 +5,7 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { BergPanel } from '../panel/panel';
-import { BergPanelSlot, BERG_PANEL_DEFAULTS } from '../panel/panel-model';
+import { BergPanelElement, BergPanelSlot, BERG_PANEL_DEFAULTS } from '../panel';
 import { BERG_LAYOUT_DEFAULTS } from './layout-model';
 
 describe('LayoutComponent', () => {
@@ -111,9 +110,9 @@ describe('LayoutComponent', () => {
       expect(checkIfPanelIsCollapsed('left')).toBe(true);
     });
 
-    it('should not close the panel when clicking the backdrop in "noop"-binding mode.', () => {
+    it('should not close the panel when clicking the backdrop in "none"-binding mode.', () => {
       c.left.absolute = true;
-      c.left.outputBindingMode = 'noop';
+      c.left.eventBindingMode = 'none';
       fixture.detectChanges();
 
       getBackdrop().click();
@@ -188,7 +187,7 @@ describe('LayoutComponent', () => {
         #topRef
         slot="top"
         *ngIf="showTop"
-        [outputBindingMode]="top.outputBindingMode"
+        [eventBindingMode]="top.eventBindingMode"
         [absolute]="top.absolute"
         [collapsed]="top.collapsed"
         [resizeDisabled]="top.resizeDisabled"
@@ -200,7 +199,7 @@ describe('LayoutComponent', () => {
         #rightRef
         slot="right"
         *ngIf="showRight"
-        [outputBindingMode]="right.outputBindingMode"
+        [eventBindingMode]="right.eventBindingMode"
         [absolute]="right.absolute"
         [collapsed]="right.collapsed"
         [resizeDisabled]="right.resizeDisabled"
@@ -212,7 +211,7 @@ describe('LayoutComponent', () => {
         #bottomRef
         slot="bottom"
         *ngIf="showBottom"
-        [outputBindingMode]="bottom.outputBindingMode"
+        [eventBindingMode]="bottom.eventBindingMode"
         [absolute]="bottom.absolute"
         [collapsed]="bottom.collapsed"
         [resizeDisabled]="bottom.resizeDisabled"
@@ -224,7 +223,7 @@ describe('LayoutComponent', () => {
         #leftRef
         slot="left"
         *ngIf="showLeft"
-        [outputBindingMode]="left.outputBindingMode"
+        [eventBindingMode]="left.eventBindingMode"
         [absolute]="left.absolute"
         [collapsed]="left.collapsed"
         [resizeDisabled]="left.resizeDisabled"
@@ -232,7 +231,7 @@ describe('LayoutComponent', () => {
       >
       </berg-panel>
 
-      <berg-panel #centerRef></berg-panel>
+      <berg-panel #centerRef slot="center"></berg-panel>
     </berg-layout>
   `,
 })
@@ -291,7 +290,7 @@ export class LayoutTestComponent {
     return this.centerElem.getBoundingClientRect();
   }
 
-  @ViewChild('leftRef') leftPanel: BergPanel;
+  @ViewChild('leftRef') leftPanel: BergPanelElement;
 
   showTop = true;
   showRight = true;

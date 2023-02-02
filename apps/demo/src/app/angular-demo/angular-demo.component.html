@@ -15,7 +15,7 @@
   <berg-panel
     slot="top"
     *ngIf="!layout.top?.remove!"
-    outputBindingMode="noop"
+    eventBindingMode="none"
     [size]="topSize"
     [minSize]="topSize"
     [absolute]="layout.top?.absolute!"
@@ -30,7 +30,7 @@
   <berg-panel
     slot="right"
     *ngIf="!layout.right?.remove!"
-    outputBindingMode="noop"
+    eventBindingMode="none"
     [absolute]="layout.right?.absolute!"
     [collapsed]="layout.right?.collapsed!"
     [resizeDisabled]="layout.right?.resizeDisabled!"
@@ -42,7 +42,7 @@
   <berg-panel
     slot="bottom"
     *ngIf="!layout.bottom?.remove!"
-    outputBindingMode="noop"
+    eventBindingMode="none"
     [size]="bottomSize"
     [minSize]="bottomSize"
     [absolute]="layout.bottom?.absolute!"
@@ -58,7 +58,7 @@
   <berg-panel
     slot="left"
     *ngIf="!layout.left?.remove!"
-    outputBindingMode="noop"
+    eventBindingMode="none"
     [size]="leftSize"
     [minSize]="leftSize"
     [maxSize]="leftSize"
@@ -71,7 +71,7 @@
     <app-editor-nav (viewChanged)="view = $event"></app-editor-nav>
   </berg-panel>
 
-  <berg-panel>
+  <berg-panel slot="center">
     <app-editor
       [css]="rx.css$ | async"
       [html]="rx.angularHtml$ | async"

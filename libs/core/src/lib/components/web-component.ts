@@ -11,6 +11,7 @@ import {
   takeUntil,
 } from 'rxjs';
 import {
+  RequireAll,
   WebComponentAttributeChanged,
   WebComponentEffects,
   WebComponentObservables,
@@ -27,7 +28,7 @@ export class WebComponent<T extends object> extends HTMLElement {
     {} as WebComponentSubjects<T>
   );
 
-  values = {
+  values: RequireAll<T> = {
     ...this.defaults,
   };
 
@@ -44,7 +45,7 @@ export class WebComponent<T extends object> extends HTMLElement {
   );
 
   constructor(
-    private defaults: T,
+    private defaults: RequireAll<T>,
     private parsers: WebComponentParsers<T>,
     private effects: Partial<WebComponentEffects<T>>
   ) {
@@ -54,7 +55,7 @@ export class WebComponent<T extends object> extends HTMLElement {
     for (const [key, value] of Object.entries(this.defaults)) {
       this.attributeChangedSub.next({
         name: key as keyof T,
-        value,
+        value: value as T[keyof T],
       });
     }
   }
@@ -66,7 +67,8 @@ export class WebComponent<T extends object> extends HTMLElement {
 
     this.attributeChangedSub.next({
       name,
-      value: this.parsers[name](newValue),
+      value:
+        newValue === '' ? this.defaults[name] : this.parsers[name](newValue),
     });
   }
 

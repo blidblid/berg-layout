@@ -12,11 +12,10 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { BergPanelSlot } from '@berg-layout/core';
+import { BergPanelEventBindingMode, BergPanelSlot } from '@berg-layout/core';
 import {
   BergPanelInputs,
   BergPanelNullableInputs,
-  BergPanelOutputBindingMode,
   BergPanelOutputs,
   BergPanelResizeEvent,
   BERG_PANEL_DEFAULT_INPUTS,
@@ -104,14 +103,13 @@ export class BergPanelComponent
   private _maxSize: number | null = this.getDefaultInput('maxSize');
 
   @Input()
-  get outputBindingMode() {
-    return this._outputBindingMode;
+  get eventBindingMode() {
+    return this._eventBindingMode;
   }
-  set outputBindingMode(value: BergPanelOutputBindingMode | null) {
-    this._outputBindingMode =
-      value ?? this.getDefaultInput('outputBindingMode');
+  set eventBindingMode(value: BergPanelEventBindingMode | null) {
+    this._eventBindingMode = value ?? this.getDefaultInput('eventBindingMode');
   }
-  private _outputBindingMode = this.getDefaultInput('outputBindingMode');
+  private _eventBindingMode = this.getDefaultInput('eventBindingMode');
 
   @Output() resized = new EventEmitter<BergPanelResizeEvent>();
   @Output() backdropClicked = new EventEmitter<MouseEvent>();

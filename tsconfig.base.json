@@ -18,6 +18,7 @@
     "paths": {
       "@berg-layout/angular": ["libs/angular/src/index.ts"],
       "@berg-layout/core": ["libs/core/src/index.ts"],
+      "@berg-layout/react": ["libs/react/src/index.ts"],
       "@berg-layout/styling": ["libs/styling/src/index.ts"]
     }
   },

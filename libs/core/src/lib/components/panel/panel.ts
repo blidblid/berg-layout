@@ -21,9 +21,9 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
-import { BergLayout } from '../layout';
-import { BERG_LAYOUT_TAG_NAME } from '../layout/layout-config-private';
+import { BergLayoutElement, BERG_LAYOUT_TAG_NAME } from '../layout';
 import { WebComponent } from '../web-component';
+import { BERG_PANEL_DEFAULTS, BERG_PANEL_TAG_NAME } from './panel-config';
 import {
   BERG_PANEL_ABSOLUTE_CLASS,
   BERG_PANEL_CLASS,
@@ -35,28 +35,23 @@ import {
   BERG_PANEL_PREVIEWING_CLASS,
   BERG_PANEL_RESIZE_DISABLED_CLASS,
   BERG_PANEL_RESIZING_CLASS,
-  BERG_PANEL_TAG_NAME,
   BERG_PANEL_VERTICAL_CLASS,
 } from './panel-config-private';
-import {
-  BergPanelAttributes,
-  BergPanelResizeEvent,
-  BERG_PANEL_DEFAULTS,
-} from './panel-model';
+import { BergPanelAttributes, BergPanelResizeEvent } from './panel-model';
 import {
   BACKDROP_ANIMATION_DURATION,
   BACKDROP_Z_INDEX,
   TWO_DIMENSION_COLLECTION_DISTANCE,
 } from './panel-model-private';
 import {
-  BergPanelOutputBinding,
-  BERG_PANEL_OUTPUT_BINDINGS,
+  BergPanelEventBinding,
+  BERG_PANEL_EVENT_BINDINGS,
 } from './panel-output-bindings';
 import { validateOutputBindingMode, validateSlot } from './panel-util-private';
 
-export class BergPanel extends WebComponent<BergPanelAttributes> {
+export class BergPanelElement extends WebComponent<BergPanelAttributes> {
   private backdropElement: HTMLElement;
-  private layout: BergLayout;
+  private layout: BergLayoutElement;
 
   private resizeToggle$ = this.changes['slot'].pipe(
     map((slot) => {
@@ -140,7 +135,7 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
         'resize-disabled': coerceBooleanProperty,
         'min-size': coerceNumberProperty,
         'max-size': coerceNumberProperty,
-        'output-binding-mode': (value: string) =>
+        'event-binding-mode': (value: string) =>
           validateOutputBindingMode(value),
       },
       {
@@ -270,7 +265,7 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
             new CustomEvent('backdropClicked', { detail: event })
           );
 
-          this.updateBindings('onBackdropClicked', event);
+          this.updateEventBindings('onBackdropClicked', event);
         });
     }
 
@@ -442,7 +437,7 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
     return TWO_DIMENSION_COLLECTION_DISTANCE > Math.abs(origin - mouse);
   }
 
-  private findLayoutElement(): BergLayout {
+  private findLayoutElement(): BergLayoutElement {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let elem: HTMLElement | null = this;
 
@@ -450,7 +445,7 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
 
     while (elem) {
       if (elem.tagName === layoutTagName) {
-        return elem as BergLayout;
+        return elem as BergLayoutElement;
       }
 
       elem = elem.parentElement;
@@ -461,28 +456,24 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
     );
   }
 
-  private updateBindings<T extends keyof BergPanelOutputBinding>(
+  private updateEventBindings<T extends keyof BergPanelEventBinding>(
     binding: T,
-    ...params: Parameters<BergPanelOutputBinding[T]>
+    ...params: Parameters<BergPanelEventBinding[T]>
   ): void {
-    const updates = BERG_PANEL_OUTPUT_BINDINGS[
-      this.values['output-binding-mode']
+    const updateAttributes = BERG_PANEL_EVENT_BINDINGS[
+      this.values['event-binding-mode']
     ][
       binding
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ](...(params as [any]));
 
-    for (const [key, value] of Object.entries(updates)) {
-      if (value === undefined) {
+    for (const [key, attribute] of Object.entries(updateAttributes)) {
+      if (attribute === undefined) {
         continue;
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this[key as keyof this] = value as any;
-
-      if (key === 'collapsed') {
-        this.updateBackdrop();
-      }
+      this.setAttribute(key, `${attribute}`);
     }
   }
 
@@ -543,7 +534,7 @@ export class BergPanel extends WebComponent<BergPanelAttributes> {
 }
 
 try {
-  customElements.define(BERG_PANEL_TAG_NAME, BergPanel);
+  customElements.define(BERG_PANEL_TAG_NAME, BergPanelElement);
 } catch (e) {
   console.warn(`${BERG_PANEL_TAG_NAME} is already defined as a web component.`);
   throw e;

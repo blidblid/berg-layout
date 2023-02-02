@@ -27,11 +27,11 @@ export interface BergPanelAttributes {
   'max-size': number | null;
 
   /**
-   * Controls how panel outputs update panel inputs.
-   * With "auto", panel outputs automatically update panel inputs.
-   * With "noop", panel outputs never update panel inputs.
+   * Controls how panel events update panel attributes.
+   * With "auto", panel events automatically update panel attributes.
+   * With "none", panel events never update panel attributes.
    */
-  'output-binding-mode': BergPanelOutputBindingMode;
+  'event-binding-mode': BergPanelEventBindingMode;
 }
 
 export type BergPanelAttribute = keyof BergPanelAttributes;
@@ -45,22 +45,33 @@ export interface BergPanelOutputs {
   backdropClicked: Observable<MouseEvent>;
 }
 
-/** Default inputs of berg-panel. */
-export const BERG_PANEL_DEFAULTS: BergPanelAttributes = {
-  slot: 'center',
-  absolute: false,
-  collapsed: false,
-  'resize-disabled': false,
-  'output-binding-mode': 'auto',
-  size: 100,
-  'min-size': 50,
-  'max-size': null,
-};
-
-/** Binding modes that controls how outputs update inputs. */
-export type BergPanelOutputBindingMode = 'auto' | 'noop';
+/** Binding modes that controls how events automatically update attributes. */
+export type BergPanelEventBindingMode = 'auto' | 'none';
 
 export interface BergPanelResizeEvent {
   event: MouseEvent;
   size: number;
+}
+
+// prefer picking properties since those properties includes documentation
+export interface BergPanelAttributesCamelCased
+  extends Pick<
+    BergPanelAttributes,
+    'slot' | 'absolute' | 'collapsed' | 'size'
+  > {
+  /** Whether resizing is disabled. */
+  resizeDisabled: BergPanelAttributes['resize-disabled'];
+
+  /** Min size of the panel */
+  minSize: BergPanelAttributes['min-size'];
+
+  /** Max size of the panel */
+  maxSize: BergPanelAttributes['max-size'];
+
+  /**
+   * Controls how panel events update panel attributes.
+   * With "auto", panel events automatically update panel attributes.
+   * With "none", panel events never update panel attributes.
+   */
+  eventBindingMode: BergPanelAttributes['event-binding-mode'];
 }

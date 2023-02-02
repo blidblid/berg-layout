@@ -20,3 +20,7 @@ export interface WebComponentAttributeChanged<T> {
   name: keyof T;
   value: T[keyof T];
 }
+
+export type RequireAll<T> = {
+  [P in keyof T]-?: T[P];
+};

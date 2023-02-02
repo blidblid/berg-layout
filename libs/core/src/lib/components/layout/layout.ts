@@ -2,21 +2,21 @@ import { fromEvent, merge, Observable } from 'rxjs';
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergPanelSlot } from '../panel';
 import { WebComponent } from '../web-component';
+import { BERG_LAYOUT_DEFAULTS, BERG_LAYOUT_TAG_NAME } from './layout-config';
 import {
   BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS,
   BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS,
   BERG_LAYOUT_CLASS,
-  BERG_LAYOUT_TAG_NAME,
   BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS,
 } from './layout-config-private';
-import { BergLayoutAttributes, BERG_LAYOUT_DEFAULTS } from './layout-model';
+import { BergLayoutAttributes } from './layout-model';
 import {
   validateBergLayoutBottomPosition,
   validateBergLayoutTopPosition,
 } from './layout-util-private';
 
-export class BergLayout extends WebComponent<BergLayoutAttributes> {
+export class BergLayoutElement extends WebComponent<BergLayoutAttributes> {
   /** @hidden */
   resizeToggles = {
     top: this.createResizeToggleElement('top'),
@@ -223,7 +223,7 @@ export class BergLayout extends WebComponent<BergLayoutAttributes> {
       <slot name="right"></slot>
       <slot name="bottom"></slot>
       <slot name="left"></slot>
-      <slot></slot>
+      <slot name="center"></slot>
     `;
   }
 
@@ -233,7 +233,7 @@ export class BergLayout extends WebComponent<BergLayoutAttributes> {
 }
 
 try {
-  customElements.define(BERG_LAYOUT_TAG_NAME, BergLayout);
+  customElements.define(BERG_LAYOUT_TAG_NAME, BergLayoutElement);
 } catch (e) {
   console.warn(
     `${BERG_LAYOUT_TAG_NAME} is already defined as a web component.`

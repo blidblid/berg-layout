@@ -15,7 +15,7 @@
   <berg-panel-web-component
     slot="top"
     *ngIf="!layout.top?.remove!"
-    output-binding-mode="noop"
+    event-binding-mode="none"
     [attr.size]="topSize"
     [attr.min-size]="topSize"
     [attr.absolute]="layout.top?.absolute!"
@@ -30,7 +30,7 @@
   <berg-panel-web-component
     slot="right"
     *ngIf="!layout.right?.remove!"
-    output-binding-mode="noop"
+    event-binding-mode="none"
     [attr.absolute]="layout.right?.absolute!"
     [attr.collapsed]="layout.right?.collapsed!"
     [attr.resize-disabled]="layout.right?.resizeDisabled!"
@@ -42,7 +42,7 @@
   <berg-panel-web-component
     slot="bottom"
     *ngIf="!layout.bottom?.remove!"
-    output-binding-mode="noop"
+    event-binding-mode="none"
     [attr.min-size]="bottomSize"
     [attr.size]="bottomSize"
     [attr.absolute]="layout.bottom?.absolute!"
@@ -58,7 +58,7 @@
   <berg-panel-web-component
     slot="left"
     *ngIf="!layout.left?.remove!"
-    output-binding-mode="noop"
+    event-binding-mode="none"
     [attr.size]="leftSize"
     [attr.min-size]="leftSize"
     [attr.max-size]="leftSize"
@@ -71,7 +71,7 @@
     <app-editor-nav (viewChanged)="view = $event"></app-editor-nav>
   </berg-panel-web-component>
 
-  <berg-panel-web-component>
+  <berg-panel-web-component slot="center">
     <app-editor
       [css]="rx.css$ | async"
       [html]="rx.webComponentHtml$ | async"

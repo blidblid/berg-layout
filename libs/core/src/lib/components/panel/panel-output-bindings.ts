@@ -1,14 +1,14 @@
-import { BergPanelAttributes, BergPanelOutputBindingMode } from './panel-model';
+import { BergPanelAttributes, BergPanelEventBindingMode } from './panel-model';
 
-type BergPanelInputUpdate = Partial<BergPanelAttributes>;
+type BergPanelAttributeUpdate = Partial<BergPanelAttributes>;
 
-export interface BergPanelOutputBinding {
-  onBackdropClicked(event: MouseEvent): BergPanelInputUpdate;
+export interface BergPanelEventBinding {
+  onBackdropClicked(event: MouseEvent): BergPanelAttributeUpdate;
 }
 
-export const BERG_PANEL_OUTPUT_BINDINGS: Record<
-  BergPanelOutputBindingMode,
-  BergPanelOutputBinding
+export const BERG_PANEL_EVENT_BINDINGS: Record<
+  BergPanelEventBindingMode,
+  BergPanelEventBinding
 > = {
   auto: {
     onBackdropClicked() {
@@ -17,7 +17,7 @@ export const BERG_PANEL_OUTPUT_BINDINGS: Record<
       };
     },
   },
-  noop: {
+  none: {
     onBackdropClicked() {
       return {};
     },

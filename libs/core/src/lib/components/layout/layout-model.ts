@@ -34,6 +34,41 @@ export interface BergLayoutAttributes {
   'left-inset': number;
 }
 
+export interface BergLayoutAttributesCamelCased {
+  /** Whether resizing is disabled. */
+  resizeDisabled: BergLayoutAttributes['resize-disabled'];
+
+  /** Whether two dimensional resizing is enabled. Keep in mind that enabling this option causes layout thrashing. */
+  resizeTwoDimensions: BergLayoutAttributes['resize-two-dimensions'];
+
+  /** Delay before the resize preview is shown. */
+  resizePreviewDelay: BergLayoutAttributes['resize-preview-delay'];
+
+  /** Top panel position relative to the left panel. */
+  topLeftPosition: BergLayoutAttributes['top-left-position'];
+
+  /** Top panel position relative to the right panel. */
+  topRightPosition: BergLayoutAttributes['top-right-position'];
+
+  /** Bottom panel position relative to the left panel. */
+  bottomLeftPosition: BergLayoutAttributes['bottom-left-position'];
+
+  /** Bottom panel position relative to the right panel. */
+  bottomRightPosition: BergLayoutAttributes['bottom-right-position'];
+
+  /** Layout inset from the top of the viewport. */
+  topInset: BergLayoutAttributes['top-inset'];
+
+  /** Layout inset from the right of the viewport. */
+  rightInset: BergLayoutAttributes['right-inset'];
+
+  /** Layout inset from the bottom of the viewport. */
+  bottomInset: BergLayoutAttributes['bottom-inset'];
+
+  /** Layout inset from the left of the viewport. */
+  leftInset: BergLayoutAttributes['left-inset'];
+}
+
 export type BergLayoutComponentInputs = {
   [P in keyof BergLayoutAttributes]: BergLayoutAttributes[P] | null;
 };
@@ -43,18 +78,3 @@ export type BergLayoutTopPosition = 'above' | 'between';
 
 /** Positions of the bottom panel. */
 export type BergLayoutBottomPosition = 'below' | 'between';
-
-/** Default attributes of berg-layout. */
-export const BERG_LAYOUT_DEFAULTS: BergLayoutAttributes = {
-  'resize-disabled': false,
-  'resize-two-dimensions': true,
-  'resize-preview-delay': 200,
-  'top-left-position': 'above',
-  'top-right-position': 'above',
-  'bottom-left-position': 'below',
-  'bottom-right-position': 'below',
-  'top-inset': 0,
-  'right-inset': 0,
-  'bottom-inset': 0,
-  'left-inset': 0,
-};

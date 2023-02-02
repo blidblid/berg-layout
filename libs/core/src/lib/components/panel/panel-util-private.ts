@@ -1,9 +1,9 @@
-import { BergPanelOutputBindingMode, BergPanelSlot } from './panel-model';
+import { BergPanelEventBindingMode, BergPanelSlot } from './panel-model';
 
 export function validateOutputBindingMode(
   mode: string
-): BergPanelOutputBindingMode {
-  if (mode !== 'auto' && mode !== 'noop') {
+): BergPanelEventBindingMode {
+  if (mode !== 'auto' && mode !== 'none') {
     throw new Error(`Invalid output binding mode: ${mode}`);
   }
 

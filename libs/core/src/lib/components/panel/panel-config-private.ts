@@ -19,4 +19,3 @@ export const BERG_PANEL_CLASSES_BY_SLOT: Record<BergPanelSlot, string> = {
 };
 
 export const BERG_PANEL_ENABLE_ANIMATION_DELAY = 1000;
-export const BERG_PANEL_TAG_NAME = 'berg-panel-web-component';
