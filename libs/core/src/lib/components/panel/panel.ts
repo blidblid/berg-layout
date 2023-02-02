@@ -1,8 +1,4 @@
 import {
-  coerceBooleanProperty,
-  coerceNumberProperty,
-} from '@angular/cdk/coercion';
-import {
   animationFrameScheduler,
   combineLatest,
   EMPTY,
@@ -21,6 +17,7 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
+import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergLayoutElement, BERG_LAYOUT_TAG_NAME } from '../layout';
 import { WebComponent } from '../web-component';
 import { BERG_PANEL_DEFAULTS, BERG_PANEL_TAG_NAME } from './panel-config';
