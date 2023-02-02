@@ -13,8 +13,8 @@ export const BERG_PANEL_DEFAULT_PROPS = BERG_PANEL_DEFAULTS_CAMEL_CASED;
 
 export function BergPanel(props: BergPanelProps) {
   props = {
-    ...props,
     ...BERG_PANEL_DEFAULT_PROPS,
+    ...props,
   };
 
   return (

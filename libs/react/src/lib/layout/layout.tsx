@@ -13,8 +13,8 @@ export const BERG_LAYOUT_DEFAULT_PROPS = BERG_LAYOUT_DEFAULTS_CAMEL_CASED;
 
 export function BergLayout(props: BergLayoutProps) {
   props = {
-    ...props,
     ...BERG_LAYOUT_DEFAULT_PROPS,
+    ...props,
   };
 
   return (
