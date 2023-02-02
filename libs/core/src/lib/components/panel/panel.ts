@@ -122,8 +122,6 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
     share()
   );
 
-  private showingBackdrop = false;
-
   constructor() {
     super(
       BERG_PANEL_DEFAULTS,
@@ -200,34 +198,31 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
   }
 
   private showBackdrop(): void {
-    if (this.showingBackdrop) {
+    const backdrop = this.getBackdropElement();
+
+    if (!this.layout.shadowRoot || this.layout.shadowRoot.contains(backdrop)) {
       return;
     }
 
-    const backdrop = this.getBackdropElement();
-    this.layout.appendChild(backdrop);
+    this.layout.shadowRoot.appendChild(backdrop);
     requestAnimationFrame(() => (backdrop.style.opacity = '1'));
     this.backdropElement.style.pointerEvents = 'auto';
-    this.showingBackdrop = true;
   }
 
   private hideBackdrop(): void {
-    if (!this.showingBackdrop) {
-      return;
-    }
-
     const backdrop = this.getBackdropElement();
 
-    if (!this.layout.contains(backdrop)) {
+    if (!this.layout.shadowRoot || !this.layout.shadowRoot.contains(backdrop)) {
       return;
     }
 
     this.backdropElement.style.opacity = '0';
     this.backdropElement.style.pointerEvents = 'none';
-    this.showingBackdrop = false;
 
     setTimeout(() => {
-      this.layout.removeChild(backdrop);
+      if (this.layout.shadowRoot) {
+        this.layout.shadowRoot.removeChild(backdrop);
+      }
     }, BACKDROP_ANIMATION_DURATION);
   }
 
@@ -243,20 +238,22 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
     if (!this.backdropElement) {
       this.backdropElement = document.createElement('div');
       this.backdropElement.classList.add('berg-panel-backdrop');
-      this.backdropElement.style.transition = `opacity ${BACKDROP_ANIMATION_DURATION}ms ease-in`;
-      this.backdropElement.style.zIndex = BACKDROP_Z_INDEX.toString();
-      this.backdropElement.style.position = 'fixed';
-      this.backdropElement.style.cursor = 'pointer';
-      this.backdropElement.style.opacity = '0';
-      this.backdropElement.style.top = 'var(--berg-layout-top-inset)';
-      this.backdropElement.style.right = 'var(--berg-layout-right-inset)';
-      this.backdropElement.style.bottom = 'var(--berg-layout-bottom-inset)';
-      this.backdropElement.style.left = 'var(--berg-layout-left-inset)';
+
+      const style = this.backdropElement.style;
+      style.transition = `opacity ${BACKDROP_ANIMATION_DURATION}ms ease-in`;
+      style.zIndex = BACKDROP_Z_INDEX.toString();
+      style.position = 'fixed';
+      style.cursor = 'pointer';
+      style.opacity = '0';
+      style.top = 'var(--berg-layout-top-inset)';
+      style.right = 'var(--berg-layout-right-inset)';
+      style.bottom = 'var(--berg-layout-bottom-inset)';
+      style.left = 'var(--berg-layout-left-inset)';
+      style.background = 'var(--berg-panel-backdrop-background)';
 
       // non-standard property to disable tap highlights
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (this.backdropElement.style as any).webkitTapHighlightColor =
-        'rgba(0, 0, 0, 0)';
+      (style as any).webkitTapHighlightColor = 'rgba(0, 0, 0, 0)';
 
       fromEvent<MouseEvent>(this.backdropElement, 'click')
         .pipe(takeUntil(this.disconnectedSub))
