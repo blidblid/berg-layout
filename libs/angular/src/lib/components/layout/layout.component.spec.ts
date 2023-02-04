@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
   ComponentFixture,
@@ -5,7 +6,8 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { BergPanelSlot, BERG_PANEL_DEFAULT_INPUTS } from '../panel/panel-model';
+import { BergPanelSlot } from '@berg-layout/core';
+import { BERG_PANEL_DEFAULT_INPUTS } from '../panel/panel-model';
 import { BergPanelComponent } from '../panel/panel.component';
 import { BERG_LAYOUT_DEFAULT_INPUTS } from './layout-model';
 import { BergLayoutModule } from './layout.module';
@@ -30,39 +32,23 @@ describe('LayoutComponent', () => {
     beforeEach(() => fixture.detectChanges());
 
     it('should render top panel next to left and right', () => {
-      expect(c.topRect.bottom).withContext('top and left').toBe(c.leftRect.top);
-
-      expect(c.topRect.bottom)
-        .withContext('top and right')
-        .toBe(c.rightRect.top);
+      expect(c.topRect.bottom).toBe(c.leftRect.top);
+      expect(c.topRect.bottom).toBe(c.rightRect.top);
     });
 
     it('should render right panel next to top and bottom', () => {
-      expect(c.rightRect.top)
-        .withContext('right and top')
-        .toBe(c.topRect.bottom);
-
-      expect(c.rightRect.bottom)
-        .withContext('right and bottom')
-        .toBe(c.bottomRect.top);
+      expect(c.rightRect.top).toBe(c.topRect.bottom);
+      expect(c.rightRect.bottom).toBe(c.bottomRect.top);
     });
 
     it('should render bottom panel next to left and right', () => {
-      expect(c.bottomRect.top)
-        .withContext('bottom and left')
-        .toBe(c.leftRect.bottom);
-
-      expect(c.bottomRect.top)
-        .withContext('bottom and right')
-        .toBe(c.rightRect.bottom);
+      expect(c.bottomRect.top).toBe(c.leftRect.bottom);
+      expect(c.bottomRect.top).toBe(c.rightRect.bottom);
     });
 
     it('should render left panel next to top and bottom', () => {
-      expect(c.leftRect.top).withContext('left and top').toBe(c.topRect.bottom);
-
-      expect(c.leftRect.bottom)
-        .withContext('left and bottom')
-        .toBe(c.bottomRect.top);
+      expect(c.leftRect.top).toBe(c.topRect.bottom);
+      expect(c.leftRect.bottom).toBe(c.bottomRect.top);
     });
   });
 
@@ -173,11 +159,11 @@ describe('LayoutComponent', () => {
   }
 
   function getBackdrop(): HTMLElement {
-    const backdrop = fixture.nativeElement.querySelector(
-      '.berg-panel-backdrop'
-    );
+    const backdrop = (
+      c.layoutElem.firstChild as HTMLElement
+    ).shadowRoot!.querySelector('.berg-panel-backdrop') as HTMLElement;
 
-    expect(backdrop).withContext('expected a backdrop').toBeTruthy();
+    expect(backdrop).toBeTruthy();
     return backdrop;
   }
 });
