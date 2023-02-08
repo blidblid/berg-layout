@@ -1,31 +1,31 @@
 {
-  "name": "core",
+  "name": "testing",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/core/src",
+  "sourceRoot": "libs/testing/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/core",
-        "main": "libs/core/src/index.ts",
-        "tsConfig": "libs/core/tsconfig.lib.json",
-        "assets": ["libs/core/*.md"]
+        "outputPath": "dist/libs/testing",
+        "main": "libs/testing/src/index.ts",
+        "tsConfig": "libs/testing/tsconfig.lib.json",
+        "assets": ["libs/testing/*.md"]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/core/**/*.ts"]
+        "lintFilePatterns": ["libs/testing/**/*.ts"]
       }
     },
     "test": {
       "executor": "@angular-devkit/build-angular:karma",
       "options": {
-        "tsConfig": "libs/core/tsconfig.spec.json",
-        "karmaConfig": "libs/core/karma.conf.js",
+        "tsConfig": "libs/testing/tsconfig.spec.json",
+        "karmaConfig": "libs/testing/karma.conf.js",
         "polyfills": ["zone.js", "zone.js/testing"]
       }
     }

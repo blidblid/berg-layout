@@ -34,6 +34,8 @@ export interface BergLayoutAttributes {
   'left-inset': number;
 }
 
+export type BergLayoutAttribute = keyof BergLayoutAttributes;
+
 export interface BergLayoutAttributesCamelCased {
   /** Whether resizing is disabled. */
   resizeDisabled: BergLayoutAttributes['resize-disabled'];

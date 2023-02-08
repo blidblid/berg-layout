@@ -18,7 +18,12 @@
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     },
     "test": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/jest.preset.js",
+        "{workspaceRoot}/karma.conf.js"
+      ]
     },
     "e2e": {
       "inputs": ["default", "^production"]
@@ -31,7 +36,9 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s"
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/**/*.spec.[jt]s",
+      "!{projectRoot}/karma.conf.js"
     ],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
   },
@@ -39,12 +46,12 @@
     "@nrwl/angular:application": {
       "style": "scss",
       "linter": "eslint",
-      "unitTestRunner": "jest",
+      "unitTestRunner": "karma",
       "e2eTestRunner": "none"
     },
     "@nrwl/angular:library": {
       "linter": "eslint",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "karma"
     },
     "@nrwl/angular:component": {
       "style": "scss"
@@ -59,7 +66,7 @@
       "library": {
         "style": "scss",
         "linter": "eslint",
-        "unitTestRunner": "jest"
+        "unitTestRunner": "karma"
       },
       "component": {
         "style": "scss"

@@ -235,6 +235,9 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
     if (!this.backdropElement) {
       this.backdropElement = document.createElement('div');
       this.backdropElement.classList.add('berg-panel-backdrop');
+      this.backdropElement.classList.add(
+        `berg-panel-${this.values['slot']}-backdrop`
+      );
 
       const style = this.backdropElement.style;
       style.transition = `opacity ${BACKDROP_ANIMATION_DURATION}ms ease-in`;
@@ -255,6 +258,10 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
       fromEvent<MouseEvent>(this.backdropElement, 'click')
         .pipe(takeUntil(this.disconnectedSub))
         .subscribe((event) => {
+          if (!this.values['absolute']) {
+            return;
+          }
+
           this.dispatchEvent(
             new CustomEvent('backdropClicked', { detail: event })
           );
@@ -270,9 +277,11 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
     requestAnimationFrame(() => {
       this.classList.add(BERG_PANEL_NO_TRANSITION_CLASS);
 
-      requestIdleCallback(() => {
-        this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
-      });
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => {
+          this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
+        });
+      }
 
       // use a timeout as a fallback if the browser never idles
       setTimeout(
