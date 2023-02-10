@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "npx nx run-many --target=build",
+    "test": "npx nx run-many --target=test --all --parallel --maxParallel=4"
+  },
   "dependencies": {
     "@angular/animations": "~15.1.0",
     "@angular/cdk": "^15.1.1",
