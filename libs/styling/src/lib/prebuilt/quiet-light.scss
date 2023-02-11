@@ -1,3 +1,5 @@
 @use '../themes/quiet-light';
 
-@include quiet-light.quiet-light();
+:root {
+  @include quiet-light.quiet-light();
+}

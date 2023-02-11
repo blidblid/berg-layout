@@ -38,19 +38,19 @@ describe('LayoutComponent', () => {
     slot: BergPanelSlot,
     input: T,
     value: BergPanelAttributes[T]
-  ): Promise<void> {
+  ): Promise<unknown> {
     fixture.componentInstance[slot][input] = value;
     fixture.detectChanges();
-    return fixture.whenStable();
+    return Promise.all([fixture.whenStable(), fixture.whenRenderingDone()]);
   }
 
   async function setLayoutAttribute<T extends BergLayoutAttribute>(
     input: T,
     value: BergLayoutAttributes[T]
-  ): Promise<void> {
+  ): Promise<unknown> {
     fixture.componentInstance.layout[input] = value;
     fixture.detectChanges();
-    return fixture.whenStable();
+    return Promise.all([fixture.whenStable(), fixture.whenRenderingDone()]);
   }
 
   const harness = new BergLayoutTestHarness(getLayout);
@@ -75,6 +75,10 @@ describe('LayoutComponent', () => {
       [resizeDisabled]="layout['resize-disabled']"
       [resizeTwoDimensions]="layout['resize-two-dimensions']"
       [resizePreviewDelay]="layout['resize-preview-delay']"
+      [topLeftPosition]="layout['top-left-position']"
+      [topRightPosition]="layout['top-right-position']"
+      [bottomRightPosition]="layout['bottom-right-position']"
+      [bottomLeftPosition]="layout['bottom-left-position']"
       [topInset]="layout['top-inset']"
       [rightInset]="layout['right-inset']"
       [bottomInset]="layout['bottom-inset']"
@@ -84,6 +88,9 @@ describe('LayoutComponent', () => {
         #topRef
         slot="top"
         *ngIf="showTop"
+        [size]="top.size"
+        [minSize]="top['min-size']"
+        [maxSize]="top['max-size']"
         [eventBindingMode]="top['event-binding-mode']"
         [absolute]="top.absolute"
         [collapsed]="top.collapsed"
@@ -96,6 +103,9 @@ describe('LayoutComponent', () => {
         #rightRef
         slot="right"
         *ngIf="showRight"
+        [size]="right.size"
+        [minSize]="right['min-size']"
+        [maxSize]="right['max-size']"
         [eventBindingMode]="right['event-binding-mode']"
         [absolute]="right.absolute"
         [collapsed]="right.collapsed"
@@ -107,6 +117,9 @@ describe('LayoutComponent', () => {
         #bottomRef
         slot="bottom"
         *ngIf="showBottom"
+        [size]="bottom.size"
+        [minSize]="bottom['min-size']"
+        [maxSize]="bottom['max-size']"
         [eventBindingMode]="bottom['event-binding-mode']"
         [absolute]="bottom.absolute"
         [collapsed]="bottom.collapsed"
@@ -118,6 +131,9 @@ describe('LayoutComponent', () => {
         #leftRef
         slot="left"
         *ngIf="showLeft"
+        [size]="left.size"
+        [minSize]="left['min-size']"
+        [maxSize]="left['max-size']"
         [eventBindingMode]="left['event-binding-mode']"
         [absolute]="left.absolute"
         [collapsed]="left.collapsed"

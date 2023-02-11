@@ -139,7 +139,7 @@
 
     &.berg-panel-collapsed {
       bottom: calc(
-        var(berg-layout-bottom-inset) - var(--berg-panel-bottom-size)
+        var(--berg-layout-bottom-inset) - var(--berg-panel-bottom-size)
       );
       top: calc(100% - var(--berg-layout-bottom-inset));
     }
@@ -409,7 +409,6 @@
     background: var(--berg-panel-backdrop-background);
   }
 
-  body,
   .berg-panel-center {
     background: var(--berg-panel-center-background);
   }

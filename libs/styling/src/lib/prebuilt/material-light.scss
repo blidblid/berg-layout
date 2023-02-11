@@ -1,3 +1,5 @@
 @use '../themes/material-light';
 
-@include material-light.material-light();
+:root {
+  @include material-light.material-light();
+}

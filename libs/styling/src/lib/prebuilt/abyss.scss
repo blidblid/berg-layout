@@ -1,3 +1,5 @@
 @use '../themes/abyss';
 
-@include abyss.abyss();
+:root {
+  @include abyss.abyss();
+}

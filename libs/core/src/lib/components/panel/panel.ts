@@ -161,6 +161,8 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
           }
         },
         size: () => this.updateSize(this.values['size']),
+        'min-size': () => this.updateSize(this.values['size']),
+        'max-size': () => this.updateSize(this.values['size']),
         slot: () => {
           this.classList.remove(...Object.values(BERG_PANEL_CLASSES_BY_SLOT));
           this.classList.add(BERG_PANEL_CLASSES_BY_SLOT[this.values['slot']]);

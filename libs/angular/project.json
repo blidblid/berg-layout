@@ -26,7 +26,11 @@
       "options": {
         "tsConfig": "libs/angular/tsconfig.spec.json",
         "karmaConfig": "libs/angular/karma.conf.js",
-        "polyfills": ["zone.js", "zone.js/testing"]
+        "polyfills": ["zone.js", "zone.js/testing"],
+        "styles": [
+          "libs/styling/src/lib/prebuilt/core.scss",
+          "libs/styling/src/lib/prebuilt/dark.scss"
+        ]
       }
     },
     "lint": {

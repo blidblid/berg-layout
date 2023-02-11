@@ -111,14 +111,14 @@
 }
 
 // Applies the correct css rules to an element to give it the elevation specified by $zValue.
-// The $zValue must be between 0 and 24.
+// The $zValue must be beside 0 and 24.
 @mixin elevation($zValue, $color: black, $opacity: 1) {
   @if meta.type-of($zValue) != number or not math.is-unitless($zValue) {
     @error '$zValue must be a unitless number';
   }
 
   @if $zValue < 0 or $zValue > 24 {
-    @error '$zValue must be between 0 and 24';
+    @error '$zValue must be beside 0 and 24';
   }
 
   box-shadow: #{map.get(_get-umbra-map($color, $opacity), $zValue)},
