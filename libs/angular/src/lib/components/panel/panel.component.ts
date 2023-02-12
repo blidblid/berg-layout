@@ -15,12 +15,12 @@ import {
 import { BergPanelEventBindingMode, BergPanelSlot } from '@berg-layout/core';
 import {
   BergPanelInputs,
-  BergPanelNullableInputs,
   BergPanelOutputs,
   BergPanelResizeEvent,
   BERG_PANEL_DEFAULT_INPUTS,
   BERG_PANEL_INPUTS,
 } from './panel-model';
+import { BergPanelNullableInputs } from './panel-model-private';
 
 @Component({
   selector: 'berg-panel',

@@ -1,15 +1,13 @@
 import '@berg-layout/core';
 import {
-  BergLayoutAttributesCamelCased,
-  BERG_LAYOUT_DEFAULTS_CAMEL_CASED,
+  BergLayoutInputs,
+  BERG_LAYOUT_DEFAULT_INPUTS,
 } from '@berg-layout/core';
 import { PropsWithChildren } from 'react';
 
-export type BergLayoutProps = PropsWithChildren<
-  Partial<BergLayoutAttributesCamelCased>
->;
+export type BergLayoutProps = PropsWithChildren<Partial<BergLayoutInputs>>;
 
-export const BERG_LAYOUT_DEFAULT_PROPS = BERG_LAYOUT_DEFAULTS_CAMEL_CASED;
+export const BERG_LAYOUT_DEFAULT_PROPS = BERG_LAYOUT_DEFAULT_INPUTS;
 
 export function BergLayout(props: BergLayoutProps) {
   props = {

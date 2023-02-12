@@ -32,17 +32,16 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "executor": "@angular-devkit/build-angular:karma",
       "options": {
-        "jestConfig": "libs/react/jest.config.ts",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "include": ["**/*.spec.tsx"],
+        "tsConfig": "libs/react/tsconfig.spec.json",
+        "karmaConfig": "libs/react/karma.conf.js",
+        "polyfills": ["zone.js", "zone.js/testing"],
+        "styles": [
+          "libs/styling/src/lib/prebuilt/core.scss",
+          "libs/styling/src/lib/prebuilt/dark.scss"
+        ]
       }
     }
   }

@@ -1,79 +1,40 @@
-/** Attributes of berg-layout. */
-export interface BergLayoutAttributes {
+/** Inputs of berg-layout. */
+export interface BergLayoutInputs {
   /** Whether resizing is disabled. */
-  'resize-disabled': boolean;
+  resizeDisabled: boolean;
 
   /** Whether two dimensional resizing is enabled. Keep in mind that enabling this option causes layout thrashing. */
-  'resize-two-dimensions': boolean;
+  resizeTwoDimensions: boolean;
 
   /** Delay before the resize preview is shown. */
-  'resize-preview-delay': number;
+  resizePreviewDelay: number;
 
   /** Top panel position relative to the left panel. */
-  'top-left-position': BergLayoutTopPosition;
+  topLeftPosition: BergLayoutTopPosition;
 
   /** Top panel position relative to the right panel. */
-  'top-right-position': BergLayoutTopPosition;
+  topRightPosition: BergLayoutTopPosition;
 
   /** Bottom panel position relative to the left panel. */
-  'bottom-left-position': BergLayoutBottomPosition;
+  bottomLeftPosition: BergLayoutBottomPosition;
 
   /** Bottom panel position relative to the right panel. */
-  'bottom-right-position': BergLayoutBottomPosition;
+  bottomRightPosition: BergLayoutBottomPosition;
 
   /** Layout inset from the top of the viewport. */
-  'top-inset': number;
+  topInset: number;
 
   /** Layout inset from the right of the viewport. */
-  'right-inset': number;
+  rightInset: number;
 
   /** Layout inset from the bottom of the viewport. */
-  'bottom-inset': number;
+  bottomInset: number;
 
   /** Layout inset from the left of the viewport. */
-  'left-inset': number;
+  leftInset: number;
 }
 
-export type BergLayoutAttribute = keyof BergLayoutAttributes;
-
-export interface BergLayoutAttributesCamelCased {
-  /** Whether resizing is disabled. */
-  resizeDisabled: BergLayoutAttributes['resize-disabled'];
-
-  /** Whether two dimensional resizing is enabled. Keep in mind that enabling this option causes layout thrashing. */
-  resizeTwoDimensions: BergLayoutAttributes['resize-two-dimensions'];
-
-  /** Delay before the resize preview is shown. */
-  resizePreviewDelay: BergLayoutAttributes['resize-preview-delay'];
-
-  /** Top panel position relative to the left panel. */
-  topLeftPosition: BergLayoutAttributes['top-left-position'];
-
-  /** Top panel position relative to the right panel. */
-  topRightPosition: BergLayoutAttributes['top-right-position'];
-
-  /** Bottom panel position relative to the left panel. */
-  bottomLeftPosition: BergLayoutAttributes['bottom-left-position'];
-
-  /** Bottom panel position relative to the right panel. */
-  bottomRightPosition: BergLayoutAttributes['bottom-right-position'];
-
-  /** Layout inset from the top of the viewport. */
-  topInset: BergLayoutAttributes['top-inset'];
-
-  /** Layout inset from the right of the viewport. */
-  rightInset: BergLayoutAttributes['right-inset'];
-
-  /** Layout inset from the bottom of the viewport. */
-  bottomInset: BergLayoutAttributes['bottom-inset'];
-
-  /** Layout inset from the left of the viewport. */
-  leftInset: BergLayoutAttributes['left-inset'];
-}
-
-export type BergLayoutComponentInputs = {
-  [P in keyof BergLayoutAttributes]: BergLayoutAttributes[P] | null;
-};
+export type BergLayoutInput = keyof BergLayoutInputs;
 
 /** Positions of the top panel. */
 export type BergLayoutTopPosition = 'above' | 'beside';

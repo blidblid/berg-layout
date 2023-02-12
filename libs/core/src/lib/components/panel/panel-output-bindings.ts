@@ -1,6 +1,6 @@
-import { BergPanelAttributes, BergPanelEventBindingMode } from './panel-model';
+import { BergPanelEventBindingMode, BergPanelInputs } from './panel-model';
 
-type BergPanelAttributeUpdate = Partial<BergPanelAttributes>;
+type BergPanelAttributeUpdate = Partial<BergPanelInputs>;
 
 export interface BergPanelEventBinding {
   onBackdropClicked(event: MouseEvent): BergPanelAttributeUpdate;

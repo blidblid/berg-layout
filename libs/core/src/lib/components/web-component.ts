@@ -14,6 +14,7 @@ import {
   RequireAll,
   WebComponentAttributeChanged,
   WebComponentEffects,
+  WebComponentInputByAttribute,
   WebComponentObservables,
   WebComponentParsers,
   WebComponentSubjects,
@@ -47,7 +48,8 @@ export class WebComponent<T extends object> extends HTMLElement {
   constructor(
     private defaults: RequireAll<T>,
     private parsers: WebComponentParsers<T>,
-    private effects: Partial<WebComponentEffects<T>>
+    private effects: Partial<WebComponentEffects<T>>,
+    private attributeNames: WebComponentInputByAttribute<T>
   ) {
     super();
     this.subscribeToAttributeChanges();
@@ -60,15 +62,19 @@ export class WebComponent<T extends object> extends HTMLElement {
     }
   }
 
-  attributeChangedCallback(name: keyof T, oldValue: string, newValue: string) {
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (oldValue === newValue) {
       return;
     }
 
+    const attributeName = this.attributeNames[name];
+
     this.attributeChangedSub.next({
-      name,
+      name: attributeName,
       value:
-        newValue === '' ? this.defaults[name] : this.parsers[name](newValue),
+        newValue === ''
+          ? this.defaults[attributeName]
+          : this.parsers[attributeName](newValue),
     });
   }
 

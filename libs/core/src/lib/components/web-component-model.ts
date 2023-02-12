@@ -24,3 +24,6 @@ export interface WebComponentAttributeChanged<T> {
 export type RequireAll<T> = {
   [P in keyof T]-?: T[P];
 };
+
+export type WebComponentInputByAttribute<T> = Record<string, keyof T>;
+export type WebComponentAttributeByInput<T> = Record<keyof T, string>;

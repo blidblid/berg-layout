@@ -1,15 +1,60 @@
 import {
-  BergLayoutAttribute,
-  BergLayoutAttributes,
   BergLayoutElement,
-  BergPanelAttribute,
-  BergPanelAttributes,
+  BergLayoutInput,
   BergPanelElement,
+  BergPanelInput,
+  BergPanelInputs,
   BergPanelSlot,
+  BERG_LAYOUT_ATTRIBUTE_BY_INPUT,
   BERG_LAYOUT_TAG_NAME,
+  BERG_PANEL_ATTRIBUTE_BY_INPUT,
 } from '@berg-layout/core';
 import { BergLayoutTestHarness } from './layout-test-harness';
 import { runLayoutTests } from './run-layout-tests';
+import { Render } from './run-layout-tests-model';
+
+const render: Render = async (inputs) => {
+  const { layout, top, right, bottom, left } = inputs;
+
+  if (layout) {
+    for (const [attribute, value] of Object.entries(layout)) {
+      const layout = document.querySelector<BergPanelElement>('.berg-layout');
+
+      if (!layout) {
+        throw new Error('No layout found');
+      }
+
+      layout.setAttribute(
+        BERG_LAYOUT_ATTRIBUTE_BY_INPUT[attribute as BergLayoutInput],
+        `${value}`
+      );
+    }
+  }
+
+  if (top) {
+    for (const [attribute, value] of Object.entries(top)) {
+      setPanelAttribute('top', attribute as BergPanelInput, value);
+    }
+  }
+
+  if (right) {
+    for (const [attribute, value] of Object.entries(right)) {
+      setPanelAttribute('right', attribute as BergPanelInput, value);
+    }
+  }
+
+  if (bottom) {
+    for (const [attribute, value] of Object.entries(bottom)) {
+      setPanelAttribute('bottom', attribute as BergPanelInput, value);
+    }
+  }
+
+  if (left) {
+    for (const [attribute, value] of Object.entries(left)) {
+      setPanelAttribute('left', attribute as BergPanelInput, value);
+    }
+  }
+};
 
 describe('web component layout', () => {
   beforeEach(async () => {
@@ -51,50 +96,8 @@ describe('web component layout', () => {
     }
   });
 
-  function getLayout() {
-    const layout =
-      document.querySelector<BergLayoutElement>(BERG_LAYOUT_TAG_NAME);
-
-    if (!layout) {
-      throw new Error('No layout found');
-    }
-
-    return layout;
-  }
-
-  function setLayoutAttribute<T extends BergLayoutAttribute>(
-    attribute: T,
-    value: BergLayoutAttributes[T]
-  ) {
-    const layout = document.querySelector<BergPanelElement>('.berg-layout');
-
-    if (!layout) {
-      throw new Error('No layout found');
-    }
-
-    layout.setAttribute(attribute, `${value}`);
-    return Promise.resolve();
-  }
-
-  function setPanelAttribute<T extends BergPanelAttribute>(
-    slot: BergPanelSlot,
-    attribute: T,
-    value: BergPanelAttributes[T]
-  ) {
-    const panel = document.querySelector<BergPanelElement>(
-      `.berg-panel-${slot}`
-    );
-
-    if (!panel) {
-      throw new Error(`No ${slot} panel found`);
-    }
-
-    panel.setAttribute(attribute, `${value}`);
-    return new Promise((resolve) => setTimeout(resolve, 0));
-  }
-
   const harness = new BergLayoutTestHarness(getLayout);
-  runLayoutTests(harness, setLayoutAttribute, setPanelAttribute);
+  runLayoutTests(harness, render);
 
   afterEach(() => {
     const layout = document.querySelector<BergLayoutElement>(
@@ -106,3 +109,29 @@ describe('web component layout', () => {
     }
   });
 });
+
+function setPanelAttribute<T extends BergPanelInput>(
+  slot: BergPanelSlot,
+  attribute: T,
+  value: BergPanelInputs[T]
+) {
+  const panel = document.querySelector<BergPanelElement>(`.berg-panel-${slot}`);
+
+  if (!panel) {
+    throw new Error(`No ${slot} panel found`);
+  }
+
+  panel.setAttribute(BERG_PANEL_ATTRIBUTE_BY_INPUT[attribute], `${value}`);
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+function getLayout() {
+  const layout =
+    document.querySelector<BergLayoutElement>(BERG_LAYOUT_TAG_NAME);
+
+  if (!layout) {
+    throw new Error('No layout found');
+  }
+
+  return layout;
+}

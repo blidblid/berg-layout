@@ -1,16 +1,12 @@
 import { InjectionToken } from '@angular/core';
 import {
-  BergPanelAttributesCamelCased,
-  BERG_PANEL_DEFAULTS_CAMEL_CASED,
+  BergPanelInputs as BergPanelInputsCore,
+  BERG_PANEL_DEFAULT_INPUTS as BERG_PANEL_DEFAULT_INPUTS_CORE,
 } from '@berg-layout/core';
 import { Observable } from 'rxjs';
 
 /** Inputs of berg-panel. */
-export type BergPanelInputs = BergPanelAttributesCamelCased;
-
-export type BergPanelNullableInputs = {
-  [P in keyof BergPanelInputs]: BergPanelInputs[P] | null;
-};
+export type BergPanelInputs = BergPanelInputsCore;
 
 /** Outputs that panels emit. */
 export interface BergPanelOutputs {
@@ -26,7 +22,7 @@ export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
   'BERG_PANEL_INPUTS'
 );
 
-export const BERG_PANEL_DEFAULT_INPUTS = BERG_PANEL_DEFAULTS_CAMEL_CASED;
+export const BERG_PANEL_DEFAULT_INPUTS = BERG_PANEL_DEFAULT_INPUTS_CORE;
 
 export interface BergPanelResizeEvent {
   event: MouseEvent;

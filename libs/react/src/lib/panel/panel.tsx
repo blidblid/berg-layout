@@ -1,15 +1,10 @@
 import '@berg-layout/core';
-import {
-  BergPanelAttributesCamelCased,
-  BERG_PANEL_DEFAULTS_CAMEL_CASED,
-} from '@berg-layout/core';
+import { BergPanelInputs, BERG_PANEL_DEFAULT_INPUTS } from '@berg-layout/core';
 import { PropsWithChildren } from 'react';
 
-export type BergPanelProps = PropsWithChildren<
-  Partial<BergPanelAttributesCamelCased>
->;
+export type BergPanelProps = PropsWithChildren<Partial<BergPanelInputs>>;
 
-export const BERG_PANEL_DEFAULT_PROPS = BERG_PANEL_DEFAULTS_CAMEL_CASED;
+export const BERG_PANEL_DEFAULT_PROPS = BERG_PANEL_DEFAULT_INPUTS;
 
 export function BergPanel(props: BergPanelProps) {
   props = {

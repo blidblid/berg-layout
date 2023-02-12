@@ -2,20 +2,24 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  BergLayoutAttribute,
-  BergLayoutAttributes,
   BergLayoutElement,
-  BergPanelAttribute,
-  BergPanelAttributes,
+  BergLayoutInput,
+  BergLayoutInputs,
+  BergPanelInput,
+  BergPanelInputs,
   BergPanelSlot,
-  BERG_LAYOUT_DEFAULTS,
+  BERG_LAYOUT_DEFAULT_INPUTS,
   BERG_LAYOUT_TAG_NAME,
-  BERG_PANEL_DEFAULTS,
+  BERG_PANEL_DEFAULT_INPUTS,
 } from '@berg-layout/core';
-import { BergLayoutTestHarness, runLayoutTests } from '@berg-layout/testing';
+import {
+  BergLayoutTestHarness,
+  Render,
+  runLayoutTests,
+} from '@berg-layout/testing';
 import { BergLayoutModule } from '../layout/layout.module';
 
-describe('LayoutComponent', () => {
+describe('Angular implementation', () => {
   let fixture: ComponentFixture<LayoutTestComponent>;
 
   beforeEach(async () => {
@@ -28,37 +32,54 @@ describe('LayoutComponent', () => {
     fixture.detectChanges();
   });
 
-  function getLayout(): BergLayoutElement {
-    return fixture.debugElement.nativeElement.querySelector(
-      BERG_LAYOUT_TAG_NAME
-    );
-  }
+  const render: Render = async (inputs) => {
+    const { layout, top, right, bottom, left } = inputs;
 
-  async function setPanelAttribute<T extends BergPanelAttribute>(
-    slot: BergPanelSlot,
-    input: T,
-    value: BergPanelAttributes[T]
-  ): Promise<unknown> {
-    fixture.componentInstance[slot][input] = value;
+    if (layout) {
+      for (const [attribute, value] of Object.entries(layout)) {
+        setLayoutAttribute(attribute as BergLayoutInput, value);
+      }
+    }
+
+    if (top) {
+      for (const [attribute, value] of Object.entries(top)) {
+        setPanelAttribute('top', attribute as BergPanelInput, value);
+      }
+    }
+
+    if (right) {
+      for (const [attribute, value] of Object.entries(right)) {
+        setPanelAttribute('right', attribute as BergPanelInput, value);
+      }
+    }
+
+    if (bottom) {
+      for (const [attribute, value] of Object.entries(bottom)) {
+        setPanelAttribute('bottom', attribute as BergPanelInput, value);
+      }
+    }
+
+    if (left) {
+      for (const [attribute, value] of Object.entries(left)) {
+        setPanelAttribute('left', attribute as BergPanelInput, value);
+      }
+    }
+
     fixture.detectChanges();
     return Promise.all([fixture.whenStable(), fixture.whenRenderingDone()]);
-  }
-
-  async function setLayoutAttribute<T extends BergLayoutAttribute>(
-    input: T,
-    value: BergLayoutAttributes[T]
-  ): Promise<unknown> {
-    fixture.componentInstance.layout[input] = value;
-    fixture.detectChanges();
-    return Promise.all([fixture.whenStable(), fixture.whenRenderingDone()]);
-  }
+  };
 
   const harness = new BergLayoutTestHarness(getLayout);
-  runLayoutTests(harness, setLayoutAttribute, setPanelAttribute);
+  runLayoutTests(harness, render);
 
   describe('output re-emission', () => {
     it('should emit backdropClicked when backdrop is clicked', async () => {
-      await setPanelAttribute('top', 'absolute', true);
+      await render({
+        top: {
+          absolute: true,
+        },
+      });
+
       await harness.clickBackdrop('top');
 
       expect(
@@ -66,35 +87,56 @@ describe('LayoutComponent', () => {
       ).toBe(true);
     });
   });
+
+  function setLayoutAttribute<T extends BergLayoutInput>(
+    input: T,
+    value: BergLayoutInputs[T]
+  ): void {
+    fixture.componentInstance.layout[input] = value;
+  }
+
+  function setPanelAttribute<T extends BergPanelInput>(
+    slot: BergPanelSlot,
+    input: T,
+    value: BergPanelInputs[T]
+  ): void {
+    fixture.componentInstance[slot][input] = value;
+  }
+
+  function getLayout(): BergLayoutElement {
+    return fixture.debugElement.nativeElement.querySelector(
+      BERG_LAYOUT_TAG_NAME
+    );
+  }
 });
 
 @Component({
   template: `
     <berg-layout
       #layoutRef
-      [resizeDisabled]="layout['resize-disabled']"
-      [resizeTwoDimensions]="layout['resize-two-dimensions']"
-      [resizePreviewDelay]="layout['resize-preview-delay']"
-      [topLeftPosition]="layout['top-left-position']"
-      [topRightPosition]="layout['top-right-position']"
-      [bottomRightPosition]="layout['bottom-right-position']"
-      [bottomLeftPosition]="layout['bottom-left-position']"
-      [topInset]="layout['top-inset']"
-      [rightInset]="layout['right-inset']"
-      [bottomInset]="layout['bottom-inset']"
-      [leftInset]="layout['left-inset']"
+      [resizeDisabled]="layout.resizeDisabled"
+      [resizeTwoDimensions]="layout.resizeTwoDimensions"
+      [resizePreviewDelay]="layout.resizePreviewDelay"
+      [topLeftPosition]="layout.topLeftPosition"
+      [topRightPosition]="layout.topRightPosition"
+      [bottomRightPosition]="layout.bottomRightPosition"
+      [bottomLeftPosition]="layout.bottomLeftPosition"
+      [topInset]="layout.topInset"
+      [rightInset]="layout.rightInset"
+      [bottomInset]="layout.bottomInset"
+      [leftInset]="layout.leftInset"
     >
       <berg-panel
         #topRef
         slot="top"
         *ngIf="showTop"
         [size]="top.size"
-        [minSize]="top['min-size']"
-        [maxSize]="top['max-size']"
-        [eventBindingMode]="top['event-binding-mode']"
+        [minSize]="top.minSize"
+        [maxSize]="top.maxSize"
+        [eventBindingMode]="top.eventBindingMode"
         [absolute]="top.absolute"
         [collapsed]="top.collapsed"
-        [resizeDisabled]="top['resize-disabled']"
+        [resizeDisabled]="top.resizeDisabled"
         (backdropClicked)="onBackdropClicked($event)"
       >
       </berg-panel>
@@ -104,12 +146,12 @@ describe('LayoutComponent', () => {
         slot="right"
         *ngIf="showRight"
         [size]="right.size"
-        [minSize]="right['min-size']"
-        [maxSize]="right['max-size']"
-        [eventBindingMode]="right['event-binding-mode']"
+        [minSize]="right.minSize"
+        [maxSize]="right.maxSize"
+        [eventBindingMode]="right.eventBindingMode"
         [absolute]="right.absolute"
         [collapsed]="right.collapsed"
-        [resizeDisabled]="right['resize-disabled']"
+        [resizeDisabled]="right.resizeDisabled"
       >
       </berg-panel>
 
@@ -118,12 +160,12 @@ describe('LayoutComponent', () => {
         slot="bottom"
         *ngIf="showBottom"
         [size]="bottom.size"
-        [minSize]="bottom['min-size']"
-        [maxSize]="bottom['max-size']"
-        [eventBindingMode]="bottom['event-binding-mode']"
+        [minSize]="bottom.minSize"
+        [maxSize]="bottom.maxSize"
+        [eventBindingMode]="bottom.eventBindingMode"
         [absolute]="bottom.absolute"
         [collapsed]="bottom.collapsed"
-        [resizeDisabled]="bottom['resize-disabled']"
+        [resizeDisabled]="bottom.resizeDisabled"
       >
       </berg-panel>
 
@@ -132,12 +174,12 @@ describe('LayoutComponent', () => {
         slot="left"
         *ngIf="showLeft"
         [size]="left.size"
-        [minSize]="left['min-size']"
-        [maxSize]="left['max-size']"
-        [eventBindingMode]="left['event-binding-mode']"
+        [minSize]="left.minSize"
+        [maxSize]="left.maxSize"
+        [eventBindingMode]="left.eventBindingMode"
         [absolute]="left.absolute"
         [collapsed]="left.collapsed"
-        [resizeDisabled]="left['resize-disabled']"
+        [resizeDisabled]="left.resizeDisabled"
       >
       </berg-panel>
 
@@ -146,13 +188,13 @@ describe('LayoutComponent', () => {
   `,
 })
 export class LayoutTestComponent {
-  layout = { ...BERG_LAYOUT_DEFAULTS };
+  layout = { ...BERG_LAYOUT_DEFAULT_INPUTS };
 
-  center = { ...BERG_PANEL_DEFAULTS };
-  top = { ...BERG_PANEL_DEFAULTS };
-  right = { ...BERG_PANEL_DEFAULTS };
-  bottom = { ...BERG_PANEL_DEFAULTS };
-  left = { ...BERG_PANEL_DEFAULTS };
+  center = { ...BERG_PANEL_DEFAULT_INPUTS };
+  top = { ...BERG_PANEL_DEFAULT_INPUTS };
+  right = { ...BERG_PANEL_DEFAULT_INPUTS };
+  bottom = { ...BERG_PANEL_DEFAULT_INPUTS };
+  left = { ...BERG_PANEL_DEFAULT_INPUTS };
 
   showTop = true;
   showRight = true;

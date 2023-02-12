@@ -20,7 +20,12 @@ import {
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergLayoutElement, BERG_LAYOUT_TAG_NAME } from '../layout';
 import { WebComponent } from '../web-component';
-import { BERG_PANEL_DEFAULTS, BERG_PANEL_TAG_NAME } from './panel-config';
+import {
+  BERG_PANEL_ATTRIBUTE_BY_INPUT,
+  BERG_PANEL_DEFAULT_INPUTS,
+  BERG_PANEL_INPUT_BY_ATTRIBUTE,
+  BERG_PANEL_TAG_NAME,
+} from './panel-config';
 import {
   BERG_PANEL_ABSOLUTE_CLASS,
   BERG_PANEL_CLASS,
@@ -34,7 +39,7 @@ import {
   BERG_PANEL_RESIZING_CLASS,
   BERG_PANEL_VERTICAL_CLASS,
 } from './panel-config-private';
-import { BergPanelAttributes, BergPanelResizeEvent } from './panel-model';
+import { BergPanelInputs, BergPanelResizeEvent } from './panel-model';
 import {
   BACKDROP_ANIMATION_DURATION,
   BACKDROP_Z_INDEX,
@@ -46,19 +51,19 @@ import {
 } from './panel-output-bindings';
 import { validateOutputBindingMode, validateSlot } from './panel-util-private';
 
-export class BergPanelElement extends WebComponent<BergPanelAttributes> {
+export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private backdropElement: HTMLElement;
   private layout: BergLayoutElement;
 
-  private resizeToggle$ = this.changes['slot'].pipe(
+  private resizeToggle$ = this.changes.slot.pipe(
     map((slot) => {
       return slot === 'center' ? null : this.layout.resizeToggles[slot];
     })
   );
 
   private previewing$ = combineLatest([
-    this.changes['slot'],
-    this.changes['resize-disabled'],
+    this.changes.slot,
+    this.changes.resizeDisabled,
   ]).pipe(
     switchMap(([slot, resizeDisabled]) => {
       if (resizeDisabled) {
@@ -85,7 +90,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
   private delayedPreviewing$ = this.previewing$.pipe(
     switchMap((previewing) => {
       return of(previewing).pipe(
-        delay(previewing ? this.layout.values['resize-preview-delay'] : 0)
+        delay(previewing ? this.layout.values.resizePreviewDelay : 0)
       );
     })
   );
@@ -121,27 +126,23 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
 
   constructor() {
     super(
-      BERG_PANEL_DEFAULTS,
+      BERG_PANEL_DEFAULT_INPUTS,
       {
         slot: (value: string) => validateSlot(value),
         size: coerceNumberProperty,
         absolute: coerceBooleanProperty,
         collapsed: coerceBooleanProperty,
-        'resize-disabled': coerceBooleanProperty,
-        'min-size': coerceNumberProperty,
-        'max-size': coerceNumberProperty,
-        'event-binding-mode': (value: string) =>
-          validateOutputBindingMode(value),
+        resizeDisabled: coerceBooleanProperty,
+        minSize: coerceNumberProperty,
+        maxSize: coerceNumberProperty,
+        eventBindingMode: (value: string) => validateOutputBindingMode(value),
       },
       {
         absolute: () => {
           this.updateBackdrop();
-          this.layout.updateAbsolute(
-            this.values['slot'],
-            this.values['absolute']
-          );
+          this.layout.updateAbsolute(this.values.slot, this.values.absolute);
 
-          if (this.values['absolute']) {
+          if (this.values.absolute) {
             this.classList.add(BERG_PANEL_ABSOLUTE_CLASS);
           } else {
             this.classList.remove(BERG_PANEL_ABSOLUTE_CLASS);
@@ -149,50 +150,42 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
         },
         collapsed: () => {
           this.updateBackdrop();
-          this.layout.updateCollapsed(
-            this.values['slot'],
-            this.values['collapsed']
-          );
+          this.layout.updateCollapsed(this.values.slot, this.values.collapsed);
 
-          if (this.values['collapsed']) {
+          if (this.values.collapsed) {
             this.classList.add(BERG_PANEL_COLLAPSED_CLASS);
           } else {
             this.classList.remove(BERG_PANEL_COLLAPSED_CLASS);
           }
         },
         size: () => this.updateSize(this.values['size']),
-        'min-size': () => this.updateSize(this.values['size']),
-        'max-size': () => this.updateSize(this.values['size']),
+        minSize: () => this.updateSize(this.values['size']),
+        maxSize: () => this.updateSize(this.values['size']),
         slot: () => {
           this.classList.remove(...Object.values(BERG_PANEL_CLASSES_BY_SLOT));
-          this.classList.add(BERG_PANEL_CLASSES_BY_SLOT[this.values['slot']]);
+          this.classList.add(BERG_PANEL_CLASSES_BY_SLOT[this.values.slot]);
 
-          if (
-            this.values['slot'] === 'left' ||
-            this.values['slot'] === 'right'
-          ) {
+          if (this.values.slot === 'left' || this.values.slot === 'right') {
             this.classList.add(BERG_PANEL_VERTICAL_CLASS);
           } else {
             this.classList.remove(BERG_PANEL_VERTICAL_CLASS);
           }
 
-          if (
-            this.values['slot'] === 'top' ||
-            this.values['slot'] === 'bottom'
-          ) {
+          if (this.values.slot === 'top' || this.values.slot === 'bottom') {
             this.classList.add(BERG_PANEL_HORIZONTAL_CLASS);
           } else {
             this.classList.remove(BERG_PANEL_HORIZONTAL_CLASS);
           }
         },
-        'resize-disabled': () => {
-          if (this.values['resize-disabled']) {
+        resizeDisabled: () => {
+          if (this.values.resizeDisabled) {
             this.classList.add(BERG_PANEL_RESIZE_DISABLED_CLASS);
           } else {
             this.classList.remove(BERG_PANEL_RESIZE_DISABLED_CLASS);
           }
         },
-      }
+      },
+      BERG_PANEL_INPUT_BY_ATTRIBUTE
     );
   }
 
@@ -226,7 +219,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
   }
 
   private updateBackdrop(): void {
-    if (this.values['absolute'] && !this.values['collapsed']) {
+    if (this.values.absolute && !this.values.collapsed) {
       this.showBackdrop();
     } else {
       this.hideBackdrop();
@@ -238,7 +231,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
       this.backdropElement = document.createElement('div');
       this.backdropElement.classList.add('berg-panel-backdrop');
       this.backdropElement.classList.add(
-        `berg-panel-${this.values['slot']}-backdrop`
+        `berg-panel-${this.values.slot}-backdrop`
       );
 
       const style = this.backdropElement.style;
@@ -260,7 +253,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
       fromEvent<MouseEvent>(this.backdropElement, 'click')
         .pipe(takeUntil(this.disconnectedSub))
         .subscribe((event) => {
-          if (!this.values['absolute']) {
+          if (!this.values.absolute) {
             return;
           }
 
@@ -346,7 +339,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
         }
       });
 
-    combineLatest([this.changes['slot'], this.changes['resize-disabled']])
+    combineLatest([this.changes.slot, this.changes.resizeDisabled])
       .pipe(takeUntil(this.disconnectedSub))
       .subscribe(([slot, resizeDisabled]) => {
         if (slot === 'center') {
@@ -369,7 +362,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
       };
     };
 
-    const inset = this.layout.getSlotInset(this.values['slot']);
+    const inset = this.layout.getSlotInset(this.values.slot);
 
     if (this.slot === 'top') {
       return create(event.pageY - inset - document.documentElement.scrollTop);
@@ -412,7 +405,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
       return true;
     }
 
-    if (!this.layout.values['resize-two-dimensions']) {
+    if (!this.layout.values.resizeTwoDimensions) {
       return false;
     }
 
@@ -466,7 +459,7 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
     ...params: Parameters<BergPanelEventBinding[T]>
   ): void {
     const updateAttributes = BERG_PANEL_EVENT_BINDINGS[
-      this.values['event-binding-mode']
+      this.values.eventBindingMode
     ][
       binding
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -483,15 +476,15 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
   }
 
   private updateSize(size: number): void {
-    if (this.values['min-size'] && size < this.values['min-size']) {
-      size = this.values['min-size'];
+    if (this.values.minSize && size < this.values.minSize) {
+      size = this.values.minSize;
     }
 
-    if (this.values['max-size'] && size > this.values['max-size']) {
-      size = this.values['max-size'];
+    if (this.values.maxSize && size > this.values.maxSize) {
+      size = this.values.maxSize;
     }
 
-    this.layout.updateSizeCssVariable(this.values['slot'], size);
+    this.layout.updateSizeCssVariable(this.values.slot, size);
   }
 
   connectedCallback(): void {
@@ -530,11 +523,11 @@ export class BergPanelElement extends WebComponent<BergPanelAttributes> {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.layout.updateSizeCssVariable(this.values['slot'], 0);
+    this.layout.updateSizeCssVariable(this.values.slot, 0);
   }
 
-  static get observedAttributes(): (keyof BergPanelAttributes)[] {
-    return Object.keys(BERG_PANEL_DEFAULTS) as (keyof BergPanelAttributes)[];
+  static get observedAttributes(): string[] {
+    return Object.values(BERG_PANEL_ATTRIBUTE_BY_INPUT);
   }
 }
 

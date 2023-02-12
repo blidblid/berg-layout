@@ -1,18 +1,14 @@
 import { InjectionToken } from '@angular/core';
 import {
-  BergLayoutAttributesCamelCased,
-  BERG_LAYOUT_DEFAULTS_CAMEL_CASED,
+  BergLayoutInputs as BergLayoutInputsCore,
+  BERG_LAYOUT_DEFAULT_INPUTS as BERG_LAYOUT_DEFAULTS_INPUTS_CORE,
 } from '@berg-layout/core';
 
 /** Inputs of berg-layout. */
-export type BergLayoutInputs = BergLayoutAttributesCamelCased;
-
-export type BergLayoutComponentInputs = {
-  [P in keyof BergLayoutInputs]: BergLayoutInputs[P] | null;
-};
+export type BergLayoutInputs = BergLayoutInputsCore;
 
 /** Default inputs of berg-layout. */
-export const BERG_LAYOUT_DEFAULT_INPUTS = BERG_LAYOUT_DEFAULTS_CAMEL_CASED;
+export const BERG_LAYOUT_DEFAULT_INPUTS = BERG_LAYOUT_DEFAULTS_INPUTS_CORE;
 
 /** Injection token used to set the default berg-layout inputs. */
 export const BERG_LAYOUT_INPUTS = new InjectionToken<BergLayoutInputs>(

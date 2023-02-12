@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 /** Slots where panels can be inserted. */
 export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
 
-/** Attributes of berg-panel. */
-export interface BergPanelAttributes {
+/** Inputs of berg-panel. */
+export interface BergPanelInputs {
   /** Name of the content projection slot. */
   slot: BergPanelSlot;
 
@@ -15,26 +15,26 @@ export interface BergPanelAttributes {
   collapsed: boolean;
 
   /** Whether resizing is disabled. */
-  'resize-disabled': boolean;
+  resizeDisabled: boolean;
 
   /** Size of the panel. */
   size: number;
 
   /** Min size of the panel */
-  'min-size': number | null;
+  minSize: number | null;
 
   /** Max size of the panel. */
-  'max-size': number | null;
+  maxSize: number | null;
 
   /**
-   * Controls how panel events update panel attributes.
-   * With "auto", panel events automatically update panel attributes.
-   * With "none", panel events never update panel attributes.
+   * Controls how panel events update panel inputs.
+   * With "auto", panel events automatically update panel inputs.
+   * With "none", panel events never update panel inputs.
    */
-  'event-binding-mode': BergPanelEventBindingMode;
+  eventBindingMode: BergPanelEventBindingMode;
 }
 
-export type BergPanelAttribute = keyof BergPanelAttributes;
+export type BergPanelInput = keyof BergPanelInputs;
 
 /** Outputs that panels emit. */
 export interface BergPanelOutputs {
@@ -51,27 +51,4 @@ export type BergPanelEventBindingMode = 'auto' | 'none';
 export interface BergPanelResizeEvent {
   event: MouseEvent;
   size: number;
-}
-
-// prefer picking properties since those properties includes documentation
-export interface BergPanelAttributesCamelCased
-  extends Pick<
-    BergPanelAttributes,
-    'slot' | 'absolute' | 'collapsed' | 'size'
-  > {
-  /** Whether resizing is disabled. */
-  resizeDisabled: BergPanelAttributes['resize-disabled'];
-
-  /** Min size of the panel */
-  minSize: BergPanelAttributes['min-size'];
-
-  /** Max size of the panel */
-  maxSize: BergPanelAttributes['max-size'];
-
-  /**
-   * Controls how panel events update panel attributes.
-   * With "auto", panel events automatically update panel attributes.
-   * With "none", panel events never update panel attributes.
-   */
-  eventBindingMode: BergPanelAttributes['event-binding-mode'];
 }

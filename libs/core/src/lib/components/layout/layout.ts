@@ -2,7 +2,12 @@ import { fromEvent, merge, Observable } from 'rxjs';
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergPanelSlot } from '../panel';
 import { WebComponent } from '../web-component';
-import { BERG_LAYOUT_DEFAULTS, BERG_LAYOUT_TAG_NAME } from './layout-config';
+import {
+  BERG_LAYOUT_ATTRIBUTE_BY_INPUT,
+  BERG_LAYOUT_DEFAULT_INPUTS,
+  BERG_LAYOUT_INPUT_BY_ATTRIBUTE,
+  BERG_LAYOUT_TAG_NAME,
+} from './layout-config';
 import {
   BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS,
   BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS,
@@ -10,13 +15,13 @@ import {
   BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS,
 } from './layout-config-private';
-import { BergLayoutAttributes } from './layout-model';
+import { BergLayoutInputs } from './layout-model';
 import {
   validateBergLayoutBottomPosition,
   validateBergLayoutTopPosition,
 } from './layout-util-private';
 
-export class BergLayoutElement extends WebComponent<BergLayoutAttributes> {
+export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
   /** @hidden */
   resizeToggles = {
     top: this.createResizeToggleElement('top'),
@@ -27,74 +32,75 @@ export class BergLayoutElement extends WebComponent<BergLayoutAttributes> {
 
   constructor() {
     super(
-      BERG_LAYOUT_DEFAULTS,
+      BERG_LAYOUT_DEFAULT_INPUTS,
       {
-        'resize-disabled': coerceBooleanProperty,
-        'resize-preview-delay': coerceNumberProperty,
-        'resize-two-dimensions': coerceBooleanProperty,
-        'top-left-position': validateBergLayoutTopPosition,
-        'top-right-position': validateBergLayoutTopPosition,
-        'bottom-left-position': validateBergLayoutBottomPosition,
-        'bottom-right-position': validateBergLayoutBottomPosition,
-        'top-inset': coerceNumberProperty,
-        'right-inset': coerceNumberProperty,
-        'bottom-inset': coerceNumberProperty,
-        'left-inset': coerceNumberProperty,
+        resizeDisabled: coerceBooleanProperty,
+        resizePreviewDelay: coerceNumberProperty,
+        resizeTwoDimensions: coerceBooleanProperty,
+        topLeftPosition: validateBergLayoutTopPosition,
+        topRightPosition: validateBergLayoutTopPosition,
+        bottomLeftPosition: validateBergLayoutBottomPosition,
+        bottomRightPosition: validateBergLayoutBottomPosition,
+        topInset: coerceNumberProperty,
+        rightInset: coerceNumberProperty,
+        bottomInset: coerceNumberProperty,
+        leftInset: coerceNumberProperty,
       },
       {
-        'top-left-position': () => {
-          if (this.values['top-left-position'] === 'above') {
+        topLeftPosition: () => {
+          if (this.values.topLeftPosition === 'above') {
             this.classList.add(BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS);
           } else {
             this.classList.remove(BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS);
           }
         },
-        'top-right-position': () => {
-          if (this.values['top-right-position'] === 'above') {
+        topRightPosition: () => {
+          if (this.values.topRightPosition === 'above') {
             this.classList.add(BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS);
           } else {
             this.classList.remove(BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS);
           }
         },
-        'bottom-left-position': () => {
-          if (this.values['bottom-left-position'] === 'below') {
+        bottomLeftPosition: () => {
+          if (this.values.bottomLeftPosition === 'below') {
             this.classList.add(BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS);
           } else {
             this.classList.remove(BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS);
           }
         },
-        'bottom-right-position': () => {
-          if (this.values['bottom-right-position'] === 'below') {
+        bottomRightPosition: () => {
+          if (this.values.bottomRightPosition === 'below') {
             this.classList.add(BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS);
           } else {
             this.classList.remove(BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS);
           }
         },
-        'top-inset': () => {
+        topInset: () => {
           this.style.setProperty(
             '--berg-layout-top-inset',
-            `${this.values['top-inset']}px`
+            `${this.values.topInset}px`
           );
         },
-        'right-inset': () => {
+        rightInset: () => {
           this.style.setProperty(
             '--berg-layout-right-inset',
-            `${this.values['right-inset']}px`
+            `${this.values.rightInset}px`
           );
         },
-        'bottom-inset': () => {
+        bottomInset: () => {
           this.style.setProperty(
             '--berg-layout-bottom-inset',
-            `${this.values['bottom-inset']}px`
+            `${this.values.bottomInset}px`
           );
         },
-        'left-inset': () => {
+        leftInset: () => {
           this.style.setProperty(
             '--berg-layout-left-inset',
-            `${this.values['left-inset']}px`
+            `${this.values.leftInset}px`
           );
         },
-      }
+      },
+      BERG_LAYOUT_INPUT_BY_ATTRIBUTE
     );
   }
 
@@ -136,28 +142,28 @@ export class BergLayoutElement extends WebComponent<BergLayoutAttributes> {
 
   getSlotInset(slot: BergPanelSlot): number {
     if (slot === 'top') {
-      return this.values['top-inset'];
+      return this.values.topInset;
     }
 
     if (slot === 'right') {
-      return this.values['right-inset'];
+      return this.values.rightInset;
     }
 
     if (slot === 'bottom') {
-      return this.values['bottom-inset'];
+      return this.values.bottomInset;
     }
 
     if (slot === 'left') {
-      return this.values['left-inset'];
+      return this.values.leftInset;
     }
 
     return 0;
   }
 
-  protected getDefaultInput<T extends keyof BergLayoutAttributes>(
+  protected getDefaultInput<T extends keyof BergLayoutInputs>(
     input: T
-  ): BergLayoutAttributes[T] {
-    return BERG_LAYOUT_DEFAULTS[input];
+  ): BergLayoutInputs[T] {
+    return BERG_LAYOUT_DEFAULT_INPUTS[input];
   }
 
   private setInitialVariables(): void {
@@ -227,8 +233,8 @@ export class BergLayoutElement extends WebComponent<BergLayoutAttributes> {
     `;
   }
 
-  static get observedAttributes(): (keyof BergLayoutAttributes)[] {
-    return Object.keys(BERG_LAYOUT_DEFAULTS) as (keyof BergLayoutAttributes)[];
+  static get observedAttributes(): string[] {
+    return Object.values(BERG_LAYOUT_ATTRIBUTE_BY_INPUT);
   }
 }
 

@@ -15,11 +15,11 @@ import {
   BergLayoutTopPosition,
 } from '@berg-layout/core';
 import {
-  BergLayoutComponentInputs,
   BergLayoutInputs,
   BERG_LAYOUT_DEFAULT_INPUTS,
   BERG_LAYOUT_INPUTS,
 } from './layout-model';
+import { BergLayoutComponentInputs } from './layout-model-private';
 
 @Component({
   selector: 'berg-layout',

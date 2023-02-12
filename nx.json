@@ -18,12 +18,7 @@
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     },
     "test": {
-      "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.preset.js",
-        "{workspaceRoot}/karma.conf.js"
-      ]
+      "inputs": ["default", "^production", "{workspaceRoot}/karma.conf.js"]
     },
     "e2e": {
       "inputs": ["default", "^production"]

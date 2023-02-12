@@ -20,14 +20,6 @@
       "options": {
         "lintFilePatterns": ["libs/core/**/*.ts"]
       }
-    },
-    "test": {
-      "executor": "@angular-devkit/build-angular:karma",
-      "options": {
-        "tsConfig": "libs/core/tsconfig.spec.json",
-        "karmaConfig": "libs/core/karma.conf.js",
-        "polyfills": ["zone.js", "zone.js/testing"]
-      }
     }
   },
   "tags": []
