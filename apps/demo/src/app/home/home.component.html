@@ -1,11 +1,11 @@
 <app-list>
-  <app-list-item *ngFor="let demo of demos">
-    <app-card [routerLink]="demo.routerLink">
+  <app-list-item *ngFor="let feature of features">
+    <app-card [routerLink]="feature.path">
       <app-card-title>
-        {{demo.name}}
+        {{ feature.name }}
       </app-card-title>
 
-      <app-icon [iconUrl]="demo.iconUrl"></app-icon>
+      <app-icon [iconUrl]="feature.iconUrl"></app-icon>
     </app-card>
   </app-list-item>
 </app-list>

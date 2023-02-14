@@ -176,10 +176,13 @@
 <ng-container *ngIf="view === 'code'">
   <pre><code class="language-html"><app-highlight-code [code]="html"></app-highlight-code></code></pre>
 
-  <h4>Style it with SASS...</h4>
+  <h4>Import</h4>
+  <pre><code class="language-ts"><app-highlight-code [code]="importDeclaration"></app-highlight-code></code></pre>
+
+  <h4>SASS</h4>
   <pre><code class="language-scss"><app-highlight-code [code]="scss"></app-highlight-code></code></pre>
 
-  <h4>...or prebuilt CSS</h4>
+  <h4>CSS</h4>
   <pre><code class="language-css"><app-highlight-code [code]="css"></app-highlight-code></code></pre>
 </ng-container>
 

@@ -18,6 +18,7 @@ import { connectFormValue, LayoutRx } from '../../rx';
   },
 })
 export class EditorComponent {
+  @Input() importDeclaration: string | null;
   @Input() css: string | null;
   @Input() html: string | null;
   @Input() scss: string | null;
@@ -75,12 +76,12 @@ export class EditorComponent {
       );
 
       connectFormValue(
-        this.layoutRx[slot].remove,
+        this.layoutRx.remove[slot],
         this.panelFormControls[slot].remove
       );
     }
 
-    connectFormValue(this.layoutRx.layout.theme, this.layoutFormControls.theme);
+    connectFormValue(this.layoutRx.theme, this.layoutFormControls.theme);
 
     connectFormValue(
       this.layoutRx.layout.topLeftPosition,

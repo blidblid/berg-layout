@@ -1,17 +1,38 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Directive } from '@angular/core';
-import { BergPanelResizeEvent } from '@berg-layout/angular';
-import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { EditorView } from '../lib/components';
-import { LayoutRx, SlotWithInputs } from '../lib/rx';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  ViewEncapsulation,
+} from '@angular/core';
+import { BergPanelResizeEvent, BergPanelSlot } from '@berg-layout/core';
+import { combineLatest, map, Subject, takeUntil } from 'rxjs';
+import { EditorView } from '../../lib/components';
+import { LayoutRx } from '../../lib/rx';
+import { CodePrinter } from '../code';
 
-@Directive()
-export class DemoBase {
+@Component({
+  templateUrl: './demo.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class DemoComponent implements OnDestroy {
   view: EditorView = 'code';
 
   topSize = 80;
   bottomSize = 49;
+
+  html$ = combineLatest([
+    this.rx.layout$,
+    this.rx.top$,
+    this.rx.right$,
+    this.rx.bottom$,
+    this.rx.left$,
+  ]).pipe(
+    map(([layout, top, right, bottom, left]) => {
+      return this.codePrinter.printHtml(layout, { top, right, bottom, left });
+    })
+  );
 
   private collapsePanelAtSize = 25;
   private initialLeftSize = 55;
@@ -45,13 +66,14 @@ export class DemoBase {
   private destroySub = new Subject<void>();
 
   constructor(
+    protected codePrinter: CodePrinter,
     protected rx: LayoutRx,
     protected breakpointObserver: BreakpointObserver
   ) {
     this.subscribe();
   }
 
-  onResized(slot: SlotWithInputs, event: BergPanelResizeEvent | Event): void {
+  onResized(slot: BergPanelSlot, event: BergPanelResizeEvent | Event): void {
     const resizeEvent = event instanceof CustomEvent ? event.detail : event;
 
     if (resizeEvent.size < this.collapsePanelAtSize) {
@@ -71,7 +93,7 @@ export class DemoBase {
     }
   }
 
-  onBackdropClicked(slot: SlotWithInputs): void {
+  onBackdropClicked(slot: BergPanelSlot): void {
     this.rx[slot].collapsed.next(true);
   }
 

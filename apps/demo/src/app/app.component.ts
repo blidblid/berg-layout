@@ -19,7 +19,7 @@ export class AppComponent {
     @Inject(DOCUMENT) private document: Document,
     private layoutRx: LayoutRx
   ) {
-    this.layoutRx.layout.theme
+    this.layoutRx.theme
       .pipe(
         map(
           (style) => `app-root-${style.toLocaleLowerCase().replace(/\s/, '-')}`

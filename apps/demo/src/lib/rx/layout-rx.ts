@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
-import { BERG_LAYOUT_DEFAULT_INPUTS } from '@berg-layout/angular';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {
-  Layout,
-  ObservableProperties,
-  Panel,
-  SlotWithInputs,
-} from './layout-model';
+  BergLayoutInputs,
+  BERG_LAYOUT_DEFAULT_INPUTS,
+} from '@berg-layout/angular';
 import {
-  angularInputPrinter,
-  toCss,
-  toHtml,
-  toScss,
-  webComponentInputPrinter,
-} from './layout-util';
+  BergPanelInputs,
+  BergPanelSlot,
+  BERG_PANEL_DEFAULT_INPUTS,
+} from '@berg-layout/core';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+import { ObservableProperties } from './layout-model';
+import { toCss, toScss } from './layout-util';
 
 @Injectable({
   providedIn: 'root',
@@ -27,93 +24,89 @@ export class LayoutRx {
     { slot: 'left', name: 'Left' },
   ];
 
-  edit$ = new BehaviorSubject(this.slots[3]);
+  edit = new BehaviorSubject(this.slots[3]);
+  theme = new BehaviorSubject('Dark');
 
+  center = this.createPanelInputs('center');
   top = this.createPanelInputs('top');
   right = this.createPanelInputs('right');
-  bottom = this.createPanelInputs('bottom', true);
+  bottom = this.createPanelInputs('bottom');
   left = this.createPanelInputs('left');
 
-  layout = {
-    theme: new BehaviorSubject('Dark'),
-    resizeDisabled: new BehaviorSubject(
-      BERG_LAYOUT_DEFAULT_INPUTS.resizeDisabled
-    ),
-    resizeTwoDimensions: new BehaviorSubject(
-      BERG_LAYOUT_DEFAULT_INPUTS.resizeTwoDimensions
-    ),
-    resizePreviewDelay: new BehaviorSubject(
-      BERG_LAYOUT_DEFAULT_INPUTS.resizePreviewDelay
-    ),
-    topLeftPosition: new BehaviorSubject(
-      BERG_LAYOUT_DEFAULT_INPUTS.topLeftPosition
-    ),
-    topRightPosition: new BehaviorSubject(
-      BERG_LAYOUT_DEFAULT_INPUTS.topRightPosition
-    ),
-    bottomLeftPosition: new BehaviorSubject(
-      BERG_LAYOUT_DEFAULT_INPUTS.bottomLeftPosition
-    ),
-    bottomRightPosition: new BehaviorSubject(
-      BERG_LAYOUT_DEFAULT_INPUTS.bottomRightPosition
-    ),
-    topInset: new BehaviorSubject(BERG_LAYOUT_DEFAULT_INPUTS.topInset),
-    rightInset: new BehaviorSubject(BERG_LAYOUT_DEFAULT_INPUTS.rightInset),
-    bottomInset: new BehaviorSubject(BERG_LAYOUT_DEFAULT_INPUTS.bottomInset),
-    leftInset: new BehaviorSubject(BERG_LAYOUT_DEFAULT_INPUTS.leftInset),
+  remove = {
+    top: new BehaviorSubject(false),
+    right: new BehaviorSubject(false),
+    bottom: new BehaviorSubject(false),
+    left: new BehaviorSubject(false),
   };
 
-  layout$: Observable<Layout> = combineLatest([
-    this.observeProperties(this.top),
-    this.observeProperties(this.right),
-    this.observeProperties(this.bottom),
-    this.observeProperties(this.left),
-    this.observeProperties(this.layout),
+  layout = Object.entries(BERG_LAYOUT_DEFAULT_INPUTS).reduce(
+    (acc, [key, value]) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (acc as any)[key] = new BehaviorSubject(value);
+      return acc;
+    },
+    {} as {
+      [P in keyof BergLayoutInputs]: BehaviorSubject<BergLayoutInputs[P]>;
+    }
+  );
+
+  layout$: Observable<BergLayoutInputs> = this.observeProperties(this.layout);
+
+  top$: Observable<BergPanelInputs> = this.observeProperties(this.top);
+  right$: Observable<BergPanelInputs> = this.observeProperties(this.right);
+  bottom$: Observable<BergPanelInputs> = this.observeProperties(this.bottom);
+  left$: Observable<BergPanelInputs> = this.observeProperties(this.left);
+
+  remove$ = this.observeProperties(this.remove);
+
+  css$: Observable<string> = this.theme.pipe(map((style) => toCss(style)));
+  scss$: Observable<string> = this.theme.pipe(map((style) => toScss(style)));
+
+  inputs$ = combineLatest([
+    this.layout$,
+    this.top$,
+    this.right$,
+    this.bottom$,
+    this.left$,
+    this.remove$,
   ]).pipe(
-    map(([top, right, bottom, left, layout]) => {
+    map(([layout, top, right, bottom, left, remove]) => {
       return {
-        ...layout,
+        layout,
         top,
         right,
         bottom,
         left,
+        remove,
       };
     })
   );
 
-  angularHtml$: Observable<string> = this.layout$.pipe(
-    map((layout) =>
-      toHtml(layout, angularInputPrinter, 'berg-panel', 'berg-layout')
-    )
-  );
+  constructor() {
+    this.changeDefaults();
+  }
 
-  webComponentHtml$: Observable<string> = this.layout$.pipe(
-    map((layout) =>
-      toHtml(
-        layout,
-        webComponentInputPrinter,
-        'berg-panel-web-component',
-        'berg-layout-web-component'
-      )
-    )
-  );
+  private changeDefaults(): void {
+    this.bottom.collapsed.next(true);
+  }
 
-  css$: Observable<string> = this.layout.theme.pipe(
-    map((style) => toCss(style))
-  );
+  private createPanelInputs(slot: BergPanelSlot): {
+    [P in keyof BergPanelInputs]: BehaviorSubject<BergPanelInputs[P]>;
+  } {
+    return Object.entries(BERG_PANEL_DEFAULT_INPUTS).reduce(
+      (acc, [key, value]) => {
+        if (key === 'slot') {
+          acc[key] = new BehaviorSubject(slot);
+        } else {
+          acc[key] = new BehaviorSubject(value);
+        }
 
-  scss$: Observable<string> = this.layout.theme.pipe(
-    map((style) => toScss(style))
-  );
-
-  private createPanelInputs(slot: SlotWithInputs, collapsed = false) {
-    return {
-      slot: of(slot),
-      absolute: new BehaviorSubject(false),
-      collapsed: new BehaviorSubject(collapsed),
-      remove: new BehaviorSubject(false),
-      resizeDisabled: new BehaviorSubject(false),
-    };
+        return acc;
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      {} as any
+    );
   }
 
   private observeProperties<T>(
@@ -121,9 +114,10 @@ export class LayoutRx {
   ): Observable<T> {
     return combineLatest(
       Object.entries(properties).map(([key, observable]) => {
-        // the rxjs map overload is acting up
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (observable as any).pipe(
-          map((value: any) => {
+          distinctUntilChanged(),
+          map((value) => {
             return { [key]: value };
           })
         );
@@ -135,7 +129,7 @@ export class LayoutRx {
             ...acc,
             ...curr,
           };
-        }, {} as Panel);
+        }, {} as T);
       })
     );
   }

@@ -3,6 +3,7 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
+import { FEATURES } from '../config';
 
 @Component({
   selector: 'app-home',
@@ -15,16 +16,5 @@ import {
   },
 })
 export class HomeComponent {
-  demos = [
-    {
-      name: 'Angular',
-      routerLink: '/angular',
-      iconUrl: 'assets/angular.png',
-    },
-    {
-      name: 'Web component',
-      routerLink: '/web-component',
-      iconUrl: 'assets/web-component.png',
-    },
-  ];
+  features = FEATURES;
 }

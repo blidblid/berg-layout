@@ -6,12 +6,12 @@ import {
   MaterialSharedModule,
   ToolbarModule,
 } from '../../lib/components';
-import { WebComponentDemoComponent } from './web-component-demo.component';
+import { DemoComponent } from './demo.component';
 
 @NgModule({
-  declarations: [WebComponentDemoComponent],
-  exports: [WebComponentDemoComponent],
+  declarations: [DemoComponent],
+  exports: [DemoComponent],
   imports: [CommonModule, MaterialSharedModule, EditorModule, ToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class WebComponentDemoModule {}
+export class DemoModule {}

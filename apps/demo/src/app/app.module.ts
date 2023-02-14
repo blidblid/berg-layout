@@ -2,22 +2,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularDemoModule } from './angular-demo/angular-demo.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeModule } from './home/home.module';
-import { WebComponentDemoModule } from './web-component-demo/web-component-demo.module';
+import { DemoModule } from './demo';
+import { HomeModule } from './home';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    AngularDemoModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    DemoModule,
     HomeModule,
     HttpClientModule,
-    WebComponentDemoModule,
   ],
   bootstrap: [AppComponent],
 })

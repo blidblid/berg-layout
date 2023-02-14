@@ -1,21 +1,10 @@
 // applies styles outside of the shadow dom
 @mixin core($overrides: ()) {
-  @include layout();
   @include panel();
   @include colors();
   @include z-index();
   @include resizing($overrides);
   @include positioning();
-}
-
-@mixin layout {
-  .berg-layout {
-    position: fixed;
-    top: var(--berg-layout-top-inset);
-    right: var(--berg-layout-right-inset);
-    bottom: var(--berg-layout-bottom-inset);
-    left: var(--berg-layout-left-inset);
-  }
 }
 
 @mixin panel {

@@ -8,8 +8,9 @@
 
   .app-list-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 0.6fr));
     grid-gap: 1vw;
+    justify-content: center;
 
     .app-list-item {
       aspect-ratio: 1;
