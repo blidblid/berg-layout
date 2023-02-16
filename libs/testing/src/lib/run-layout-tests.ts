@@ -375,6 +375,28 @@ export const runLayoutTests = (
       });
     });
 
+    describe('resizing', () => {
+      it('should resize top panel', async () => {
+        await harness.resize('top', 200);
+        expect(harness.assertedTop.getBoundingClientRect().height).toBe(200);
+      });
+
+      it('should resize right panel', async () => {
+        await harness.resize('right', 200);
+        expect(harness.assertedRight.getBoundingClientRect().width).toBe(200);
+      });
+
+      it('should resize bottom panel', async () => {
+        await harness.resize('bottom', 200);
+        expect(harness.assertedBottom.getBoundingClientRect().height).toBe(200);
+      });
+
+      it('should resize left panel', async () => {
+        await harness.resize('left', 200);
+        expect(harness.assertedLeft.getBoundingClientRect().width).toBe(200);
+      });
+    });
+
     describe('size', () => {
       it('should set top panel size', async () => {
         await render({

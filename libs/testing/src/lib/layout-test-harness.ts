@@ -83,6 +83,39 @@ export class BergLayoutTestHarness {
 
   constructor(public getLayout: () => BergLayoutElement) {}
 
+  previewResize(slot: BergPanelSlot): void {
+    const resizeToggle = this.getResizeToggle(slot);
+    resizeToggle.dispatchEvent(new MouseEvent('mousemove'));
+  }
+
+  async resize(slot: BergPanelSlot, size: number): Promise<void> {
+    this.previewResize(slot);
+
+    const layout = this.getLayout();
+    layout.dispatchEvent(new MouseEvent('mousedown'));
+
+    let client = size;
+
+    if (slot === 'right') {
+      client = window.innerWidth - size;
+    }
+
+    if (slot === 'bottom') {
+      client = window.innerHeight - size;
+    }
+
+    const mouseMoveEvent = new MouseEvent('mousemove', {
+      clientX: client,
+      clientY: client,
+    });
+
+    layout.dispatchEvent(mouseMoveEvent);
+
+    await this.tickAnimationFrame();
+
+    document.dispatchEvent(new MouseEvent('mouseup'));
+  }
+
   isPanelCollapsed(slot: BergPanelSlot): boolean {
     return !!this.getLayout().querySelector(
       `.berg-panel-${slot}.berg-panel-collapsed`
@@ -93,6 +126,18 @@ export class BergLayoutTestHarness {
     return this.getLayoutShadowRoot().querySelector<HTMLElement>(
       ` .berg-panel-${slot}-backdrop`
     );
+  }
+
+  getResizeToggle(slot: BergPanelSlot): HTMLElement {
+    const resizeToggle = this.getAssertedPanel(slot).querySelector<HTMLElement>(
+      '.berg-panel-resize-toggle'
+    );
+
+    if (!resizeToggle) {
+      throw new Error(`No ${slot} panel resize toggle found`);
+    }
+
+    return resizeToggle;
   }
 
   getAssertedBackdrop(slot: BergPanelSlot): HTMLElement {
@@ -118,5 +163,29 @@ export class BergLayoutTestHarness {
     }
 
     return shadowRoot;
+  }
+
+  private getAssertedPanel(slot: BergPanelSlot): BergPanelElement {
+    if (slot === 'center') {
+      return this.assertedLeft;
+    }
+
+    if (slot === 'top') {
+      return this.assertedTop;
+    }
+
+    if (slot === 'right') {
+      return this.assertedRight;
+    }
+
+    if (slot === 'bottom') {
+      return this.assertedBottom;
+    }
+
+    return this.assertedLeft;
+  }
+
+  private tickAnimationFrame(): Promise<void> {
+    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
   }
 }
