@@ -37,7 +37,13 @@ module.exports = () => {
     colors: true,
     logLevel: constants.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'ChromeHeadlessCI'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox'],
+      },
+    },
     singleRun: true,
     restartOnFileChange: true,
   };
