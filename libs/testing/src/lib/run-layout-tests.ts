@@ -197,6 +197,184 @@ export const runLayoutTests = (
       });
     });
 
+    describe('stacking', () => {
+      it('should render top panel on top of left', async () => {
+        await render({
+          layout: {
+            topLeftPosition: 'above',
+          },
+        });
+
+        expect(
+          parseInt(getComputedStyle(harness.assertedTop).zIndex)
+        ).toBeGreaterThan(
+          parseInt(getComputedStyle(harness.assertedLeft).zIndex)
+        );
+      });
+
+      it('should render top panel on top of right', async () => {
+        await render({
+          layout: {
+            topRightPosition: 'above',
+          },
+        });
+
+        expect(
+          parseInt(getComputedStyle(harness.assertedTop).zIndex)
+        ).toBeGreaterThan(
+          parseInt(getComputedStyle(harness.assertedRight).zIndex)
+        );
+      });
+
+      it('should render bottom panel on top of left', async () => {
+        await render({
+          layout: {
+            bottomLeftPosition: 'below',
+          },
+        });
+
+        expect(
+          parseInt(getComputedStyle(harness.assertedBottom).zIndex)
+        ).toBeGreaterThan(
+          parseInt(getComputedStyle(harness.assertedLeft).zIndex)
+        );
+      });
+
+      it('should render bottom panel on top of right', async () => {
+        await render({
+          layout: {
+            bottomRightPosition: 'below',
+          },
+        });
+
+        expect(
+          parseInt(getComputedStyle(harness.assertedBottom).zIndex)
+        ).toBeGreaterThan(
+          parseInt(getComputedStyle(harness.assertedRight).zIndex)
+        );
+      });
+
+      it('should render the backdrop above all other panels except an absolute top panel', async () => {
+        await render({
+          top: {
+            absolute: true,
+          },
+        });
+
+        const backdrop = harness.getAssertedBackdrop('top');
+        const top = harness.assertedTop;
+        const right = harness.assertedRight;
+        const bottom = harness.assertedBottom;
+        const left = harness.assertedLeft;
+
+        expect(parseInt(getComputedStyle(top).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(backdrop).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(right).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(bottom).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(left).zIndex)
+        );
+      });
+
+      it('should render the backdrop above all other panels except an absolute right panel', async () => {
+        await render({
+          right: {
+            absolute: true,
+          },
+        });
+
+        const backdrop = harness.getAssertedBackdrop('right');
+        const top = harness.assertedTop;
+        const right = harness.assertedRight;
+        const bottom = harness.assertedBottom;
+        const left = harness.assertedLeft;
+
+        expect(parseInt(getComputedStyle(right).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(backdrop).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(top).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(bottom).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(left).zIndex)
+        );
+      });
+
+      it('should render the backdrop above all other panels except an absolute bottom panel', async () => {
+        await render({
+          bottom: {
+            absolute: true,
+          },
+        });
+
+        const backdrop = harness.getAssertedBackdrop('bottom');
+        const top = harness.assertedTop;
+        const right = harness.assertedRight;
+        const bottom = harness.assertedBottom;
+        const left = harness.assertedLeft;
+
+        expect(parseInt(getComputedStyle(bottom).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(backdrop).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(top).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(right).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(left).zIndex)
+        );
+      });
+
+      it('should render the backdrop above all other panels except an absolute left panel', async () => {
+        await render({
+          left: {
+            absolute: true,
+          },
+        });
+
+        const backdrop = harness.getAssertedBackdrop('left');
+        const top = harness.assertedTop;
+        const right = harness.assertedRight;
+        const bottom = harness.assertedBottom;
+        const left = harness.assertedLeft;
+
+        expect(parseInt(getComputedStyle(left).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(backdrop).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(top).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(right).zIndex)
+        );
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBeGreaterThan(
+          parseInt(getComputedStyle(bottom).zIndex)
+        );
+      });
+    });
+
     describe('size', () => {
       it('should set top panel size', async () => {
         await render({
