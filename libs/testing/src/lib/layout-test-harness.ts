@@ -94,19 +94,19 @@ export class BergLayoutTestHarness {
     const layout = this.getLayout();
     layout.dispatchEvent(new MouseEvent('mousedown'));
 
-    let client = size;
+    let clientXY = size;
 
     if (slot === 'right') {
-      client = window.innerWidth - size;
+      clientXY = window.innerWidth - size;
     }
 
     if (slot === 'bottom') {
-      client = window.innerHeight - size;
+      clientXY = window.innerHeight - size;
     }
 
     const mouseMoveEvent = new MouseEvent('mousemove', {
-      clientX: client,
-      clientY: client,
+      clientX: clientXY,
+      clientY: clientXY,
     });
 
     layout.dispatchEvent(mouseMoveEvent);

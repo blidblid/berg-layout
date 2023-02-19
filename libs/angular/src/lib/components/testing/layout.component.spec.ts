@@ -73,7 +73,39 @@ describe('Angular implementation', () => {
   runLayoutTests(harness, render);
 
   describe('output re-emission', () => {
-    it('should emit backdropClicked when backdrop is clicked', async () => {
+    it('should re-emit afterCollapsed and afterExpanded', async () => {
+      const panelAnimationDuration = 400;
+
+      await render({
+        top: {
+          collapsed: true,
+        },
+      });
+
+      expect(fixture.componentInstance.hasAfterCollapsedEmitted).toBe(false);
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, panelAnimationDuration)
+      );
+
+      expect(fixture.componentInstance.hasAfterCollapsedEmitted).toBe(true);
+
+      await render({
+        top: {
+          collapsed: false,
+        },
+      });
+
+      expect(fixture.componentInstance.hasAfterExpandedEmitted).toBe(false);
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, panelAnimationDuration)
+      );
+
+      expect(fixture.componentInstance.hasAfterExpandedEmitted).toBe(true);
+    });
+
+    it('should re-emit backdropClicked', async () => {
       await render({
         top: {
           absolute: true,
@@ -138,6 +170,8 @@ describe('Angular implementation', () => {
         [collapsed]="top.collapsed"
         [resizeDisabled]="top.resizeDisabled"
         (backdropClicked)="onBackdropClicked($event)"
+        (afterCollapsed)="hasAfterCollapsedEmitted = true"
+        (afterExpanded)="hasAfterExpandedEmitted = true"
       >
       </berg-panel>
 
@@ -200,6 +234,9 @@ export class LayoutTestComponent {
   showRight = true;
   showBottom = true;
   showLeft = true;
+
+  hasAfterCollapsedEmitted = false;
+  hasAfterExpandedEmitted = false;
 
   backdropEvent: MouseEvent | undefined;
 

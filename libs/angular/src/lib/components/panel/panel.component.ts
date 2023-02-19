@@ -111,14 +111,28 @@ export class BergPanelComponent
   }
   private _eventBindingMode = this.getDefaultInput('eventBindingMode');
 
-  @Output() resized = new EventEmitter<BergPanelResizeEvent>();
+  @Output() afterCollapsed = new EventEmitter<void>();
+  @Output() afterExpanded = new EventEmitter<void>();
   @Output() backdropClicked = new EventEmitter<MouseEvent>();
+  @Output() resized = new EventEmitter<BergPanelResizeEvent>();
 
   constructor(
     @Inject(BERG_PANEL_INPUTS)
     @Optional()
     protected inputs: BergPanelInputs
   ) {}
+
+  onAfterCollapsed(event: Event): void {
+    if (event instanceof CustomEvent) {
+      this.afterCollapsed.emit();
+    }
+  }
+
+  onAfterExpanded(event: Event): void {
+    if (event instanceof CustomEvent) {
+      this.afterExpanded.emit();
+    }
+  }
 
   onBackdropClicked(event: Event): void {
     if (event instanceof CustomEvent) {

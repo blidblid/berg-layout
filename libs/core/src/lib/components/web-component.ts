@@ -1,11 +1,11 @@
 import {
   asapScheduler,
-  BehaviorSubject,
   buffer,
   debounceTime,
   filter,
   Observable,
   OperatorFunction,
+  ReplaySubject,
   share,
   Subject,
   takeUntil,
@@ -24,7 +24,7 @@ export class WebComponent<T extends object> extends HTMLElement {
   private subjects = Object.keys(this.defaults).reduce(
     (acc, key) =>
       Object.assign(acc, {
-        [key]: new BehaviorSubject(this.defaults[key as keyof T]),
+        [key]: new ReplaySubject(1),
       }),
     {} as WebComponentSubjects<T>
   );
@@ -41,7 +41,7 @@ export class WebComponent<T extends object> extends HTMLElement {
   protected disconnectedSub = new Subject<void>();
   private attributeChangedSub = new Subject<WebComponentAttributeChanged<T>>();
 
-  private attributeChanges$ = this.attributeChangedSub.pipe(
+  protected attributeChanges$ = this.attributeChangedSub.pipe(
     this.bufferDebounceTime(0)
   );
 

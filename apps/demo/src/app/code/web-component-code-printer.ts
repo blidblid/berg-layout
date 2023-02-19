@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import {
   BergLayoutInputs,
   BergPanelInputs,
@@ -7,6 +8,7 @@ import {
 } from '@berg-layout/core';
 import { CodePrinter } from './code-printer';
 
+@Injectable()
 export class WebComponentCodePrinter extends CodePrinter {
   importDeclaration = `import '@berg-layout/core';`;
   layoutTagName = 'berg-layout-web-component';

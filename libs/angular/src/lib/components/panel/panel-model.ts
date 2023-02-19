@@ -1,21 +1,19 @@
-import { InjectionToken } from '@angular/core';
+import { EventEmitter, InjectionToken } from '@angular/core';
 import {
   BergPanelInputs as BergPanelInputsCore,
+  BergPanelOutputs as BergPanelOutputsCore,
   BERG_PANEL_DEFAULT_INPUTS as BERG_PANEL_DEFAULT_INPUTS_CORE,
 } from '@berg-layout/core';
-import { Observable } from 'rxjs';
 
 /** Inputs of berg-panel. */
 export type BergPanelInputs = BergPanelInputsCore;
 
 /** Outputs that panels emit. */
-export interface BergPanelOutputs {
-  /** Emits when a user resizes the panel. */
-  resized: Observable<BergPanelResizeEvent>;
-
-  /** Emits whenever a user clicks a panel backdrop. */
-  backdropClicked: Observable<MouseEvent>;
-}
+export type BergPanelOutputs = {
+  [K in keyof BergPanelOutputsCore]: EventEmitter<
+    BergPanelOutputsCore[K] extends CustomEvent<infer T> ? T : never
+  >;
+};
 
 /** Injection token used to set the default berg-panel inputs. */
 export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(

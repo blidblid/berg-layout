@@ -5,6 +5,8 @@ import {
   fromEvent,
   merge,
   of,
+  skip,
+  timer,
 } from 'rxjs';
 import {
   debounceTime,
@@ -43,6 +45,7 @@ import { BergPanelInputs, BergPanelResizeEvent } from './panel-model';
 import {
   BACKDROP_ANIMATION_DURATION,
   BACKDROP_Z_INDEX,
+  PANEL_ANIMATION_DURATION,
   TWO_DIMENSION_COLLECTION_DISTANCE,
 } from './panel-model-private';
 import {
@@ -95,7 +98,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     })
   );
 
-  private startResizeEvent = this.previewing$.pipe(
+  private startResizeEvent$ = this.previewing$.pipe(
     switchMap((previewing) => {
       return previewing
         ? fromEvent<MouseEvent>(this.layout, 'mousedown')
@@ -109,11 +112,11 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   );
 
   private resizing$ = merge(
-    this.startResizeEvent.pipe(map(() => true)),
+    this.startResizeEvent$.pipe(map(() => true)),
     this.stopResizeEvent$.pipe(map(() => false))
   ).pipe(share(), startWith(false), distinctUntilChanged());
 
-  private resizeEvent$ = this.startResizeEvent.pipe(
+  private resizeEvent$ = this.startResizeEvent$.pipe(
     switchMap(() =>
       fromEvent<MouseEvent>(this.layout, 'mousemove').pipe(
         takeUntil(this.stopResizeEvent$)
@@ -122,6 +125,17 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     debounceTime(0, animationFrameScheduler),
     map((event) => this.createResizeEvent(event)),
     share()
+  );
+
+  private collapsedAnimationEnd$ = this.attributeChanges$.pipe(
+    // skip to avoid the replayed value
+    switchMap(() => this.changes.collapsed.pipe(skip(1))),
+    withLatestFrom(this.resizing$),
+    switchMap(([_, resizing]) => {
+      return timer(resizing ? 0 : PANEL_ANIMATION_DURATION).pipe(
+        takeUntil(this.changes.collapsed.pipe(skip(1)))
+      );
+    })
   );
 
   constructor() {
@@ -284,6 +298,18 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         BERG_PANEL_ENABLE_ANIMATION_DELAY
       );
     });
+  }
+
+  private subscribeToCollapsed(): void {
+    this.collapsedAnimationEnd$
+      .pipe(takeUntil(this.disconnectedSub))
+      .subscribe(() => {
+        if (this.values.collapsed) {
+          this.dispatchEvent(new CustomEvent('afterCollapsed'));
+        } else {
+          this.dispatchEvent(new CustomEvent('afterExpanded'));
+        }
+      });
   }
 
   private subscribeToResizing(): void {
@@ -493,6 +519,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
     this.classList.add(BERG_PANEL_CLASS);
     this.subscribeToResizing();
+    this.subscribeToCollapsed();
 
     const shadowRoot = this.shadowRoot ?? this.attachShadow({ mode: 'open' });
     shadowRoot.innerHTML = `

@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 /** Slots where panels can be inserted. */
 export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
 
@@ -39,10 +37,16 @@ export type BergPanelInput = keyof BergPanelInputs;
 /** Outputs that panels emit. */
 export interface BergPanelOutputs {
   /** Emits when a user resizes the panel. */
-  resized: Observable<BergPanelResizeEvent>;
+  resized: CustomEvent<BergPanelResizeEvent>;
 
   /** Emits whenever a user clicks a panel backdrop. */
-  backdropClicked: Observable<MouseEvent>;
+  backdropClicked: CustomEvent<MouseEvent>;
+
+  /** Emits when a panel has finished collapsing. */
+  afterCollapsed: CustomEvent<void>;
+
+  /** Emits when a panel has finished expanding. */
+  afterExpanded: CustomEvent<void>;
 }
 
 /** Binding modes that controls how events automatically update attributes. */
