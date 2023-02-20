@@ -1,18 +1,14 @@
-.berg-toolbar {
+.app-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  .berg-toolbar-logo {
+  .app-toolbar-logo {
     font-size: 20px;
   }
 
   .mat-icon {
     filter: grayscale(1);
-  }
-
-  .berg-toolbar-external-links {
-    display: flex;
   }
 
   .mat-stroked-button {

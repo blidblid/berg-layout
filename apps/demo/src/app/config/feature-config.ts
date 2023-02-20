@@ -34,7 +34,7 @@ export const FEATURES: Feature[] = [
   },
   {
     name: 'Web component',
-    path: 'web-component',
+    path: 'core',
     iconUrl: 'assets/web-component.png',
     component: DemoComponent,
     providers: [
