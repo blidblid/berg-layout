@@ -10,18 +10,22 @@ import { CodePrinter } from './code-printer';
 
 @Injectable()
 export class AngularCodePrinter extends CodePrinter {
+  importCommand = `npm i @berg-layout/core @berg-layout/angular`;
   importDeclaration = `import { BergLayoutModule } from '@berg-layout/angular';`;
   layoutTagName = 'berg-layout';
   panelTagName = 'berg-panel';
 
   printCss(theme: string): string {
-    return [`@import '~@berg-layout/core/prebuilt/${theme}.css';`].join('\n');
+    return `@import '@berg-layout/core/prebuilt/${theme}.css';`;
   }
 
   printScss(theme: string): string {
     return [
-      `@use '~@berg-layout/core' as layout;`,
-      `@include layout.${theme}();`,
+      `@use '@berg-layout/core' as layout;`,
+      '',
+      ':root {',
+      `  @include layout.${theme}();`,
+      '}',
     ].join('\n');
   }
 

@@ -101,7 +101,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private startResizeEvent$ = this.previewing$.pipe(
     switchMap((previewing) => {
       return previewing
-        ? fromEvent<MouseEvent>(this.layout, 'mousedown')
+        ? fromEvent<MouseEvent>(document.documentElement, 'mousedown')
         : EMPTY;
     })
   );
@@ -118,7 +118,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
   private resizeEvent$ = this.startResizeEvent$.pipe(
     switchMap(() =>
-      fromEvent<MouseEvent>(this.layout, 'mousemove').pipe(
+      fromEvent<MouseEvent>(document.documentElement, 'mousemove').pipe(
         takeUntil(this.stopResizeEvent$)
       )
     ),
