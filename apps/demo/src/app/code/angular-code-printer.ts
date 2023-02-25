@@ -15,7 +15,7 @@ export class AngularCodePrinter extends CodePrinter {
   panelTagName = 'berg-panel';
 
   printCss(theme: string): string {
-    return [`@import '~@berg-layout/core/styles/${theme}.css';`].join('\n');
+    return [`@import '~@berg-layout/core/prebuilt/${theme}.css';`].join('\n');
   }
 
   printScss(theme: string): string {

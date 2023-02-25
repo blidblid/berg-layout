@@ -16,8 +16,8 @@ export class WebComponentCodePrinter extends CodePrinter {
 
   printCss(theme: string): string {
     return [
-      `@import '~@berg-layout/core/styles/core.css';`,
-      `@import '~@berg-layout/core/styles/${theme}.css';`,
+      `@import '~@berg-layout/core/prebuilt/core.css';`,
+      `@import '~@berg-layout/core/prebuilt/${theme}.css';`,
     ].join('\n');
   }
 
