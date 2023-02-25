@@ -11,7 +11,7 @@
         "outputPath": "dist/libs/core",
         "main": "libs/core/src/index.ts",
         "tsConfig": "libs/core/tsconfig.lib.json",
-        "assets": ["libs/core/*.md"]
+        "assets": ["libs/core/*.md", "libs/core/**/*.scss"]
       }
     },
     "lint": {
@@ -19,6 +19,12 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/core/**/*.ts"]
+      }
+    },
+    "prebuild-styles": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx sass libs/core/src/lib/styles/prebuilt:dist/libs/core/prebuilt"
       }
     }
   },

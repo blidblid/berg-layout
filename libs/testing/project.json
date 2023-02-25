@@ -27,10 +27,7 @@
         "tsConfig": "libs/testing/tsconfig.spec.json",
         "karmaConfig": "libs/testing/karma.conf.js",
         "polyfills": ["zone.js", "zone.js/testing"],
-        "styles": [
-          "libs/styling/src/lib/prebuilt/core.scss",
-          "libs/styling/src/lib/prebuilt/dark.scss"
-        ]
+        "styles": ["libs/core/src/lib/styles/prebuilt/core.scss"]
       }
     }
   },

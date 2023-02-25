@@ -1,9 +1,12 @@
 {
   "name": "@berg-layout/angular",
-  "version": "0.0.1",
+  "version": "5.0.0-rc1",
+  "devDependencies": {
+    "@berg-layout/testing": "*"
+  },
   "peerDependencies": {
-    "@angular/common": "^15.1.0",
-    "@angular/core": "^15.1.0"
+    "@angular/common": "*",
+    "@angular/core": "*"
   },
   "dependencies": {
     "tslib": "^2.3.0"

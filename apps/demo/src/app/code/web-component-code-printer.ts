@@ -14,6 +14,21 @@ export class WebComponentCodePrinter extends CodePrinter {
   layoutTagName = 'berg-layout-web-component';
   panelTagName = 'berg-panel-web-component';
 
+  printCss(theme: string): string {
+    return [
+      `@import '~@berg-layout/core/styles/core.css';`,
+      `@import '~@berg-layout/core/styles/${theme}.css';`,
+    ].join('\n');
+  }
+
+  printScss(theme: string): string {
+    return [
+      `@use '~@berg-layout/core' as layout;`,
+      '@include layout.core();',
+      `@include layout.${theme}();`,
+    ].join('\n');
+  }
+
   printHtml(
     layout: Partial<BergLayoutInputs>,
     panels: Partial<Record<BergPanelSlot, Partial<BergLayoutInputs>>>

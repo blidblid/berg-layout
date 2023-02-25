@@ -1,8 +1,4 @@
 import {
-  coerceBooleanProperty,
-  coerceNumberProperty,
-} from '@angular/cdk/coercion';
-import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -12,7 +8,12 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { BergPanelEventBindingMode, BergPanelSlot } from '@berg-layout/core';
+import {
+  BergPanelEventBindingMode,
+  BergPanelSlot,
+  coerceBooleanProperty,
+  coerceNumberProperty,
+} from '@berg-layout/core';
 import {
   BergPanelInputs,
   BergPanelOutputs,

@@ -1,7 +1,7 @@
 @use 'sass:map';
-@use '../styling/border';
-@use '../styling/elevation';
-@use '../styling/theme';
+@use '../util/border';
+@use '../util/elevation';
+@use '../util/theme';
 
 @mixin quiet-light($overrides: ()) {
   $theme: map.merge(

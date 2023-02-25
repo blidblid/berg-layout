@@ -5,6 +5,9 @@ import { BergLayoutInputs, BergPanelSlot } from '@berg-layout/core';
 export abstract class CodePrinter {
   abstract importDeclaration: string;
 
+  abstract printCss(theme: string): string;
+  abstract printScss(theme: string): string;
+
   abstract printHtml(
     layout: Partial<BergLayoutInputs>,
     panels: Partial<Record<BergPanelSlot, Partial<BergLayoutInputs>>>

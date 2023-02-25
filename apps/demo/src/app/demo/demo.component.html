@@ -73,9 +73,9 @@
 
   <berg-panel-web-component slot="center">
     <app-editor
-      [css]="rx.css$ | async"
+      [css]="css$ | async"
       [html]="html$ | async"
-      [scss]="rx.scss$ | async"
+      [scss]="scss$ | async"
       [view]="view"
       [importDeclaration]="codePrinter.importDeclaration"
     >

@@ -1,7 +1,5 @@
-# react
+# @berg-layout/react
 
-This library was generated with [Nx](https://nx.dev).
+This is the React version of berg-layout.
 
-## Running unit tests
-
-Run `nx test react`.
+Check out the demo and docs [here](https://berg-layout.web.app/react).

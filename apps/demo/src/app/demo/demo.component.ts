@@ -34,6 +34,22 @@ export class DemoComponent implements OnDestroy {
     })
   );
 
+  css$ = this.rx.theme.pipe(
+    map((theme) => {
+      return this.codePrinter.printCss(
+        theme.replace(/\s/g, '-').toLocaleLowerCase()
+      );
+    })
+  );
+
+  scss$ = this.rx.theme.pipe(
+    map((theme) => {
+      return this.codePrinter.printScss(
+        theme.replace(/\s/g, '-').toLocaleLowerCase()
+      );
+    })
+  );
+
   private collapsePanelAtSize = 25;
   private initialLeftSize = 55;
   private expandedLeftSize = 160;

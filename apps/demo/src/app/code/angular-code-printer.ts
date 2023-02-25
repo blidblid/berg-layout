@@ -14,6 +14,17 @@ export class AngularCodePrinter extends CodePrinter {
   layoutTagName = 'berg-layout';
   panelTagName = 'berg-panel';
 
+  printCss(theme: string): string {
+    return [`@import '~@berg-layout/core/styles/${theme}.css';`].join('\n');
+  }
+
+  printScss(theme: string): string {
+    return [
+      `@use '~@berg-layout/core' as layout;`,
+      `@include layout.${theme}();`,
+    ].join('\n');
+  }
+
   printHtml(
     layout: Partial<BergLayoutInputs>,
     panels: Partial<Record<BergPanelSlot, Partial<BergLayoutInputs>>>

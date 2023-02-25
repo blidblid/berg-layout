@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use 'sass:math';
 @use '@angular/material' as mat;
-@use 'styling' as layout;
+@use 'core' as layout;
 @use './app';
 
 @tailwind base;

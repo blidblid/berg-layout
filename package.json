@@ -4,7 +4,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "npx nx run-many --target=build",
+    "build": "npx nx run-many --target=build && yarn prebuild-styles",
+    "prebuild-styles": "npx nx run-many --target=prebuild-styles",
     "test": "npx nx run-many --target=test --all --parallel",
     "test-ci": "npx nx run-many --target=test --all --parallel --browsers=ChromeHeadlessCI"
   },
@@ -59,6 +60,7 @@
     "@vitejs/plugin-react": "^3.0.0",
     "@vitest/ui": "^0.25.8",
     "autoprefixer": "^10.4.0",
+    "copyfiles": "^2.4.1",
     "cypress": "^12.2.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
@@ -85,7 +87,7 @@
     "prettier-plugin-organize-imports": "^3.2.2",
     "react-refresh": "^0.10.0",
     "react-test-renderer": "18.2.0",
-    "sass": "^1.55.0",
+    "sass": "^1.58.3",
     "tailwindcss": "^3.0.2",
     "ts-node": "10.9.1",
     "typescript": "~4.8.2",

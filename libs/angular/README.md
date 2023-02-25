@@ -1,7 +1,5 @@
-# angular
+# @berg-layout/angular
 
-This library was generated with [Nx](https://nx.dev).
+This is the Angular version of berg-layout.
 
-## Running unit tests
-
-Run `nx test angular` to execute the unit tests.
+Check out the demo and docs [here](https://berg-layout.web.app/angular).

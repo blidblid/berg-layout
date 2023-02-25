@@ -1,4 +1,4 @@
-@use 'styling' as layout;
+@use 'core' as layout;
 
 @mixin theme($colors) {
   .app-card {

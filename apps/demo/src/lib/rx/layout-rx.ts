@@ -11,7 +11,6 @@ import {
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ObservableProperties } from './layout-model';
-import { toCss, toScss } from './layout-util';
 
 @Injectable({
   providedIn: 'root',
@@ -59,9 +58,6 @@ export class LayoutRx {
   left$: Observable<BergPanelInputs> = this.observeProperties(this.left);
 
   remove$ = this.observeProperties(this.remove);
-
-  css$: Observable<string> = this.theme.pipe(map((style) => toCss(style)));
-  scss$: Observable<string> = this.theme.pipe(map((style) => toScss(style)));
 
   inputs$ = combineLatest([
     this.layout$,

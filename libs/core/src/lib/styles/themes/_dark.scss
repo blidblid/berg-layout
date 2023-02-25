@@ -1,6 +1,6 @@
 @use 'sass:map';
-@use '../styling/border';
-@use '../styling/theme';
+@use '../util/border';
+@use '../util/theme';
 
 @mixin dark($overrides: ()) {
   $theme: map.merge(

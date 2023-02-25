@@ -1,8 +1,4 @@
 import {
-  coerceBooleanProperty,
-  coerceNumberProperty,
-} from '@angular/cdk/coercion';
-import {
   ChangeDetectionStrategy,
   Component,
   Inject,
@@ -13,6 +9,8 @@ import {
 import {
   BergLayoutBottomPosition,
   BergLayoutTopPosition,
+  coerceBooleanProperty,
+  coerceNumberProperty,
 } from '@berg-layout/core';
 import {
   BergLayoutInputs,
@@ -24,6 +22,7 @@ import { BergLayoutComponentInputs } from './layout-model-private';
 @Component({
   selector: 'berg-layout',
   templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
