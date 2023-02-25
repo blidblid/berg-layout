@@ -1,5 +1,5 @@
-# @berg-layout/angular
+# @berg-layout/core
 
 This is the web component version of berg-layout.
 
-Check out the demo and docs [here](https://berg-layout.web.app/web-component).
+Check out the demo and docs [here](https://berg-layout.web.app/core).
