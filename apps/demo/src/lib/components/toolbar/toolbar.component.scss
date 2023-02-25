@@ -1,0 +1,22 @@
+.app-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .app-toolbar-logo {
+    font-size: 20px;
+  }
+
+  .mat-icon {
+    filter: grayscale(1);
+  }
+
+  .mat-stroked-button {
+    min-width: 48px;
+    padding: 0 8px;
+  }
+
+  .mat-icon-button {
+    width: 36px;
+  }
+}

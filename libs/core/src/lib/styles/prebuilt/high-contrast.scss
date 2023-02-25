@@ -1,0 +1,5 @@
+@use '../themes/high-contrast';
+
+:root {
+  @include high-contrast.high-contrast();
+}

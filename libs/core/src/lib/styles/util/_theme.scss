@@ -1,0 +1,53 @@
+@use 'sass:map';
+
+@mixin theme($colors) {
+  $background-center: map-get(
+    $map: $colors,
+    $key: 'background-center',
+  );
+
+  $background-top: map-get(
+    $map: $colors,
+    $key: 'background-top',
+  );
+
+  $background-right: map-get(
+    $map: $colors,
+    $key: 'background-right',
+  );
+
+  $background-bottom: map-get(
+    $map: $colors,
+    $key: 'background-bottom',
+  );
+
+  $background-left: map-get(
+    $map: $colors,
+    $key: 'background-left',
+  );
+
+  $background-backdrop: map-get(
+    $map: $colors,
+    $key: 'background-backdrop',
+  );
+
+  $border-color: map-get(
+    $map: $colors,
+    $key: 'border-color',
+  );
+
+  $resizing-indicator-color: map-get($colors, 'resizing-indicator-color');
+
+  $previewing-indicator-color: map-get($colors, 'previewing-indicator-color') or
+    $resizing-indicator-color;
+
+  --berg-panel-backdrop-background: #{$background-backdrop};
+  --berg-panel-border-color: #{$border-color};
+  --berg-panel-center-background: #{$background-center};
+  --berg-panel-top-background: #{$background-top};
+  --berg-panel-right-background: #{$background-right};
+  --berg-panel-bottom-background: #{$background-bottom};
+  --berg-panel-left-background: #{$background-left};
+  --berg-panel-resize-indicator-color: #{$resizing-indicator-color};
+  --berg-panel-previewing-indicator-color: #{$previewing-indicator-color};
+}

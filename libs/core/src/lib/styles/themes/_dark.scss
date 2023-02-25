@@ -1,0 +1,28 @@
+@use 'sass:map';
+@use '../util/border';
+@use '../util/theme';
+
+@mixin dark($overrides: ()) {
+  $theme: map.merge(
+    (
+      background-center: rgb(30, 30, 30),
+      background-bottom: rgb(30, 30, 30),
+      background-left: rgb(37, 37, 38),
+      background-right: rgb(37, 37, 38),
+      background-top: rgb(60, 60, 60),
+      background-backdrop: rgba(white, 0.3),
+      border-color: rgb(65, 65, 65),
+      resizing-indicator-color: #d08c3b,
+      previewing-indicator-color: #3b7fd0,
+    ),
+    $overrides
+  );
+
+  @include theme.theme($theme);
+
+  @include border.border-parts(
+    (
+      bottom: 1px solid map-get($theme, border-color),
+    )
+  );
+}

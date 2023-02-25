@@ -1,0 +1,5 @@
+@use '../themes/solarized-dark';
+
+:root {
+  @include solarized-dark.solarized-dark();
+}

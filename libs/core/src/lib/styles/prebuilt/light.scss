@@ -1,0 +1,5 @@
+@use '../themes/light';
+
+:root {
+  @include light.light();
+}

@@ -1,17 +1,5 @@
 {
   "projects": {
     "default": "berg-layout"
-  },
-  "targets": {
-    "berg-layout": {
-      "hosting": {
-        "berg-layout-api": [
-          "berg-layout-api"
-        ],
-        "berg-layout": [
-          "berg-layout"
-        ]
-      }
-    }
   }
 }

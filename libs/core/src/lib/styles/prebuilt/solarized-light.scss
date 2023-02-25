@@ -1,0 +1,5 @@
+@use '../themes/solarized-light';
+
+:root {
+  @include solarized-light.solarized-light();
+}

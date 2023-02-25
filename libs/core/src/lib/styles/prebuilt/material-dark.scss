@@ -1,0 +1,5 @@
+@use '../themes/material-dark';
+
+:root {
+  @include material-dark.material-dark();
+}

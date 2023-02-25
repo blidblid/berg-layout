@@ -1,0 +1,5 @@
+@use '../themes/dark';
+
+:root {
+  @include dark.dark();
+}

@@ -1,0 +1,16 @@
+@use 'core' as layout;
+
+@mixin theme($colors) {
+  .app-card {
+    color: map-get($colors, text);
+    @include layout.elevation(4);
+
+    &:hover {
+      outline: 5px solid map-get($colors, primary);
+    }
+
+    &:focus {
+      outline: 5px solid map-get($colors, secondary);
+    }
+  }
+}

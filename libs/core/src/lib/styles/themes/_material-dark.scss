@@ -1,0 +1,37 @@
+@use 'sass:map';
+@use '../util/border';
+@use '../util/elevation';
+@use '../util/theme';
+
+@mixin material-dark($overrides: ()) {
+  $theme: map.merge(
+    (
+      background-center: #303030,
+      background-bottom: #303030,
+      background-left: #424242,
+      background-right: #424242,
+      background-top: #303030,
+      background-backdrop: rgba(white, 0.3),
+      border-color: rgba(white, 0.12),
+      resizing-indicator-color: #6c376c,
+      previewing-indicator-color: #376c6c,
+      elevation: 4,
+    ),
+    $overrides
+  );
+
+  @include theme.theme($theme);
+
+  @include border.border-parts(
+    (
+      bottom: 1px solid map-get($theme, border-color),
+    )
+  );
+
+  .berg-panel-top,
+  .berg-panel-left,
+  .berg-panel-right,
+  .berg-panel-bottom {
+    @include elevation.elevation(map-get($theme, elevation));
+  }
+}

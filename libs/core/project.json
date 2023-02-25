@@ -1,0 +1,32 @@
+{
+  "name": "core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/core/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/core",
+        "main": "libs/core/src/index.ts",
+        "tsConfig": "libs/core/tsconfig.lib.json",
+        "assets": ["libs/core/*.md", "libs/core/**/*.scss"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/core/**/*.ts"]
+      }
+    },
+    "prebuild-styles": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx sass libs/core/src/lib/styles/prebuilt:dist/libs/core/prebuilt"
+      }
+    }
+  },
+  "tags": []
+}

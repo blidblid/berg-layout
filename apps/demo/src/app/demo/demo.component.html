@@ -1,0 +1,84 @@
+<berg-layout-web-component
+  *ngIf="rx.inputs$ | async as inputs"
+  [attr.top-left-position]="inputs.layout.topLeftPosition!"
+  [attr.top-right-position]="inputs.layout.topRightPosition!"
+  [attr.bottom-left-position]="inputs.layout.bottomLeftPosition!"
+  [attr.bottom-right-position]="inputs.layout.bottomRightPosition!"
+  [attr.resize-disabled]="inputs.layout.resizeDisabled!"
+  [attr.resize-two-dimensions]="inputs.layout.resizeTwoDimensions!"
+  [attr.resize-preview-delay]="inputs.layout.resizePreviewDelay!"
+  [attr.top-inset]="inputs.layout.topInset!"
+  [attr.right-inset]="inputs.layout.rightInset!"
+  [attr.bottom-inset]="inputs.layout.bottomInset!"
+  [attr.left-inset]="inputs.layout.leftInset!"
+>
+  <berg-panel-web-component
+    slot="top"
+    *ngIf="!inputs.remove.top"
+    [attr.event-binding-mode]="'none'"
+    [attr.size]="topSize"
+    [attr.min-size]="topSize"
+    [attr.absolute]="inputs.top.absolute"
+    [attr.collapsed]="inputs.top.collapsed"
+    [attr.resize-disabled]="inputs.top.resizeDisabled"
+    (resized)="onResized('top', $event)"
+    (backdropClicked)="onBackdropClicked('top')"
+  >
+    <app-toolbar></app-toolbar>
+  </berg-panel-web-component>
+
+  <berg-panel-web-component
+    slot="right"
+    *ngIf="!inputs.remove.right"
+    [attr.event-binding-mode]="'none'"
+    [attr.absolute]="inputs.right.absolute"
+    [attr.collapsed]="inputs.right.collapsed"
+    [attr.resize-disabled]="inputs.right.resizeDisabled"
+    (resized)="onResized('right', $event)"
+    (backdropClicked)="onBackdropClicked('right')"
+  >
+  </berg-panel-web-component>
+
+  <berg-panel-web-component
+    slot="bottom"
+    *ngIf="!inputs.remove.bottom"
+    [attr.event-binding-mode]="'none'"
+    [attr.min-size]="bottomSize"
+    [attr.size]="bottomSize"
+    [attr.absolute]="inputs.bottom.absolute"
+    [attr.collapsed]="inputs.bottom.collapsed"
+    [attr.resize-disabled]="inputs.bottom.resizeDisabled"
+    (resized)="onResized('bottom', $event)"
+    (backdropClicked)="onBackdropClicked('bottom')"
+  >
+    <app-editor-icon-nav (viewChanged)="view = $event" [view]="view">
+    </app-editor-icon-nav>
+  </berg-panel-web-component>
+
+  <berg-panel-web-component
+    slot="left"
+    *ngIf="!inputs.remove.left"
+    [attr.event-binding-mode]="'none'"
+    [attr.size]="leftSize"
+    [attr.min-size]="leftSize"
+    [attr.max-size]="leftSize"
+    [attr.absolute]="inputs.left.absolute"
+    [attr.collapsed]="inputs.left.collapsed"
+    [attr.resize-disabled]="inputs.left.resizeDisabled"
+    (resized)="onResized('left', $event)"
+    (backdropClicked)="onBackdropClicked('left')"
+  >
+    <app-editor-nav (viewChanged)="view = $event"></app-editor-nav>
+  </berg-panel-web-component>
+
+  <berg-panel-web-component slot="center">
+    <app-editor
+      [css]="css$ | async"
+      [html]="html$ | async"
+      [scss]="scss$ | async"
+      [view]="view"
+      [importDeclaration]="codePrinter.importDeclaration"
+    >
+    </app-editor>
+  </berg-panel-web-component>
+</berg-layout-web-component>

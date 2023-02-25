@@ -1,0 +1,16 @@
+<berg-panel-web-component
+  [attr.slot]="slot"
+  [attr.absolute]="absolute"
+  [attr.collapsed]="collapsed"
+  [attr.resize-disabled]="resizeDisabled"
+  [attr.size]="size"
+  [attr.min-size]="minSize"
+  [attr.max-size]="maxSize"
+  [attr.event-binding-mode]="eventBindingMode"
+  (afterCollapsed)="onAfterCollapsed($event)"
+  (afterExpanded)="onAfterExpanded($event)"
+  (backdropClicked)="onBackdropClicked($event)"
+  (resized)="onResized($event)"
+>
+  <ng-content></ng-content>
+</berg-panel-web-component>

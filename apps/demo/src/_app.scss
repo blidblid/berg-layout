@@ -1,0 +1,28 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use './lib/components/card/card';
+@use './lib/components/material-overrides';
+
+@mixin theme($theme) {
+  $config: mat.get-color-config($theme);
+  $primary-palette: map.get($config, 'primary');
+  $accent-palette: map.get($config, 'accent');
+  $background-palette: map.get($config, 'background');
+  $foreground-palette: map.get($config, 'foreground');
+
+  $primary-color: mat.get-color-from-palette($primary-palette);
+  $accent-color: mat.get-color-from-palette($accent-palette);
+  $divider-color: mat.get-color-from-palette($foreground-palette, divider);
+  $card-color: mat.get-color-from-palette($background-palette, card);
+
+  // make a new color map since @angular/material has a tedious API.
+  $colors: (
+    primary: $primary-color,
+    secondary: $accent-color,
+    divider: $divider-color,
+    background-top: $card-color,
+  );
+
+  @include card.theme($colors);
+  @include material-overrides.theme($colors);
+}
