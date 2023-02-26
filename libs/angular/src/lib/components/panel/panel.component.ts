@@ -28,6 +28,9 @@ import { BergPanelNullableInputs } from './panel-model-private';
   templateUrl: './panel.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[attr.slot]': 'slot',
+  },
 })
 export class BergPanelComponent
   implements BergPanelNullableInputs, BergPanelOutputs
