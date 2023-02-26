@@ -18,6 +18,7 @@ import { connectFormValue, LayoutRx } from '../../rx';
   },
 })
 export class EditorComponent {
+  @Input() installCommand: string | null;
   @Input() importDeclaration: string | null;
   @Input() css: string | null;
   @Input() html: string | null;

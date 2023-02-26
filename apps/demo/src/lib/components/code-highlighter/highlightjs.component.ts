@@ -9,7 +9,13 @@ export class BergHighlightCodeComponent {
   @Input()
   set code(code: string | null) {
     this.elementRef.nativeElement.innerHTML = code
-      ? hljs.default.highlightAuto(code, ['scss', 'css', 'html', 'ts']).value
+      ? hljs.default.highlightAuto(code, [
+          'scss',
+          'css',
+          'html',
+          'ts',
+          'console',
+        ]).value
       : '';
   }
 

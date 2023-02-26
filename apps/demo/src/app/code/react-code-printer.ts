@@ -10,22 +10,27 @@ import { CodePrinter } from './code-printer';
 
 @Injectable()
 export class ReactCodePrinter extends CodePrinter {
+  importCommand = `npm i @berg-layout/core @berg-layout/react`;
   importDeclaration = `import { BergLayout, BergPanel } from '@berg-layout/react';`;
   layoutTagName = 'BergLayout';
   panelTagName = 'BergPanel';
 
   printCss(theme: string): string {
     return [
-      `@import '~@berg-layout/core/prebuilt/core.css';`,
-      `@import '~@berg-layout/core/prebuilt/${theme}.css';`,
+      `@import '@berg-layout/core/prebuilt/core.css';`,
+      `@import '@berg-layout/core/prebuilt/${theme}.css';`,
     ].join('\n');
   }
 
   printScss(theme: string): string {
     return [
-      `@use '~@berg-layout/core' as layout;`,
+      `@use '@berg-layout/core' as layout;`,
+      '',
       '@include layout.core();',
-      `@include layout.${theme}();`,
+      '',
+      ':root {',
+      `  @include layout.${theme}();`,
+      '}',
     ].join('\n');
   }
 

@@ -3,8 +3,8 @@ import { BergLayoutInputs, BergPanelSlot } from '@berg-layout/core';
 
 @Injectable()
 export abstract class CodePrinter {
+  abstract importCommand: string;
   abstract importDeclaration: string;
-
   abstract printCss(theme: string): string;
   abstract printScss(theme: string): string;
 

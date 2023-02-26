@@ -91,8 +91,7 @@ export class BergLayoutTestHarness {
   async resize(slot: BergPanelSlot, size: number): Promise<void> {
     this.previewResize(slot);
 
-    const layout = this.getLayout();
-    layout.dispatchEvent(new MouseEvent('mousedown'));
+    document.documentElement.dispatchEvent(new MouseEvent('mousedown'));
 
     let clientXY = size;
 
@@ -109,11 +108,11 @@ export class BergLayoutTestHarness {
       clientY: clientXY,
     });
 
-    layout.dispatchEvent(mouseMoveEvent);
+    document.documentElement.dispatchEvent(mouseMoveEvent);
 
     await this.tickAnimationFrame();
 
-    document.dispatchEvent(new MouseEvent('mouseup'));
+    document.documentElement.dispatchEvent(new MouseEvent('mouseup'));
   }
 
   isPanelCollapsed(slot: BergPanelSlot): boolean {
