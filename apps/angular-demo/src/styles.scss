@@ -1,0 +1,5 @@
+@use '../../../libs/core' as layout;
+
+:root {
+  @include layout.dark();
+}
