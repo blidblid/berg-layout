@@ -78,17 +78,6 @@
           "apps/angular-demo/**/*.html"
         ]
       }
-    },
-    "test": {
-      "executor": "@angular-devkit/build-angular:karma",
-      "options": {
-        "tsConfig": "apps/angular-demo/tsconfig.spec.json",
-        "karmaConfig": "apps/angular-demo/karma.conf.js",
-        "polyfills": ["zone.js", "zone.js/testing"],
-        "styles": [],
-        "scripts": [],
-        "assets": []
-      }
     }
   },
   "tags": []
