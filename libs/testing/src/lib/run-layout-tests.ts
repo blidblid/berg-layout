@@ -379,21 +379,93 @@ export const runLayoutTests = (
       it('should resize top panel', async () => {
         await harness.resize('top', 200);
         expect(harness.assertedTop.getBoundingClientRect().height).toBe(200);
+
+        render({
+          top: {
+            minSize: 100,
+          },
+        });
+
+        await harness.resize('top', 50);
+        expect(harness.assertedTop.getBoundingClientRect().height).toBe(100);
+
+        render({
+          top: {
+            maxSize: 150,
+          },
+        });
+
+        await harness.resize('top', 200);
+        expect(harness.assertedTop.getBoundingClientRect().height).toBe(150);
       });
 
       it('should resize right panel', async () => {
         await harness.resize('right', 200);
         expect(harness.assertedRight.getBoundingClientRect().width).toBe(200);
+
+        render({
+          right: {
+            minSize: 100,
+          },
+        });
+
+        await harness.resize('right', 50);
+        expect(harness.assertedRight.getBoundingClientRect().width).toBe(100);
+
+        render({
+          right: {
+            maxSize: 150,
+          },
+        });
+
+        await harness.resize('right', 200);
+        expect(harness.assertedRight.getBoundingClientRect().width).toBe(150);
       });
 
       it('should resize bottom panel', async () => {
         await harness.resize('bottom', 200);
         expect(harness.assertedBottom.getBoundingClientRect().height).toBe(200);
+
+        render({
+          bottom: {
+            minSize: 100,
+          },
+        });
+
+        await harness.resize('bottom', 50);
+        expect(harness.assertedBottom.getBoundingClientRect().height).toBe(100);
+
+        render({
+          bottom: {
+            maxSize: 150,
+          },
+        });
+
+        await harness.resize('bottom', 200);
+        expect(harness.assertedBottom.getBoundingClientRect().height).toBe(150);
       });
 
       it('should resize left panel', async () => {
         await harness.resize('left', 200);
         expect(harness.assertedLeft.getBoundingClientRect().width).toBe(200);
+
+        render({
+          left: {
+            minSize: 100,
+          },
+        });
+
+        await harness.resize('left', 50);
+        expect(harness.assertedLeft.getBoundingClientRect().width).toBe(100);
+
+        render({
+          left: {
+            maxSize: 150,
+          },
+        });
+
+        await harness.resize('left', 200);
+        expect(harness.assertedLeft.getBoundingClientRect().width).toBe(150);
       });
     });
 

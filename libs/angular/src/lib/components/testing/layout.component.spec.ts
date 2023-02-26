@@ -7,6 +7,7 @@ import {
   BergLayoutInputs,
   BergPanelInput,
   BergPanelInputs,
+  BergPanelResizeEvent,
   BergPanelSlot,
   BERG_LAYOUT_DEFAULT_INPUTS,
   BERG_LAYOUT_TAG_NAME,
@@ -118,6 +119,16 @@ describe('Angular implementation', () => {
         fixture.componentInstance.backdropEvent instanceof MouseEvent
       ).toBe(true);
     });
+
+    it('should re-emit resized', async () => {
+      await harness.resize('top', 100);
+
+      expect(fixture.componentInstance.resizedEvent.size).toBe(100);
+
+      expect(
+        fixture.componentInstance.resizedEvent.event instanceof MouseEvent
+      ).toBe(true);
+    });
   });
 
   function setLayoutAttribute<T extends BergLayoutInput>(
@@ -170,6 +181,7 @@ describe('Angular implementation', () => {
         [collapsed]="top.collapsed"
         [resizeDisabled]="top.resizeDisabled"
         (backdropClicked)="onBackdropClicked($event)"
+        (resized)="onResized($event)"
         (afterCollapsed)="hasAfterCollapsedEmitted = true"
         (afterExpanded)="hasAfterExpandedEmitted = true"
       >
@@ -239,8 +251,13 @@ export class LayoutTestComponent {
   hasAfterExpandedEmitted = false;
 
   backdropEvent: MouseEvent | undefined;
+  resizedEvent: BergPanelResizeEvent;
 
   onBackdropClicked(event: MouseEvent): void {
     this.backdropEvent = event;
+  }
+
+  onResized(event: BergPanelResizeEvent): void {
+    this.resizedEvent = event;
   }
 }
