@@ -3,13 +3,14 @@ import { NgModule } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { ToolbarComponent } from './toolbar.component';
+import { IconModule } from '../icon';
 import { MaterialSharedModule } from '../material-shared.module';
+import { ToolbarComponent } from './toolbar.component';
 
 @NgModule({
   declarations: [ToolbarComponent],
   exports: [ToolbarComponent],
-  imports: [CommonModule, MaterialSharedModule, RouterModule],
+  imports: [CommonModule, MaterialSharedModule, IconModule, RouterModule],
 })
 export class ToolbarModule {
   constructor(
