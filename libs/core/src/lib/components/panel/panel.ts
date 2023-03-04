@@ -155,6 +155,8 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           this.layout.updateAbsolute(this.values.slot, this.values.absolute);
 
           if (this.values.absolute) {
+            // the z-index is animated despite not being a transitioned property,
+            // update z-index with disabled transitions to avoid flickering
             this.disableTransitions();
             this.style.setProperty(
               'z-index',

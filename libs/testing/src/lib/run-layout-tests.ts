@@ -628,12 +628,16 @@ export const runLayoutTests = (
     });
 
     describe('with an absolute panel', () => {
+      const panelTransitionDuration = 500;
+
       it('should create a backdrop that covers the layout', async () => {
         await render({
           top: {
             absolute: true,
           },
         });
+
+        await harness.tickDuration(panelTransitionDuration);
 
         expect(harness.getLayout().getBoundingClientRect()).toEqual(
           harness.getAssertedBackdrop('top').getBoundingClientRect()
@@ -646,6 +650,8 @@ export const runLayoutTests = (
             absolute: true,
           },
         });
+
+        await harness.tickDuration(panelTransitionDuration);
 
         expect(getComputedStyle(harness.assertedCenter).paddingTop).toBe('0px');
         expect(harness.assertedTop.getBoundingClientRect().left).toBe(0);
@@ -660,6 +666,8 @@ export const runLayoutTests = (
             absolute: true,
           },
         });
+
+        await harness.tickDuration(panelTransitionDuration);
 
         expect(getComputedStyle(harness.assertedCenter).paddingRight).toBe(
           '0px'
@@ -678,6 +686,8 @@ export const runLayoutTests = (
           },
         });
 
+        await harness.tickDuration(panelTransitionDuration);
+
         expect(getComputedStyle(harness.assertedCenter).paddingBottom).toBe(
           '0px'
         );
@@ -694,6 +704,8 @@ export const runLayoutTests = (
             absolute: true,
           },
         });
+
+        await harness.tickDuration(500);
 
         expect(getComputedStyle(harness.assertedCenter).paddingLeft).toBe(
           '0px'
