@@ -30,6 +30,9 @@ import {
 } from './panel-config';
 import {
   BERG_PANEL_ABSOLUTE_CLASS,
+  BERG_PANEL_ANIMATION_DURATION,
+  BERG_PANEL_BACKDROP_ANIMATION_DURATION,
+  BERG_PANEL_BACKDROP_Z_INDEX,
   BERG_PANEL_CLASS,
   BERG_PANEL_CLASSES_BY_SLOT,
   BERG_PANEL_COLLAPSED_CLASS,
@@ -39,15 +42,10 @@ import {
   BERG_PANEL_PREVIEWING_CLASS,
   BERG_PANEL_RESIZE_DISABLED_CLASS,
   BERG_PANEL_RESIZING_CLASS,
+  BERG_PANEL_TWO_DIMENSION_COLLECTION_DISTANCE,
   BERG_PANEL_VERTICAL_CLASS,
 } from './panel-config-private';
 import { BergPanelInputs, BergPanelResizeEvent } from './panel-model';
-import {
-  BACKDROP_ANIMATION_DURATION,
-  BACKDROP_Z_INDEX,
-  PANEL_ANIMATION_DURATION,
-  TWO_DIMENSION_COLLECTION_DISTANCE,
-} from './panel-model-private';
 import {
   BergPanelEventBinding,
   BERG_PANEL_EVENT_BINDINGS,
@@ -132,7 +130,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     switchMap(() => this.changes.collapsed.pipe(skip(1))),
     withLatestFrom(this.resizing$),
     switchMap(([_, resizing]) => {
-      return timer(resizing ? 0 : PANEL_ANIMATION_DURATION).pipe(
+      return timer(resizing ? 0 : BERG_PANEL_ANIMATION_DURATION).pipe(
         takeUntil(this.changes.collapsed.pipe(skip(1)))
       );
     })
@@ -157,9 +155,19 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           this.layout.updateAbsolute(this.values.slot, this.values.absolute);
 
           if (this.values.absolute) {
-            this.classList.add(BERG_PANEL_ABSOLUTE_CLASS);
+            this.disableTransitions();
+            this.style.setProperty(
+              'z-index',
+              (BERG_PANEL_BACKDROP_Z_INDEX + 1).toString()
+            );
+
+            requestAnimationFrame(() => {
+              this.enableTransitions();
+              this.classList.add(BERG_PANEL_ABSOLUTE_CLASS);
+            });
           } else {
             this.classList.remove(BERG_PANEL_ABSOLUTE_CLASS);
+            this.style.removeProperty('z-index');
           }
         },
         collapsed: () => {
@@ -229,7 +237,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       if (this.layout.shadowRoot) {
         this.layout.shadowRoot.removeChild(backdrop);
       }
-    }, BACKDROP_ANIMATION_DURATION);
+    }, BERG_PANEL_BACKDROP_ANIMATION_DURATION);
   }
 
   private updateBackdrop(): void {
@@ -249,8 +257,8 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       );
 
       const style = this.backdropElement.style;
-      style.transition = `opacity ${BACKDROP_ANIMATION_DURATION}ms ease-in`;
-      style.zIndex = BACKDROP_Z_INDEX.toString();
+      style.transition = `opacity ${BERG_PANEL_BACKDROP_ANIMATION_DURATION}ms ease-in`;
+      style.zIndex = BERG_PANEL_BACKDROP_Z_INDEX.toString();
       style.position = 'fixed';
       style.cursor = 'pointer';
       style.opacity = '0';
@@ -282,19 +290,27 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     return this.backdropElement;
   }
 
+  private disableTransitions(): void {
+    this.classList.add(BERG_PANEL_NO_TRANSITION_CLASS);
+  }
+
+  private enableTransitions(): void {
+    this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
+  }
+
   private temporarilyDisableTransitions(): void {
     requestAnimationFrame(() => {
-      this.classList.add(BERG_PANEL_NO_TRANSITION_CLASS);
+      this.disableTransitions();
 
       if ('requestIdleCallback' in window) {
         requestIdleCallback(() => {
-          this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
+          this.enableTransitions();
         });
       }
 
       // use a timeout as a fallback if the browser never idles
       setTimeout(
-        () => this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS),
+        () => this.enableTransitions(),
         BERG_PANEL_ENABLE_ANIMATION_DELAY
       );
     });
@@ -458,7 +474,9 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       origin = x;
     }
 
-    return TWO_DIMENSION_COLLECTION_DISTANCE > Math.abs(origin - mouse);
+    return (
+      BERG_PANEL_TWO_DIMENSION_COLLECTION_DISTANCE > Math.abs(origin - mouse)
+    );
   }
 
   private findLayoutElement(): BergLayoutElement {

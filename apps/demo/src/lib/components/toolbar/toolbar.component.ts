@@ -27,7 +27,5 @@ export class ToolbarComponent {
     map((feature) => `https://www.npmjs.com/package/@berg-layout/${feature}`)
   );
 
-  constructor(private router: Router) {
-    this.feature$.subscribe(console.log);
-  }
+  constructor(private router: Router) {}
 }
