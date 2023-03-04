@@ -149,6 +149,14 @@ export class BergLayoutTestHarness {
     return backdrop;
   }
 
+  tickAnimationFrame(): Promise<void> {
+    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+  }
+
+  tickDuration(duration = 0): Promise<void> {
+    return new Promise((resolve) => setTimeout(() => resolve(), duration));
+  }
+
   async clickBackdrop(slot: BergPanelSlot): Promise<void> {
     this.getAssertedBackdrop(slot).click();
     return Promise.resolve();
@@ -182,9 +190,5 @@ export class BergLayoutTestHarness {
     }
 
     return this.assertedLeft;
-  }
-
-  private tickAnimationFrame(): Promise<void> {
-    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
   }
 }

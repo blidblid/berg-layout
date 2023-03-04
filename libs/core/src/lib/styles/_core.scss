@@ -14,7 +14,7 @@
     box-sizing: border-box;
     transition-property: padding, top, left, right, bottom, box-shadow;
 
-    // should match the configure transition duration
+    // should match the configured transition duration
     transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     &.berg-panel-no-transition {
@@ -371,11 +371,6 @@
 
   .berg-panel-top {
     z-index: 5;
-  }
-
-  .berg-panel-absolute {
-    // should be one above the backdrop z-index
-    z-index: 8 !important;
   }
 }
 

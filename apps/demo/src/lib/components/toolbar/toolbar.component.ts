@@ -28,9 +28,7 @@ export class ToolbarComponent {
     map((feature) => `https://www.npmjs.com/package/@berg-layout/${feature}`)
   );
 
-  constructor(private layoutRx: LayoutRx, private router: Router) {
-    this.feature$.subscribe(console.log);
-  }
+  constructor(private layoutRx: LayoutRx, private router: Router) {}
 
   toggleRight(): void {
     this.layoutRx.right.collapsed.next(!this.layoutRx.right.collapsed.value);
