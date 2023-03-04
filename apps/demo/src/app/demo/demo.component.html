@@ -30,6 +30,8 @@
   <berg-panel-web-component
     slot="right"
     *ngIf="!inputs.remove.right"
+    [attr.size]="rightSize"
+    [attr.min-size]="rightSize"
     [attr.event-binding-mode]="'none'"
     [attr.absolute]="inputs.right.absolute"
     [attr.collapsed]="inputs.right.collapsed"
@@ -37,6 +39,7 @@
     (resized)="onResized('right', $event)"
     (backdropClicked)="onBackdropClicked('right')"
   >
+    <app-editor-form></app-editor-form>
   </berg-panel-web-component>
 
   <berg-panel-web-component
@@ -51,8 +54,6 @@
     (resized)="onResized('bottom', $event)"
     (backdropClicked)="onBackdropClicked('bottom')"
   >
-    <app-editor-icon-nav (viewChanged)="view = $event" [view]="view">
-    </app-editor-icon-nav>
   </berg-panel-web-component>
 
   <berg-panel-web-component
@@ -68,18 +69,16 @@
     (resized)="onResized('left', $event)"
     (backdropClicked)="onBackdropClicked('left')"
   >
-    <app-editor-nav (viewChanged)="view = $event"></app-editor-nav>
   </berg-panel-web-component>
 
   <berg-panel-web-component slot="center">
-    <app-editor
+    <app-editor-code
       [css]="css$ | async"
       [html]="html$ | async"
       [scss]="scss$ | async"
-      [view]="view"
       [installCommand]="codePrinter.importCommand"
       [importDeclaration]="codePrinter.importDeclaration"
     >
-    </app-editor>
+    </app-editor-code>
   </berg-panel-web-component>
 </berg-layout-web-component>

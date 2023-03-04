@@ -31,7 +31,8 @@ export class AngularCodePrinter extends CodePrinter {
 
   printHtml(
     layout: Partial<BergLayoutInputs>,
-    panels: Partial<Record<BergPanelSlot, Partial<BergLayoutInputs>>>
+    panels: Partial<Record<BergPanelSlot, Partial<BergLayoutInputs>>>,
+    slots: BergPanelSlot[]
   ): string {
     let html = this.startHtmlElement(this.layoutTagName);
 
@@ -53,7 +54,7 @@ export class AngularCodePrinter extends CodePrinter {
 
     html += '\n';
 
-    const panelElements = (['top', 'right', 'bottom', 'left'] as const)
+    const panelElements = slots
       .map((slot) => panels[slot])
       .filter((panel): panel is BergPanelInputs => !!panel)
       .map((panel) => {

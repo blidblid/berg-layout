@@ -13,14 +13,19 @@ import { CodePrinter } from '../code';
 
 @Component({
   templateUrl: './demo.component.html',
+  styleUrls: ['./demo.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'app-demo',
+  },
 })
 export class DemoComponent implements OnDestroy {
   view: EditorView = 'code';
 
   topSize = 80;
   bottomSize = 49;
+  rightSize = 350;
 
   html$ = combineLatest([
     this.rx.layout$,
@@ -28,9 +33,16 @@ export class DemoComponent implements OnDestroy {
     this.rx.right$,
     this.rx.bottom$,
     this.rx.left$,
+    this.rx.remove$,
   ]).pipe(
-    map(([layout, top, right, bottom, left]) => {
-      return this.codePrinter.printHtml(layout, { top, right, bottom, left });
+    map(([layout, top, right, bottom, left, remove]) => {
+      return this.codePrinter.printHtml(
+        layout,
+        { top, right, bottom, left },
+        (['top', 'right', 'bottom', 'left'] as const).filter(
+          (slot) => !remove[slot]
+        )
+      );
     })
   );
 
@@ -117,9 +129,8 @@ export class DemoComponent implements OnDestroy {
     this.breakpoints$
       .pipe(takeUntil(this.destroySub))
       .subscribe((breakpoints) => {
-        this.rx.left.collapsed.next(breakpoints.tiny);
-        this.rx.right.collapsed.next(breakpoints.medium);
-        this.rx.bottom.collapsed.next(!breakpoints.tiny);
+        this.rx.right.absolute.next(breakpoints.medium);
+        this.rx.right.collapsed.next(breakpoints.small);
       });
   }
 
