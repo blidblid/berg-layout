@@ -10,7 +10,8 @@ export abstract class CodePrinter {
 
   abstract printHtml(
     layout: Partial<BergLayoutInputs>,
-    panels: Partial<Record<BergPanelSlot, Partial<BergLayoutInputs>>>
+    panels: Partial<Record<BergPanelSlot, Partial<BergLayoutInputs>>>,
+    slots: BergPanelSlot[]
   ): string;
 
   indent(str: string, spaces: number): string {
