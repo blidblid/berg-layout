@@ -85,6 +85,7 @@ export class LayoutRx {
 
   private changeDefaults(): void {
     this.bottom.collapsed.next(true);
+    this.left.collapsed.next(true);
   }
 
   private createPanelInputs(slot: BergPanelSlot): {

@@ -1,0 +1,160 @@
+<div class="flex gap-4 flex-col p-4">
+  <mat-button-toggle-group [formControl]="formControl">
+    <mat-button-toggle [value]="'top'">Top</mat-button-toggle>
+    <mat-button-toggle [value]="'right'">Right</mat-button-toggle>
+    <mat-button-toggle [value]="'bottom'">Bottom</mat-button-toggle>
+    <mat-button-toggle [value]="'left'">Left</mat-button-toggle>
+    <mat-button-toggle [value]="'layout'">Layout</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <ng-container *ngIf="formControl.value === 'top'">
+    <ng-container
+      *ngTemplateOutlet="
+        panelTmpl;
+        context: { $implicit: panelFormControls.top }
+      "
+    ></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="formControl.value === 'right'">
+    <ng-container
+      *ngTemplateOutlet="
+        panelTmpl;
+        context: { $implicit: panelFormControls.right }
+      "
+    ></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="formControl.value === 'bottom'">
+    <ng-container
+      *ngTemplateOutlet="
+        panelTmpl;
+        context: { $implicit: panelFormControls.bottom }
+      "
+    ></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="formControl.value === 'left'">
+    <ng-container
+      *ngTemplateOutlet="
+        panelTmpl;
+        context: { $implicit: panelFormControls.left }
+      "
+    ></ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="formControl.value === 'layout'">
+    <mat-form-field>
+      <mat-label>Theme</mat-label>
+      <mat-select [formControl]="layoutFormControls.theme">
+        <mat-option
+          *ngFor="
+            let theme of [
+              'Abyss',
+              'Dark',
+              'High Contrast',
+              'Light',
+              'Material Dark',
+              'Material Light',
+              'Quiet Light',
+              'Solarized Dark',
+              'Solarized Light'
+            ]
+          "
+          [value]="theme"
+          >{{ theme }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Top left position</mat-label>
+      <mat-select [formControl]="layoutFormControls.topLeftPosition">
+        <mat-option
+          *ngFor="let position of ['above', 'beside']"
+          [value]="position"
+          >{{ position }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Top right position</mat-label>
+      <mat-select [formControl]="layoutFormControls.topRightPosition">
+        <mat-option
+          *ngFor="let position of ['above', 'beside']"
+          [value]="position"
+          >{{ position }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Bottom left position</mat-label>
+      <mat-select [formControl]="layoutFormControls.bottomLeftPosition">
+        <mat-option
+          *ngFor="let position of ['below', 'beside']"
+          [value]="position"
+          >{{ position }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Bottom right position</mat-label>
+      <mat-select [formControl]="layoutFormControls.bottomRightPosition">
+        <mat-option
+          *ngFor="let position of ['below', 'beside']"
+          [value]="position"
+          >{{ position }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Resize preview delay</mat-label>
+      <input
+        matInput
+        [formControl]="resizeFormControls.resizePreviewDelay"
+        type="number"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Top inset</mat-label>
+      <input matInput [formControl]="insetFormControls.top" type="number" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Right inset</mat-label>
+      <input matInput [formControl]="insetFormControls.right" type="number" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Bottom inset</mat-label>
+      <input matInput [formControl]="insetFormControls.bottom" type="number" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Left inset</mat-label>
+      <input matInput [formControl]="insetFormControls.left" type="number" />
+    </mat-form-field>
+
+    <mat-checkbox [formControl]="resizeFormControls.resizeDisabled"
+      >Resize disabled</mat-checkbox
+    >
+
+    <mat-checkbox [formControl]="resizeFormControls.resizeTwoDimensions"
+      >Resize two dimensions</mat-checkbox
+    >
+  </ng-container>
+</div>
+
+<ng-template #panelTmpl let-formControls>
+  <mat-checkbox [formControl]="formControls.absolute">Absolute</mat-checkbox>
+  <mat-checkbox [formControl]="formControls.collapsed">Collapsed</mat-checkbox>
+  <mat-checkbox [formControl]="formControls.remove">Remove</mat-checkbox>
+  <mat-checkbox [formControl]="formControls.resizeDisabled"
+    >Resize disabled</mat-checkbox
+  >
+</ng-template>

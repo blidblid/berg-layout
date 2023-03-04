@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
+import { LayoutRx } from '../../rx';
 
 @Component({
   selector: 'app-toolbar',
@@ -27,5 +28,9 @@ export class ToolbarComponent {
     map((feature) => `https://www.npmjs.com/package/@berg-layout/${feature}`)
   );
 
-  constructor(private router: Router) {}
+  constructor(private layoutRx: LayoutRx, private router: Router) {}
+
+  toggleRight(): void {
+    this.layoutRx.right.collapsed.next(!this.layoutRx.right.collapsed.value);
+  }
 }

@@ -1,31 +1,23 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { connectFormValue, LayoutRx } from '../../rx';
 
 @Component({
-  selector: 'app-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.scss'],
+  selector: 'app-editor-form',
+  templateUrl: './editor-form.component.html',
+  styleUrls: ['./editor-form.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'berg-editor',
+    class: 'app-editor-form',
   },
 })
-export class EditorComponent {
-  @Input() installCommand: string | null;
-  @Input() importDeclaration: string | null;
-  @Input() css: string | null;
-  @Input() html: string | null;
-  @Input() scss: string | null;
-
-  @Input()
-  view: 'none' | 'edit' | 'code' = 'code';
+export class EditorFormComponent {
+  formControl = new FormControl<string>('top');
 
   panelFormControls = {
     top: this.createPanelFormControls(),

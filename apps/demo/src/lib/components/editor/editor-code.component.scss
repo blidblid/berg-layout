@@ -1,17 +1,7 @@
-.berg-editor {
-  .berg-editor-cards {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
-  }
-
+.app-editor-code {
   pre {
     border: 1px solid var(--berg-panel-border-color);
     box-shadow: none !important;
-  }
-
-  .mat-mdc-checkbox {
-    width: 100%;
   }
 
   h4 {
