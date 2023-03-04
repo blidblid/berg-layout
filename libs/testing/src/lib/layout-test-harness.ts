@@ -81,6 +81,16 @@ export class BergLayoutTestHarness {
     return left;
   }
 
+  get assertedPanels(): BergPanelElement[] {
+    return [
+      this.assertedCenter,
+      this.assertedTop,
+      this.assertedRight,
+      this.assertedBottom,
+      this.assertedLeft,
+    ];
+  }
+
   constructor(public getLayout: () => BergLayoutElement) {}
 
   previewResize(slot: BergPanelSlot): void {
@@ -155,6 +165,18 @@ export class BergLayoutTestHarness {
 
   tickDuration(duration = 0): Promise<void> {
     return new Promise((resolve) => setTimeout(() => resolve(), duration));
+  }
+
+  disableAnimations(): void {
+    for (const panel of this.assertedPanels) {
+      panel.style.setProperty('transition', 'none');
+    }
+  }
+
+  enableAnimations(): void {
+    for (const panel of this.assertedPanels) {
+      panel.style.removeProperty('transition');
+    }
   }
 
   async clickBackdrop(slot: BergPanelSlot): Promise<void> {

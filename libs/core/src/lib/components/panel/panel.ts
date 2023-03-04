@@ -169,7 +169,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
             });
           } else {
             this.classList.remove(BERG_PANEL_ABSOLUTE_CLASS);
-            this.style.removeProperty('z-index');
+
+            setTimeout(() => {
+              this.style.removeProperty('z-index');
+            }, BERG_PANEL_BACKDROP_ANIMATION_DURATION);
           }
         },
         collapsed: () => {
