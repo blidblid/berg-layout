@@ -42,7 +42,7 @@
     position: fixed;
   }
 
-  .berg-panel-center {
+  .berg-layout::part(content) {
     z-index: 0;
   }
 
@@ -194,33 +194,46 @@
     }
   }
 
-  .berg-panel-center {
-    padding-top: calc(
-      var(--berg-panel-top-size) + var(--berg-layout-top-inset)
-    );
-    padding-right: calc(
-      var(--berg-panel-right-size) + var(--berg-layout-right-inset)
-    );
-    padding-bottom: calc(
-      var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset)
-    );
-    padding-left: calc(
-      var(--berg-panel-left-size) + var(--berg-layout-left-inset)
-    );
+  .berg-layout {
+    &::part(content) {
+      padding-top: calc(
+        var(--berg-panel-top-size) + var(--berg-layout-top-inset)
+      );
 
-    .berg-layout-top-absolute & {
+      padding-right: calc(
+        var(--berg-panel-right-size) + var(--berg-layout-right-inset)
+      );
+
+      padding-bottom: calc(
+        var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset)
+      );
+
+      padding-left: calc(
+        var(--berg-panel-left-size) + var(--berg-layout-left-inset)
+      );
+    }
+  }
+
+  .berg-layout-top-absolute {
+    &::part(content) {
       padding-top: var(--berg-layout-top-inset);
     }
+  }
 
-    .berg-layout-right-absolute & {
+  .berg-layout-right-absolute {
+    &::part(content) {
       padding-right: var(--berg-layout-right-inset);
     }
+  }
 
-    .berg-layout-bottom-absolute & {
+  .berg-layout-bottom-absolute {
+    &::part(content) {
       padding-bottom: var(--berg-layout-bottom-inset);
     }
+  }
 
-    .berg-layout-left-absolute & {
+  .berg-layout-left-absolute {
+    &::part(content) {
       padding-left: var(--berg-layout-left-inset);
     }
   }
@@ -231,7 +244,7 @@
       top: var(--berg-layout-top-inset);
     }
 
-    .berg-panel-center {
+    &::part(content) {
       padding-top: var(--berg-layout-top-inset);
     }
   }
@@ -242,7 +255,7 @@
       right: var(--berg-layout-right-inset);
     }
 
-    .berg-panel-center {
+    &::part(content) {
       padding-right: var(--berg-layout-right-inset);
     }
   }
@@ -253,7 +266,7 @@
       bottom: var(--berg-layout-bottom-inset);
     }
 
-    .berg-panel-center {
+    &::part(content) {
       padding-bottom: var(--berg-layout-bottom-inset);
     }
   }
@@ -264,7 +277,7 @@
       left: var(--berg-layout-left-inset);
     }
 
-    .berg-panel-center {
+    &::part(content) {
       padding-left: var(--berg-layout-left-inset);
     }
   }
@@ -395,12 +408,12 @@
     background: var(--berg-panel-backdrop-background);
   }
 
-  .berg-panel-center {
-    background: var(--berg-panel-center-background);
+  .berg-layout::part(content) {
+    background: var(--berg-layout-content-background);
   }
 
   @at-root body#{&} {
-    background: var(--berg-panel-center-background);
+    background: var(--berg-layout-content-background);
   }
 
   .berg-panel-previewing {

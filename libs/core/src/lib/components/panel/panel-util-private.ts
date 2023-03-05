@@ -12,7 +12,6 @@ export function validateOutputBindingMode(
 
 export function validateSlot(slot: string): BergPanelSlot {
   if (
-    slot !== 'center' &&
     slot !== 'top' &&
     slot !== 'right' &&
     slot !== 'bottom' &&

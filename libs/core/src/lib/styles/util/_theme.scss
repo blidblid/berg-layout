@@ -41,9 +41,9 @@
   $previewing-indicator-color: map-get($colors, 'previewing-indicator-color') or
     $resizing-indicator-color;
 
+  --berg-layout-content-background: #{$background-center};
   --berg-panel-backdrop-background: #{$background-backdrop};
   --berg-panel-border-color: #{$border-color};
-  --berg-panel-center-background: #{$background-center};
   --berg-panel-top-background: #{$background-top};
   --berg-panel-right-background: #{$background-right};
   --berg-panel-bottom-background: #{$background-bottom};

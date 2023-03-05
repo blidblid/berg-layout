@@ -229,7 +229,9 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
       <slot name="right"></slot>
       <slot name="bottom"></slot>
       <slot name="left"></slot>
-      <slot name="center"></slot>
+      <div class="berg-layout-content" part="content">
+        <slot name="content"></slot>
+      </div>
     `;
   }
 

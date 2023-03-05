@@ -26,7 +26,6 @@ export class LayoutRx {
   edit = new BehaviorSubject(this.slots[3]);
   theme = new BehaviorSubject('Dark');
 
-  center = this.createPanelInputs('center');
   top = this.createPanelInputs('top');
   right = this.createPanelInputs('right');
   bottom = this.createPanelInputs('bottom');

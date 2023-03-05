@@ -11,7 +11,6 @@ export const BERG_PANEL_CLASS = 'berg-panel';
 export const BERG_PANEL_VERTICAL_CLASS = 'berg-panel-vertical';
 
 export const BERG_PANEL_CLASSES_BY_SLOT: Record<BergPanelSlot, string> = {
-  center: 'berg-panel-center',
   top: 'berg-panel-top',
   right: 'berg-panel-right',
   bottom: 'berg-panel-bottom',

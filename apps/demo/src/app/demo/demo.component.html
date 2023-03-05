@@ -71,7 +71,7 @@
   >
   </berg-panel-web-component>
 
-  <berg-panel-web-component slot="center">
+  <div class="p-4" slot="content">
     <app-editor-code
       [css]="css$ | async"
       [html]="html$ | async"
@@ -80,5 +80,5 @@
       [importDeclaration]="codePrinter.importDeclaration"
     >
     </app-editor-code>
-  </berg-panel-web-component>
+  </div>
 </berg-layout-web-component>

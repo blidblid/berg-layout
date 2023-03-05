@@ -7,7 +7,7 @@ import {
 export class BergLayoutTestHarness {
   get center(): BergPanelElement | null {
     return this.getLayout().querySelector<BergPanelElement>(
-      '.berg-panel-center'
+      '.berg-layout [slot="content"]'
     );
   }
 
@@ -195,10 +195,6 @@ export class BergLayoutTestHarness {
   }
 
   private getAssertedPanel(slot: BergPanelSlot): BergPanelElement {
-    if (slot === 'center') {
-      return this.assertedLeft;
-    }
-
     if (slot === 'top') {
       return this.assertedTop;
     }

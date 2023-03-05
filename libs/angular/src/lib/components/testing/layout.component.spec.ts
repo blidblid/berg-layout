@@ -229,7 +229,7 @@ describe('Angular implementation', () => {
       >
       </berg-panel>
 
-      <berg-panel #centerRef slot="center"></berg-panel>
+      <berg-panel #centerRef slot="content"></berg-panel>
     </berg-layout>
   `,
 })

@@ -1,5 +1,5 @@
 /** Slots where panels can be inserted. */
-export type BergPanelSlot = 'top' | 'left' | 'bottom' | 'right' | 'center';
+export type BergPanelSlot = 'top' | 'right' | 'bottom' | 'left';
 
 /** Inputs of berg-panel. */
 export interface BergPanelInputs {

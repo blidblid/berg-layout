@@ -13,6 +13,7 @@ import {
   delay,
   distinctUntilChanged,
   map,
+  pairwise,
   share,
   startWith,
   switchMap,
@@ -57,9 +58,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private layout: BergLayoutElement;
 
   private resizeToggle$ = this.changes.slot.pipe(
-    map((slot) => {
-      return slot === 'center' ? null : this.layout.resizeToggles[slot];
-    })
+    map((slot) => this.layout.resizeToggles[slot])
   );
 
   private previewing$ = combineLatest([
@@ -386,17 +385,27 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         }
       });
 
-    combineLatest([this.changes.slot, this.changes.resizeDisabled])
+    combineLatest([
+      this.changes.slot.pipe(pairwise()),
+      this.changes.resizeDisabled,
+    ])
       .pipe(takeUntil(this.disconnectedSub))
-      .subscribe(([slot, resizeDisabled]) => {
-        if (slot === 'center') {
-          return;
+      .subscribe(([[previousSlot, currentSlot], resizeDisabled]) => {
+        const currentResizeToggle = this.layout.resizeToggles[currentSlot];
+
+        if (resizeDisabled && this.contains(currentResizeToggle)) {
+          this.removeChild(currentResizeToggle);
+        } else {
+          this.appendChild(currentResizeToggle);
         }
 
-        if (resizeDisabled) {
-          this.removeChild(this.layout.resizeToggles[slot]);
-        } else {
-          this.appendChild(this.layout.resizeToggles[slot]);
+        const previousResizeToggle = this.layout.resizeToggles[previousSlot];
+
+        if (
+          previousSlot !== currentSlot &&
+          this.contains(previousResizeToggle)
+        ) {
+          this.removeChild(this.layout.resizeToggles[previousSlot]);
         }
       });
   }
@@ -552,20 +561,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           height: 100%;
           width: 100%;
         }
-
-        .berg-panel-center .berg-panel-overflow {
-          overflow: visible;
-        }
-
-        .berg-panel-content {
-          box-sizing: border-box;
-        }
       </style>
 
-      <div class="berg-panel-overflow"
-          part="overflow">
-        <div class="berg-panel-content"
-              part="content">
+      <div class="berg-panel-overflow" part="overflow">
+        <div class="berg-panel-content" part="content">
           <slot></slot>
         </div>
       </div>`;
