@@ -333,10 +333,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   private subscribeToResizing(): void {
-    if (this.slot === 'center') {
-      return;
-    }
-
     this.resizing$
       .pipe(takeUntil(this.disconnectedSub))
       .subscribe((resizing) => {
@@ -453,7 +449,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     event: MouseEvent,
     resizeToggle: HTMLElement | null
   ): boolean {
-    if (resizeToggle === null || this.slot === 'center') {
+    if (resizeToggle === null) {
       return false;
     }
 

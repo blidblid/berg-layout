@@ -64,10 +64,8 @@ describe('web component layout', () => {
       'berg-layout-web-component'
     ) as BergLayoutElement;
 
-    const center = document.createElement(
-      'berg-panel-web-component'
-    ) as BergPanelElement;
-    center.setAttribute('slot', 'center');
+    const center = document.createElement('div');
+    center.setAttribute('slot', 'content');
 
     const top = document.createElement(
       'berg-panel-web-component'
