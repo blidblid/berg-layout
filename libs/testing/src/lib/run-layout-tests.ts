@@ -644,7 +644,7 @@ export const runLayoutTests = (
         );
       });
 
-      it('should position top over center', async () => {
+      it('should position top over content', async () => {
         await render({
           top: {
             absolute: true,
@@ -653,14 +653,16 @@ export const runLayoutTests = (
 
         await harness.tickDuration(panelTransitionDuration);
 
-        expect(getComputedStyle(harness.assertedCenter).paddingTop).toBe('0px');
+        expect(getComputedStyle(harness.assertedContent).paddingTop).toBe(
+          '0px'
+        );
         expect(harness.assertedTop.getBoundingClientRect().left).toBe(0);
         expect(harness.assertedTop.getBoundingClientRect().right).toBe(
           harness.assertedTop.getBoundingClientRect().width
         );
       });
 
-      it('should position right over center', async () => {
+      it('should position right over content', async () => {
         await render({
           right: {
             absolute: true,
@@ -669,7 +671,7 @@ export const runLayoutTests = (
 
         await harness.tickDuration(panelTransitionDuration);
 
-        expect(getComputedStyle(harness.assertedCenter).paddingRight).toBe(
+        expect(getComputedStyle(harness.assertedContent).paddingRight).toBe(
           '0px'
         );
 
@@ -679,7 +681,7 @@ export const runLayoutTests = (
         );
       });
 
-      it('should position bottom over center', async () => {
+      it('should position bottom over content', async () => {
         await render({
           bottom: {
             absolute: true,
@@ -688,7 +690,7 @@ export const runLayoutTests = (
 
         await harness.tickDuration(panelTransitionDuration);
 
-        expect(getComputedStyle(harness.assertedCenter).paddingBottom).toBe(
+        expect(getComputedStyle(harness.assertedContent).paddingBottom).toBe(
           '0px'
         );
 
@@ -698,7 +700,7 @@ export const runLayoutTests = (
         );
       });
 
-      it('should position left over center', async () => {
+      it('should position left over content', async () => {
         await render({
           left: {
             absolute: true,
@@ -707,7 +709,7 @@ export const runLayoutTests = (
 
         await harness.tickDuration(500);
 
-        expect(getComputedStyle(harness.assertedCenter).paddingLeft).toBe(
+        expect(getComputedStyle(harness.assertedContent).paddingLeft).toBe(
           '0px'
         );
 

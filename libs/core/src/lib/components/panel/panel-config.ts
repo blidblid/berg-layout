@@ -10,7 +10,7 @@ export const BERG_PANEL_TAG_NAME = 'berg-panel-web-component';
 
 /** Default attributes of berg-panel. */
 export const BERG_PANEL_DEFAULT_INPUTS: RequireAll<BergPanelInputs> = {
-  slot: 'center',
+  slot: 'right',
   absolute: false,
   collapsed: false,
   resizeDisabled: false,

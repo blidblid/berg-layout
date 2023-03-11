@@ -26,7 +26,6 @@ export class LayoutRx {
   edit = new BehaviorSubject(this.slots[3]);
   theme = new BehaviorSubject('Dark');
 
-  center = this.createPanelInputs('center');
   top = this.createPanelInputs('top');
   right = this.createPanelInputs('right');
   bottom = this.createPanelInputs('bottom');
@@ -115,7 +114,7 @@ export class LayoutRx {
         return (observable as any).pipe(
           distinctUntilChanged(),
           map((value) => {
-            return { [key]: value };
+            return { [key]: value ?? (BERG_PANEL_DEFAULT_INPUTS as any)[key] };
           })
         );
       })

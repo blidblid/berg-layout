@@ -16,7 +16,7 @@ describe('React implementation', () => {
       <BergLayout
         {...inputs.layout}
         children={[
-          <BergPanel key="center" slot={'center'} />,
+          <div key="content" slot="content" />,
           <BergPanel key="top" slot={'top'} {...inputs.top} />,
           <BergPanel key="right" slot={'right'} {...inputs.right} />,
           <BergPanel key="bottom" slot={'bottom'} {...inputs.bottom} />,

@@ -229,14 +229,13 @@ describe('Angular implementation', () => {
       >
       </berg-panel>
 
-      <berg-panel #centerRef slot="center"></berg-panel>
+      <div #centerRef slot="content"></div>
     </berg-layout>
   `,
 })
 export class LayoutTestComponent {
   layout = { ...BERG_LAYOUT_DEFAULT_INPUTS };
 
-  center = { ...BERG_PANEL_DEFAULT_INPUTS };
   top = { ...BERG_PANEL_DEFAULT_INPUTS };
   right = { ...BERG_PANEL_DEFAULT_INPUTS };
   bottom = { ...BERG_PANEL_DEFAULT_INPUTS };

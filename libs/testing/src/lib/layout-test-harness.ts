@@ -5,9 +5,9 @@ import {
 } from '@berg-layout/core';
 
 export class BergLayoutTestHarness {
-  get center(): BergPanelElement | null {
-    return this.getLayout().querySelector<BergPanelElement>(
-      '.berg-panel-center'
+  get content(): HTMLElement | null {
+    return this.getLayout().querySelector<HTMLElement>(
+      '.berg-layout [slot="content"]'
     );
   }
 
@@ -31,14 +31,14 @@ export class BergLayoutTestHarness {
     return this.getLayout().querySelector<BergPanelElement>('.berg-panel-left');
   }
 
-  get assertedCenter(): BergPanelElement {
-    const center = this.center;
+  get assertedContent(): HTMLElement {
+    const content = this.content;
 
-    if (!center) {
-      throw new Error('No center panel found');
+    if (!content) {
+      throw new Error('No content found');
     }
 
-    return center;
+    return content;
   }
 
   get assertedTop(): BergPanelElement {
@@ -83,7 +83,6 @@ export class BergLayoutTestHarness {
 
   get assertedPanels(): BergPanelElement[] {
     return [
-      this.assertedCenter,
       this.assertedTop,
       this.assertedRight,
       this.assertedBottom,
@@ -195,10 +194,6 @@ export class BergLayoutTestHarness {
   }
 
   private getAssertedPanel(slot: BergPanelSlot): BergPanelElement {
-    if (slot === 'center') {
-      return this.assertedLeft;
-    }
-
     if (slot === 'top') {
       return this.assertedTop;
     }

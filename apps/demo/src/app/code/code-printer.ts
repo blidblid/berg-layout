@@ -20,7 +20,10 @@ export abstract class CodePrinter {
 
   findChangedInputs(values: object, defaults: object): object {
     return Object.entries(values).reduce((acc, [key, value]) => {
-      if (value !== (defaults as Record<string, unknown>)[key]) {
+      if (
+        key === 'slot' ||
+        value !== (defaults as Record<string, unknown>)[key]
+      ) {
         acc[key] = value;
       }
 
