@@ -75,7 +75,10 @@ export class ReactCodePrinter extends CodePrinter {
         );
       });
 
-    html += `\n  children={[\n${panelElements.join(',\n')}\n  ]}` + '\n/>';
+    html +=
+      `\n  children={[\n${panelElements.join(
+        ',\n'
+      )},\n    <div slot="content">Hello world</div>\n  ]}` + '\n/>';
 
     return html;
   }

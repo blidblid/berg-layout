@@ -114,7 +114,7 @@ export class LayoutRx {
         return (observable as any).pipe(
           distinctUntilChanged(),
           map((value) => {
-            return { [key]: value };
+            return { [key]: value ?? (BERG_PANEL_DEFAULT_INPUTS as any)[key] };
           })
         );
       })

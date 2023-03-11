@@ -81,6 +81,8 @@ export class WebComponentCodePrinter extends CodePrinter {
 
     html +=
       panelElements.join('\n\n') +
+      '\n\n' +
+      '  <div slot="content">Hello world</div>' +
       '\n' +
       this.endHtmlElement(this.layoutTagName);
 
