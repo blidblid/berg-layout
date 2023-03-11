@@ -1,6 +1,6 @@
 {
   "name": "@berg-layout/react",
-  "version": "5.0.0-rc3",
+  "version": "5.0.0-rc5",
   "devDependencies": {
     "@berg-layout/testing": "*"
   }
