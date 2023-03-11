@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npx nx run-many --target=build && yarn prebuild-styles",
     "prebuild-styles": "npx nx run-many --target=prebuild-styles",
+    "publish-lib": "npx ts-node ./scripts/publish-lib.ts",
     "test": "npx nx run-many --target=test --all --parallel",
     "test-ci": "npx nx run-many --target=test --all --parallel --browsers=ChromeHeadlessCI"
   },
@@ -88,6 +89,7 @@
     "react-refresh": "^0.10.0",
     "react-test-renderer": "18.2.0",
     "sass": "^1.58.3",
+    "semver-compare": "^1.0.0",
     "tailwindcss": "^3.0.2",
     "ts-node": "10.9.1",
     "typescript": "~4.8.2",

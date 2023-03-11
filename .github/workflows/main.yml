@@ -23,10 +23,3 @@ jobs:
 
       - name: Test
         run: yarn test-ci
-
-      - name: Publish
-        if: github.ref == 'refs/heads/main'
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_ACCESS_TOKEN }}
-          access: public
