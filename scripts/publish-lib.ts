@@ -6,6 +6,7 @@ import cmp from 'semver-compare';
 
 for (const name of ['core', 'angular', 'react']) {
   publish(name);
+  process.exit(0);
 }
 
 function publish(name: string) {
@@ -53,7 +54,6 @@ function publish(name: string) {
         `Publish skipped. Version (${localVersion}) is same or older as registry (${registryVersion}).`
       )
     );
-    process.exit(0);
   }
 
   console['log'](
@@ -61,8 +61,6 @@ function publish(name: string) {
   );
 
   execSync('npm publish', { stdio: 'inherit' });
-
-  process.exit(0);
 }
 
 function invariant(condition: unknown, message: string) {

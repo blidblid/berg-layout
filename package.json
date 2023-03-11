@@ -56,6 +56,7 @@
     "@types/node": "16.11.7",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
+    "@types/semver-compare": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "@vitejs/plugin-react": "^3.0.0",
