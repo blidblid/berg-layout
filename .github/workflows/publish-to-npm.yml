@@ -1,7 +1,7 @@
 name: Publish Package to npmjs
 on:
-  release:
-    types: [published]
+  pull_request:
+    types: [closed]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,6 +13,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           scope: '@berg-layout'
       - run: yarn
+      - run: yarn build
       - run: yarn publish-lib
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
