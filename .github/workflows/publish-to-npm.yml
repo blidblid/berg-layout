@@ -2,7 +2,6 @@ name: Publish Package to npmjs
 on:
   release:
     types: [published]
-if: github.ref == 'refs/heads/main'
 jobs:
   build:
     runs-on: ubuntu-latest
