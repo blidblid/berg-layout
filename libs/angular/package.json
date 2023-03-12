@@ -1,6 +1,6 @@
 {
   "name": "@berg-layout/angular",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "devDependencies": {
     "@berg-layout/testing": "*"
   },
