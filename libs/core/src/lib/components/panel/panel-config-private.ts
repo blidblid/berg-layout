@@ -3,7 +3,6 @@ import { BergPanelSlot } from './panel-model';
 export const BERG_PANEL_ABSOLUTE_CLASS = 'berg-panel-absolute';
 export const BERG_PANEL_COLLAPSED_CLASS = 'berg-panel-collapsed';
 export const BERG_PANEL_HORIZONTAL_CLASS = 'berg-panel-horizontal';
-export const BERG_PANEL_NO_TRANSITION_CLASS = 'berg-panel-no-transition';
 export const BERG_PANEL_PREVIEWING_CLASS = 'berg-panel-previewing';
 export const BERG_PANEL_RESIZE_DISABLED_CLASS = 'berg-panel-resize-disabled';
 export const BERG_PANEL_RESIZING_CLASS = 'berg-panel-resizing';

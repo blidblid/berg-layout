@@ -1,3 +1,6 @@
+// should match the configured transition duration
+$transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
 // applies styles outside of the shadow dom
 @mixin core($overrides: ()) {
   @include panel();
@@ -12,12 +15,10 @@
     display: block;
     position: relative;
     box-sizing: border-box;
-    transition-property: padding, top, left, right, bottom, box-shadow;
+    transition-property: top, left, right, bottom, box-shadow;
+    transition: $transition;
 
-    // should match the configured transition duration
-    transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-    &.berg-panel-no-transition {
+    .berg-layout-no-transition & {
       transition: none;
     }
 
@@ -49,6 +50,9 @@
   .berg-panel-top {
     top: var(--berg-layout-top-inset);
     right: calc(var(--berg-panel-right-size) + var(--berg-layout-right-inset));
+    bottom: calc(
+      100% - var(--berg-panel-top-size) - var(--berg-layout-top-inset)
+    );
     left: calc(var(--berg-panel-left-size) + var(--berg-layout-left-inset));
     height: var(--berg-panel-top-size);
 
@@ -83,6 +87,9 @@
     top: var(--berg-layout-top-inset);
     right: var(--berg-layout-right-inset);
     bottom: var(--berg-layout-bottom-inset);
+    left: calc(
+      100% - var(--berg-panel-right-size) - var(--berg-layout-right-inset)
+    );
     width: var(--berg-panel-right-size);
 
     &.berg-panel-collapsed {
@@ -117,6 +124,9 @@
   }
 
   .berg-panel-bottom {
+    top: calc(
+      100% - var(--berg-panel-bottom-size) - var(--berg-layout-bottom-inset)
+    );
     right: var(--berg-panel-right-size);
     bottom: var(--berg-layout-bottom-inset);
     left: var(--berg-panel-left-size);
@@ -153,6 +163,9 @@
 
   .berg-panel-left {
     top: var(--berg-layout-top-inset);
+    right: calc(
+      100% - var(--berg-panel-left-size) - var(--berg-layout-left-inset)
+    );
     bottom: var(--berg-layout-bottom-inset);
     left: var(--berg-layout-left-inset);
     width: var(--berg-panel-left-size);
@@ -188,6 +201,9 @@
 
   .berg-layout {
     &::part(content) {
+      transition-property: padding;
+      transition: $transition;
+
       padding-top: calc(
         var(--berg-panel-top-size) + var(--berg-layout-top-inset)
       );
@@ -203,6 +219,13 @@
       padding-left: calc(
         var(--berg-panel-left-size) + var(--berg-layout-left-inset)
       );
+    }
+
+    &.berg-layout-no-transition,
+    &.berg-layout-resizing {
+      &::part(content) {
+        transition: none;
+      }
     }
   }
 
