@@ -425,11 +425,15 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     }
 
     if (this.slot === 'bottom') {
-      return create(document.body.clientHeight - inset - event.clientY);
+      return create(
+        document.documentElement.clientHeight - inset - event.clientY
+      );
     }
 
     if (this.slot === 'right') {
-      return create(document.body.clientWidth - inset - event.clientX);
+      return create(
+        document.documentElement.clientWidth - inset - event.clientX
+      );
     }
 
     return create(0);
