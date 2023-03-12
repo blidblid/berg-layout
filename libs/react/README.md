@@ -2,4 +2,4 @@
 
 This is the React version of berg-layout.
 
-Check out the demo and docs [here](https://berg-layout.web.app/react).
+Check out the demo and docs [here](https://berglayout.com/react).

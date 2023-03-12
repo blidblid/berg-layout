@@ -1,3 +1,3 @@
 # berg-layout
 
-Check out the demo [here](https://berg-layout.web.app/).
+Check out the demo [here](https://berglayout.com/).

@@ -2,4 +2,4 @@
 
 This is the web component version of berg-layout.
 
-Check out the demo and docs [here](https://berg-layout.web.app/core).
+Check out the demo and docs [here](https://berglayout.com/core).
