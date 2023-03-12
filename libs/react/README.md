@@ -2,4 +2,11 @@
 
 This is the React version of berg-layout.
 
-Check out the demo and docs [here](https://berg-layout.web.app/react).
+## Usage
+
+Usage and demo [here](https://berglayout.com/react).
+
+## Documentation
+
+- Panel inputs and outputs [here](/libs/core/src/lib/components/panel/panel-model.ts)
+- Layout inputs and outputs [here](/libs/core/src/lib/components/layout/layout-model.ts)

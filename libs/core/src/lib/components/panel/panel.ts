@@ -22,6 +22,7 @@ import {
 } from 'rxjs/operators';
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergLayoutElement, BERG_LAYOUT_TAG_NAME } from '../layout';
+import { BERG_LAYOUT_NO_TRANSITION_CLASS } from '../layout/layout-config-private';
 import { WebComponent } from '../web-component';
 import {
   BERG_PANEL_ATTRIBUTE_BY_INPUT,
@@ -39,7 +40,6 @@ import {
   BERG_PANEL_COLLAPSED_CLASS,
   BERG_PANEL_ENABLE_ANIMATION_DELAY,
   BERG_PANEL_HORIZONTAL_CLASS,
-  BERG_PANEL_NO_TRANSITION_CLASS,
   BERG_PANEL_PREVIEWING_CLASS,
   BERG_PANEL_RESIZE_DISABLED_CLASS,
   BERG_PANEL_RESIZING_CLASS,
@@ -295,11 +295,11 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   private disableTransitions(): void {
-    this.classList.add(BERG_PANEL_NO_TRANSITION_CLASS);
+    this.layout.classList.add(BERG_LAYOUT_NO_TRANSITION_CLASS);
   }
 
   private enableTransitions(): void {
-    this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
+    this.layout.classList.remove(BERG_LAYOUT_NO_TRANSITION_CLASS);
   }
 
   private temporarilyDisableTransitions(): void {
@@ -410,36 +410,26 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     const create = (size: number) => {
       return {
         event,
-        size: Math.max(size),
+        size,
       };
     };
 
     const inset = this.layout.getSlotInset(this.values.slot);
 
     if (this.slot === 'top') {
-      return create(event.pageY - inset - document.documentElement.scrollTop);
+      return create(event.clientY - inset);
     }
 
     if (this.slot === 'left') {
-      return create(event.pageX - inset - document.documentElement.scrollLeft);
+      return create(event.clientX - inset);
     }
 
     if (this.slot === 'bottom') {
-      return create(
-        document.documentElement.scrollTop +
-          window.innerHeight -
-          inset -
-          event.pageY
-      );
+      return create(document.body.clientHeight - inset - event.clientY);
     }
 
     if (this.slot === 'right') {
-      return create(
-        document.documentElement.scrollLeft +
-          window.innerWidth -
-          inset -
-          event.pageX
-      );
+      return create(document.body.clientWidth - inset - event.clientX);
     }
 
     return create(0);

@@ -26,6 +26,7 @@ export class DemoComponent implements OnDestroy {
   topSize = 80;
   bottomSize = 49;
   rightSize = 350;
+  rightMaxSize: number | null = null;
 
   html$ = combineLatest([
     this.rx.layout$,
@@ -131,6 +132,7 @@ export class DemoComponent implements OnDestroy {
       .subscribe((breakpoints) => {
         this.rx.right.absolute.next(breakpoints.medium);
         this.rx.right.collapsed.next(breakpoints.small);
+        this.rightMaxSize = breakpoints.tiny ? 330 : null;
       });
   }
 

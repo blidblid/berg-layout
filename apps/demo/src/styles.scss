@@ -104,10 +104,6 @@ $light-theme: mat.define-light-theme(
   }
 }
 
-.berg-panel-right {
-  max-width: 85vw;
-}
-
 .berg-panel-top {
   &::part(content) {
     padding: 16px;

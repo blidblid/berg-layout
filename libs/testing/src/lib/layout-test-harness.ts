@@ -105,11 +105,11 @@ export class BergLayoutTestHarness {
     let clientXY = size;
 
     if (slot === 'right') {
-      clientXY = window.innerWidth - size;
+      clientXY = document.body.clientWidth - size;
     }
 
     if (slot === 'bottom') {
-      clientXY = window.innerHeight - size;
+      clientXY = document.body.clientHeight - size;
     }
 
     const mouseMoveEvent = new MouseEvent('mousemove', {
