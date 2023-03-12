@@ -410,36 +410,28 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     const create = (size: number) => {
       return {
         event,
-        size: Math.max(size),
+        size,
       };
     };
 
     const inset = this.layout.getSlotInset(this.values.slot);
 
     if (this.slot === 'top') {
-      return create(event.pageY - inset - document.documentElement.scrollTop);
+      return create(event.clientY - inset);
     }
 
     if (this.slot === 'left') {
-      return create(event.pageX - inset - document.documentElement.scrollLeft);
+      return create(event.clientX - inset);
     }
 
     if (this.slot === 'bottom') {
-      return create(
-        document.documentElement.scrollTop +
-          window.innerHeight -
-          inset -
-          event.pageY
-      );
+      return create(document.body.clientHeight - inset - event.clientY);
     }
 
+    console.log(event.pageX);
+
     if (this.slot === 'right') {
-      return create(
-        document.documentElement.scrollLeft +
-          window.innerWidth -
-          inset -
-          event.pageX
-      );
+      return create(document.body.clientWidth - inset - event.clientX);
     }
 
     return create(0);
