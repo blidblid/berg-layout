@@ -428,8 +428,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       return create(document.body.clientHeight - inset - event.clientY);
     }
 
-    console.log(event.pageX);
-
     if (this.slot === 'right') {
       return create(document.body.clientWidth - inset - event.clientX);
     }
