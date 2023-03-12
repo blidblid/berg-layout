@@ -491,6 +491,28 @@ export const runLayoutTests = (
         await harness.resize('left', 200);
         expect(harness.assertedLeft.getBoundingClientRect().width).toBe(150);
       });
+
+      it('should disable resizing for a panel', async () => {
+        await render({
+          top: {
+            resizeDisabled: true,
+          },
+        });
+
+        harness.previewResize('top');
+        expect(harness.getResizeToggle('top')).toBe(null);
+      });
+
+      it('should disable resizing for the layout', async () => {
+        await render({
+          layout: {
+            resizeDisabled: true,
+          },
+        });
+
+        harness.previewResize('top');
+        expect(harness.getResizeToggle('top')).toBe(null);
+      });
     });
 
     describe('size', () => {

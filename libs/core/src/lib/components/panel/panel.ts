@@ -1,6 +1,7 @@
 import {
   animationFrameScheduler,
   combineLatest,
+  defer,
   EMPTY,
   fromEvent,
   merge,
@@ -61,9 +62,18 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     map((slot) => this.layout.resizeToggles[slot])
   );
 
+  private resizeDisabled$ = combineLatest([
+    this.changes.resizeDisabled,
+    defer(() => this.layout.changes.resizeDisabled),
+  ]).pipe(
+    map(([resizeDisabled, layoutResizeDisabled]) => {
+      return resizeDisabled || layoutResizeDisabled;
+    })
+  );
+
   private previewing$ = combineLatest([
     this.changes.slot,
-    this.changes.resizeDisabled,
+    this.resizeDisabled$,
   ]).pipe(
     switchMap(([slot, resizeDisabled]) => {
       if (resizeDisabled) {
@@ -381,10 +391,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         }
       });
 
-    combineLatest([
-      this.changes.slot.pipe(pairwise()),
-      this.changes.resizeDisabled,
-    ])
+    combineLatest([this.changes.slot.pipe(pairwise()), this.resizeDisabled$])
       .pipe(takeUntil(this.disconnectedSub))
       .subscribe(([[previousSlot, currentSlot], resizeDisabled]) => {
         const currentResizeToggle = this.layout.resizeToggles[currentSlot];

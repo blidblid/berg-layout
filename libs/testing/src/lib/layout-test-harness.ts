@@ -94,7 +94,10 @@ export class BergLayoutTestHarness {
 
   previewResize(slot: BergPanelSlot): void {
     const resizeToggle = this.getResizeToggle(slot);
-    resizeToggle.dispatchEvent(new MouseEvent('mousemove'));
+
+    if (resizeToggle) {
+      resizeToggle.dispatchEvent(new MouseEvent('mousemove'));
+    }
   }
 
   async resize(slot: BergPanelSlot, size: number): Promise<void> {
@@ -105,11 +108,11 @@ export class BergLayoutTestHarness {
     let clientXY = size;
 
     if (slot === 'right') {
-      clientXY = document.body.clientWidth - size;
+      clientXY = document.documentElement.clientWidth - size;
     }
 
     if (slot === 'bottom') {
-      clientXY = document.body.clientHeight - size;
+      clientXY = document.documentElement.clientHeight - size;
     }
 
     const mouseMoveEvent = new MouseEvent('mousemove', {
@@ -136,10 +139,16 @@ export class BergLayoutTestHarness {
     );
   }
 
-  getResizeToggle(slot: BergPanelSlot): HTMLElement {
+  getResizeToggle(slot: BergPanelSlot): HTMLElement | null {
     const resizeToggle = this.getAssertedPanel(slot).querySelector<HTMLElement>(
       '.berg-panel-resize-toggle'
     );
+
+    return resizeToggle;
+  }
+
+  getResizeAssertedToggle(slot: BergPanelSlot): HTMLElement {
+    const resizeToggle = this.getResizeToggle(slot);
 
     if (!resizeToggle) {
       throw new Error(`No ${slot} panel resize toggle found`);
