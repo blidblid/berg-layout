@@ -18,7 +18,7 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-property: top, left, right, bottom, box-shadow;
     transition: $transition;
 
-    &.berg-panel-no-transition {
+    .berg-layout-no-transition & {
       transition: none;
     }
 
@@ -219,6 +219,13 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       padding-left: calc(
         var(--berg-panel-left-size) + var(--berg-layout-left-inset)
       );
+    }
+
+    &.berg-layout-no-transition,
+    &.berg-layout-resizing {
+      &::part(content) {
+        transition: none;
+      }
     }
   }
 

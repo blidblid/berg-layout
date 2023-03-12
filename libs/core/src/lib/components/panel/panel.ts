@@ -22,6 +22,7 @@ import {
 } from 'rxjs/operators';
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergLayoutElement, BERG_LAYOUT_TAG_NAME } from '../layout';
+import { BERG_LAYOUT_NO_TRANSITION_CLASS } from '../layout/layout-config-private';
 import { WebComponent } from '../web-component';
 import {
   BERG_PANEL_ATTRIBUTE_BY_INPUT,
@@ -39,7 +40,6 @@ import {
   BERG_PANEL_COLLAPSED_CLASS,
   BERG_PANEL_ENABLE_ANIMATION_DELAY,
   BERG_PANEL_HORIZONTAL_CLASS,
-  BERG_PANEL_NO_TRANSITION_CLASS,
   BERG_PANEL_PREVIEWING_CLASS,
   BERG_PANEL_RESIZE_DISABLED_CLASS,
   BERG_PANEL_RESIZING_CLASS,
@@ -295,11 +295,11 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   private disableTransitions(): void {
-    this.classList.add(BERG_PANEL_NO_TRANSITION_CLASS);
+    this.layout.classList.add(BERG_LAYOUT_NO_TRANSITION_CLASS);
   }
 
   private enableTransitions(): void {
-    this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
+    this.layout.classList.remove(BERG_LAYOUT_NO_TRANSITION_CLASS);
   }
 
   private temporarilyDisableTransitions(): void {
