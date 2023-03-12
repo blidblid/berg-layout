@@ -15,13 +15,13 @@ export interface BergPanelInputs {
   /** Whether resizing is disabled. */
   resizeDisabled: boolean;
 
-  /** Size of the panel. */
+  /** Size of the panel in px. */
   size: number;
 
-  /** Min size of the panel */
+  /** Min size of the panel in px. */
   minSize: number | null;
 
-  /** Max size of the panel. */
+  /** Max size of the panel in px. */
   maxSize: number | null;
 
   /**
