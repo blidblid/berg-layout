@@ -43,10 +43,6 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: fixed;
   }
 
-  .berg-layout::part(content) {
-    z-index: 0;
-  }
-
   .berg-panel-top {
     top: var(--berg-layout-top-inset);
     right: calc(var(--berg-panel-right-size) + var(--berg-layout-right-inset));

@@ -58,6 +58,8 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private backdropElement: HTMLElement;
   private layout = document.createElement('berg-layout') as BergLayoutElement;
 
+  private timeouts: ReturnType<typeof setTimeout>[] = [];
+
   private resizeToggle$ = this.changes.slot.pipe(
     map((slot) => this.layout.resizeToggles[slot])
   );
@@ -179,9 +181,11 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           } else {
             this.classList.remove(BERG_PANEL_ABSOLUTE_CLASS);
 
-            setTimeout(() => {
-              this.style.removeProperty('z-index');
-            }, BERG_PANEL_BACKDROP_ANIMATION_DURATION);
+            this.timeouts.push(
+              setTimeout(() => {
+                this.style.removeProperty('z-index');
+              }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
+            );
           }
         },
         collapsed: () => {
@@ -247,11 +251,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     this.backdropElement.style.opacity = '0';
     this.backdropElement.style.pointerEvents = 'none';
 
-    setTimeout(() => {
-      if (this.layout.shadowRoot) {
-        this.layout.shadowRoot.removeChild(backdrop);
-      }
-    }, BERG_PANEL_BACKDROP_ANIMATION_DURATION);
+    this.timeouts.push(
+      setTimeout(() => {
+        if (this.layout.shadowRoot) {
+          this.layout.shadowRoot.removeChild(backdrop);
+        }
+      }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
+    );
   }
 
   private updateBackdrop(): void {
@@ -323,9 +329,11 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       }
 
       // use a timeout as a fallback if the browser never idles
-      setTimeout(
-        () => this.enableTransitions(),
-        BERG_PANEL_ENABLE_ANIMATION_DELAY
+      this.timeouts.push(
+        setTimeout(
+          () => this.enableTransitions(),
+          BERG_PANEL_ENABLE_ANIMATION_DELAY
+        )
       );
     });
   }
@@ -570,6 +578,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.layout.updateSizeCssVariable(this.values.slot, 0);
+
+    for (const timeout of this.timeouts) {
+      clearTimeout(timeout);
+    }
   }
 
   static get observedAttributes(): string[] {
