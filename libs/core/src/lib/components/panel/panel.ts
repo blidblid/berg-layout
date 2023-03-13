@@ -56,7 +56,7 @@ import { validateOutputBindingMode, validateSlot } from './panel-util-private';
 
 export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private backdropElement: HTMLElement;
-  private layout: BergLayoutElement;
+  private layout = document.createElement('berg-layout') as BergLayoutElement;
 
   private resizeToggle$ = this.changes.slot.pipe(
     map((slot) => this.layout.resizeToggles[slot])
@@ -543,8 +543,8 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   connectedCallback(): void {
-    this.temporarilyDisableTransitions();
     this.layout = this.findLayoutElement();
+    this.temporarilyDisableTransitions();
 
     this.classList.add(BERG_PANEL_CLASS);
     this.subscribeToResizing();
