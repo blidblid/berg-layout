@@ -50,15 +50,11 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   .berg-panel-top {
     top: var(--berg-layout-top-inset);
     right: calc(var(--berg-panel-right-size) + var(--berg-layout-right-inset));
-    bottom: calc(
-      100% - var(--berg-panel-top-size) - var(--berg-layout-top-inset)
-    );
     left: calc(var(--berg-panel-left-size) + var(--berg-layout-left-inset));
     height: var(--berg-panel-top-size);
 
     &.berg-panel-collapsed {
       top: calc(var(--berg-layout-top-inset) - var(--berg-panel-top-size));
-      bottom: calc(100% - var(--berg-layout-top-inset));
     }
 
     .berg-layout-top-above-left & {
@@ -87,16 +83,12 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     top: var(--berg-layout-top-inset);
     right: var(--berg-layout-right-inset);
     bottom: var(--berg-layout-bottom-inset);
-    left: calc(
-      100% - var(--berg-panel-right-size) - var(--berg-layout-right-inset)
-    );
     width: var(--berg-panel-right-size);
 
     &.berg-panel-collapsed {
       right: calc(
         var(--berg-layout-right-inset) - var(--berg-panel-right-size)
       );
-      left: calc(100% - var(--berg-layout-right-inset));
     }
 
     .berg-layout-top-above-right & {
@@ -124,9 +116,6 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
   .berg-panel-bottom {
-    top: calc(
-      100% - var(--berg-panel-bottom-size) - var(--berg-layout-bottom-inset)
-    );
     right: var(--berg-panel-right-size);
     bottom: var(--berg-layout-bottom-inset);
     left: var(--berg-panel-left-size);
@@ -136,7 +125,6 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       bottom: calc(
         var(--berg-layout-bottom-inset) - var(--berg-panel-bottom-size)
       );
-      top: calc(100% - var(--berg-layout-bottom-inset));
     }
 
     .berg-layout-bottom-below-left & {
@@ -163,16 +151,12 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .berg-panel-left {
     top: var(--berg-layout-top-inset);
-    right: calc(
-      100% - var(--berg-panel-left-size) - var(--berg-layout-left-inset)
-    );
     bottom: var(--berg-layout-bottom-inset);
     left: var(--berg-layout-left-inset);
     width: var(--berg-panel-left-size);
 
     &.berg-panel-collapsed {
       left: calc(var(--berg-layout-left-inset) - var(--berg-panel-left-size));
-      right: calc(100% - var(--berg-layout-left-inset));
     }
 
     .berg-layout-top-above-left & {
