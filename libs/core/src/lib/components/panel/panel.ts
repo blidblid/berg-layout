@@ -56,7 +56,7 @@ import { validateOutputBindingMode, validateSlot } from './panel-util-private';
 
 export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private backdropElement: HTMLElement;
-  private layout = document.createElement('berg-layout') as BergLayoutElement;
+  private layout = new BergLayoutElement();
 
   private timeouts: ReturnType<typeof setTimeout>[] = [];
 
