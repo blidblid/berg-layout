@@ -9,9 +9,12 @@
   left: 0;
   right: 0;
 
-  .app-list,
-  code {
+  .app-list {
     padding: 0 32px;
+  }
+
+  code {
+    padding: 0 16px;
   }
 
   .app-card {
