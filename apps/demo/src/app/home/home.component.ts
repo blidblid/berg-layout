@@ -3,7 +3,14 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
-import { FEATURES } from '../config';
+import { Breakpoints } from '../../lib/components';
+import {
+  ANGULAR_FEATURE,
+  Feature,
+  FEATURES,
+  REACT_FEATURE,
+  WEB_COMPONENT_FEATURE,
+} from '../config';
 
 @Component({
   selector: 'app-home',
@@ -17,4 +24,18 @@ import { FEATURES } from '../config';
 })
 export class HomeComponent {
   features = FEATURES;
+
+  title = '<berg-layout />';
+
+  constructor(public breakpoints: Breakpoints) {}
+
+  updateTitle(feature: Feature) {
+    if (feature === REACT_FEATURE) {
+      this.title = '<BergLayout />';
+    } else if (feature === ANGULAR_FEATURE) {
+      this.title = '<berg-layout />';
+    } else if (feature === WEB_COMPONENT_FEATURE) {
+      this.title = '<berg-layout />';
+    }
+  }
 }

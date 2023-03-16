@@ -1,13 +1,17 @@
 .app-home {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  min-width: 100vw;
+  padding-top: 15%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-  .app-list {
-    width: 90vw;
-    max-width: 900px;
+  .app-list,
+  code {
+    padding: 0 32px;
   }
 
   .app-card {

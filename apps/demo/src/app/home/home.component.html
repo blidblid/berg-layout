@@ -1,11 +1,24 @@
+<code
+  [class]="
+    (breakpoints.breakpoints$ | async)?.tiny
+      ? 'mat-headline-4'
+      : 'mat-headline-3'
+  "
+  >{{ title }}</code
+>
+
 <app-list>
   <app-list-item *ngFor="let feature of features">
-    <app-card [routerLink]="feature.path">
-      <app-card-title>
-        {{ feature.name }}
-      </app-card-title>
+    <a [routerLink]="feature.path" (mouseenter)="updateTitle(feature)">
+      <app-card>
+        <app-card-title>
+          {{ feature.name }}
+        </app-card-title>
 
-      <app-icon [iconUrl]="feature.iconUrl"></app-icon>
-    </app-card>
+        <app-icon [iconUrl]="feature.iconUrl"></app-icon>
+      </app-card>
+    </a>
   </app-list-item>
 </app-list>
+
+<app-illustration></app-illustration>

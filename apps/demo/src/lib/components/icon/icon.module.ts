@@ -14,7 +14,7 @@ export class IconModule {
     private domSanitizer: DomSanitizer,
     private iconRegistry: MatIconRegistry
   ) {
-    for (const iconName of ['github', 'npm', 'menu'])
+    for (const iconName of ['github', 'npm', 'menu', 'home'])
       this.iconRegistry.addSvgIcon(
         iconName,
         this.domSanitizer.bypassSecurityTrustResourceUrl(

@@ -4,7 +4,7 @@ import { Directive } from '@angular/core';
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'app-card-title',
   host: {
-    class: 'app-card-title h3',
+    class: 'app-card-title',
   },
 })
 export class CardTitleDirective {}

@@ -3,14 +3,13 @@
 @mixin theme($colors) {
   .app-card {
     color: map-get($colors, text);
-    @include layout.elevation(4);
 
     &:hover {
-      outline: 5px solid map-get($colors, primary);
+      transform: translateY(-2px);
     }
 
     &:focus {
-      outline: 5px solid map-get($colors, secondary);
+      transform: translateY(-2px);
     }
   }
 }
