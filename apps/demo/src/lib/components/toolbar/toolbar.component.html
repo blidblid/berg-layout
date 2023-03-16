@@ -1,13 +1,21 @@
-<div class="flex">
-  <a mat-icon-button href="https://github.com/blidblid/berg-layout">
-    <mat-icon svgIcon="github"></mat-icon>
-  </a>
+<nav class="flex items-center justify-between">
+  <div class="flex">
+    <a mat-icon-button href="https://github.com/blidblid/berg-layout">
+      <mat-icon svgIcon="github"></mat-icon>
+    </a>
 
-  <a mat-icon-button [attr.href]="npmLink$ | async">
-    <mat-icon svgIcon="npm"></mat-icon>
-  </a>
-</div>
+    <a mat-icon-button [attr.href]="npmLink$ | async">
+      <mat-icon svgIcon="npm"></mat-icon>
+    </a>
+  </div>
 
-<button mat-button (click)="toggleRight()">
-  <mat-icon svgIcon="menu"></mat-icon>
-</button>
+  <div class="flex">
+    <a mat-button routerLink="/">
+      <mat-icon svgIcon="home"></mat-icon>
+    </a>
+
+    <button mat-button (click)="toggleRight()">
+      <mat-icon svgIcon="menu"></mat-icon>
+    </button>
+  </div>
+</nav>

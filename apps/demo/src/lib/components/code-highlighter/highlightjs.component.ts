@@ -8,7 +8,7 @@ import * as hljs from 'highlight.js';
 export class BergHighlightCodeComponent {
   @Input()
   set code(code: string | null) {
-    this.elementRef.nativeElement.innerHTML = code
+    const highlightedCode = code
       ? hljs.default.highlightAuto(code, [
           'scss',
           'css',
@@ -17,6 +17,8 @@ export class BergHighlightCodeComponent {
           'console',
         ]).value
       : '';
+
+    this.elementRef.nativeElement.innerHTML = `<code>${highlightedCode}</code>`;
   }
 
   constructor(private elementRef: ElementRef<HTMLElement>) {}

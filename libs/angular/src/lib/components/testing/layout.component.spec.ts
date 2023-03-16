@@ -172,7 +172,6 @@ describe('Angular implementation', () => {
       <berg-panel
         #topRef
         slot="top"
-        *ngIf="showTop"
         [size]="top.size"
         [minSize]="top.minSize"
         [maxSize]="top.maxSize"
@@ -190,7 +189,6 @@ describe('Angular implementation', () => {
       <berg-panel
         #rightRef
         slot="right"
-        *ngIf="showRight"
         [size]="right.size"
         [minSize]="right.minSize"
         [maxSize]="right.maxSize"
@@ -204,7 +202,6 @@ describe('Angular implementation', () => {
       <berg-panel
         #bottomRef
         slot="bottom"
-        *ngIf="showBottom"
         [size]="bottom.size"
         [minSize]="bottom.minSize"
         [maxSize]="bottom.maxSize"
@@ -218,7 +215,6 @@ describe('Angular implementation', () => {
       <berg-panel
         #leftRef
         slot="left"
-        *ngIf="showLeft"
         [size]="left.size"
         [minSize]="left.minSize"
         [maxSize]="left.maxSize"
@@ -240,11 +236,6 @@ export class LayoutTestComponent {
   right = { ...BERG_PANEL_DEFAULT_INPUTS };
   bottom = { ...BERG_PANEL_DEFAULT_INPUTS };
   left = { ...BERG_PANEL_DEFAULT_INPUTS };
-
-  showTop = true;
-  showRight = true;
-  showBottom = true;
-  showLeft = true;
 
   hasAfterCollapsedEmitted = false;
   hasAfterExpandedEmitted = false;

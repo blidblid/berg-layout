@@ -1,0 +1,43 @@
+.app-illustration {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+
+  .app-illustration-mountain {
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    border-left: 24vh solid transparent;
+    border-right: 24vh solid transparent;
+    border-bottom: 24vh solid #33fbfa;
+    z-index: 1;
+
+    animation-name: floating;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+
+  svg {
+    position: absolute;
+    bottom: 0;
+    transform: rotateZ(180deg);
+    z-index: 2;
+  }
+}
+
+@keyframes floating {
+  0% {
+    transform: translate(0, 0px);
+  }
+  50% {
+    transform: translate(0, 15px);
+  }
+  100% {
+    transform: translate(0, -0px);
+  }
+}

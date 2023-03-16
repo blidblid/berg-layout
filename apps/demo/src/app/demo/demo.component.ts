@@ -1,4 +1,3 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,7 +6,7 @@ import {
 } from '@angular/core';
 import { BergPanelResizeEvent, BergPanelSlot } from '@berg-layout/core';
 import { combineLatest, map, Subject, takeUntil } from 'rxjs';
-import { EditorView } from '../../lib/components';
+import { Breakpoints, EditorView } from '../../lib/components';
 import { LayoutRx } from '../../lib/rx';
 import { CodePrinter } from '../code';
 
@@ -68,35 +67,12 @@ export class DemoComponent implements OnDestroy {
 
   leftSize = this.initialLeftSize;
 
-  private tiny = this.getBreakpoint('700px');
-  private small = this.getBreakpoint('900px');
-  private medium = this.getBreakpoint('1100px');
-  private large = this.getBreakpoint('1300px');
-
-  private breakpoints$ = this.breakpointObserver
-    .observe(
-      [this.tiny, this.small, this.medium, this.large].filter(
-        (breakpoint): breakpoint is string => !!breakpoint
-      )
-    )
-    .pipe(
-      map((state) => {
-        return {
-          tiny: state.breakpoints[this.tiny],
-          small: state.breakpoints[this.small],
-          medium: state.breakpoints[this.medium],
-          large: state.breakpoints[this.large],
-          huge: !state.breakpoints[this.large],
-        };
-      })
-    );
-
   private destroySub = new Subject<void>();
 
   constructor(
     protected codePrinter: CodePrinter,
     protected rx: LayoutRx,
-    protected breakpointObserver: BreakpointObserver
+    protected breakpoints: Breakpoints
   ) {
     this.subscribe();
   }
@@ -126,16 +102,12 @@ export class DemoComponent implements OnDestroy {
   }
 
   private subscribe(): void {
-    this.breakpoints$
+    this.breakpoints.breakpoints$
       .pipe(takeUntil(this.destroySub))
       .subscribe((breakpoints) => {
-        this.rx.right.absolute.next(breakpoints.medium);
+        this.rx.right.absolute.next(breakpoints.small);
         this.rx.right.collapsed.next(breakpoints.small);
       });
-  }
-
-  private getBreakpoint(breakpoint?: string): string {
-    return breakpoint ? `(max-width: ${breakpoint})` : '';
   }
 
   ngOnDestroy(): void {

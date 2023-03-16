@@ -1,23 +1,8 @@
 .app-list {
   display: block;
+  z-index: 10;
 
-  .app-list-title {
-    display: block;
-    margin-bottom: 16px;
-  }
-
-  .app-list-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 0.6fr));
-    grid-gap: 1vw;
-    justify-content: center;
-
-    .app-list-item {
-      aspect-ratio: 1;
-      height: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-      box-shadow: 0 2px 2px rgb(10 16 20 / 24%), 0 0 2px rgb(10 16 20 / 12%);
-    }
+  .app-list-item {
+    width: 180px;
   }
 }
