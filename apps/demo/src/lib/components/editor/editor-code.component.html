@@ -1,13 +1,60 @@
-<pre><code class="language-html"><app-highlight-code [code]="html"></app-highlight-code></code></pre>
+<ng-container
+  *ngTemplateOutlet="
+    contextTmpl;
+    context: {
+      $implicit: {
+        title: 'Install',
+        class: 'language-html',
+        code: html
+      }
+    }
+  "
+></ng-container>
 
-<h4>Install</h4>
-<pre><code class="language-ts"><app-highlight-code>{{installCommand}}</app-highlight-code></code></pre>
+<ng-container
+  *ngTemplateOutlet="
+    contextTmpl;
+    context: {
+      $implicit: {
+        title: 'Install',
+        code: installCommand
+      }
+    }
+  "
+></ng-container>
 
-<h4>Import</h4>
-<pre><code class="language-ts"><app-highlight-code [code]="importDeclaration"></app-highlight-code></code></pre>
+<ng-container
+  *ngTemplateOutlet="
+    contextTmpl;
+    context: {
+      $implicit: {
+        title: 'Import',
+        class: 'language-ts',
+        code: importDeclaration
+      }
+    }
+  "
+></ng-container>
 
-<h4>SASS...</h4>
-<pre><code class="language-scss"><app-highlight-code [code]="scss"></app-highlight-code></code></pre>
+<ng-container
+  *ngTemplateOutlet="
+    contextTmpl;
+    context: {
+      $implicit: { title: 'SASS...', class: 'language-scss', code: scss }
+    }
+  "
+></ng-container>
 
-<h4>...or CSS</h4>
-<pre><code class="language-css"><app-highlight-code [code]="css"></app-highlight-code></code></pre>
+<ng-container
+  *ngTemplateOutlet="
+    contextTmpl;
+    context: {
+      $implicit: { title: '...or CSS', class: 'language-css', code: css }
+    }
+  "
+></ng-container>
+
+<ng-template #contextTmpl let-context>
+  <h4 *ngIf="context.title">{{ context.title }}</h4>
+  <pre><code [class]="context.class"><app-highlight-code [code]="context.code"></app-highlight-code></code></pre>
+</ng-template>

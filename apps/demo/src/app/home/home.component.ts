@@ -31,11 +31,11 @@ export class HomeComponent {
 
   updateTitle(feature: Feature) {
     if (feature === REACT_FEATURE) {
-      this.title = '<BergLayout />';
+      this.title = '<BergLayout/>';
     } else if (feature === ANGULAR_FEATURE) {
-      this.title = '<berg-layout />';
+      this.title = '<berg-layout>';
     } else if (feature === WEB_COMPONENT_FEATURE) {
-      this.title = '<berg-layout />';
+      this.title = '<berg-layout>';
     }
   }
 }
