@@ -24,7 +24,7 @@ export class LayoutRx {
   ];
 
   edit = new BehaviorSubject(this.slots[3]);
-  theme = new BehaviorSubject('Solarized Light');
+  theme = new BehaviorSubject('Dark');
 
   top = this.createPanelInputs('top');
   right = this.createPanelInputs('right');
