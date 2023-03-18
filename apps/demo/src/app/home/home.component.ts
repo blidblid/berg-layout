@@ -25,7 +25,7 @@ import {
 export class HomeComponent {
   features = FEATURES;
 
-  title = '<berg-layout />';
+  title = '<berg-layout>';
 
   constructor(public breakpoints: Breakpoints) {}
 
