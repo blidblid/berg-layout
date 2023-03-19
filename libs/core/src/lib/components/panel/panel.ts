@@ -67,7 +67,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private canResize = (_: number) => true;
 
   private get isVertical() {
-    return this.slot === 'bottom' || this.slot === 'top';
+    return this.values.slot === 'bottom' || this.values.slot === 'top';
   }
 
   private resizeToggle$ = this.changes.slot.pipe(
@@ -215,13 +215,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           this.classList.remove(...Object.values(BERG_PANEL_CLASSES_BY_SLOT));
           this.classList.add(BERG_PANEL_CLASSES_BY_SLOT[this.values.slot]);
 
-          if (this.values.slot === 'left' || this.values.slot === 'right') {
+          if (!this.isVertical) {
             this.classList.add(BERG_PANEL_VERTICAL_CLASS);
           } else {
             this.classList.remove(BERG_PANEL_VERTICAL_CLASS);
           }
 
-          if (this.values.slot === 'top' || this.values.slot === 'bottom') {
+          if (this.isVertical) {
             this.classList.add(BERG_PANEL_HORIZONTAL_CLASS);
           } else {
             this.classList.remove(BERG_PANEL_HORIZONTAL_CLASS);
