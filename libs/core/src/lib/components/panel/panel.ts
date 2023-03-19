@@ -23,7 +23,11 @@ import {
 } from 'rxjs/operators';
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergLayoutElement, BERG_LAYOUT_TAG_NAME } from '../layout';
-import { BERG_LAYOUT_NO_TRANSITION_CLASS } from '../layout/layout-config-private';
+import {
+  BERG_LAYOUT_NO_TRANSITION_CLASS,
+  BERG_LAYOUT_RESIZING_HORIZONTAL_CLASS,
+  BERG_LAYOUT_RESIZING_VERTICAL_CLASS,
+} from '../layout/layout-config-private';
 import { WebComponent } from '../web-component';
 import {
   BERG_PANEL_ATTRIBUTE_BY_INPUT,
@@ -59,6 +63,12 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private layout = new BergLayoutElement();
 
   private timeouts: ReturnType<typeof setTimeout>[] = [];
+
+  private canResize = (_: number) => true;
+
+  private get isVertical() {
+    return this.slot === 'bottom' || this.slot === 'top';
+  }
 
   private resizeToggle$ = this.changes.slot.pipe(
     map((slot) => this.layout.resizeToggles[slot])
@@ -374,7 +384,11 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     this.resizeEvent$
       .pipe(takeUntil(this.disconnectedSub))
       .subscribe((resizedSize) => {
-        this.updateSize(resizedSize.size);
+        if (this.canResize(resizedSize.size)) {
+          this.updateSize(resizedSize.size);
+        }
+
+        this.updateCanResize(resizedSize.size);
 
         this.dispatchEvent(
           new CustomEvent('resized', {
@@ -387,10 +401,9 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       .pipe(takeUntil(this.disconnectedSub))
       .subscribe(([previewing, resizing]) => {
         const resizeClass = 'berg-layout-resizing';
-        const directionalResizeClass =
-          this.slot === 'bottom' || this.slot === 'top'
-            ? 'berg-layout-resizing-vertical'
-            : 'berg-layout-resizing-horizontal';
+        const directionalResizeClass = this.isVertical
+          ? BERG_LAYOUT_RESIZING_VERTICAL_CLASS
+          : BERG_LAYOUT_RESIZING_HORIZONTAL_CLASS;
 
         if (previewing || resizing) {
           this.layout.classList.add(directionalResizeClass, resizeClass);
@@ -419,6 +432,26 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           this.removeChild(this.layout.resizeToggles[previousSlot]);
         }
       });
+  }
+
+  private updateCanResize(currentSize: number): void {
+    const rect = this.getBoundingClientRect();
+    const rectSize = this.isVertical ? rect.height : rect.width;
+
+    this.canResize = (nextSize: number) => {
+      // The resizing worked, allow the next resize event.
+      if (currentSize === rectSize) {
+        return true;
+      }
+
+      // The resizing was too large, only allow smaller resizes.
+      if (currentSize > rectSize) {
+        return nextSize < rectSize;
+      }
+
+      // The resizing was too small, only allow larger resizes.
+      return nextSize > rectSize;
+    };
   }
 
   private createResizeEvent(event: MouseEvent): BergPanelResizeEvent {

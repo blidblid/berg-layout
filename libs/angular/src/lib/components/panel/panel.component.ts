@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import {
   BergPanelEventBindingMode,
+  BergPanelResizeEvent,
   BergPanelSlot,
   coerceBooleanProperty,
   coerceNumberProperty,
@@ -17,7 +18,6 @@ import {
 import {
   BergPanelInputs,
   BergPanelOutputs,
-  BergPanelResizeEvent,
   BERG_PANEL_DEFAULT_INPUTS,
   BERG_PANEL_INPUTS,
 } from './panel-model';

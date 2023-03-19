@@ -21,8 +21,3 @@ export const BERG_PANEL_INPUTS = new InjectionToken<BergPanelInputs>(
 );
 
 export const BERG_PANEL_DEFAULT_INPUTS = BERG_PANEL_DEFAULT_INPUTS_CORE;
-
-export interface BergPanelResizeEvent {
-  event: MouseEvent;
-  size: number;
-}
