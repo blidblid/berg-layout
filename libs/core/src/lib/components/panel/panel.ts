@@ -214,6 +214,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         slot: () => {
           this.classList.remove(...Object.values(BERG_PANEL_CLASSES_BY_SLOT));
           this.classList.add(BERG_PANEL_CLASSES_BY_SLOT[this.values.slot]);
+          this.setAttribute('part', this.values.slot);
 
           if (!this.isVertical) {
             this.classList.add(BERG_PANEL_VERTICAL_CLASS);
