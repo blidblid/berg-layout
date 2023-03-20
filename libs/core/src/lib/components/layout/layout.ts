@@ -233,6 +233,8 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
         <slot name="content"></slot>
       </div>
     `;
+
+    this.setAttribute('part', 'layout');
   }
 
   static get observedAttributes(): string[] {
