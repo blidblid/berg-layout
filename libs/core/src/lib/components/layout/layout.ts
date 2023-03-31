@@ -225,6 +225,14 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
 
     const shadowRoot = this.shadowRoot ?? this.attachShadow({ mode: 'open' });
     shadowRoot.innerHTML = `
+      <style>
+        .berg-layout-content {
+          height: 100%;
+          width: 100%;
+          box-sizing: border-box;
+        }
+      </style>
+
       <slot name="top"></slot>
       <slot name="right"></slot>
       <slot name="bottom"></slot>

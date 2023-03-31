@@ -291,11 +291,15 @@ export const runLayoutTests = (
           },
         });
 
+        // there is some flake in this spec where the right panel z-index is not updated in time
+        harness.tickDuration(0);
+
         const backdrop = harness.getAssertedBackdrop('right');
         const top = harness.assertedTop;
         const right = harness.assertedRight;
         const bottom = harness.assertedBottom;
         const left = harness.assertedLeft;
+
 
         expect(parseInt(getComputedStyle(right).zIndex)).toBeGreaterThan(
           parseInt(getComputedStyle(backdrop).zIndex)
