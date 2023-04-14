@@ -53,11 +53,11 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       top: calc(var(--berg-layout-top-inset) - var(--berg-panel-top-size));
     }
 
-    .berg-layout-top-above-left & {
+    .berg-layout-top-above-left &, .berg-layout-top-under-left & {
       left: var(--berg-layout-left-inset);
     }
 
-    .berg-layout-top-above-right & {
+    .berg-layout-top-above-right &, .berg-layout-top-under-right & {
       right: var(--berg-layout-right-inset);
     }
 
@@ -123,11 +123,11 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       );
     }
 
-    .berg-layout-bottom-below-left & {
+    .berg-layout-bottom-below-left &, .berg-layout-bottom-under-left & {
       left: var(--berg-layout-left-inset);
     }
 
-    .berg-layout-bottom-below-right & {
+    .berg-layout-bottom-below-right &, .berg-layout-bottom-under-right & {
       right: var(--berg-layout-right-inset);
     }
 
