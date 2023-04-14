@@ -37,7 +37,7 @@ export interface BergLayoutInputs {
 export type BergLayoutInput = keyof BergLayoutInputs;
 
 /** Positions of the top panel. */
-export type BergLayoutTopPosition = 'above' | 'beside'  | 'under';
+export type BergLayoutTopPosition = 'above' | 'beside';
 
 /** Positions of the bottom panel. */
-export type BergLayoutBottomPosition = 'below' | 'beside' | 'under';
+export type BergLayoutBottomPosition = 'below' | 'beside';

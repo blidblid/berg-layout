@@ -6,7 +6,7 @@ import {
 export function validateBergLayoutTopPosition(
   position: string
 ): BergLayoutTopPosition {
-  if (position !== 'above' && position !== 'beside' && position !== 'under') {
+  if (position !== 'above' && position !== 'beside') {
     throw new Error(`Invalid layout top position: ${position}`);
   }
 
@@ -16,7 +16,7 @@ export function validateBergLayoutTopPosition(
 export function validateBergLayoutBottomPosition(
   position: string
 ): BergLayoutBottomPosition {
-  if (position !== 'below' && position !== 'beside' && position !== 'under') {
+  if (position !== 'below' && position !== 'beside') {
     throw new Error(`Invalid layout bottom position: ${position}`);
   }
 
