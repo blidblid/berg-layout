@@ -32,6 +32,22 @@ export const runLayoutTests = (
         );
       });
 
+      it('should render top panel under left', async () => {
+        await render({
+          layout: {
+            topLeftPosition: 'under',
+          },
+        });
+
+        expect(harness.assertedTop.getBoundingClientRect().left).toBe(
+          harness.assertedLeft.getBoundingClientRect().left
+        );
+
+        expect(harness.assertedTop.getBoundingClientRect().top).toBe(
+          harness.assertedLeft.getBoundingClientRect().top
+        );
+      });
+
       it('should render top panel above right', async () => {
         await render({
           layout: {
@@ -53,6 +69,22 @@ export const runLayoutTests = (
 
         expect(harness.assertedTop.getBoundingClientRect().right).toBe(
           harness.assertedRight.getBoundingClientRect().left
+        );
+      });
+
+      it('should render top panel under right', async () => {
+        await render({
+          layout: {
+            topRightPosition: 'under',
+          },
+        });
+
+        expect(harness.assertedTop.getBoundingClientRect().right).toBe(
+          harness.assertedRight.getBoundingClientRect().right
+        );
+
+        expect(harness.assertedTop.getBoundingClientRect().top).toBe(
+          harness.assertedRight.getBoundingClientRect().top
         );
       });
 
@@ -80,6 +112,23 @@ export const runLayoutTests = (
         );
       });
 
+      it('should render bottom panel under left', async () => {
+        await render({
+          layout: {
+            bottomLeftPosition: 'under',
+          },
+        });
+
+        expect(harness.assertedBottom.getBoundingClientRect().left).toBe(
+          harness.assertedLeft.getBoundingClientRect().left
+        );
+
+        expect(harness.assertedBottom.getBoundingClientRect().bottom).toBe(
+          harness.assertedLeft.getBoundingClientRect().bottom
+        );
+      });
+
+
       it('should render bottom panel below right', async () => {
         await render({
           layout: {
@@ -101,6 +150,22 @@ export const runLayoutTests = (
 
         expect(harness.assertedBottom.getBoundingClientRect().right).toBe(
           harness.assertedRight.getBoundingClientRect().left
+        );
+      });
+
+      it('should render bottom panel under right', async () => {
+        await render({
+          layout: {
+            bottomRightPosition: 'under',
+          },
+        });
+
+        expect(harness.assertedBottom.getBoundingClientRect().right).toBe(
+          harness.assertedRight.getBoundingClientRect().right
+        );
+
+        expect(harness.assertedBottom.getBoundingClientRect().bottom).toBe(
+          harness.assertedRight.getBoundingClientRect().bottom
         );
       });
     });

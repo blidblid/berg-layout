@@ -11,9 +11,13 @@ import {
 import {
   BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS,
   BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS,
+  BERG_LAYOUT_BOTTOM_UNDER_LEFT_CLASS,
+  BERG_LAYOUT_BOTTOM_UNDER_RIGHT_CLASS,
   BERG_LAYOUT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS,
+  BERG_LAYOUT_TOP_UNDER_LEFT_CLASS,
+  BERG_LAYOUT_TOP_UNDER_RIGHT_CLASS,
 } from './layout-config-private';
 import { BergLayoutInputs } from './layout-model';
 import {
@@ -48,31 +52,43 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
       },
       {
         topLeftPosition: () => {
+          this.classList.remove(BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS);
+          this.classList.remove(BERG_LAYOUT_TOP_UNDER_LEFT_CLASS);
+
           if (this.values.topLeftPosition === 'above') {
             this.classList.add(BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS);
-          } else {
-            this.classList.remove(BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS);
+          } else if(this.values.topLeftPosition === 'under') {
+            this.classList.add(BERG_LAYOUT_TOP_UNDER_LEFT_CLASS);
           }
         },
         topRightPosition: () => {
+          this.classList.remove(BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS);
+          this.classList.remove(BERG_LAYOUT_TOP_UNDER_RIGHT_CLASS);
+
           if (this.values.topRightPosition === 'above') {
             this.classList.add(BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS);
-          } else {
-            this.classList.remove(BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS);
+          } else if(this.values.topRightPosition === 'under') {
+            this.classList.add(BERG_LAYOUT_TOP_UNDER_RIGHT_CLASS);
           }
         },
         bottomLeftPosition: () => {
+          this.classList.remove(BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS);
+          this.classList.remove(BERG_LAYOUT_BOTTOM_UNDER_LEFT_CLASS);
+
           if (this.values.bottomLeftPosition === 'below') {
             this.classList.add(BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS);
-          } else {
-            this.classList.remove(BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS);
+          } else if(this.values.bottomLeftPosition === 'under') {
+            this.classList.add(BERG_LAYOUT_BOTTOM_UNDER_LEFT_CLASS);
           }
         },
         bottomRightPosition: () => {
+          this.classList.remove(BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS);
+          this.classList.remove(BERG_LAYOUT_BOTTOM_UNDER_RIGHT_CLASS);
+
           if (this.values.bottomRightPosition === 'below') {
             this.classList.add(BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS);
-          } else {
-            this.classList.remove(BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS);
+          } else if(this.values.bottomRightPosition === 'under') {
+            this.classList.add(BERG_LAYOUT_BOTTOM_UNDER_RIGHT_CLASS);
           }
         },
         topInset: () => {
