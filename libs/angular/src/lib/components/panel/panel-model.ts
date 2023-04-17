@@ -8,7 +8,7 @@ import {
 /** Inputs of berg-panel. */
 export type BergPanelInputs = BergPanelInputsCore;
 
-/** Outputs that panels emit. */
+/** Outputs of berg-panel. */
 export type BergPanelOutputs = {
   [K in keyof BergPanelOutputsCore]: EventEmitter<
     BergPanelOutputsCore[K] extends CustomEvent<infer T> ? T : never

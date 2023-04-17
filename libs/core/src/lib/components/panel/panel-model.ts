@@ -34,7 +34,7 @@ export interface BergPanelInputs {
 
 export type BergPanelInput = keyof BergPanelInputs;
 
-/** Outputs that panels emit. */
+/** Outputs of berg-panel. */
 export interface BergPanelOutputs {
   /** Emits when a user resizes the panel. */
   resized: CustomEvent<BergPanelResizeEvent>;
