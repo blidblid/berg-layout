@@ -8,6 +8,7 @@
     "prebuild-styles": "npx nx run-many --target=prebuild-styles",
     "publish-lib": "npx ts-node ./scripts/publish-lib.ts",
     "test": "npx nx run-many --target=test --all --parallel",
+    "lint": "npx nx run-many --target=lint --all --parallel",
     "test-ci": "npx nx run-many --target=test --all --parallel --browsers=ChromeHeadlessCI"
   },
   "dependencies": {
