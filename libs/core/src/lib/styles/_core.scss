@@ -22,7 +22,8 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     &.berg-layout-overflow-x {
-      &::part(content) {
+      &::part(content),
+      &::part(overflow) {
         width: 100%;
       }
 
@@ -33,7 +34,8 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     &.berg-layout-overflow-y {
-      &::part(content) {
+      &::part(content),
+      &::part(overflow) {
         height: 100%;
       }
 

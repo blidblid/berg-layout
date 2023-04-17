@@ -436,22 +436,22 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   private updateCanResize(currentSize: number): void {
-    const rect = this.getBoundingClientRect();
-    const rectSize = this.isVertical ? rect.height : rect.width;
+    // avoid using getBoundingClient, since it has floating accuracy
+    const size = this.isVertical ? this.offsetHeight : this.offsetWidth;
 
     this.canResize = (nextSize: number) => {
       // The resizing worked, allow the next resize event.
-      if (currentSize === rectSize) {
+      if (currentSize === size) {
         return true;
       }
 
       // The resizing was too large, only allow smaller resizes.
-      if (currentSize > rectSize) {
-        return nextSize < rectSize;
+      if (currentSize > size) {
+        return nextSize < size;
       }
 
       // The resizing was too small, only allow larger resizes.
-      return nextSize > rectSize;
+      return nextSize > size;
     };
   }
 
