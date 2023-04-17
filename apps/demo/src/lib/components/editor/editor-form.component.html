@@ -112,6 +112,17 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Layout overflow</mat-label>
+      <mat-select [formControl]="layoutFormControls.overflow">
+        <mat-option
+          *ngFor="let position of ['x', 'y', 'xy', 'none']"
+          [value]="position"
+          >{{ position }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Resize preview delay</mat-label>
       <input
         matInput

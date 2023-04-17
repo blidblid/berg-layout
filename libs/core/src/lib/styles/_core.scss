@@ -3,11 +3,46 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
 // applies styles outside of the shadow dom
 @mixin core($overrides: ()) {
+  @include layout();
   @include panel();
   @include colors();
   @include z-index();
   @include resizing($overrides);
   @include positioning();
+}
+
+@mixin layout {
+  .berg-layout {
+    &::part(content) {
+      box-sizing: border-box;
+      position: relative;
+      z-index: 0;
+      transition-property: padding;
+      transition: $transition;
+    }
+
+    &.berg-layout-overflow-x {
+      &::part(content) {
+        width: 100%;
+      }
+
+      &::part(overflow) {
+        overflow-x: auto;
+        max-width: 100%;
+      }
+    }
+
+    &.berg-layout-overflow-y {
+      &::part(content) {
+        height: 100%;
+      }
+
+      &::part(overflow) {
+        overflow-y: auto;
+        max-height: 100%;
+      }
+    }
+  }
 }
 
 @mixin panel {
@@ -181,11 +216,6 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .berg-layout {
     &::part(content) {
-      position: relative;
-      z-index: 0;
-      transition-property: padding;
-      transition: $transition;
-
       padding-top: calc(
         var(--berg-panel-top-size) + var(--berg-layout-top-inset)
       );

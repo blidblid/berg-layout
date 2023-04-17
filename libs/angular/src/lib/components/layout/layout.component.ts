@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
   BergLayoutBottomPosition,
+  BergLayoutOverflow,
   BergLayoutTopPosition,
   coerceBooleanProperty,
   coerceNumberProperty,
@@ -149,6 +150,15 @@ export class BergLayoutComponent implements BergLayoutComponentInputs {
     );
   }
   private _leftInset: number = this.getDefaultInput('leftInset');
+
+  @Input()
+  get overflow(): BergLayoutOverflow {
+    return this._overflow;
+  }
+  set overflow(value: BergLayoutOverflow | null | undefined) {
+    this._overflow = value ?? this.getDefaultInput('overflow');
+  }
+  private _overflow: BergLayoutOverflow = this.getDefaultInput('overflow');
 
   constructor(
     @Inject(BERG_LAYOUT_INPUTS)

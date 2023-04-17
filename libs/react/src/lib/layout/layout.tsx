@@ -28,6 +28,7 @@ export function BergLayout(props: BergLayoutProps) {
       right-inset={props.rightInset}
       bottom-inset={props.bottomInset}
       left-inset={props.leftInset}
+      overflow={props.overflow}
     >
       {props.children}
     </berg-layout-web-component>

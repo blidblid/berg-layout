@@ -1,5 +1,6 @@
 import {
   BergLayoutBottomPosition,
+  BergLayoutOverflow,
   BergLayoutTopPosition,
 } from './layout-model';
 
@@ -21,4 +22,19 @@ export function validateBergLayoutBottomPosition(
   }
 
   return position;
+}
+
+export function validateBergLayoutOverflow(
+  overflow: string
+): BergLayoutOverflow {
+  if (
+    overflow !== 'x' &&
+    overflow !== 'y' &&
+    overflow !== 'xy' &&
+    overflow !== 'none'
+  ) {
+    throw new Error(`Invalid layout overflow: ${overflow}`);
+  }
+
+  return overflow;
 }

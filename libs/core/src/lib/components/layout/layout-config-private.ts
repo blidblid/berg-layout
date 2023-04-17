@@ -10,3 +10,5 @@ export const BERG_LAYOUT_RESIZING_VERTICAL_CLASS =
   'berg-layout-resizing-vertical';
 export const BERG_LAYOUT_RESIZING_HORIZONTAL_CLASS =
   'berg-layout-resizing-horizontal';
+export const BERG_LAYOUT_OVERFLOW_X_CLASS = 'berg-layout-overflow-x';
+export const BERG_LAYOUT_OVERFLOW_Y_CLASS = 'berg-layout-overflow-y';

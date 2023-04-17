@@ -32,9 +32,18 @@ export interface BergLayoutInputs {
 
   /** Layout inset from the left of the viewport. */
   leftInset: number;
+
+  /**
+   * Overflow of the layout content.
+   * Note that the layout overflows using percentages.
+   * Make sure that the parent element has a width to inherit from.
+   */
+  overflow: BergLayoutOverflow;
 }
 
 export type BergLayoutInput = keyof BergLayoutInputs;
+
+export type BergLayoutOverflow = 'x' | 'y' | 'xy' | 'none';
 
 /** Positions of the top panel. */
 export type BergLayoutTopPosition = 'above' | 'beside';

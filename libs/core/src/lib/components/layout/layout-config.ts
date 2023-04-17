@@ -20,6 +20,7 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   rightInset: 0,
   bottomInset: 0,
   leftInset: 0,
+  overflow: 'none',
 };
 
 export const BERG_LAYOUT_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergLayoutInputs> =
@@ -35,6 +36,7 @@ export const BERG_LAYOUT_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergLa
     rightInset: 'right-inset',
     bottomInset: 'bottom-inset',
     leftInset: 'left-inset',
+    overflow: 'overflow',
   };
 
 export const BERG_LAYOUT_INPUT_BY_ATTRIBUTE: WebComponentInputByAttribute<BergLayoutInputs> =
