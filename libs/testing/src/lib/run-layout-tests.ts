@@ -300,7 +300,6 @@ export const runLayoutTests = (
         const bottom = harness.assertedBottom;
         const left = harness.assertedLeft;
 
-
         expect(parseInt(getComputedStyle(right).zIndex)).toBeGreaterThan(
           parseInt(getComputedStyle(backdrop).zIndex)
         );
@@ -861,6 +860,80 @@ export const runLayoutTests = (
         });
 
         expect(harness.isPanelCollapsed('left')).toBe(false);
+      });
+    });
+
+    describe('layout overflow', () => {
+      it('should not overflow by default', async () => {
+        expect(getComputedStyle(harness.assertedOverflow).overflowX).toBe(
+          'visible'
+        );
+
+        expect(getComputedStyle(harness.assertedOverflow).overflowY).toBe(
+          'visible'
+        );
+      });
+
+      it('should overflow on the x-axis', async () => {
+        await render({
+          layout: {
+            overflow: 'x',
+          },
+        });
+
+        expect(getComputedStyle(harness.assertedOverflow).overflowX).toBe(
+          'auto'
+        );
+      });
+
+      fit('should overflow on the y-axis', async () => {
+        await render({
+          layout: {
+            overflow: 'y',
+          },
+        });
+
+        expect(getComputedStyle(harness.assertedOverflow).overflowY).toBe(
+          'auto'
+        );
+      });
+
+      it('should overflow on both axes', async () => {
+        await render({
+          layout: {
+            overflow: 'xy',
+          },
+        });
+
+        expect(getComputedStyle(harness.assertedOverflow).overflowX).toBe(
+          'auto'
+        );
+
+        expect(getComputedStyle(harness.assertedOverflow).overflowY).toBe(
+          'auto'
+        );
+      });
+
+      it('should clear overflow', async () => {
+        await render({
+          layout: {
+            overflow: 'xy',
+          },
+        });
+
+        await render({
+          layout: {
+            overflow: 'none',
+          },
+        });
+
+        expect(getComputedStyle(harness.assertedOverflow).overflowX).toBe(
+          'visible'
+        );
+
+        expect(getComputedStyle(harness.assertedOverflow).overflowY).toBe(
+          'visible'
+        );
       });
     });
   });

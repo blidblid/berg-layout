@@ -114,6 +114,7 @@ export class LayoutRx {
         return (observable as any).pipe(
           distinctUntilChanged(),
           map((value) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return { [key]: value ?? (BERG_PANEL_DEFAULT_INPUTS as any)[key] };
           })
         );

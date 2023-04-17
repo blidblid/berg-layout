@@ -168,6 +168,7 @@ describe('Angular implementation', () => {
       [rightInset]="layout.rightInset"
       [bottomInset]="layout.bottomInset"
       [leftInset]="layout.leftInset"
+      [overflow]="layout.overflow"
     >
       <berg-panel
         #topRef

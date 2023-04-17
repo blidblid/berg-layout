@@ -12,12 +12,15 @@ import {
   BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS,
   BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS,
   BERG_LAYOUT_CLASS,
+  BERG_LAYOUT_OVERFLOW_X_CLASS,
+  BERG_LAYOUT_OVERFLOW_Y_CLASS,
   BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS,
 } from './layout-config-private';
 import { BergLayoutInputs } from './layout-model';
 import {
   validateBergLayoutBottomPosition,
+  validateBergLayoutOverflow,
   validateBergLayoutTopPosition,
 } from './layout-util-private';
 
@@ -45,6 +48,7 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
         rightInset: coerceNumberProperty,
         bottomInset: coerceNumberProperty,
         leftInset: coerceNumberProperty,
+        overflow: validateBergLayoutOverflow,
       },
       {
         topLeftPosition: () => {
@@ -98,6 +102,22 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
             '--berg-layout-left-inset',
             `${this.values.leftInset}px`
           );
+        },
+        overflow: () => {
+          console.log('YAAAY', this.values.overflow);
+          this.classList.remove(
+            BERG_LAYOUT_OVERFLOW_X_CLASS,
+            BERG_LAYOUT_OVERFLOW_Y_CLASS
+          );
+
+          if (this.values.overflow === 'x') {
+            this.classList.add(BERG_LAYOUT_OVERFLOW_X_CLASS);
+          } else if (this.values.overflow === 'y') {
+            this.classList.add(BERG_LAYOUT_OVERFLOW_Y_CLASS);
+          } else if (this.values.overflow === 'xy') {
+            this.classList.add(BERG_LAYOUT_OVERFLOW_X_CLASS);
+            this.classList.add(BERG_LAYOUT_OVERFLOW_Y_CLASS);
+          }
         },
       },
       BERG_LAYOUT_INPUT_BY_ATTRIBUTE
@@ -225,20 +245,14 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
 
     const shadowRoot = this.shadowRoot ?? this.attachShadow({ mode: 'open' });
     shadowRoot.innerHTML = `
-      <style>
-        .berg-layout-content {
-          height: 100%;
-          width: 100%;
-          box-sizing: border-box;
-        }
-      </style>
-
       <slot name="top"></slot>
       <slot name="right"></slot>
       <slot name="bottom"></slot>
       <slot name="left"></slot>
-      <div class="berg-layout-content" part="content">
-        <slot name="content"></slot>
+      <div part="content">
+        <div part="overflow">
+          <slot name="content"></slot>
+        </div>
       </div>
     `;
 

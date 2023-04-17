@@ -11,6 +11,12 @@ export class BergLayoutTestHarness {
     );
   }
 
+  get overflow(): HTMLElement | null {
+    return this.getLayoutShadowRoot().querySelector<HTMLElement>(
+      '[part="overflow"]'
+    );
+  }
+
   get top(): BergPanelElement | null {
     return this.getLayout().querySelector<BergPanelElement>('.berg-panel-top');
   }
@@ -39,6 +45,16 @@ export class BergLayoutTestHarness {
     }
 
     return content;
+  }
+
+  get assertedOverflow(): HTMLElement {
+    const overflow = this.overflow;
+
+    if (!overflow) {
+      throw new Error('No overflow found');
+    }
+
+    return overflow;
   }
 
   get assertedTop(): BergPanelElement {
@@ -192,7 +208,7 @@ export class BergLayoutTestHarness {
     return Promise.resolve();
   }
 
-  private getLayoutShadowRoot(): ShadowRoot {
+  getLayoutShadowRoot(): ShadowRoot {
     const shadowRoot = this.getLayout().shadowRoot;
 
     if (!shadowRoot) {
