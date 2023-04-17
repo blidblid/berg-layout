@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ListItem } from './list-item';
+import { ListItemDirective } from './list-item';
 import { ListComponent } from './list.component';
 
-const API = [ListComponent, ListItem];
+const API = [ListComponent, ListItemDirective];
 
 @NgModule({
   declarations: API,

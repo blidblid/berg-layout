@@ -104,7 +104,6 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
           );
         },
         overflow: () => {
-          console.log('YAAAY', this.values.overflow);
           this.classList.remove(
             BERG_LAYOUT_OVERFLOW_X_CLASS,
             BERG_LAYOUT_OVERFLOW_Y_CLASS
