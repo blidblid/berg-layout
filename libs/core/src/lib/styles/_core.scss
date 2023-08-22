@@ -459,7 +459,7 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     .berg-panel-resize-toggle-right,
     .berg-panel-resize-toggle-bottom,
     .berg-panel-resize-toggle-left {
-      background: var(--berg-panel-resize-indicator-color);
+      background: var(--berg-panel-resizing-indicator-color);
     }
   }
 }

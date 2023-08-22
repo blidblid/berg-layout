@@ -41,13 +41,39 @@
   $previewing-indicator-color: map-get($colors, 'previewing-indicator-color') or
     $resizing-indicator-color;
 
-  --berg-layout-content-background: #{$background-center};
-  --berg-panel-backdrop-background: #{$background-backdrop};
-  --berg-panel-border-color: #{$border-color};
-  --berg-panel-top-background: #{$background-top};
-  --berg-panel-right-background: #{$background-right};
-  --berg-panel-bottom-background: #{$background-bottom};
-  --berg-panel-left-background: #{$background-left};
-  --berg-panel-resize-indicator-color: #{$resizing-indicator-color};
-  --berg-panel-previewing-indicator-color: #{$previewing-indicator-color};
+  @if $background-center {
+    --berg-layout-content-background: #{$background-center};
+  }
+
+  @if $background-backdrop {
+    --berg-panel-backdrop-background: #{$background-backdrop};
+  }
+
+  @if $border-color {
+    --berg-panel-border-color: #{$border-color};
+  }
+
+  @if $background-top {
+    --berg-panel-top-background: #{$background-top};
+  }
+
+  @if $background-right {
+    --berg-panel-right-background: #{$background-right};
+  }
+
+  @if $background-bottom {
+    --berg-panel-bottom-background: #{$background-bottom};
+  }
+
+  @if $background-left {
+    --berg-panel-left-background: #{$background-left};
+  }
+
+  @if $resizing-indicator-color {
+    --berg-panel-resizing-indicator-color: #{$resizing-indicator-color};
+  }
+
+  @if $previewing-indicator-color {
+    --berg-panel-previewing-indicator-color: #{$previewing-indicator-color};
+  }
 }
