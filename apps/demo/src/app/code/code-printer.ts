@@ -32,6 +32,6 @@ export abstract class CodePrinter {
   }
 
   toSingleQuoteJsonString(str: string): string {
-    return JSON.stringify(str).replace(/"/g, "'");
+    return str ? JSON.stringify(str).replace(/"/g, "'") : '';
   }
 }

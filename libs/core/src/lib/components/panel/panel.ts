@@ -454,7 +454,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         this.layout.values.resizeToggleSize -
         this.layout.values.contentMinSize;
 
-      if (nextSize >= maxSize) {
+      if (nextSize > currentSize && nextSize > maxSize) {
         return false;
       }
 
