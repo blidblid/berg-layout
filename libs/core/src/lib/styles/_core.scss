@@ -313,9 +313,6 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 @mixin resizing($overrides) {
-  $resizing-indicator-size: map-get($overrides, 'resizing-indicator-size') or
-    6px;
-
   .berg-layout-resizing-horizontal {
     user-select: none;
     cursor: ew-resize;
@@ -339,37 +336,37 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   .berg-panel-resize-toggle-right {
     top: 0;
     bottom: 0;
-    width: $resizing-indicator-size;
+    width: var(--berg-layout-resize-toggle-size);
   }
 
   .berg-panel-resize-toggle-right {
     left: 0;
 
     .berg-panel-collapsed & {
-      left: -#{$resizing-indicator-size};
+      left: calc(-1 * var(--berg-layout-resize-toggle-size));
     }
   }
 
   .berg-panel-resize-toggle-left {
-    right: -#{$resizing-indicator-size};
+    right: calc(-1 * var(--berg-layout-resize-toggle-size));
   }
 
   .berg-panel-resize-toggle-top,
   .berg-panel-resize-toggle-bottom {
     right: 0;
     left: 0;
-    height: $resizing-indicator-size;
+    height: var(--berg-layout-resize-toggle-size);
   }
 
   .berg-panel-resize-toggle-top {
-    bottom: -#{$resizing-indicator-size};
+    bottom: calc(-1 * var(--berg-layout-resize-toggle-size));
   }
 
   .berg-panel-resize-toggle-bottom {
     top: 0;
 
     .berg-panel-collapsed & {
-      top: -#{$resizing-indicator-size};
+      top: calc(-1 * var(--berg-layout-resize-toggle-size));
     }
   }
 }

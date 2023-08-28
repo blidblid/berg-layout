@@ -20,6 +20,8 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   rightInset: 0,
   bottomInset: 0,
   leftInset: 0,
+  contentMinSize: 100,
+  resizeToggleSize: 6,
   overflow: 'none',
 };
 
@@ -36,6 +38,8 @@ export const BERG_LAYOUT_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergLa
     rightInset: 'right-inset',
     bottomInset: 'bottom-inset',
     leftInset: 'left-inset',
+    contentMinSize: 'content-min-size',
+    resizeToggleSize: 'resize-toggle-size',
     overflow: 'overflow',
   };
 

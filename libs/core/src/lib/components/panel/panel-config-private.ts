@@ -23,3 +23,10 @@ export const BERG_PANEL_BACKDROP_ANIMATION_DURATION = 120;
 export const BERG_PANEL_ANIMATION_DURATION = 400;
 export const BERG_PANEL_TWO_DIMENSION_COLLECTION_DISTANCE = 8;
 export const BERG_PANEL_BACKDROP_Z_INDEX = 7;
+
+export const BERG_PANEL_SLOT_SIBLINGS: Record<BergPanelSlot, BergPanelSlot> = {
+  top: 'bottom',
+  right: 'left',
+  bottom: 'top',
+  left: 'right',
+};

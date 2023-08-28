@@ -33,10 +33,18 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     left: this.createResizeToggleElement('left'),
   };
 
+  private sizes: Record<BergPanelSlot, number> = {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  };
+
   constructor() {
     super(
       BERG_LAYOUT_DEFAULT_INPUTS,
       {
+        resizeToggleSize: coerceNumberProperty,
         resizeDisabled: coerceBooleanProperty,
         resizePreviewDelay: coerceNumberProperty,
         resizeTwoDimensions: coerceBooleanProperty,
@@ -48,9 +56,16 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
         rightInset: coerceNumberProperty,
         bottomInset: coerceNumberProperty,
         leftInset: coerceNumberProperty,
+        contentMinSize: coerceNumberProperty,
         overflow: validateBergLayoutOverflow,
       },
       {
+        resizeToggleSize: () => {
+          this.style.setProperty(
+            '--berg-layout-resize-toggle-size',
+            `${this.values.resizeToggleSize}px`
+          );
+        },
         topLeftPosition: () => {
           if (this.values.topLeftPosition === 'above') {
             this.classList.add(BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS);
@@ -135,7 +150,8 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     );
   }
 
-  updateSizeCssVariable(slot: BergPanelSlot, size: number): void {
+  updateSize(slot: BergPanelSlot, size: number): void {
+    this.sizes[slot] = size;
     this.style.setProperty(`--berg-panel-${slot}-size`, `${size}px`);
   }
 
@@ -159,6 +175,10 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     }
   }
 
+  getSlotSize(slot: BergPanelSlot): number {
+    return this.sizes[slot];
+  }
+
   getSlotInset(slot: BergPanelSlot): number {
     if (slot === 'top') {
       return this.values.topInset;
@@ -179,6 +199,20 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     return 0;
   }
 
+  getLayoutWidth() {
+    return (
+      window.innerHeight -
+      this.getSlotInset('top') -
+      this.getSlotInset('bottom')
+    );
+  }
+
+  getLayoutHeight() {
+    return (
+      window.innerWidth - this.getSlotInset('right') - this.getSlotInset('left')
+    );
+  }
+
   protected getDefaultInput<T extends keyof BergLayoutInputs>(
     input: T
   ): BergLayoutInputs[T] {
@@ -187,7 +221,7 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
 
   private setInitialVariables(): void {
     for (const slot of ['top', 'right', 'bottom', 'left'] as const) {
-      this.updateSizeCssVariable(slot, 0);
+      this.updateSize(slot, 0);
     }
   }
 

@@ -112,6 +112,15 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Content min size</mat-label>
+      <input
+        matInput
+        [formControl]="layoutFormControls.contentMinSize"
+        type="number"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Layout overflow</mat-label>
       <mat-select [formControl]="layoutFormControls.overflow">
         <mat-option
@@ -120,6 +129,15 @@
           >{{ position }}</mat-option
         >
       </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Resize toggle size</mat-label>
+      <input
+        matInput
+        [formControl]="resizeFormControls.resizeToggleSize"
+        type="number"
+      />
     </mat-form-field>
 
     <mat-form-field>
