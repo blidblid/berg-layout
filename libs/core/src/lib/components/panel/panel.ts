@@ -48,6 +48,7 @@ import {
   BERG_PANEL_PREVIEWING_CLASS,
   BERG_PANEL_RESIZE_DISABLED_CLASS,
   BERG_PANEL_RESIZING_CLASS,
+  BERG_PANEL_SLOT_SIBLINGS,
   BERG_PANEL_TWO_DIMENSION_COLLECTION_DISTANCE,
   BERG_PANEL_VERTICAL_CLASS,
 } from './panel-config-private';
@@ -436,10 +437,27 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   private updateCanResize(currentSize: number): void {
-    // avoid using getBoundingClient, since it has floating accuracy
+    // avoid using getBoundingClient, since it has floating accuracy and `currentSize` integer accuracy.
     const size = this.isVertical ? this.offsetHeight : this.offsetWidth;
 
     this.canResize = (nextSize: number) => {
+      const layoutSize = this.isVertical
+        ? this.layout.getLayoutWidth()
+        : this.layout.getLayoutHeight();
+
+      const siblingSlot = BERG_PANEL_SLOT_SIBLINGS[this.values.slot];
+      const siblingSize = this.layout.getSlotSize(siblingSlot);
+
+      const maxSize =
+        layoutSize -
+        siblingSize -
+        this.layout.values.resizeToggleSize -
+        this.layout.values.contentMinSize;
+
+      if (nextSize > currentSize && nextSize > maxSize) {
+        return false;
+      }
+
       // The resizing worked, allow the next resize event.
       if (currentSize === size) {
         return true;
@@ -450,7 +468,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         return nextSize < size;
       }
 
-      // The resizing was too small, only allow larger resizes.
       return nextSize > size;
     };
   }
@@ -581,7 +598,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       size = this.values.maxSize;
     }
 
-    this.layout.updateSizeCssVariable(this.values.slot, size);
+    this.layout.updateSize(this.values.slot, size);
   }
 
   connectedCallback(): void {
@@ -611,7 +628,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.layout.updateSizeCssVariable(this.values.slot, 0);
+    this.layout.updateSize(this.values.slot, 0);
 
     for (const timeout of this.timeouts) {
       clearTimeout(timeout);

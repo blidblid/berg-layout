@@ -32,10 +32,12 @@ export class EditorFormComponent {
     topRightPosition: new FormControl(),
     bottomLeftPosition: new FormControl(),
     bottomRightPosition: new FormControl(),
+    contentMinSize: new FormControl(),
     overflow: new FormControl('none'),
   } as const;
 
   resizeFormControls = {
+    resizeToggleSize: new FormControl(),
     resizeDisabled: new FormControl(),
     resizeTwoDimensions: new FormControl(),
     resizePreviewDelay: new FormControl(),
@@ -102,6 +104,15 @@ export class EditorFormComponent {
       this.layoutFormControls.overflow
     );
 
+    connectFormValue(
+      this.layoutRx.layout.contentMinSize,
+      this.layoutFormControls.contentMinSize
+    );
+
+    connectFormValue(
+      this.layoutRx.layout.resizeToggleSize,
+      this.resizeFormControls.resizeToggleSize
+    );
     connectFormValue(
       this.layoutRx.layout.resizeDisabled,
       this.resizeFormControls.resizeDisabled

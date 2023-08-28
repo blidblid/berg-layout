@@ -152,6 +152,28 @@ export class BergLayoutComponent implements BergLayoutComponentInputs {
   private _leftInset: number = this.getDefaultInput('leftInset');
 
   @Input()
+  get contentMinSize(): number {
+    return this._contentMinSize;
+  }
+  set contentMinSize(value: number | null | undefined) {
+    this._contentMinSize = coerceNumberProperty(
+      value ?? this.getDefaultInput('contentMinSize')
+    );
+  }
+  private _contentMinSize: number = this.getDefaultInput('contentMinSize');
+
+  @Input()
+  get resizeToggleSize(): number {
+    return this._resizeToggleSize;
+  }
+  set resizeToggleSize(value: number | null | undefined) {
+    this._resizeToggleSize = coerceNumberProperty(
+      value ?? this.getDefaultInput('resizeToggleSize')
+    );
+  }
+  private _resizeToggleSize: number = this.getDefaultInput('resizeToggleSize');
+
+  @Input()
   get overflow(): BergLayoutOverflow {
     return this._overflow;
   }

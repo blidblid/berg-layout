@@ -33,6 +33,12 @@ export interface BergLayoutInputs {
   /** Layout inset from the left of the viewport. */
   leftInset: number;
 
+  /** Min layout content size during resizing. */
+  contentMinSize: number;
+
+  /** Resize toggle size. */
+  resizeToggleSize: number;
+
   /**
    * Overflow of the layout content.
    * Note that the layout overflows using percentages.
