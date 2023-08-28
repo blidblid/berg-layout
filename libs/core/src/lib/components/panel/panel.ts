@@ -167,6 +167,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         absolute: coerceBooleanProperty,
         collapsed: coerceBooleanProperty,
         resizeDisabled: coerceBooleanProperty,
+        pushDisabled: coerceBooleanProperty,
         minSize: coerceNumberProperty,
         maxSize: coerceNumberProperty,
         eventBindingMode: (value: string) => validateOutputBindingMode(value),

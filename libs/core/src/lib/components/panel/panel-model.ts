@@ -15,6 +15,9 @@ export interface BergPanelInputs {
   /** Whether resizing is disabled. */
   resizeDisabled: boolean;
 
+  /** Whether the panel should push other parts of the layout. */
+  pushDisabled: boolean;
+
   /** Size of the panel in px. */
   size: number;
 
