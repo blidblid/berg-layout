@@ -1,5 +1,6 @@
 // should match the configured transition duration
-$transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+$transition-duration: 0.4s;
+$transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 
 // applies styles outside of the shadow dom
 @mixin core($overrides: ()) {
@@ -17,8 +18,9 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       box-sizing: border-box;
       position: relative;
       z-index: 0;
-      transition-property: padding;
-      transition: $transition;
+      transition-duration: $transition-duration;
+      transition-timing-function: $transition-timing-function;
+      transition-property: var(--berg-layout-transition-property);
     }
 
     &.berg-layout-overflow-x {
@@ -52,8 +54,13 @@ $transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: block;
     position: relative;
     box-sizing: border-box;
-    transition-property: top, left, right, bottom, box-shadow;
-    transition: $transition;
+    transition-duration: $transition-duration;
+    transition-timing-function: $transition-timing-function;
+    transition-property: var(--berg-panel-transition-property), box-shadow;
+
+    &.berg-panel-no-transition {
+      transition-property: box-shadow;
+    }
 
     .berg-layout-no-transition & {
       transition: none;

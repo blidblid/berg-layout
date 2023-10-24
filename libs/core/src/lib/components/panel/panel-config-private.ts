@@ -6,8 +6,10 @@ export const BERG_PANEL_HORIZONTAL_CLASS = 'berg-panel-horizontal';
 export const BERG_PANEL_PREVIEWING_CLASS = 'berg-panel-previewing';
 export const BERG_PANEL_RESIZE_DISABLED_CLASS = 'berg-panel-resize-disabled';
 export const BERG_PANEL_RESIZING_CLASS = 'berg-panel-resizing';
+export const BERG_PANEL_RESIZE_TOGGLE_CLASS = 'berg-panel-resize-toggle';
 export const BERG_PANEL_CLASS = 'berg-panel';
 export const BERG_PANEL_VERTICAL_CLASS = 'berg-panel-vertical';
+export const BERG_PANEL_NO_TRANSITION_CLASS = 'berg-panel-no-transition';
 
 export const BERG_PANEL_CLASSES_BY_SLOT: Record<BergPanelSlot, string> = {
   top: 'berg-panel-top',

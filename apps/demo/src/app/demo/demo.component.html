@@ -24,6 +24,7 @@
     [attr.absolute]="inputs.top.absolute"
     [attr.collapsed]="inputs.top.collapsed"
     [attr.resize-disabled]="inputs.top.resizeDisabled"
+    [attr.animation-disabled]="inputs.top.animationDisabled"
     (resized)="onResized('top', $event)"
     (backdropClicked)="onBackdropClicked('top')"
   >
@@ -39,6 +40,7 @@
     [attr.absolute]="inputs.right.absolute"
     [attr.collapsed]="inputs.right.collapsed"
     [attr.resize-disabled]="inputs.right.resizeDisabled"
+    [attr.animation-disabled]="inputs.right.animationDisabled"
     (resized)="onResized('right', $event)"
     (backdropClicked)="onBackdropClicked('right')"
   >
@@ -54,6 +56,7 @@
     [attr.absolute]="inputs.bottom.absolute"
     [attr.collapsed]="inputs.bottom.collapsed"
     [attr.resize-disabled]="inputs.bottom.resizeDisabled"
+    [attr.animation-disabled]="inputs.bottom.animationDisabled"
     (resized)="onResized('bottom', $event)"
     (backdropClicked)="onBackdropClicked('bottom')"
   >
@@ -69,6 +72,7 @@
     [attr.absolute]="inputs.left.absolute"
     [attr.collapsed]="inputs.left.collapsed"
     [attr.resize-disabled]="inputs.left.resizeDisabled"
+    [attr.animation-disabled]="inputs.left.animationDisabled"
     (resized)="onResized('left', $event)"
     (backdropClicked)="onBackdropClicked('left')"
   >

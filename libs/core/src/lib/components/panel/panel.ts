@@ -45,6 +45,7 @@ import {
   BERG_PANEL_COLLAPSED_CLASS,
   BERG_PANEL_ENABLE_ANIMATION_DELAY,
   BERG_PANEL_HORIZONTAL_CLASS,
+  BERG_PANEL_NO_TRANSITION_CLASS,
   BERG_PANEL_PREVIEWING_CLASS,
   BERG_PANEL_RESIZE_DISABLED_CLASS,
   BERG_PANEL_RESIZING_CLASS,
@@ -169,6 +170,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         resizeDisabled: coerceBooleanProperty,
         minSize: coerceNumberProperty,
         maxSize: coerceNumberProperty,
+        animationDisabled: coerceBooleanProperty,
         eventBindingMode: (value: string) => validateOutputBindingMode(value),
       },
       {
@@ -212,6 +214,18 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         size: () => this.updateSize(this.values['size']),
         minSize: () => this.updateSize(this.values['size']),
         maxSize: () => this.updateSize(this.values['size']),
+        animationDisabled: () => {
+          this.layout.updateAnimationDisabled(
+            this.values.slot,
+            this.values.animationDisabled
+          );
+
+          if (this.values.animationDisabled) {
+            this.classList.add(BERG_PANEL_NO_TRANSITION_CLASS);
+          } else {
+            this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
+          }
+        },
         slot: () => {
           this.classList.remove(...Object.values(BERG_PANEL_CLASSES_BY_SLOT));
           this.classList.add(BERG_PANEL_CLASSES_BY_SLOT[this.values.slot]);
@@ -249,7 +263,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     }
 
     this.layout.shadowRoot.appendChild(backdrop);
-    requestAnimationFrame(() => (backdrop.style.opacity = '1'));
+
+    if (this.values.animationDisabled) {
+      backdrop.style.opacity = '1';
+    } else {
+      requestAnimationFrame(() => (backdrop.style.opacity = '1'));
+    }
+
     this.backdropElement.style.pointerEvents = 'auto';
   }
 
@@ -263,13 +283,15 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     this.backdropElement.style.opacity = '0';
     this.backdropElement.style.pointerEvents = 'none';
 
-    this.timeouts.push(
-      setTimeout(() => {
-        if (this.layout.shadowRoot) {
-          this.layout.shadowRoot.removeChild(backdrop);
-        }
-      }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
-    );
+    if (this.values.animationDisabled) {
+      this.layout.shadowRoot.removeChild(backdrop);
+    } else {
+      this.timeouts.push(
+        setTimeout(() => {
+          this.layout.shadowRoot?.removeChild(backdrop);
+        }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
+      );
+    }
   }
 
   private updateBackdrop(): void {

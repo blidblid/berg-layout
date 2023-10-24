@@ -21,6 +21,7 @@ export function BergPanel(props: BergPanelProps) {
       size={props.size}
       min-size={props.minSize}
       max-size={props.maxSize}
+      animation-disabled={props.animationDisabled}
       event-binding-mode={props.eventBindingMode}
     >
       {props.children}
