@@ -1,6 +1,7 @@
 import { fromEvent, merge, Observable } from 'rxjs';
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
 import { BergPanelSlot } from '../panel';
+import { BERG_PANEL_RESIZE_TOGGLE_CLASS } from '../panel/panel-config-private';
 import { WebComponent } from '../web-component';
 import {
   BERG_LAYOUT_ATTRIBUTE_BY_INPUT,
@@ -14,7 +15,6 @@ import {
   BERG_LAYOUT_CLASS,
   BERG_LAYOUT_OVERFLOW_X_CLASS,
   BERG_LAYOUT_OVERFLOW_Y_CLASS,
-  BERG_LAYOUT_RESIZE_TOGGLE_CLASS,
   BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS,
 } from './layout-config-private';
@@ -305,8 +305,8 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     const div = document.createElement('div');
 
     div.classList.add(
-      BERG_LAYOUT_RESIZE_TOGGLE_CLASS,
-      `${BERG_LAYOUT_RESIZE_TOGGLE_CLASS}-${slot}`
+      BERG_PANEL_RESIZE_TOGGLE_CLASS,
+      `${BERG_PANEL_RESIZE_TOGGLE_CLASS}-${slot}`
     );
 
     return div;
