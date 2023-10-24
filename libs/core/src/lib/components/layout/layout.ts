@@ -14,6 +14,7 @@ import {
   BERG_LAYOUT_CLASS,
   BERG_LAYOUT_OVERFLOW_X_CLASS,
   BERG_LAYOUT_OVERFLOW_Y_CLASS,
+  BERG_LAYOUT_RESIZE_TOGGLE_CLASS,
   BERG_LAYOUT_TOP_ABOVE_LEFT_CLASS,
   BERG_LAYOUT_TOP_ABOVE_RIGHT_CLASS,
 } from './layout-config-private';
@@ -38,6 +39,13 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     right: 0,
     bottom: 0,
     left: 0,
+  };
+
+  private disabledAnimations: Record<BergPanelSlot, boolean> = {
+    top: false,
+    right: false,
+    bottom: false,
+    left: false,
   };
 
   constructor() {
@@ -175,6 +183,38 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     }
   }
 
+  updateAnimationDisabled(slot: BergPanelSlot, disable: boolean): void {
+    this.disabledAnimations[slot] = disable;
+
+    const transitionProperties = [];
+
+    if (!this.disabledAnimations.top) {
+      transitionProperties.push('top');
+    }
+
+    if (!this.disabledAnimations.right) {
+      transitionProperties.push('right');
+    }
+
+    if (!this.disabledAnimations.bottom) {
+      transitionProperties.push('bottom');
+    }
+
+    if (!this.disabledAnimations.left) {
+      transitionProperties.push('left');
+    }
+
+    this.style.setProperty(
+      '--berg-panel-transition-property',
+      transitionProperties.join(', ')
+    );
+
+    this.style.setProperty(
+      '--berg-layout-transition-property',
+      transitionProperties.map((property) => `padding-${property}`).join(', ')
+    );
+  }
+
   getSlotSize(slot: BergPanelSlot): number {
     return this.sizes[slot];
   }
@@ -265,8 +305,8 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     const div = document.createElement('div');
 
     div.classList.add(
-      'berg-panel-resize-toggle',
-      `berg-panel-resize-toggle-${slot}`
+      BERG_LAYOUT_RESIZE_TOGGLE_CLASS,
+      `${BERG_LAYOUT_RESIZE_TOGGLE_CLASS}-${slot}`
     );
 
     return div;

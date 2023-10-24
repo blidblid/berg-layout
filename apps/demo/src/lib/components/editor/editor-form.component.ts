@@ -72,6 +72,11 @@ export class EditorFormComponent {
       );
 
       connectFormValue(
+        this.layoutRx[slot].animationDisabled,
+        this.panelFormControls[slot].animationDisabled
+      );
+
+      connectFormValue(
         this.layoutRx.remove[slot],
         this.panelFormControls[slot].remove
       );
@@ -113,6 +118,7 @@ export class EditorFormComponent {
       this.layoutRx.layout.resizeToggleSize,
       this.resizeFormControls.resizeToggleSize
     );
+
     connectFormValue(
       this.layoutRx.layout.resizeDisabled,
       this.resizeFormControls.resizeDisabled
@@ -152,6 +158,7 @@ export class EditorFormComponent {
       absolute: new FormControl(),
       collapsed: new FormControl(),
       resizeDisabled: new FormControl(),
+      animationDisabled: new FormControl(),
     };
   }
 }

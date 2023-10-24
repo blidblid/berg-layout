@@ -6,6 +6,7 @@ export const BERG_LAYOUT_BOTTOM_BELOW_LEFT_CLASS =
   'berg-layout-bottom-below-left';
 export const BERG_LAYOUT_BOTTOM_BELOW_RIGHT_CLASS =
   'berg-layout-bottom-below-right';
+export const BERG_LAYOUT_RESIZE_TOGGLE_CLASS = 'berg-layout-resize-toggle';
 export const BERG_LAYOUT_RESIZING_VERTICAL_CLASS =
   'berg-layout-resizing-vertical';
 export const BERG_LAYOUT_RESIZING_HORIZONTAL_CLASS =

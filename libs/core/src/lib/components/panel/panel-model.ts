@@ -24,6 +24,9 @@ export interface BergPanelInputs {
   /** Max size of the panel in px. */
   maxSize: number | null;
 
+  /** Whether panel animations are disabled. */
+  animationDisabled: boolean;
+
   /**
    * Controls how panel events update panel inputs.
    * With "auto", panel events automatically update panel inputs.

@@ -107,6 +107,17 @@ export class BergPanelComponent
   private _maxSize: number | null = this.getDefaultInput('maxSize');
 
   @Input()
+  get animationDisabled(): boolean {
+    return this._animationDisabled;
+  }
+  set animationDisabled(value: boolean | null) {
+    this._animationDisabled = coerceBooleanProperty(
+      value ?? this.getDefaultInput('animationDisabled')
+    );
+  }
+  private _animationDisabled = this.getDefaultInput('animationDisabled');
+
+  @Input()
   get eventBindingMode() {
     return this._eventBindingMode;
   }
