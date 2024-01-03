@@ -180,6 +180,7 @@ describe('Angular implementation', () => {
         [absolute]="top.absolute"
         [collapsed]="top.collapsed"
         [resizeDisabled]="top.resizeDisabled"
+        [hideBackdrop]="top.hideBackdrop"
         (backdropClicked)="onBackdropClicked($event)"
         (resized)="onResized($event)"
         (afterCollapsed)="hasAfterCollapsedEmitted = true"
@@ -197,6 +198,7 @@ describe('Angular implementation', () => {
         [absolute]="right.absolute"
         [collapsed]="right.collapsed"
         [resizeDisabled]="right.resizeDisabled"
+        [hideBackdrop]="right.hideBackdrop"
       >
       </berg-panel>
 
@@ -210,6 +212,7 @@ describe('Angular implementation', () => {
         [absolute]="bottom.absolute"
         [collapsed]="bottom.collapsed"
         [resizeDisabled]="bottom.resizeDisabled"
+        [hideBackdrop]="bottom.hideBackdrop"
       >
       </berg-panel>
 
@@ -223,6 +226,7 @@ describe('Angular implementation', () => {
         [absolute]="left.absolute"
         [collapsed]="left.collapsed"
         [resizeDisabled]="left.resizeDisabled"
+        [hideBackdrop]="left.hideBackdrop"
       >
       </berg-panel>
 

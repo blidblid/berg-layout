@@ -19,6 +19,7 @@ export const BERG_PANEL_DEFAULT_INPUTS: RequireAll<BergPanelInputs> = {
   minSize: 50,
   maxSize: null,
   animationDisabled: false,
+  hideBackdrop: false,
 };
 
 export const BERG_PANEL_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergPanelInputs> =
@@ -32,6 +33,7 @@ export const BERG_PANEL_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergPan
     minSize: 'min-size',
     maxSize: 'max-size',
     animationDisabled: 'animation-disabled',
+    hideBackdrop: 'hide-backdrop',
   };
 
 export const BERG_PANEL_INPUT_BY_ATTRIBUTE: WebComponentInputByAttribute<BergPanelInputs> =
