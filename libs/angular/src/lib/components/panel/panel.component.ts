@@ -118,6 +118,17 @@ export class BergPanelComponent
   private _animationDisabled = this.getDefaultInput('animationDisabled');
 
   @Input()
+  get hideBackdrop(): boolean {
+    return this._hideBackdrop;
+  }
+  set hideBackdrop(value: boolean | null) {
+    this._hideBackdrop = coerceBooleanProperty(
+      value ?? this.getDefaultInput('hideBackdrop')
+    );
+  }
+  private _hideBackdrop = this.getDefaultInput('hideBackdrop');
+
+  @Input()
   get eventBindingMode() {
     return this._eventBindingMode;
   }

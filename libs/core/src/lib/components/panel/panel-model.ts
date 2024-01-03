@@ -27,6 +27,9 @@ export interface BergPanelInputs {
   /** Whether panel animations are disabled. */
   animationDisabled: boolean;
 
+  /** Whether the panel backdrop is hidden. */
+  hideBackdrop: boolean;
+
   /**
    * Controls how panel events update panel inputs.
    * With "auto", panel events automatically update panel inputs.

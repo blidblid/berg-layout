@@ -7,6 +7,8 @@ export const runLayoutTests = (
   render: Render
 ) => {
   describe('berg layout', () => {
+    const panelTransitionDuration = 500;
+
     describe('alignment', () => {
       it('should render top panel above left', async () => {
         await render({
@@ -261,6 +263,8 @@ export const runLayoutTests = (
           },
         });
 
+        await harness.tickDuration(panelTransitionDuration);
+
         const backdrop = harness.getAssertedBackdrop('top');
         const top = harness.assertedTop;
         const right = harness.assertedRight;
@@ -291,8 +295,7 @@ export const runLayoutTests = (
           },
         });
 
-        // there is some flake in this spec where the right panel z-index is not updated in time
-        harness.tickDuration(0);
+        await harness.tickDuration(panelTransitionDuration);
 
         const backdrop = harness.getAssertedBackdrop('right');
         const top = harness.assertedTop;
@@ -324,6 +327,8 @@ export const runLayoutTests = (
           },
         });
 
+        await harness.tickDuration(panelTransitionDuration);
+
         const backdrop = harness.getAssertedBackdrop('bottom');
         const top = harness.assertedTop;
         const right = harness.assertedRight;
@@ -353,6 +358,8 @@ export const runLayoutTests = (
             absolute: true,
           },
         });
+
+        await harness.tickDuration(panelTransitionDuration);
 
         const backdrop = harness.getAssertedBackdrop('left');
         const top = harness.assertedTop;
@@ -653,8 +660,6 @@ export const runLayoutTests = (
     });
 
     describe('with an absolute panel', () => {
-      const panelTransitionDuration = 500;
-
       it('should create a backdrop that covers the layout', async () => {
         await render({
           top: {
@@ -667,6 +672,18 @@ export const runLayoutTests = (
         expect(harness.getLayout().getBoundingClientRect()).toEqual(
           harness.getAssertedBackdrop('top').getBoundingClientRect()
         );
+      });
+
+      it('should not create a backdrop that covers the layout if it is set to be hidden', async () => {
+        await render({
+          top: {
+            absolute: true,
+            hideBackdrop: true,
+          },
+        });
+
+        await harness.tickDuration(panelTransitionDuration);
+        expect(harness.getBackdrop('top')).toBeNull();
       });
 
       it('should position top over content', async () => {
@@ -886,7 +903,7 @@ export const runLayoutTests = (
         );
       });
 
-      fit('should overflow on the y-axis', async () => {
+      it('should overflow on the y-axis', async () => {
         await render({
           layout: {
             overflow: 'y',

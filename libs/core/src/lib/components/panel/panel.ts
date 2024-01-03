@@ -171,21 +171,20 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         minSize: coerceNumberProperty,
         maxSize: coerceNumberProperty,
         animationDisabled: coerceBooleanProperty,
+        hideBackdrop: coerceBooleanProperty,
         eventBindingMode: (value: string) => validateOutputBindingMode(value),
       },
       {
         absolute: () => {
           this.updateBackdrop();
           this.layout.updateAbsolute(this.values.slot, this.values.absolute);
+          const absoluteZIndex = (BERG_PANEL_BACKDROP_Z_INDEX + 1).toString();
 
           if (this.values.absolute) {
             // the z-index is animated despite not being a transitioned property,
             // update z-index with disabled transitions to avoid flickering
             this.disableTransitions();
-            this.style.setProperty(
-              'z-index',
-              (BERG_PANEL_BACKDROP_Z_INDEX + 1).toString()
-            );
+            this.style.setProperty('z-index', absoluteZIndex);
 
             requestAnimationFrame(() => {
               this.enableTransitions();
@@ -194,11 +193,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           } else {
             this.classList.remove(BERG_PANEL_ABSOLUTE_CLASS);
 
-            this.timeouts.push(
-              setTimeout(() => {
-                this.style.removeProperty('z-index');
-              }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
-            );
+            if (this.style.zIndex === absoluteZIndex) {
+              this.timeouts.push(
+                setTimeout(() => {
+                  this.style.removeProperty('z-index');
+                }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
+              );
+            }
           }
         },
         collapsed: () => {
@@ -226,6 +227,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
             this.classList.remove(BERG_PANEL_NO_TRANSITION_CLASS);
           }
         },
+        hideBackdrop: () => this.updateBackdrop(),
         slot: () => {
           this.classList.remove(...Object.values(BERG_PANEL_CLASSES_BY_SLOT));
           this.classList.add(BERG_PANEL_CLASSES_BY_SLOT[this.values.slot]);
@@ -256,6 +258,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   private showBackdrop(): void {
+    if (this.values.hideBackdrop) {
+      return;
+    }
+
     const backdrop = this.getBackdropElement();
 
     if (!this.layout.shadowRoot || this.layout.shadowRoot.contains(backdrop)) {

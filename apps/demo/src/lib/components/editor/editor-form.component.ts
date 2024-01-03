@@ -77,6 +77,11 @@ export class EditorFormComponent {
       );
 
       connectFormValue(
+        this.layoutRx[slot].hideBackdrop,
+        this.panelFormControls[slot].hideBackdrop
+      );
+
+      connectFormValue(
         this.layoutRx.remove[slot],
         this.panelFormControls[slot].remove
       );
@@ -159,6 +164,7 @@ export class EditorFormComponent {
       collapsed: new FormControl(),
       resizeDisabled: new FormControl(),
       animationDisabled: new FormControl(),
+      hideBackdrop: new FormControl(),
     };
   }
 }
