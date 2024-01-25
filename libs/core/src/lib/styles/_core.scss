@@ -115,7 +115,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .berg-layout-left-absolute & {
-      top: var(--berg-layout-top-inset);
+      left: var(--berg-layout-left-inset);
     }
   }
 
