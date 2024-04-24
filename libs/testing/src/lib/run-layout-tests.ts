@@ -778,32 +778,6 @@ export const runLayoutTests = (
         await harness.clickBackdrop('left');
         expect(clicked).toEqual(true);
       });
-
-      it('should close the panel when clicking the backdrop in "auto"-binding mode.', async () => {
-        await render({
-          left: {
-            absolute: true,
-            eventBindingMode: 'auto',
-          },
-        });
-
-        await harness.clickBackdrop('left');
-
-        expect(harness.isPanelCollapsed('left')).toBe(true);
-      });
-
-      it('should not close the panel when clicking the backdrop in "none"-binding mode.', async () => {
-        await render({
-          left: {
-            absolute: true,
-            eventBindingMode: 'none',
-          },
-        });
-
-        await harness.clickBackdrop('left');
-
-        expect(harness.isPanelCollapsed('left')).toBe(false);
-      });
     });
 
     describe('when setting the collapsed attribute', () => {

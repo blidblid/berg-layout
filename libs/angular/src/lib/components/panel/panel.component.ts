@@ -9,7 +9,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {
-  BergPanelEventBindingMode,
   BergPanelResizeEvent,
   BergPanelSlot,
   coerceBooleanProperty,
@@ -127,15 +126,6 @@ export class BergPanelComponent
     );
   }
   private _hideBackdrop = this.getDefaultInput('hideBackdrop');
-
-  @Input()
-  get eventBindingMode() {
-    return this._eventBindingMode;
-  }
-  set eventBindingMode(value: BergPanelEventBindingMode | null) {
-    this._eventBindingMode = value ?? this.getDefaultInput('eventBindingMode');
-  }
-  private _eventBindingMode = this.getDefaultInput('eventBindingMode');
 
   @Output() afterCollapsed = new EventEmitter<void>();
   @Output() afterExpanded = new EventEmitter<void>();
