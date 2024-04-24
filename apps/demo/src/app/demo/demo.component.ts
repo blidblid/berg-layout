@@ -5,7 +5,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { BergPanelResizeEvent, BergPanelSlot } from '@berg-layout/core';
-import { combineLatest, map, Subject, takeUntil } from 'rxjs';
+import { Subject, combineLatest, map, takeUntil } from 'rxjs';
 import { Breakpoints, EditorView } from '../../lib/components';
 import { LayoutRx } from '../../lib/rx';
 import { CodePrinter } from '../code';
@@ -24,7 +24,7 @@ export class DemoComponent implements OnDestroy {
 
   topSize = 80;
   bottomSize = 49;
-  rightSize = 350;
+  rightSize = 450;
 
   html$ = combineLatest([
     this.rx.layout$,

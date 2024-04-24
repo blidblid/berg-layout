@@ -29,13 +29,6 @@ export interface BergPanelInputs {
 
   /** Whether the panel backdrop is hidden. */
   hideBackdrop: boolean;
-
-  /**
-   * Controls how panel events update panel inputs.
-   * With "auto", panel events automatically update panel inputs.
-   * With "none", panel events never update panel inputs.
-   */
-  eventBindingMode: BergPanelEventBindingMode;
 }
 
 export type BergPanelInput = keyof BergPanelInputs;

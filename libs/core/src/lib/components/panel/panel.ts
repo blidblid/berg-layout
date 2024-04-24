@@ -54,11 +54,7 @@ import {
   BERG_PANEL_VERTICAL_CLASS,
 } from './panel-config-private';
 import { BergPanelInputs, BergPanelResizeEvent } from './panel-model';
-import {
-  BergPanelEventBinding,
-  BERG_PANEL_EVENT_BINDINGS,
-} from './panel-output-bindings';
-import { validateOutputBindingMode, validateSlot } from './panel-util-private';
+import { validateSlot } from './panel-util-private';
 
 export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private backdropElement: HTMLElement;
@@ -172,7 +168,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         maxSize: coerceNumberProperty,
         animationDisabled: coerceBooleanProperty,
         hideBackdrop: coerceBooleanProperty,
-        eventBindingMode: (value: string) => validateOutputBindingMode(value),
       },
       {
         absolute: () => {
@@ -342,8 +337,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           this.dispatchEvent(
             new CustomEvent('backdropClicked', { detail: event })
           );
-
-          this.updateEventBindings('onBackdropClicked', event);
         });
     }
 
@@ -594,27 +587,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     throw new Error(
       `<${BERG_PANEL_TAG_NAME}> could not find a parent <${BERG_LAYOUT_TAG_NAME}> element`
     );
-  }
-
-  private updateEventBindings<T extends keyof BergPanelEventBinding>(
-    binding: T,
-    ...params: Parameters<BergPanelEventBinding[T]>
-  ): void {
-    const updateAttributes = BERG_PANEL_EVENT_BINDINGS[
-      this.values.eventBindingMode
-    ][
-      binding
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ](...(params as [any]));
-
-    for (const [key, attribute] of Object.entries(updateAttributes)) {
-      if (attribute === undefined) {
-        continue;
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.setAttribute(key, `${attribute}`);
-    }
   }
 
   private updateSize(size: number): void {

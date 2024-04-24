@@ -23,7 +23,6 @@ export function BergPanel(props: BergPanelProps) {
       max-size={props.maxSize}
       animation-disabled={props.animationDisabled}
       hide-backdrop={props.hideBackdrop}
-      event-binding-mode={props.eventBindingMode}
     >
       {props.children}
     </berg-panel-web-component>
