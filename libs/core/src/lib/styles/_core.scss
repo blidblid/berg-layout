@@ -54,6 +54,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     display: block;
     position: relative;
     box-sizing: border-box;
+    overscroll-behavior: contain;
     transition-duration: $transition-duration;
     transition-timing-function: $transition-timing-function;
     transition-property: var(--berg-panel-transition-property), box-shadow;
