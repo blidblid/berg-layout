@@ -614,6 +614,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       <style>
         .berg-panel-overflow {
           overflow: auto;
+          overscroll-behavior: contain;
           height: 100%;
           width: 100%;
         }
