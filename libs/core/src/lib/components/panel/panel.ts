@@ -22,7 +22,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { coerceBooleanProperty, coerceNumberProperty } from '../../util';
-import { BergLayoutElement, BERG_LAYOUT_TAG_NAME } from '../layout';
+import { BERG_LAYOUT_TAG_NAME, BergLayoutElement } from '../layout';
 import {
   BERG_LAYOUT_NO_TRANSITION_CLASS,
   BERG_LAYOUT_RESIZING_HORIZONTAL_CLASS,
@@ -621,7 +621,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       </style>
 
       <div class="berg-panel-overflow" part="overflow">
-        <div class="berg-panel-content" part="content">
+        <div part="content">
           <slot></slot>
         </div>
       </div>`;
@@ -641,9 +641,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 }
 
-try {
+if (!window.customElements.get(BERG_PANEL_TAG_NAME)) {
   customElements.define(BERG_PANEL_TAG_NAME, BergPanelElement);
-} catch (e) {
-  console.warn(`${BERG_PANEL_TAG_NAME} is already defined as a web component.`);
-  throw e;
 }

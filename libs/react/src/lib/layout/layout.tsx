@@ -1,11 +1,12 @@
 import '@berg-layout/core';
 import {
-  BergLayoutInputs,
   BERG_LAYOUT_DEFAULT_INPUTS,
+  BergLayoutInputs,
 } from '@berg-layout/core';
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
-export type BergLayoutProps = PropsWithChildren<Partial<BergLayoutInputs>>;
+export type BergLayoutProps = PropsWithChildren<Partial<BergLayoutInputs>> &
+  HTMLAttributes<HTMLDivElement>;
 
 export const BERG_LAYOUT_DEFAULT_PROPS = BERG_LAYOUT_DEFAULT_INPUTS;
 
