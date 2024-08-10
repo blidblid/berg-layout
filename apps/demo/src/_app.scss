@@ -4,16 +4,16 @@
 @use './lib/components/material-overrides';
 
 @mixin theme($theme) {
-  $config: mat.get-color-config($theme);
+  $config: mat.m2-get-color-config($theme);
   $primary-palette: map.get($config, 'primary');
   $accent-palette: map.get($config, 'accent');
   $background-palette: map.get($config, 'background');
   $foreground-palette: map.get($config, 'foreground');
 
-  $primary-color: mat.get-color-from-palette($primary-palette);
-  $accent-color: mat.get-color-from-palette($accent-palette);
-  $divider-color: mat.get-color-from-palette($foreground-palette, divider);
-  $card-color: mat.get-color-from-palette($background-palette, card);
+  $primary-color: mat.m2-get-color-from-palette($primary-palette);
+  $accent-color: mat.m2-get-color-from-palette($accent-palette);
+  $divider-color: mat.m2-get-color-from-palette($foreground-palette, divider);
+  $card-color: mat.m2-get-color-from-palette($background-palette, card);
 
   // make a new color map since @angular/material has a tedious API.
   $colors: (
