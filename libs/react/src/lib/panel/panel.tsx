@@ -1,8 +1,17 @@
 import '@berg-layout/core';
-import { BergPanelInputs, BERG_PANEL_DEFAULT_INPUTS } from '@berg-layout/core';
-import { PropsWithChildren } from 'react';
+import {
+  BERG_PANEL_DEFAULT_INPUTS,
+  BergPanelInputs,
+  BergPanelOutputs,
+} from '@berg-layout/core';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
-export type BergPanelProps = PropsWithChildren<Partial<BergPanelInputs>>;
+export type BergPanelProps = PropsWithChildren<Partial<BergPanelInputs>> &
+  HTMLAttributes<HTMLDivElement> & {
+    [P in keyof BergPanelOutputs as `on${Capitalize<string & P>}`]?: (
+      event: BergPanelOutputs[P]
+    ) => void;
+  };
 
 export const BERG_PANEL_DEFAULT_PROPS = BERG_PANEL_DEFAULT_INPUTS;
 
