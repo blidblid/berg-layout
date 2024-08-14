@@ -50,7 +50,7 @@ export class AppRoutingModule {
       } else {
         this.updateMetaTags(
           'Berg Layout',
-          'A resizable, accessible and open-source layout component.'
+          'A resizable, collapsible, accessible and open-source layout component.'
         );
       }
     });
