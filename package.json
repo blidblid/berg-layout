@@ -10,6 +10,13 @@
     "test": "npx nx run-many --target=test --all --parallel --browsers=ChromeHeadlessNoSandbox",
     "lint": "npx nx run-many --target=lint --all --parallel"
   },
+  "keywords": [
+    "layout",
+    "resize",
+    "responsive",
+    "react",
+    "angular"
+  ],
   "dependencies": {
     "@angular/animations": "18.1.4",
     "@angular/cdk": "18.1.4",
