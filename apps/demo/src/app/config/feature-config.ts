@@ -11,6 +11,7 @@ export const REACT_FEATURE = {
   name: 'React',
   path: 'react',
   iconUrl: 'assets/react.png',
+  description: 'React components for Berg Layout.',
   component: DemoComponent,
   providers: [
     {
@@ -24,6 +25,7 @@ export const ANGULAR_FEATURE = {
   name: 'Angular',
   path: 'angular',
   iconUrl: 'assets/angular.png',
+  description: 'Angular components for Berg Layout.',
   component: DemoComponent,
   providers: [
     {
@@ -34,9 +36,10 @@ export const ANGULAR_FEATURE = {
 };
 
 export const WEB_COMPONENT_FEATURE = {
-  name: 'Web component',
+  name: 'Web Component',
   path: 'core',
   iconUrl: 'assets/web-component.png',
+  description: 'Web components for Berg Layout.',
   component: DemoComponent,
   providers: [
     {

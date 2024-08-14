@@ -9,6 +9,10 @@
   left: 0;
   right: 0;
 
+  @media screen and (max-width: 500px) {
+    padding-top: 12vh;
+  }
+
   .app-list {
     padding: 0 32px;
   }

@@ -1,7 +1,14 @@
 {
   "name": "@berg-layout/angular",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "license": "MIT",
+  "keywords": [
+    "layout",
+    "resize",
+    "responsive",
+    "angular",
+    "component"
+  ],
   "repository": {
     "url": "https://github.com/blidblid/berg-layout"
   },
