@@ -289,7 +289,9 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     } else {
       this.timeouts.push(
         setTimeout(() => {
-          this.layout.shadowRoot?.removeChild(backdrop);
+          if (this.layout.shadowRoot?.contains(backdrop)) {
+            this.layout.shadowRoot.removeChild(backdrop);
+          }
         }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
       );
     }
