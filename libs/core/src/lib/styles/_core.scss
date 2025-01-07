@@ -88,157 +88,191 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
   .berg-panel-top {
-    top: var(--berg-layout-top-inset);
-    right: calc(var(--berg-panel-right-size) + var(--berg-layout-right-inset));
-    left: calc(var(--berg-panel-left-size) + var(--berg-layout-left-inset));
+    top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
+    right: calc(
+      var(--berg-panel-right-size) + var(--berg-layout-right-inset) +
+        env(safe-area-inset-right)
+    );
+    left: calc(
+      var(--berg-panel-left-size) + var(--berg-layout-left-inset) +
+        env(safe-area-inset-left)
+    );
     height: var(--berg-panel-top-size);
 
     &.berg-panel-collapsed {
-      top: calc(var(--berg-layout-top-inset) - var(--berg-panel-top-size));
+      top: calc(
+        var(--berg-layout-top-inset) + env(safe-area-inset-top) -
+          var(--berg-panel-top-size)
+      );
     }
 
     .berg-layout-top-above-left & {
-      left: var(--berg-layout-left-inset);
+      left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
     }
 
     .berg-layout-top-above-right & {
-      right: var(--berg-layout-right-inset);
+      right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
     }
 
     &.berg-panel-absolute {
-      left: var(--berg-layout-left-inset);
-      right: var(--berg-layout-right-inset);
+      left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
+      right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
     }
 
     .berg-layout-right-absolute & {
-      right: var(--berg-layout-right-inset);
+      right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
     }
 
     .berg-layout-left-absolute & {
-      left: var(--berg-layout-left-inset);
+      left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
     }
   }
 
   .berg-panel-right {
-    top: var(--berg-layout-top-inset);
-    right: var(--berg-layout-right-inset);
-    bottom: var(--berg-layout-bottom-inset);
+    top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
+    right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
+    bottom: calc(var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom));
     width: var(--berg-panel-right-size);
 
     &.berg-panel-collapsed {
       right: calc(
-        var(--berg-layout-right-inset) - var(--berg-panel-right-size)
+        var(--berg-layout-right-inset) + env(safe-area-inset-right) -
+          var(--berg-panel-right-size)
       );
     }
 
     .berg-layout-top-above-right & {
-      top: calc(var(--berg-panel-top-size) + var(--berg-layout-top-inset));
+      top: calc(
+        var(--berg-panel-top-size) + var(--berg-layout-top-inset) +
+          env(safe-area-inset-top)
+      );
     }
 
     .berg-layout-bottom-below-right & {
       bottom: calc(
-        var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset)
+        var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset) +
+          env(safe-area-inset-bottom)
       );
     }
 
     &.berg-panel-absolute {
-      top: var(--berg-layout-top-inset);
-      bottom: var(--berg-layout-bottom-inset);
+      top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
+      bottom: calc(
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom)
+      );
     }
 
     .berg-layout-top-absolute & {
-      top: var(--berg-layout-top-inset);
+      top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
     }
 
     .berg-layout-bottom-absolute & {
-      bottom: var(--berg-layout-bottom-inset);
+      bottom: calc(
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom)
+      );
     }
   }
 
   .berg-panel-bottom {
     right: var(--berg-panel-right-size);
-    bottom: var(--berg-layout-bottom-inset);
+    bottom: calc(var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom));
     left: var(--berg-panel-left-size);
     height: var(--berg-panel-bottom-size);
 
     &.berg-panel-collapsed {
       bottom: calc(
-        var(--berg-layout-bottom-inset) - var(--berg-panel-bottom-size)
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom) -
+          var(--berg-panel-bottom-size)
       );
     }
 
     .berg-layout-bottom-below-left & {
-      left: var(--berg-layout-left-inset);
+      left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
     }
 
     .berg-layout-bottom-below-right & {
-      right: var(--berg-layout-right-inset);
+      right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
     }
 
     &.berg-panel-absolute {
-      left: var(--berg-layout-left-inset);
-      right: var(--berg-layout-right-inset);
+      left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
+      right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
     }
 
     .berg-layout-right-absolute & {
-      right: var(--berg-layout-right-inset);
+      right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
     }
 
     .berg-layout-left-absolute & {
-      left: var(--berg-layout-left-inset);
+      left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
     }
   }
 
   .berg-panel-left {
-    top: var(--berg-layout-top-inset);
-    bottom: var(--berg-layout-bottom-inset);
-    left: var(--berg-layout-left-inset);
+    top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
+    bottom: calc(var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom));
+    left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
     width: var(--berg-panel-left-size);
 
     &.berg-panel-collapsed {
-      left: calc(var(--berg-layout-left-inset) - var(--berg-panel-left-size));
+      left: calc(
+        var(--berg-layout-left-inset) + env(safe-area-inset-left) -
+          var(--berg-panel-left-size)
+      );
     }
 
     .berg-layout-top-above-left & {
-      top: calc(var(--berg-panel-top-size) + var(--berg-layout-top-inset));
+      top: calc(
+        var(--berg-panel-top-size) + var(--berg-layout-top-inset) +
+          env(safe-area-inset-top)
+      );
     }
 
     .berg-layout-bottom-below-left & {
       bottom: calc(
-        var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset)
+        var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset) +
+          env(safe-area-inset-bottom)
       );
     }
 
     &.berg-panel-absolute {
-      top: var(--berg-layout-top-inset);
-      bottom: var(--berg-layout-bottom-inset);
+      top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
+      bottom: calc(
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom)
+      );
     }
 
     .berg-layout-top-absolute & {
-      top: var(--berg-layout-top-inset);
+      top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
     }
 
     .berg-layout-bottom-absolute & {
-      bottom: var(--berg-layout-bottom-inset);
+      bottom: calc(
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom)
+      );
     }
   }
 
   .berg-layout {
     &::part(content) {
       padding-top: calc(
-        var(--berg-panel-top-size) + var(--berg-layout-top-inset)
+        var(--berg-panel-top-size) + var(--berg-layout-top-inset) +
+          env(safe-area-inset-top)
       );
 
       padding-right: calc(
-        var(--berg-panel-right-size) + var(--berg-layout-right-inset)
+        var(--berg-panel-right-size) + var(--berg-layout-right-inset) +
+          env(safe-area-inset-right)
       );
 
       padding-bottom: calc(
-        var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset)
+        var(--berg-panel-bottom-size) + var(--berg-layout-bottom-inset) +
+          env(safe-area-inset-bottom)
       );
 
       padding-left: calc(
-        var(--berg-panel-left-size) + var(--berg-layout-left-inset)
+        var(--berg-panel-left-size) + var(--berg-layout-left-inset) +
+          env(safe-area-inset-left)
       );
     }
 
@@ -252,69 +286,87 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .berg-layout-top-absolute {
     &::part(content) {
-      padding-top: var(--berg-layout-top-inset);
+      padding-top: calc(
+        var(--berg-layout-top-inset) + env(safe-area-inset-top)
+      );
     }
   }
 
   .berg-layout-right-absolute {
     &::part(content) {
-      padding-right: var(--berg-layout-right-inset);
+      padding-right: calc(
+        var(--berg-layout-right-inset) + env(safe-area-inset-right)
+      );
     }
   }
 
   .berg-layout-bottom-absolute {
     &::part(content) {
-      padding-bottom: var(--berg-layout-bottom-inset);
+      padding-bottom: calc(
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom)
+      );
     }
   }
 
   .berg-layout-left-absolute {
     &::part(content) {
-      padding-left: var(--berg-layout-left-inset);
+      padding-left: calc(
+        var(--berg-layout-left-inset) + env(safe-area-inset-left)
+      );
     }
   }
 
   .berg-layout-top-collapsed {
     .berg-panel-right,
     .berg-panel-left {
-      top: var(--berg-layout-top-inset);
+      top: calc(var(--berg-layout-top-inset) + env(safe-area-inset-top));
     }
 
     &::part(content) {
-      padding-top: var(--berg-layout-top-inset);
+      padding-top: calc(
+        var(--berg-layout-top-inset) + env(safe-area-inset-top)
+      );
     }
   }
 
   .berg-layout-right-collapsed {
     .berg-panel-top,
     .berg-panel-bottom {
-      right: var(--berg-layout-right-inset);
+      right: calc(var(--berg-layout-right-inset) + env(safe-area-inset-right));
     }
 
     &::part(content) {
-      padding-right: var(--berg-layout-right-inset);
+      padding-right: calc(
+        var(--berg-layout-right-inset) + env(safe-area-inset-right)
+      );
     }
   }
 
   .berg-layout-bottom-collapsed {
     .berg-panel-right,
     .berg-panel-left {
-      bottom: var(--berg-layout-bottom-inset);
+      bottom: calc(
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom)
+      );
     }
 
     &::part(content) {
-      padding-bottom: var(--berg-layout-bottom-inset);
+      padding-bottom: calc(
+        var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom)
+      );
     }
   }
 
   .berg-layout-left-collapsed {
     .berg-panel-top,
     .berg-panel-bottom {
-      left: var(--berg-layout-left-inset);
+      left: calc(var(--berg-layout-left-inset) + env(safe-area-inset-left));
     }
 
     &::part(content) {
-      padding-left: var(--berg-layout-left-inset);
+      padding-left: calc(
+        var(--berg-layout-left-inset) + env(safe-area-inset-left)
+      );
     }
   }
 }
