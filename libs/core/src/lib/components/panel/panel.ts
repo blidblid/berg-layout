@@ -319,11 +319,15 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       style.position = 'fixed';
       style.cursor = 'pointer';
       style.opacity = '0';
-      style.top = 'var(--berg-layout-top-inset)';
-      style.right = 'var(--berg-layout-right-inset)';
-      style.bottom = 'var(--berg-layout-bottom-inset)';
-      style.left = 'var(--berg-layout-left-inset)';
       style.background = 'var(--berg-panel-backdrop-background)';
+      style.top =
+        'calc(var(--berg-layout-top-inset) + env(safe-area-inset-top))';
+      style.right =
+        'calc(var(--berg-layout-right-inset) + env(safe-area-inset-right))';
+      style.bottom =
+        'calc(var(--berg-layout-bottom-inset) + env(safe-area-inset-bottom))';
+      style.left =
+        'calc(var(--berg-layout-left-inset) + env(safe-area-inset-left))';
 
       // non-standard property to disable tap highlights
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
