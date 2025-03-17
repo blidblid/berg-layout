@@ -4,7 +4,7 @@ This is the React version of berg-layout.
 
 ## Usage
 
-Usage and demo [here](https://berglayout.com/react).
+Usage and demo [here](https://berg-layout.web.app/react).
 
 ## Documentation
 

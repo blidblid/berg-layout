@@ -4,7 +4,7 @@ This is the Angular version of berg-layout.
 
 ## Usage
 
-Usage and demo [here](https://berglayout.com/angular).
+Usage and demo [here](https://berg-layout.web.app/angular).
 
 ## Documentation
 

@@ -4,7 +4,7 @@ This library contains the web-component version of berg-layout and all its style
 
 ## Usage
 
-Usage and demo [here](https://berglayout.com/core).
+Usage and demo [here](https://berg-layout.web.app/core).
 
 ## Documentation
 

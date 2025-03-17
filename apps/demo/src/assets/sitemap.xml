@@ -5,19 +5,19 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://berglayout.com</loc>
-    <lastmod>2024-08-14T00:00:00+00:00</lastmod>
+    <loc>https://berg-layout.web.app</loc>
+    <lastmod>2025-03-17T00:00:00+00:00</lastmod>
   </url>
   <url>
-    <loc>https://berglayout.com/react</loc>
-    <lastmod>2024-08-14T00:00:00+00:00</lastmod>
+    <loc>https://berg-layout.web.app/react</loc>
+    <lastmod>2025-03-17T00:00:00+00:00</lastmod>
   </url>
   <url>
-    <loc>https://berglayout.com/angular</loc>
-    <lastmod>2024-08-14T00:00:00+00:00</lastmod>
+    <loc>https://berg-layout.web.app/angular</loc>
+    <lastmod>2025-03-17T00:00:00+00:00</lastmod>
   </url>
   <url>
-    <loc>https://berglayout.com/core</loc>
-    <lastmod>2024-08-14T00:00:00+00:00</lastmod>
+    <loc>https://berg-layout.web.app/core</loc>
+    <lastmod>2025-03-17T00:00:00+00:00</lastmod>
   </url>
 </urlset>
