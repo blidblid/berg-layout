@@ -185,34 +185,7 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
 
   updateAnimationDisabled(slot: BergPanelSlot, disable: boolean): void {
     this.disabledAnimations[slot] = disable;
-
-    const transitionProperties = [];
-
-    if (!this.disabledAnimations.top) {
-      transitionProperties.push('top');
-    }
-
-    if (!this.disabledAnimations.right) {
-      transitionProperties.push('right');
-    }
-
-    if (!this.disabledAnimations.bottom) {
-      transitionProperties.push('bottom');
-    }
-
-    if (!this.disabledAnimations.left) {
-      transitionProperties.push('left');
-    }
-
-    this.style.setProperty(
-      '--berg-panel-transition-property',
-      transitionProperties.join(', ')
-    );
-
-    this.style.setProperty(
-      '--berg-layout-transition-property',
-      transitionProperties.map((property) => `padding-${property}`).join(', ')
-    );
+    this.setTransitionPropertyVariables(this.disabledAnimations);
   }
 
   getSlotSize(slot: BergPanelSlot): number {
@@ -263,6 +236,8 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     for (const slot of ['top', 'right', 'bottom', 'left'] as const) {
       this.updateSize(slot, 0);
     }
+
+    this.setTransitionPropertyVariables(this.disabledAnimations);
   }
 
   private getAdjacentResizeTogglesForSlot(slot: BergPanelSlot): HTMLElement[] {
@@ -299,6 +274,38 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
     }
 
     return [];
+  }
+
+  private setTransitionPropertyVariables(
+    disabledAnimations: Record<BergPanelSlot, boolean>
+  ): void {
+    const transitionProperties = [];
+
+    if (!disabledAnimations.top) {
+      transitionProperties.push('top');
+    }
+
+    if (!disabledAnimations.right) {
+      transitionProperties.push('right');
+    }
+
+    if (!disabledAnimations.bottom) {
+      transitionProperties.push('bottom');
+    }
+
+    if (!disabledAnimations.left) {
+      transitionProperties.push('left');
+    }
+
+    this.style.setProperty(
+      '--berg-panel-transition-property',
+      transitionProperties.join(', ')
+    );
+
+    this.style.setProperty(
+      '--berg-layout-transition-property',
+      transitionProperties.map((property) => `padding-${property}`).join(', ')
+    );
   }
 
   private createResizeToggleElement(slot: BergPanelSlot): HTMLElement {
