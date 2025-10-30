@@ -2,6 +2,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
+  BERG_LAYOUT_DEFAULT_INPUTS,
+  BERG_LAYOUT_TAG_NAME,
+  BERG_PANEL_DEFAULT_INPUTS,
   BergLayoutElement,
   BergLayoutInput,
   BergLayoutInputs,
@@ -9,9 +12,6 @@ import {
   BergPanelInputs,
   BergPanelResizeEvent,
   BergPanelSlot,
-  BERG_LAYOUT_DEFAULT_INPUTS,
-  BERG_LAYOUT_TAG_NAME,
-  BERG_PANEL_DEFAULT_INPUTS,
 } from '@berg-layout/core';
 import {
   BergLayoutTestHarness,
@@ -169,6 +169,7 @@ describe('Angular implementation', () => {
       [bottomInset]="layout.bottomInset"
       [leftInset]="layout.leftInset"
       [overflow]="layout.overflow"
+      [zIndexBase]="layout.zIndexBase"
     >
       <berg-panel
         #topRef

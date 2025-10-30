@@ -24,12 +24,10 @@ The panels have two `::part()`
 - `part="content"` which wraps your content
 - `part="overflow"` which handles overflow and wraps `content`
 
-To for example, style `content`, use `::part`
+To style the `content` part, use `::part` like this:
 
 ```css
-.berg-panel-top {
-  &::part(content) {
-    padding: 16px;
-  }
+.berg-panel-top::part(content) {
+  padding: 16px;
 }
 ```

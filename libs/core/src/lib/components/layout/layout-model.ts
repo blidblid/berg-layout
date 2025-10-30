@@ -45,6 +45,12 @@ export interface BergLayoutInputs {
    * Make sure that the parent element has a width to inherit from.
    */
   overflow: BergLayoutOverflow;
+
+  /**
+   * Z-index base for the layout and its panels.
+   * All z-indexes starts at this value.
+   */
+  zIndexBase: number;
 }
 
 export type BergLayoutInput = keyof BergLayoutInputs;

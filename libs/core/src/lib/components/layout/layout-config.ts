@@ -23,6 +23,7 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   contentMinSize: 100,
   resizeToggleSize: 6,
   overflow: 'none',
+  zIndexBase: 0,
 };
 
 export const BERG_LAYOUT_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergLayoutInputs> =
@@ -41,6 +42,7 @@ export const BERG_LAYOUT_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergLa
     contentMinSize: 'content-min-size',
     resizeToggleSize: 'resize-toggle-size',
     overflow: 'overflow',
+    zIndexBase: 'z-index-base',
   };
 
 export const BERG_LAYOUT_INPUT_BY_ATTRIBUTE: WebComponentInputByAttribute<BergLayoutInputs> =

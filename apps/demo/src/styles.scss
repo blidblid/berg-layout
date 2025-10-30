@@ -11,7 +11,7 @@
 @include layout.core();
 @include mat.core();
 
-$primary: mat.m2-define-palette(mat.$m2-blue-palette, A400);
+$primary: mat.m2-define-palette(mat.$m2-orange-palette, A400);
 $accent: mat.m2-define-palette(mat.$m2-orange-palette, A400);
 $warn: mat.m2-define-palette(mat.$m2-red-palette);
 

@@ -14,9 +14,9 @@ import {
   coerceNumberProperty,
 } from '@berg-layout/core';
 import {
-  BergLayoutInputs,
   BERG_LAYOUT_DEFAULT_INPUTS,
   BERG_LAYOUT_INPUTS,
+  BergLayoutInputs,
 } from './layout-model';
 import { BergLayoutComponentInputs } from './layout-model-private';
 
@@ -181,6 +181,17 @@ export class BergLayoutComponent implements BergLayoutComponentInputs {
     this._overflow = value ?? this.getDefaultInput('overflow');
   }
   private _overflow: BergLayoutOverflow = this.getDefaultInput('overflow');
+
+  @Input()
+  get zIndexBase(): number {
+    return this._zIndexBase;
+  }
+  set zIndexBase(value: number | null | undefined) {
+    this._zIndexBase = coerceNumberProperty(
+      value ?? this.getDefaultInput('zIndexBase')
+    );
+  }
+  private _zIndexBase: number = this.getDefaultInput('zIndexBase');
 
   constructor(
     @Inject(BERG_LAYOUT_INPUTS)

@@ -383,6 +383,31 @@ export const runLayoutTests = (
           parseInt(getComputedStyle(bottom).zIndex)
         );
       });
+
+      it('should start z-indexing from the layout zIndexBase value', async () => {
+        await render({
+          layout: {
+            zIndexBase: 1000,
+          },
+          top: {
+            absolute: true,
+          },
+        });
+
+        await harness.tickDuration(panelTransitionDuration);
+
+        const backdrop = harness.getAssertedBackdrop('top');
+        const top = harness.assertedTop;
+        const right = harness.assertedRight;
+        const bottom = harness.assertedBottom;
+        const left = harness.assertedLeft;
+
+        expect(parseInt(getComputedStyle(backdrop).zIndex)).toBe(1007);
+        expect(parseInt(getComputedStyle(top).zIndex)).toBe(1008);
+        expect(parseInt(getComputedStyle(right).zIndex)).toBe(1001);
+        expect(parseInt(getComputedStyle(bottom).zIndex)).toBe(1003);
+        expect(parseInt(getComputedStyle(left).zIndex)).toBe(1001);
+      });
     });
 
     describe('resizing', () => {
