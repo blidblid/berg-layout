@@ -27,9 +27,7 @@ The panels have two `::part()`
 To style the `content` part, use `::part` like this:
 
 ```css
-.berg-panel-top {
-  &::part(content) {
-    padding: 16px;
-  }
+.berg-panel-top::part(content) {
+  padding: 16px;
 }
 ```
