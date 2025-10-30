@@ -1,11 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   ViewEncapsulation,
 } from '@angular/core';
 import { BergPanelResizeEvent, BergPanelSlot } from '@berg-layout/core';
-import { Subject, combineLatest, map, takeUntil } from 'rxjs';
+import { combineLatest, map, Subject, takeUntil } from 'rxjs';
 import { Breakpoints, EditorView } from '../../lib/components';
 import { LayoutRx } from '../../lib/rx';
 import { CodePrinter } from '../code';
@@ -15,11 +16,16 @@ import { CodePrinter } from '../code';
   styleUrls: ['./demo.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-demo',
   },
 })
 export class DemoComponent implements OnDestroy {
+  protected breakpoints = inject(Breakpoints);
+  protected codePrinter = inject(CodePrinter);
+  protected rx = inject(LayoutRx);
+
   view: EditorView = 'code';
 
   topSize = 80;
@@ -69,11 +75,7 @@ export class DemoComponent implements OnDestroy {
 
   private destroySub = new Subject<void>();
 
-  constructor(
-    protected codePrinter: CodePrinter,
-    protected rx: LayoutRx,
-    protected breakpoints: Breakpoints
-  ) {
+  constructor() {
     this.subscribe();
   }
 

@@ -10,6 +10,7 @@ import {
   styleUrls: ['./list.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-list',
   },

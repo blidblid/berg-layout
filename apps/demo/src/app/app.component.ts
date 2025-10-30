@@ -1,8 +1,8 @@
-import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  DOCUMENT,
+  inject,
   ViewEncapsulation,
 } from '@angular/core';
 import { map, pairwise, startWith } from 'rxjs';
@@ -13,12 +13,13 @@ import { LayoutRx } from '../lib/rx';
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AppComponent {
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private layoutRx: LayoutRx
-  ) {
+  private document = inject(DOCUMENT);
+  private layoutRx = inject(LayoutRx);
+
+  constructor() {
     this.layoutRx.theme
       .pipe(
         map(

@@ -15,10 +15,10 @@ import {
   coerceNumberProperty,
 } from '@berg-layout/core';
 import {
-  BergPanelInputs,
-  BergPanelOutputs,
   BERG_PANEL_DEFAULT_INPUTS,
   BERG_PANEL_INPUTS,
+  BergPanelInputs,
+  BergPanelOutputs,
 } from './panel-model';
 import { BergPanelNullableInputs } from './panel-model-private';
 
@@ -27,6 +27,7 @@ import { BergPanelNullableInputs } from './panel-model-private';
   templateUrl: './panel.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     '[attr.slot]': 'slot',
   },

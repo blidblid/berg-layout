@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   ViewEncapsulation,
 } from '@angular/core';
 import { Breakpoints } from '../../lib/components';
@@ -18,16 +19,17 @@ import {
   styleUrls: ['./home.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-home',
   },
 })
 export class HomeComponent {
+  breakpoints = inject(Breakpoints);
+
   features = FEATURES;
 
   title = '<berg-layout>';
-
-  constructor(public breakpoints: Breakpoints) {}
 
   updateTitle(feature: Feature) {
     if (feature === REACT_FEATURE) {

@@ -9,7 +9,8 @@
 @tailwind utilities;
 
 @include layout.core();
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $primary: mat.m2-define-palette(mat.$m2-orange-palette, A400);
 $accent: mat.m2-define-palette(mat.$m2-orange-palette, A400);

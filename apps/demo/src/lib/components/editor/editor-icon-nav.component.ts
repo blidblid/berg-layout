@@ -10,5 +10,6 @@ import { EditorIconNavBase } from './editor-nav-base';
   templateUrl: './editor-icon-nav.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class EditorIconNavComponent extends EditorIconNavBase {}

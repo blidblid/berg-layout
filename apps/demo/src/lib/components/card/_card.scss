@@ -1,8 +1,9 @@
+@use 'sass:map';
 @use 'core' as layout;
 
 @mixin theme($colors) {
   .app-card {
-    color: map-get($colors, text);
+    color: map.get($colors, text);
 
     &:hover {
       transform: translateY(-2px);
