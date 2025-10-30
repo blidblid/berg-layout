@@ -132,6 +132,15 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Z-index base</mat-label>
+      <input
+        matInput
+        [formControl]="layoutFormControls.zIndexBase"
+        type="number"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Resize toggle size</mat-label>
       <input
         matInput
@@ -167,6 +176,15 @@
     <mat-form-field>
       <mat-label>Left inset</mat-label>
       <input matInput [formControl]="insetFormControls.left" type="number" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Z-index base</mat-label>
+      <input
+        matInput
+        [formControl]="layoutFormControls.zIndexBase"
+        type="number"
+      />
     </mat-form-field>
 
     <mat-checkbox [formControl]="resizeFormControls.resizeDisabled"

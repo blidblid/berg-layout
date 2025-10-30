@@ -66,6 +66,7 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
         leftInset: coerceNumberProperty,
         contentMinSize: coerceNumberProperty,
         overflow: validateBergLayoutOverflow,
+        zIndexBase: coerceNumberProperty,
       },
       {
         resizeToggleSize: () => {
@@ -140,6 +141,12 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
             this.classList.add(BERG_LAYOUT_OVERFLOW_X_CLASS);
             this.classList.add(BERG_LAYOUT_OVERFLOW_Y_CLASS);
           }
+        },
+        zIndexBase: () => {
+          this.style.setProperty(
+            '--berg-layout-z-index-base',
+            `${this.values.zIndexBase}`
+          );
         },
       },
       BERG_LAYOUT_INPUT_BY_ATTRIBUTE

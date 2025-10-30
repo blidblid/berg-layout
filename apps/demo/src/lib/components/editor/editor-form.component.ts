@@ -34,6 +34,7 @@ export class EditorFormComponent {
     bottomRightPosition: new FormControl(),
     contentMinSize: new FormControl(),
     overflow: new FormControl('none'),
+    zIndexBase: new FormControl(),
   } as const;
 
   resizeFormControls = {
@@ -112,6 +113,11 @@ export class EditorFormComponent {
     connectFormValue(
       this.layoutRx.layout.overflow,
       this.layoutFormControls.overflow
+    );
+
+    connectFormValue(
+      this.layoutRx.layout.zIndexBase,
+      this.layoutFormControls.zIndexBase
     );
 
     connectFormValue(

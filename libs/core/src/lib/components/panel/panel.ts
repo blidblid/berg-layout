@@ -173,7 +173,9 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         absolute: () => {
           this.updateBackdrop();
           this.layout.updateAbsolute(this.values.slot, this.values.absolute);
-          const absoluteZIndex = (BERG_PANEL_BACKDROP_Z_INDEX + 1).toString();
+          const absoluteZIndex = `calc(var(--berg-layout-z-index-base, 0) + ${
+            BERG_PANEL_BACKDROP_Z_INDEX + 1
+          })`;
 
           if (this.values.absolute) {
             // the z-index is animated despite not being a transitioned property,
@@ -315,7 +317,6 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
       const style = this.backdropElement.style;
       style.transition = `opacity ${BERG_PANEL_BACKDROP_ANIMATION_DURATION}ms ease-in`;
-      style.zIndex = BERG_PANEL_BACKDROP_Z_INDEX.toString();
       style.position = 'fixed';
       style.cursor = 'pointer';
       style.opacity = '0';
@@ -324,6 +325,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       style.bottom = 'var(--berg-layout-bottom-inset)';
       style.left = 'var(--berg-layout-left-inset)';
       style.background = 'var(--berg-panel-backdrop-background)';
+      style.zIndex = `calc(var(--berg-layout-z-index-base, 0) + ${BERG_PANEL_BACKDROP_Z_INDEX})`;
 
       // non-standard property to disable tap highlights
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

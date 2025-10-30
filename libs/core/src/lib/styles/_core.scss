@@ -335,7 +335,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .berg-panel-resize-toggle {
     position: absolute;
-    z-index: 2;
+    z-index: calc(var(--berg-layout-z-index-base, 0) + 2);
   }
 
   .berg-panel-resize-toggle-left,
@@ -379,43 +379,43 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 
 @mixin z-index() {
   .berg-panel-right {
-    z-index: 6;
+    z-index: calc(var(--berg-layout-z-index-base, 0) + 6);
 
     .berg-layout-top-above-right & {
-      z-index: 4;
+      z-index: calc(var(--berg-layout-z-index-base, 0) + 4);
     }
 
     .berg-layout-top-above-right & {
-      z-index: 2;
+      z-index: calc(var(--berg-layout-z-index-base, 0) + 2);
     }
 
     .berg-layout-top-above-right.berg-layout-bottom-below-right & {
-      z-index: 1;
+      z-index: calc(var(--berg-layout-z-index-base, 0) + 1);
     }
   }
 
   .berg-panel-left {
-    z-index: 6;
+    z-index: calc(var(--berg-layout-z-index-base, 0) + 6);
 
     .berg-layout-top-above-left & {
-      z-index: 4;
+      z-index: calc(var(--berg-layout-z-index-base, 0) + 4);
     }
 
     .berg-layout-top-above-left & {
-      z-index: 2;
+      z-index: calc(var(--berg-layout-z-index-base, 0) + 2);
     }
 
     .berg-layout-top-above-left.berg-layout-bottom-below-left & {
-      z-index: 1;
+      z-index: calc(var(--berg-layout-z-index-base, 0) + 1);
     }
   }
 
   .berg-panel-bottom {
-    z-index: 3;
+    z-index: calc(var(--berg-layout-z-index-base, 0) + 3);
   }
 
   .berg-panel-top {
-    z-index: 5;
+    z-index: calc(var(--berg-layout-z-index-base, 0) + 5);
   }
 }
 
