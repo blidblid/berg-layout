@@ -1,96 +1,97 @@
-<berg-layout-web-component
-  *ngIf="rx.inputs$ | async as inputs"
-  [attr.top-left-position]="inputs.layout.topLeftPosition!"
-  [attr.top-right-position]="inputs.layout.topRightPosition!"
-  [attr.bottom-left-position]="inputs.layout.bottomLeftPosition!"
-  [attr.bottom-right-position]="inputs.layout.bottomRightPosition!"
-  [attr.resize-toggle-size]="inputs.layout.resizeToggleSize!"
-  [attr.resize-disabled]="inputs.layout.resizeDisabled!"
-  [attr.resize-two-dimensions]="inputs.layout.resizeTwoDimensions!"
-  [attr.resize-preview-delay]="inputs.layout.resizePreviewDelay!"
-  [attr.top-inset]="inputs.layout.topInset!"
-  [attr.right-inset]="inputs.layout.rightInset!"
-  [attr.bottom-inset]="inputs.layout.bottomInset!"
-  [attr.left-inset]="inputs.layout.leftInset!"
-  [attr.content-min-size]="inputs.layout.contentMinSize!"
-  [attr.overflow]="inputs.layout.overflow!"
-  [attr.z-index-base]="inputs.layout.zIndexBase!"
->
-  <berg-panel-web-component
-    slot="top"
-    *ngIf="!inputs.remove.top"
-    [attr.event-binding-mode]="'none'"
-    [attr.size]="topSize"
-    [attr.min-size]="topSize"
-    [attr.absolute]="inputs.top.absolute"
-    [attr.collapsed]="inputs.top.collapsed"
-    [attr.resize-disabled]="inputs.top.resizeDisabled"
-    [attr.animation-disabled]="inputs.top.animationDisabled"
-    [attr.hide-backdrop]="inputs.top.hideBackdrop"
-    (resized)="onResized('top', $event)"
-    (backdropClicked)="onBackdropClicked('top')"
-  >
-    <app-toolbar></app-toolbar>
-  </berg-panel-web-component>
-
-  <berg-panel-web-component
-    slot="right"
-    *ngIf="!inputs.remove.right"
-    [attr.size]="rightSize"
-    [attr.min-size]="rightSize"
-    [attr.event-binding-mode]="'none'"
-    [attr.absolute]="inputs.right.absolute"
-    [attr.collapsed]="inputs.right.collapsed"
-    [attr.resize-disabled]="inputs.right.resizeDisabled"
-    [attr.animation-disabled]="inputs.right.animationDisabled"
-    [attr.hide-backdrop]="inputs.right.hideBackdrop"
-    (resized)="onResized('right', $event)"
-    (backdropClicked)="onBackdropClicked('right')"
-  >
-    <app-editor-form></app-editor-form>
-  </berg-panel-web-component>
-
-  <berg-panel-web-component
-    slot="bottom"
-    *ngIf="!inputs.remove.bottom"
-    [attr.event-binding-mode]="'none'"
-    [attr.min-size]="bottomSize"
-    [attr.size]="bottomSize"
-    [attr.absolute]="inputs.bottom.absolute"
-    [attr.collapsed]="inputs.bottom.collapsed"
-    [attr.resize-disabled]="inputs.bottom.resizeDisabled"
-    [attr.animation-disabled]="inputs.bottom.animationDisabled"
-    [attr.hide-backdrop]="inputs.bottom.hideBackdrop"
-    (resized)="onResized('bottom', $event)"
-    (backdropClicked)="onBackdropClicked('bottom')"
-  >
-  </berg-panel-web-component>
-
-  <berg-panel-web-component
-    slot="left"
-    *ngIf="!inputs.remove.left"
-    [attr.event-binding-mode]="'none'"
-    [attr.size]="leftSize"
-    [attr.min-size]="leftSize"
-    [attr.max-size]="leftSize"
-    [attr.absolute]="inputs.left.absolute"
-    [attr.collapsed]="inputs.left.collapsed"
-    [attr.resize-disabled]="inputs.left.resizeDisabled"
-    [attr.animation-disabled]="inputs.left.animationDisabled"
-    [attr.hide-backdrop]="inputs.left.hideBackdrop"
-    (resized)="onResized('left', $event)"
-    (backdropClicked)="onBackdropClicked('left')"
-  >
-  </berg-panel-web-component>
-
-  <div class="p-4" slot="content">
-    <app-editor-code
-      [css]="css$ | async"
-      [html]="html$ | async"
-      [scss]="scss$ | async"
-      [installCommand]="codePrinter.importCommand"
-      [importDeclaration]="codePrinter.importDeclaration"
+@if (rx.inputs$ | async; as inputs) {
+  <berg-layout-web-component
+    [attr.top-left-position]="inputs.layout.topLeftPosition!"
+    [attr.top-right-position]="inputs.layout.topRightPosition!"
+    [attr.bottom-left-position]="inputs.layout.bottomLeftPosition!"
+    [attr.bottom-right-position]="inputs.layout.bottomRightPosition!"
+    [attr.resize-toggle-size]="inputs.layout.resizeToggleSize!"
+    [attr.resize-disabled]="inputs.layout.resizeDisabled!"
+    [attr.resize-two-dimensions]="inputs.layout.resizeTwoDimensions!"
+    [attr.resize-preview-delay]="inputs.layout.resizePreviewDelay!"
+    [attr.top-inset]="inputs.layout.topInset!"
+    [attr.right-inset]="inputs.layout.rightInset!"
+    [attr.bottom-inset]="inputs.layout.bottomInset!"
+    [attr.left-inset]="inputs.layout.leftInset!"
+    [attr.content-min-size]="inputs.layout.contentMinSize!"
+    [attr.overflow]="inputs.layout.overflow!"
+    [attr.z-index-base]="inputs.layout.zIndexBase!"
     >
-    </app-editor-code>
-  </div>
-</berg-layout-web-component>
+    @if (!inputs.remove.top) {
+      <berg-panel-web-component
+        slot="top"
+        [attr.event-binding-mode]="'none'"
+        [attr.size]="topSize"
+        [attr.min-size]="topSize"
+        [attr.absolute]="inputs.top.absolute"
+        [attr.collapsed]="inputs.top.collapsed"
+        [attr.resize-disabled]="inputs.top.resizeDisabled"
+        [attr.animation-disabled]="inputs.top.animationDisabled"
+        [attr.hide-backdrop]="inputs.top.hideBackdrop"
+        (resized)="onResized('top', $event)"
+        (backdropClicked)="onBackdropClicked('top')"
+        >
+        <app-toolbar></app-toolbar>
+      </berg-panel-web-component>
+    }
+    @if (!inputs.remove.right) {
+      <berg-panel-web-component
+        slot="right"
+        [attr.size]="rightSize"
+        [attr.min-size]="rightSize"
+        [attr.event-binding-mode]="'none'"
+        [attr.absolute]="inputs.right.absolute"
+        [attr.collapsed]="inputs.right.collapsed"
+        [attr.resize-disabled]="inputs.right.resizeDisabled"
+        [attr.animation-disabled]="inputs.right.animationDisabled"
+        [attr.hide-backdrop]="inputs.right.hideBackdrop"
+        (resized)="onResized('right', $event)"
+        (backdropClicked)="onBackdropClicked('right')"
+        >
+        <app-editor-form></app-editor-form>
+      </berg-panel-web-component>
+    }
+    @if (!inputs.remove.bottom) {
+      <berg-panel-web-component
+        slot="bottom"
+        [attr.event-binding-mode]="'none'"
+        [attr.min-size]="bottomSize"
+        [attr.size]="bottomSize"
+        [attr.absolute]="inputs.bottom.absolute"
+        [attr.collapsed]="inputs.bottom.collapsed"
+        [attr.resize-disabled]="inputs.bottom.resizeDisabled"
+        [attr.animation-disabled]="inputs.bottom.animationDisabled"
+        [attr.hide-backdrop]="inputs.bottom.hideBackdrop"
+        (resized)="onResized('bottom', $event)"
+        (backdropClicked)="onBackdropClicked('bottom')"
+        >
+      </berg-panel-web-component>
+    }
+    @if (!inputs.remove.left) {
+      <berg-panel-web-component
+        slot="left"
+        [attr.event-binding-mode]="'none'"
+        [attr.size]="leftSize"
+        [attr.min-size]="leftSize"
+        [attr.max-size]="leftSize"
+        [attr.absolute]="inputs.left.absolute"
+        [attr.collapsed]="inputs.left.collapsed"
+        [attr.resize-disabled]="inputs.left.resizeDisabled"
+        [attr.animation-disabled]="inputs.left.animationDisabled"
+        [attr.hide-backdrop]="inputs.left.hideBackdrop"
+        (resized)="onResized('left', $event)"
+        (backdropClicked)="onBackdropClicked('left')"
+        >
+      </berg-panel-web-component>
+    }
+    <div class="p-4" slot="content">
+      <app-editor-code
+        [css]="css$ | async"
+        [html]="html$ | async"
+        [scss]="scss$ | async"
+        [installCommand]="codePrinter.importCommand"
+        [importDeclaration]="codePrinter.importDeclaration"
+        >
+      </app-editor-code>
+    </div>
+  </berg-layout-web-component>
+}

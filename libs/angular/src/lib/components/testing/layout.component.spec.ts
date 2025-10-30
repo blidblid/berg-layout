@@ -230,6 +230,7 @@ describe('Angular implementation', () => {
       <div #centerRef slot="content"></div>
     </berg-layout>
   `,
+  standalone: false,
 })
 export class LayoutTestComponent {
   layout = { ...BERG_LAYOUT_DEFAULT_INPUTS };

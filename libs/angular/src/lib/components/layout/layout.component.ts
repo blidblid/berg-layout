@@ -26,6 +26,7 @@ import { BergLayoutComponentInputs } from './layout-model-private';
   styleUrls: ['./layout.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class BergLayoutComponent implements BergLayoutComponentInputs {
   @Input()

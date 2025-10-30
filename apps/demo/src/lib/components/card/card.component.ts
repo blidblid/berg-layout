@@ -11,6 +11,7 @@ import {
   styleUrls: ['./card.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-card',
     '[attr.tabindex]': '0',

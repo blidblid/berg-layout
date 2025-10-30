@@ -54,6 +54,8 @@
 ></ng-container>
 
 <ng-template #contextTmpl let-context>
-  <h4 *ngIf="context.title">{{ context.title }}</h4>
+  @if (context.title) {
+    <h4>{{ context.title }}</h4>
+  }
   <pre><code [class]="context.class"><app-highlight-code [code]="context.code"></app-highlight-code></code></pre>
 </ng-template>

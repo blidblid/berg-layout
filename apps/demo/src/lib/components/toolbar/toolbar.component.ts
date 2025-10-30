@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   ViewEncapsulation,
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
@@ -13,11 +14,15 @@ import { LayoutRx } from '../../rx';
   styleUrls: ['./toolbar.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-toolbar',
   },
 })
 export class ToolbarComponent {
+  private layoutRx = inject(LayoutRx);
+  private router = inject(Router);
+
   feature$ = this.router.events.pipe(
     filter((event) => event instanceof NavigationEnd),
     startWith(null),
@@ -27,8 +32,6 @@ export class ToolbarComponent {
   npmLink$ = this.feature$.pipe(
     map((feature) => `https://www.npmjs.com/package/@berg-layout/${feature}`)
   );
-
-  constructor(private layoutRx: LayoutRx, private router: Router) {}
 
   toggleRight(): void {
     this.layoutRx.right.collapsed.next(!this.layoutRx.right.collapsed.value);

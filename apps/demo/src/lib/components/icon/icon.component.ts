@@ -11,6 +11,7 @@ import {
   styleUrls: ['./icon.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-icon',
     '[class.app-icon-inverted]': 'invert',

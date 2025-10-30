@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -12,11 +13,14 @@ import { connectFormValue, LayoutRx } from '../../rx';
   styleUrls: ['./editor-form.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-editor-form',
   },
 })
 export class EditorFormComponent {
+  private layoutRx = inject(LayoutRx);
+
   formControl = new FormControl<string>('top');
 
   panelFormControls = {
@@ -51,7 +55,7 @@ export class EditorFormComponent {
     left: new FormControl(),
   };
 
-  constructor(private layoutRx: LayoutRx) {
+  constructor() {
     this.connect();
   }
 

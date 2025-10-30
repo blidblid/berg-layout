@@ -11,6 +11,7 @@ import {
   styleUrls: ['./editor-code.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
   host: {
     class: 'app-editor-code',
   },
