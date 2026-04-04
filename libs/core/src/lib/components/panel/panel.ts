@@ -61,6 +61,8 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   private layout = new BergLayoutElement();
 
   private timeouts: ReturnType<typeof setTimeout>[] = [];
+  private backdropRemovalTimeout?: ReturnType<typeof setTimeout>;
+  private zIndexRemovalTimeout?: ReturnType<typeof setTimeout>;
 
   private canResize = (_: number) => true;
 
@@ -191,11 +193,22 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
             this.classList.remove(BERG_PANEL_ABSOLUTE_CLASS);
 
             if (this.style.zIndex === absoluteZIndex) {
-              this.timeouts.push(
-                setTimeout(() => {
+              if (this.zIndexRemovalTimeout) {
+                clearTimeout(this.zIndexRemovalTimeout);
+                this.zIndexRemovalTimeout = undefined;
+              }
+
+              this.zIndexRemovalTimeout = setTimeout(() => {
+                this.zIndexRemovalTimeout = undefined;
+
+                // Check that the panel is not absolute.
+                // The absolute state could update during the timeout.
+                if (!this.values.absolute) {
                   this.style.removeProperty('z-index');
-                }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
-              );
+                }
+              }, BERG_PANEL_BACKDROP_ANIMATION_DURATION);
+
+              this.timeouts.push(this.zIndexRemovalTimeout);
             }
           }
         },
@@ -261,11 +274,18 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
     const backdrop = this.getBackdropElement();
 
-    if (!this.layout.shadowRoot || this.layout.shadowRoot.contains(backdrop)) {
+    if (this.backdropRemovalTimeout) {
+      clearTimeout(this.backdropRemovalTimeout);
+      this.backdropRemovalTimeout = undefined;
+    }
+
+    if (!this.layout.shadowRoot) {
       return;
     }
 
-    this.layout.shadowRoot.appendChild(backdrop);
+    if (!this.layout.shadowRoot.contains(backdrop)) {
+      this.layout.shadowRoot.appendChild(backdrop);
+    }
 
     if (this.values.animationDisabled) {
       backdrop.style.opacity = '1';
@@ -289,13 +309,25 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     if (this.values.animationDisabled) {
       this.layout.shadowRoot.removeChild(backdrop);
     } else {
-      this.timeouts.push(
-        setTimeout(() => {
-          if (this.layout.shadowRoot?.contains(backdrop)) {
-            this.layout.shadowRoot.removeChild(backdrop);
-          }
-        }, BERG_PANEL_BACKDROP_ANIMATION_DURATION)
-      );
+      if (this.backdropRemovalTimeout) {
+        clearTimeout(this.backdropRemovalTimeout);
+        this.backdropRemovalTimeout = undefined;
+      }
+
+      this.backdropRemovalTimeout = setTimeout(() => {
+        this.backdropRemovalTimeout = undefined;
+
+        if (
+          // Check that the panel is not absolute.
+          // The absolute state could update during the timeout.
+          !this.values.absolute &&
+          this.layout.shadowRoot?.contains(backdrop)
+        ) {
+          this.layout.shadowRoot.removeChild(backdrop);
+        }
+      }, BERG_PANEL_BACKDROP_ANIMATION_DURATION);
+
+      this.timeouts.push(this.backdropRemovalTimeout);
     }
   }
 
