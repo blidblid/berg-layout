@@ -1,41 +1,74 @@
 import '@berg-layout/core';
+import type { BergLayoutElement, BergLayoutInputs } from '@berg-layout/core';
+import { BERG_LAYOUT_DEFAULT_INPUTS } from '@berg-layout/core';
+import { forwardRef, HTMLAttributes, PropsWithChildren } from 'react';
 import {
-  BERG_LAYOUT_DEFAULT_INPUTS,
-  BergLayoutInputs,
-} from '@berg-layout/core';
-import { HTMLAttributes, PropsWithChildren } from 'react';
+  toCustomElementAttributeValue,
+  useForwardedElementRef,
+} from '../custom-element';
 
 export type BergLayoutProps = PropsWithChildren<Partial<BergLayoutInputs>> &
-  HTMLAttributes<HTMLDivElement>;
+  Omit<HTMLAttributes<BergLayoutElement>, keyof BergLayoutInputs | 'children'>;
 
 export const BERG_LAYOUT_DEFAULT_PROPS = BERG_LAYOUT_DEFAULT_INPUTS;
 
-export function BergLayout(props: BergLayoutProps) {
-  props = {
-    ...BERG_LAYOUT_DEFAULT_PROPS,
-    ...props,
-  };
+export const BergLayout = forwardRef<BergLayoutElement, BergLayoutProps>(
+  function BergLayout(
+    {
+      children,
+      resizeDisabled,
+      resizeTwoDimensions,
+      resizePreviewDelay,
+      topLeftPosition,
+      topRightPosition,
+      bottomLeftPosition,
+      bottomRightPosition,
+      topInset,
+      rightInset,
+      bottomInset,
+      leftInset,
+      contentMinSize,
+      resizeToggleSize,
+      overflow,
+      zIndexBase,
+      gesturesDisabled,
+      className,
+      ...domProps
+    }: BergLayoutProps,
+    forwardedRef
+  ) {
+    const [, ref] = useForwardedElementRef(forwardedRef);
 
-  return (
-    <berg-layout-web-component
-      resize-disabled={props.resizeDisabled}
-      resize-two-dimensions={props.resizeTwoDimensions}
-      resize-preview-delay={props.resizePreviewDelay}
-      top-left-position={props.topLeftPosition}
-      top-right-position={props.topRightPosition}
-      bottom-left-position={props.bottomLeftPosition}
-      bottom-right-position={props.bottomRightPosition}
-      top-inset={props.topInset}
-      right-inset={props.rightInset}
-      bottom-inset={props.bottomInset}
-      left-inset={props.leftInset}
-      overflow={props.overflow}
-      z-index-base={props.zIndexBase}
-      gestures-disabled={props.gesturesDisabled}
-    >
-      {props.children}
-    </berg-layout-web-component>
-  );
-}
+    return (
+      <berg-layout-web-component
+        ref={ref}
+        class={className}
+        resize-disabled={toCustomElementAttributeValue(resizeDisabled)}
+        resize-two-dimensions={toCustomElementAttributeValue(
+          resizeTwoDimensions
+        )}
+        resize-preview-delay={toCustomElementAttributeValue(resizePreviewDelay)}
+        top-left-position={toCustomElementAttributeValue(topLeftPosition)}
+        top-right-position={toCustomElementAttributeValue(topRightPosition)}
+        bottom-left-position={toCustomElementAttributeValue(bottomLeftPosition)}
+        bottom-right-position={toCustomElementAttributeValue(
+          bottomRightPosition
+        )}
+        top-inset={toCustomElementAttributeValue(topInset)}
+        right-inset={toCustomElementAttributeValue(rightInset)}
+        bottom-inset={toCustomElementAttributeValue(bottomInset)}
+        left-inset={toCustomElementAttributeValue(leftInset)}
+        content-min-size={toCustomElementAttributeValue(contentMinSize)}
+        resize-toggle-size={toCustomElementAttributeValue(resizeToggleSize)}
+        overflow={toCustomElementAttributeValue(overflow)}
+        z-index-base={toCustomElementAttributeValue(zIndexBase)}
+        gestures-disabled={toCustomElementAttributeValue(gesturesDisabled)}
+        {...domProps}
+      >
+        {children}
+      </berg-layout-web-component>
+    );
+  }
+);
 
 export default BergLayout;

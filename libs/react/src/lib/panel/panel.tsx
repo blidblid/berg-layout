@@ -1,43 +1,103 @@
 import '@berg-layout/core';
-import {
-  BERG_PANEL_DEFAULT_INPUTS,
+import type {
+  BergPanelElement,
+  BergPanelGestureEvent,
   BergPanelInputs,
-  BergPanelOutputs,
+  BergPanelResizeEvent,
 } from '@berg-layout/core';
-import { HTMLAttributes, PropsWithChildren } from 'react';
+import { BERG_PANEL_DEFAULT_INPUTS } from '@berg-layout/core';
+import { forwardRef, HTMLAttributes, PropsWithChildren } from 'react';
+import {
+  toCustomElementAttributeValue,
+  useCustomElementEvent,
+  useForwardedElementRef,
+} from '../custom-element';
+
+export interface BergPanelEventProps {
+  onAfterCollapsed?: () => void;
+  onAfterExpanded?: () => void;
+  onBackdropClicked?: (event: MouseEvent) => void;
+  onGestured?: (event: BergPanelGestureEvent) => void;
+  onResized?: (event: BergPanelResizeEvent) => void;
+}
 
 export type BergPanelProps = PropsWithChildren<Partial<BergPanelInputs>> &
-  HTMLAttributes<HTMLDivElement> & {
-    [P in keyof BergPanelOutputs as `on${Capitalize<string & P>}`]?: (
-      event: BergPanelOutputs[P]
-    ) => void;
-  };
+  Omit<
+    HTMLAttributes<BergPanelElement>,
+    keyof BergPanelInputs | keyof BergPanelEventProps | 'children'
+  > &
+  BergPanelEventProps;
 
 export const BERG_PANEL_DEFAULT_PROPS = BERG_PANEL_DEFAULT_INPUTS;
 
-export function BergPanel(props: BergPanelProps) {
-  props = {
-    ...BERG_PANEL_DEFAULT_PROPS,
-    ...props,
-  };
+export const BergPanel = forwardRef<BergPanelElement, BergPanelProps>(
+  function BergPanel(
+    {
+      children,
+      slot,
+      absolute,
+      collapsed,
+      resizeDisabled,
+      size,
+      minSize,
+      maxSize,
+      animationDisabled,
+      hideBackdrop,
+      gesturesDisabled,
+      className,
+      onAfterCollapsed,
+      onAfterExpanded,
+      onBackdropClicked,
+      onGestured,
+      onResized,
+      ...domProps
+    }: BergPanelProps,
+    forwardedRef
+  ) {
+    const [element, ref] = useForwardedElementRef(forwardedRef);
 
-  return (
-    <berg-panel-web-component
-      slot={props.slot}
-      absolute={props.absolute}
-      collapsed={props.collapsed}
-      resize-disabled={props.resizeDisabled}
-      size={props.size}
-      min-size={props.minSize}
-      max-size={props.maxSize}
-      animation-disabled={props.animationDisabled}
-      hide-backdrop={props.hideBackdrop}
-      gestures-disabled={props.gesturesDisabled}
-    >
-      {props.children}
-    </berg-panel-web-component>
-  );
-}
+    useCustomElementEvent(element, 'afterCollapsed', onAfterCollapsed);
 
-// install force
+    useCustomElementEvent(element, 'afterExpanded', onAfterExpanded);
+
+    useCustomElementEvent<BergPanelElement, MouseEvent>(
+      element,
+      'backdropClicked',
+      onBackdropClicked
+    );
+
+    useCustomElementEvent<BergPanelElement, BergPanelGestureEvent>(
+      element,
+      'gestured',
+      onGestured
+    );
+
+    useCustomElementEvent<BergPanelElement, BergPanelResizeEvent>(
+      element,
+      'resized',
+      onResized
+    );
+
+    return (
+      <berg-panel-web-component
+        ref={ref}
+        class={className}
+        slot={toCustomElementAttributeValue(slot)}
+        absolute={toCustomElementAttributeValue(absolute)}
+        collapsed={toCustomElementAttributeValue(collapsed)}
+        resize-disabled={toCustomElementAttributeValue(resizeDisabled)}
+        size={toCustomElementAttributeValue(size)}
+        min-size={toCustomElementAttributeValue(minSize)}
+        max-size={toCustomElementAttributeValue(maxSize)}
+        animation-disabled={toCustomElementAttributeValue(animationDisabled)}
+        hide-backdrop={toCustomElementAttributeValue(hideBackdrop)}
+        gestures-disabled={toCustomElementAttributeValue(gesturesDisabled)}
+        {...domProps}
+      >
+        {children}
+      </berg-panel-web-component>
+    );
+  }
+);
+
 export default BergPanel;

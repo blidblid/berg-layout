@@ -179,7 +179,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
   private touch$: Observable<Touch | null> = fromEvent<TouchEvent>(
     document.body,
-    'touchstart'
+    'touchstart',
+    {
+      passive: true,
+    }
   ).pipe(
     switchMap((event) => {
       if (!event.target) {
@@ -235,11 +238,15 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         }
       }
 
-      const touchend$ = fromEvent<TouchEvent>(document.body, 'touchend');
+      const touchend$ = fromEvent<TouchEvent>(document.body, 'touchend', {
+        passive: true,
+      });
 
       return merge(
         touchend$.pipe(map(() => null)),
-        fromEvent<TouchEvent>(event.target, 'touchmove').pipe(
+        fromEvent<TouchEvent>(event.target, 'touchmove', {
+          passive: true,
+        }).pipe(
           startWith(event),
           map((event) => event.touches[0])
         )
@@ -665,8 +672,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       .subscribe(([[previousSlot, currentSlot], resizeDisabled]) => {
         const currentResizeToggle = this.layout.resizeToggles[currentSlot];
 
-        if (resizeDisabled && this.contains(currentResizeToggle)) {
-          this.removeChild(currentResizeToggle);
+        if (resizeDisabled) {
+          if (this.contains(currentResizeToggle)) {
+            this.removeChild(currentResizeToggle);
+          }
         } else {
           this.appendChild(currentResizeToggle);
         }

@@ -49,6 +49,9 @@ export interface BergPanelOutputs {
 
   /** Emits when a panel has finished expanding. */
   afterExpanded: CustomEvent<void>;
+
+  /** Emits when a panel gesture expands or collapses the panel. */
+  gestured: CustomEvent<BergPanelGestureEvent>;
 }
 
 export type BergPanelGestureEvent =
