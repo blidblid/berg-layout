@@ -1,8 +1,8 @@
 import { EventEmitter, InjectionToken } from '@angular/core';
 import {
+  BERG_PANEL_DEFAULT_INPUTS as BERG_PANEL_DEFAULT_INPUTS_CORE,
   BergPanelInputs as BergPanelInputsCore,
   BergPanelOutputs as BergPanelOutputsCore,
-  BERG_PANEL_DEFAULT_INPUTS as BERG_PANEL_DEFAULT_INPUTS_CORE,
 } from '@berg-layout/core';
 
 /** Inputs of berg-panel. */

@@ -82,7 +82,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 
   private resizeToggle$ = this.changes.slot.pipe(
-    map((slot) => this.layout.resizeToggles[slot]),
+    map((slot) => this.layout.resizeToggles[slot])
   );
 
   private resizeDisabled$ = combineLatest([
@@ -91,7 +91,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   ]).pipe(
     map(([resizeDisabled, layoutResizeDisabled]) => {
       return resizeDisabled || layoutResizeDisabled;
-    }),
+    })
   );
 
   private gesturesDisabled$ = combineLatest([
@@ -100,7 +100,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   ]).pipe(
     map(([gesturesDisabled, layoutGesturesDisabled]) => {
       return gesturesDisabled || layoutGesturesDisabled;
-    }),
+    })
   );
 
   private previewing$ = combineLatest([
@@ -117,24 +117,24 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           withLatestFrom(this.resizeToggle$),
           map(([event, resizeToggle]) => {
             return this.checkResizeThreshold(event, resizeToggle);
-          }),
+          })
         ),
         this.layout
           .fromResizeTogglesEvent<MouseEvent>('mouseleave', slot)
-          .pipe(map(() => false)),
+          .pipe(map(() => false))
       );
     }),
     startWith(false),
     distinctUntilChanged(),
-    share(),
+    share()
   );
 
   private delayedPreviewing$ = this.previewing$.pipe(
     switchMap((previewing) => {
       return of(previewing).pipe(
-        delay(previewing ? this.layout.values.resizePreviewDelay : 0),
+        delay(previewing ? this.layout.values.resizePreviewDelay : 0)
       );
-    }),
+    })
   );
 
   private startResizeEvent$ = this.previewing$.pipe(
@@ -142,28 +142,28 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       return previewing
         ? fromEvent<MouseEvent>(document.documentElement, 'mousedown')
         : EMPTY;
-    }),
+    })
   );
 
   private stopResizeEvent$ = merge(
     fromEvent<MouseEvent>(document.documentElement, 'mouseup'),
-    fromEvent<MouseEvent>(document.documentElement, 'mouseleave'),
+    fromEvent<MouseEvent>(document.documentElement, 'mouseleave')
   );
 
   private resizing$ = merge(
     this.startResizeEvent$.pipe(map(() => true)),
-    this.stopResizeEvent$.pipe(map(() => false)),
+    this.stopResizeEvent$.pipe(map(() => false))
   ).pipe(share(), startWith(false), distinctUntilChanged());
 
   private resizeEvent$ = this.startResizeEvent$.pipe(
     switchMap(() =>
       fromEvent<MouseEvent>(document.documentElement, 'mousemove').pipe(
-        takeUntil(this.stopResizeEvent$),
-      ),
+        takeUntil(this.stopResizeEvent$)
+      )
     ),
     debounceTime(0, animationFrameScheduler),
     map((event) => this.createResizeEvent(event)),
-    share(),
+    share()
   );
 
   private collapsedAnimationEnd$ = this.attributeChanges$.pipe(
@@ -172,14 +172,14 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     withLatestFrom(this.resizing$),
     switchMap(([_, resizing]) => {
       return timer(resizing ? 0 : BERG_PANEL_ANIMATION_DURATION).pipe(
-        takeUntil(this.changes.collapsed.pipe(skip(1))),
+        takeUntil(this.changes.collapsed.pipe(skip(1)))
       );
-    }),
+    })
   );
 
   private touch$: Observable<Touch | null> = fromEvent<TouchEvent>(
     document.body,
-    'touchstart',
+    'touchstart'
   ).pipe(
     switchMap((event) => {
       if (!event.target) {
@@ -241,10 +241,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         touchend$.pipe(map(() => null)),
         fromEvent<TouchEvent>(event.target, 'touchmove').pipe(
           startWith(event),
-          map((event) => event.touches[0]),
-        ),
+          map((event) => event.touches[0])
+        )
       ).pipe(takeUntil(touchend$.pipe(delay(0))));
-    }),
+    })
   );
 
   private gestureEvent$ = this.gesturesDisabled$.pipe(
@@ -274,7 +274,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
         const collapseThreshold = Math.min(
           BERG_PANEL_COLLAPSE_GESTURE_THRESHOLD,
-          this.values.size * BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD,
+          this.values.size * BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD
         );
 
         const expandThreshold = BERG_PANEL_EXPAND_GESTURE_THRESHOLD;
@@ -339,10 +339,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
         return acc;
       },
-      null as BergPanelGestureEvent | null,
+      null as BergPanelGestureEvent | null
     ),
     filter((event) => event !== null),
-    distinctUntilChanged((a, b) => a.type === b.type),
+    distinctUntilChanged((a, b) => a.type === b.type)
   );
 
   constructor() {
@@ -417,7 +417,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         animationDisabled: () => {
           this.layout.updateAnimationDisabled(
             this.values.slot,
-            this.values.animationDisabled,
+            this.values.animationDisabled
           );
 
           if (this.values.animationDisabled) {
@@ -452,7 +452,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           }
         },
       },
-      BERG_PANEL_INPUT_BY_ATTRIBUTE,
+      BERG_PANEL_INPUT_BY_ATTRIBUTE
     );
   }
 
@@ -533,7 +533,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       this.backdropElement = document.createElement('div');
       this.backdropElement.classList.add('berg-panel-backdrop');
       this.backdropElement.classList.add(
-        `berg-panel-${this.values.slot}-backdrop`,
+        `berg-panel-${this.values.slot}-backdrop`
       );
 
       const style = this.backdropElement.style;
@@ -560,7 +560,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           }
 
           this.dispatchEvent(
-            new CustomEvent('backdropClicked', { detail: event }),
+            new CustomEvent('backdropClicked', { detail: event })
           );
         });
     }
@@ -590,8 +590,8 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       this.timeouts.push(
         setTimeout(
           () => this.enableTransitions(),
-          BERG_PANEL_ENABLE_ANIMATION_DELAY,
-        ),
+          BERG_PANEL_ENABLE_ANIMATION_DELAY
+        )
       );
     });
   }
@@ -641,7 +641,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         this.dispatchEvent(
           new CustomEvent('resized', {
             detail: resizedSize,
-          }),
+          })
         );
       });
 
@@ -689,7 +689,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         this.dispatchEvent(
           new CustomEvent('gestured', {
             detail: gestureEvent,
-          }),
+          })
         );
       });
   }
@@ -750,13 +750,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
     if (this.slot === 'bottom') {
       return create(
-        document.documentElement.clientHeight - inset - event.clientY,
+        document.documentElement.clientHeight - inset - event.clientY
       );
     }
 
     if (this.slot === 'right') {
       return create(
-        document.documentElement.clientWidth - inset - event.clientX,
+        document.documentElement.clientWidth - inset - event.clientX
       );
     }
 
@@ -765,7 +765,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
 
   private checkResizeThreshold(
     event: MouseEvent,
-    resizeToggle: HTMLElement | null,
+    resizeToggle: HTMLElement | null
   ): boolean {
     if (resizeToggle === null) {
       return false;
@@ -822,7 +822,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     }
 
     throw new Error(
-      `<${BERG_PANEL_TAG_NAME}> could not find a parent <${BERG_LAYOUT_TAG_NAME}> element`,
+      `<${BERG_PANEL_TAG_NAME}> could not find a parent <${BERG_LAYOUT_TAG_NAME}> element`
     );
   }
 

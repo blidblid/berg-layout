@@ -4,8 +4,8 @@
     context: {
       $implicit: {
         class: 'language-html',
-        code: html
-      }
+        code: html,
+      },
     }
   "
 ></ng-container>
@@ -16,8 +16,8 @@
     context: {
       $implicit: {
         title: 'Install',
-        code: installCommand
-      }
+        code: installCommand,
+      },
     }
   "
 ></ng-container>
@@ -29,8 +29,8 @@
       $implicit: {
         title: 'Import',
         class: 'language-ts',
-        code: importDeclaration
-      }
+        code: importDeclaration,
+      },
     }
   "
 ></ng-container>
@@ -39,7 +39,7 @@
   *ngTemplateOutlet="
     contextTmpl;
     context: {
-      $implicit: { title: 'SASS...', class: 'language-scss', code: scss }
+      $implicit: { title: 'SASS...', class: 'language-scss', code: scss },
     }
   "
 ></ng-container>
@@ -48,7 +48,7 @@
   *ngTemplateOutlet="
     contextTmpl;
     context: {
-      $implicit: { title: '...or CSS', class: 'language-css', code: css }
+      $implicit: { title: '...or CSS', class: 'language-css', code: css },
     }
   "
 ></ng-container>

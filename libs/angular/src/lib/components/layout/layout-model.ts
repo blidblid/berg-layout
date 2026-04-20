@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import {
-  BergLayoutInputs as BergLayoutInputsCore,
   BERG_LAYOUT_DEFAULT_INPUTS as BERG_LAYOUT_DEFAULTS_INPUTS_CORE,
+  BergLayoutInputs as BergLayoutInputsCore,
 } from '@berg-layout/core';
 
 /** Inputs of berg-layout. */

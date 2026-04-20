@@ -121,7 +121,8 @@
     @error '$zValue must be beside 0 and 24';
   }
 
-  box-shadow: #{map.get(_get-umbra-map($color, $opacity), $zValue)},
+  box-shadow:
+    #{map.get(_get-umbra-map($color, $opacity), $zValue)},
     #{map.get(_get-penumbra-map($color, $opacity), $zValue)},
     #{map.get(_get-ambient-map($color, $opacity), $zValue)};
 

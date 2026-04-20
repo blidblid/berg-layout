@@ -19,16 +19,19 @@ export abstract class CodePrinter {
   }
 
   findChangedInputs(values: object, defaults: object): object {
-    return Object.entries(values).reduce((acc, [key, value]) => {
-      if (
-        key === 'slot' ||
-        value !== (defaults as Record<string, unknown>)[key]
-      ) {
-        acc[key] = value;
-      }
+    return Object.entries(values).reduce(
+      (acc, [key, value]) => {
+        if (
+          key === 'slot' ||
+          value !== (defaults as Record<string, unknown>)[key]
+        ) {
+          acc[key] = value;
+        }
 
-      return acc;
-    }, {} as Record<string, unknown>);
+        return acc;
+      },
+      {} as Record<string, unknown>
+    );
   }
 
   toSingleQuoteJsonString(str: string): string {

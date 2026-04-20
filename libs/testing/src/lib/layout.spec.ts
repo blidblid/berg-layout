@@ -1,13 +1,13 @@
 import {
+  BERG_LAYOUT_ATTRIBUTE_BY_INPUT,
+  BERG_LAYOUT_TAG_NAME,
+  BERG_PANEL_ATTRIBUTE_BY_INPUT,
   BergLayoutElement,
   BergLayoutInput,
   BergPanelElement,
   BergPanelInput,
   BergPanelInputs,
   BergPanelSlot,
-  BERG_LAYOUT_ATTRIBUTE_BY_INPUT,
-  BERG_LAYOUT_TAG_NAME,
-  BERG_PANEL_ATTRIBUTE_BY_INPUT,
 } from '@berg-layout/core';
 import { BergLayoutTestHarness } from './layout-test-harness';
 import { runLayoutTests } from './run-layout-tests';

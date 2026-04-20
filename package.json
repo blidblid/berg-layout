@@ -15,6 +15,7 @@
     "build": "npx nx run-many --target=build && yarn prebuild-styles",
     "lint": "npx nx run-many --target=lint --all --parallel",
     "prebuild-styles": "npx nx run-many --target=prebuild-styles",
+    "prettier": "npx prettier --write {apps,libs}/**/*",
     "publish-lib": "npx tsx ./scripts/publish-lib.ts",
     "test": "npx nx run-many --target=test --all --parallel --browsers=ChromeHeadlessNoSandbox"
   },

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
+  BERG_LAYOUT_DEFAULT_INPUTS,
+  BERG_PANEL_DEFAULT_INPUTS,
   BergLayoutInputs,
   BergPanelInputs,
   BergPanelSlot,
-  BERG_LAYOUT_DEFAULT_INPUTS,
-  BERG_PANEL_DEFAULT_INPUTS,
 } from '@berg-layout/core';
 import { CodePrinter } from './code-printer';
 

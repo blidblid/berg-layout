@@ -1,7 +1,6 @@
 {
   "name": "@berg-layout/angular",
   "version": "9.0.0",
-  "license": "MIT",
   "keywords": [
     "layout",
     "resize",
@@ -12,15 +11,16 @@
   "repository": {
     "url": "https://github.com/blidblid/berg-layout"
   },
+  "license": "MIT",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
   "devDependencies": {
     "@berg-layout/testing": "*"
   },
   "peerDependencies": {
     "@angular/common": "*",
     "@angular/core": "*"
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
-  "sideEffects": false
+  }
 }

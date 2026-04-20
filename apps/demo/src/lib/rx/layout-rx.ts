@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  BergLayoutInputs,
   BERG_LAYOUT_DEFAULT_INPUTS,
+  BergLayoutInputs,
 } from '@berg-layout/angular';
 import {
+  BERG_PANEL_DEFAULT_INPUTS,
   BergPanelInputs,
   BergPanelSlot,
-  BERG_PANEL_DEFAULT_INPUTS,
 } from '@berg-layout/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
