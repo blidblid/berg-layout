@@ -25,8 +25,7 @@ describe('Angular implementation', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LayoutTestComponent],
-      imports: [BergLayoutModule],
+      imports: [LayoutTestComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutTestComponent);
@@ -235,7 +234,7 @@ describe('Angular implementation', () => {
       <div #centerRef slot="content"></div>
     </berg-layout>
   `,
-  standalone: false,
+  imports: [BergLayoutModule],
 })
 export class LayoutTestComponent {
   layout = { ...BERG_LAYOUT_DEFAULT_INPUTS };

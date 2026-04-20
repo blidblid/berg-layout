@@ -1,4 +1,6 @@
 {
   "singleQuote": true,
-  "plugins": ["prettier-plugin-organize-imports"]
+  "printWidth": 80,
+  "trailingComma": "es5",
+  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-packagejson"]
 }

@@ -1,4 +1,7 @@
 import {
+  BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD,
+  BERG_PANEL_COLLAPSE_GESTURE_THRESHOLD,
+  BERG_PANEL_EXPAND_GESTURE_THRESHOLD,
   BergLayoutElement,
   BergPanelElement,
   BergPanelSlot,
@@ -312,7 +315,19 @@ export class BergLayoutTestHarness {
     endX: number;
     endY: number;
   } {
-    const gestureDistance = 60;
+    const panelSize = this.getPanelSize(slot);
+    const isCollapsed = this.isPanelCollapsed(slot);
+
+    const collapseThreshold = Math.min(
+      BERG_PANEL_COLLAPSE_GESTURE_THRESHOLD,
+      panelSize * BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD
+    );
+
+    const gestureDistance =
+      (type === 'expand' || isCollapsed
+        ? BERG_PANEL_EXPAND_GESTURE_THRESHOLD
+        : collapseThreshold) + 1;
+
     const edgeOffset = 10;
     const width = document.documentElement.clientWidth;
     const height = document.documentElement.clientHeight;
@@ -418,6 +433,12 @@ export class BergLayoutTestHarness {
         panel.getBoundingClientRect().top +
         panel.getBoundingClientRect().height / 2,
     };
+  }
+
+  private getPanelSize(slot: BergPanelSlot): number {
+    const panel = this.getAssertedPanel(slot).getBoundingClientRect();
+
+    return slot === 'top' || slot === 'bottom' ? panel.height : panel.width;
   }
 
   private getLayoutInset(slot: BergPanelSlot): number {
