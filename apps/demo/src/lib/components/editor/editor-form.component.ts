@@ -38,6 +38,7 @@ export class EditorFormComponent {
     bottomRightPosition: new FormControl(),
     contentMinSize: new FormControl(),
     overflow: new FormControl('none'),
+    gesturesDisabled: new FormControl(),
     zIndexBase: new FormControl(),
   } as const;
 
@@ -82,6 +83,11 @@ export class EditorFormComponent {
       );
 
       connectFormValue(
+        this.layoutRx[slot].gesturesDisabled,
+        this.panelFormControls[slot].gesturesDisabled
+      );
+
+      connectFormValue(
         this.layoutRx[slot].hideBackdrop,
         this.panelFormControls[slot].hideBackdrop
       );
@@ -117,6 +123,11 @@ export class EditorFormComponent {
     connectFormValue(
       this.layoutRx.layout.overflow,
       this.layoutFormControls.overflow
+    );
+
+    connectFormValue(
+      this.layoutRx.layout.gesturesDisabled,
+      this.layoutFormControls.gesturesDisabled
     );
 
     connectFormValue(
@@ -174,6 +185,7 @@ export class EditorFormComponent {
       collapsed: new FormControl(),
       resizeDisabled: new FormControl(),
       animationDisabled: new FormControl(),
+      gesturesDisabled: new FormControl(),
       hideBackdrop: new FormControl(),
     };
   }

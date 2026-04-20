@@ -19,7 +19,13 @@ export const BERG_PANEL_DEFAULT_INPUTS: RequireAll<BergPanelInputs> = {
   maxSize: null,
   animationDisabled: false,
   hideBackdrop: false,
+  gesturesDisabled: false,
 };
+
+export const BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD = 0.8;
+export const BERG_PANEL_COLLAPSE_GESTURE_THRESHOLD = 100;
+export const BERG_PANEL_EXPAND_GESTURE_THRESHOLD = 80;
+export const BERG_PANEL_GESTURE_ZONE_SIZE = 200;
 
 export const BERG_PANEL_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergPanelInputs> =
   {
@@ -32,6 +38,7 @@ export const BERG_PANEL_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergPan
     maxSize: 'max-size',
     animationDisabled: 'animation-disabled',
     hideBackdrop: 'hide-backdrop',
+    gesturesDisabled: 'gestures-disabled',
   };
 
 export const BERG_PANEL_INPUT_BY_ATTRIBUTE: WebComponentInputByAttribute<BergPanelInputs> =

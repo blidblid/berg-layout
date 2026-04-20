@@ -51,6 +51,9 @@ export interface BergLayoutInputs {
    * All z-indexes starts at this value.
    */
   zIndexBase: number;
+
+  /** Whether collapsing and expanding gestures are disabled. */
+  gesturesDisabled: boolean;
 }
 
 export type BergLayoutInput = keyof BergLayoutInputs;
