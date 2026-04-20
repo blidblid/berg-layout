@@ -2,13 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Inject,
+  inject,
   Input,
-  Optional,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
 import {
+  BergPanelGestureEvent,
   BergPanelResizeEvent,
   BergPanelSlot,
   coerceBooleanProperty,
@@ -35,6 +35,8 @@ import { BergPanelNullableInputs } from './panel-model-private';
 export class BergPanelComponent
   implements BergPanelNullableInputs, BergPanelOutputs
 {
+  protected inputs = inject(BERG_PANEL_INPUTS, { optional: true });
+
   @Input()
   get slot(): BergPanelSlot {
     return this._slot;
@@ -128,16 +130,22 @@ export class BergPanelComponent
   }
   private _hideBackdrop = this.getDefaultInput('hideBackdrop');
 
+  @Input()
+  get gesturesDisabled(): boolean {
+    return this._gesturesDisabled;
+  }
+  set gesturesDisabled(value: boolean | null) {
+    this._gesturesDisabled = coerceBooleanProperty(
+      value ?? this.getDefaultInput('gesturesDisabled')
+    );
+  }
+  private _gesturesDisabled = this.getDefaultInput('gesturesDisabled');
+
   @Output() afterCollapsed = new EventEmitter<void>();
   @Output() afterExpanded = new EventEmitter<void>();
   @Output() backdropClicked = new EventEmitter<MouseEvent>();
   @Output() resized = new EventEmitter<BergPanelResizeEvent>();
-
-  constructor(
-    @Inject(BERG_PANEL_INPUTS)
-    @Optional()
-    protected inputs: BergPanelInputs
-  ) {}
+  @Output() gestured = new EventEmitter<BergPanelGestureEvent>();
 
   onAfterCollapsed(event: Event): void {
     if (event instanceof CustomEvent) {
@@ -160,6 +168,12 @@ export class BergPanelComponent
   onResized(event: Event): void {
     if (event instanceof CustomEvent) {
       this.resized.emit(event.detail);
+    }
+  }
+
+  onGestured(event: Event) {
+    if (event instanceof CustomEvent) {
+      this.gestured.emit(event.detail);
     }
   }
 

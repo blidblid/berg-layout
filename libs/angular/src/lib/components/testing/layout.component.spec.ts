@@ -25,8 +25,7 @@ describe('Angular implementation', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LayoutTestComponent],
-      imports: [BergLayoutModule],
+      imports: [LayoutTestComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutTestComponent);
@@ -158,6 +157,7 @@ describe('Angular implementation', () => {
     <berg-layout
       #layoutRef
       [resizeDisabled]="layout.resizeDisabled"
+      [gesturesDisabled]="layout.gesturesDisabled"
       [resizeTwoDimensions]="layout.resizeTwoDimensions"
       [resizePreviewDelay]="layout.resizePreviewDelay"
       [topLeftPosition]="layout.topLeftPosition"
@@ -180,6 +180,7 @@ describe('Angular implementation', () => {
         [absolute]="top.absolute"
         [collapsed]="top.collapsed"
         [resizeDisabled]="top.resizeDisabled"
+        [gesturesDisabled]="top.gesturesDisabled"
         [hideBackdrop]="top.hideBackdrop"
         (backdropClicked)="onBackdropClicked($event)"
         (resized)="onResized($event)"
@@ -197,6 +198,7 @@ describe('Angular implementation', () => {
         [absolute]="right.absolute"
         [collapsed]="right.collapsed"
         [resizeDisabled]="right.resizeDisabled"
+        [gesturesDisabled]="right.gesturesDisabled"
         [hideBackdrop]="right.hideBackdrop"
       >
       </berg-panel>
@@ -210,6 +212,7 @@ describe('Angular implementation', () => {
         [absolute]="bottom.absolute"
         [collapsed]="bottom.collapsed"
         [resizeDisabled]="bottom.resizeDisabled"
+        [gesturesDisabled]="bottom.gesturesDisabled"
         [hideBackdrop]="bottom.hideBackdrop"
       >
       </berg-panel>
@@ -223,6 +226,7 @@ describe('Angular implementation', () => {
         [absolute]="left.absolute"
         [collapsed]="left.collapsed"
         [resizeDisabled]="left.resizeDisabled"
+        [gesturesDisabled]="left.gesturesDisabled"
         [hideBackdrop]="left.hideBackdrop"
       >
       </berg-panel>
@@ -230,7 +234,7 @@ describe('Angular implementation', () => {
       <div #centerRef slot="content"></div>
     </berg-layout>
   `,
-  standalone: false,
+  imports: [BergLayoutModule],
 })
 export class LayoutTestComponent {
   layout = { ...BERG_LAYOUT_DEFAULT_INPUTS };

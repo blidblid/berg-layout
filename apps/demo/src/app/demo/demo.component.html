@@ -7,6 +7,7 @@
     [attr.resize-toggle-size]="inputs.layout.resizeToggleSize!"
     [attr.resize-disabled]="inputs.layout.resizeDisabled!"
     [attr.resize-two-dimensions]="inputs.layout.resizeTwoDimensions!"
+    [attr.gestures-disabled]="inputs.layout.gesturesDisabled!"
     [attr.resize-preview-delay]="inputs.layout.resizePreviewDelay!"
     [attr.top-inset]="inputs.layout.topInset!"
     [attr.right-inset]="inputs.layout.rightInset!"
@@ -15,7 +16,7 @@
     [attr.content-min-size]="inputs.layout.contentMinSize!"
     [attr.overflow]="inputs.layout.overflow!"
     [attr.z-index-base]="inputs.layout.zIndexBase!"
-    >
+  >
     @if (!inputs.remove.top) {
       <berg-panel-web-component
         slot="top"
@@ -26,13 +27,16 @@
         [attr.collapsed]="inputs.top.collapsed"
         [attr.resize-disabled]="inputs.top.resizeDisabled"
         [attr.animation-disabled]="inputs.top.animationDisabled"
+        [attr.gestures-disabled]="inputs.top.gesturesDisabled"
         [attr.hide-backdrop]="inputs.top.hideBackdrop"
         (resized)="onResized('top', $event)"
+        (gestured)="onGestured('top', $event)"
         (backdropClicked)="onBackdropClicked('top')"
-        >
+      >
         <app-toolbar></app-toolbar>
       </berg-panel-web-component>
     }
+
     @if (!inputs.remove.right) {
       <berg-panel-web-component
         slot="right"
@@ -43,13 +47,16 @@
         [attr.collapsed]="inputs.right.collapsed"
         [attr.resize-disabled]="inputs.right.resizeDisabled"
         [attr.animation-disabled]="inputs.right.animationDisabled"
+        [attr.gestures-disabled]="inputs.right.gesturesDisabled"
         [attr.hide-backdrop]="inputs.right.hideBackdrop"
         (resized)="onResized('right', $event)"
+        (gestured)="onGestured('right', $event)"
         (backdropClicked)="onBackdropClicked('right')"
-        >
+      >
         <app-editor-form></app-editor-form>
       </berg-panel-web-component>
     }
+
     @if (!inputs.remove.bottom) {
       <berg-panel-web-component
         slot="bottom"
@@ -60,12 +67,15 @@
         [attr.collapsed]="inputs.bottom.collapsed"
         [attr.resize-disabled]="inputs.bottom.resizeDisabled"
         [attr.animation-disabled]="inputs.bottom.animationDisabled"
+        [attr.gestures-disabled]="inputs.bottom.gesturesDisabled"
         [attr.hide-backdrop]="inputs.bottom.hideBackdrop"
         (resized)="onResized('bottom', $event)"
+        (gestured)="onGestured('bottom', $event)"
         (backdropClicked)="onBackdropClicked('bottom')"
-        >
+      >
       </berg-panel-web-component>
     }
+
     @if (!inputs.remove.left) {
       <berg-panel-web-component
         slot="left"
@@ -77,12 +87,15 @@
         [attr.collapsed]="inputs.left.collapsed"
         [attr.resize-disabled]="inputs.left.resizeDisabled"
         [attr.animation-disabled]="inputs.left.animationDisabled"
+        [attr.gestures-disabled]="inputs.left.gesturesDisabled"
         [attr.hide-backdrop]="inputs.left.hideBackdrop"
         (resized)="onResized('left', $event)"
+        (gestured)="onGestured('left', $event)"
         (backdropClicked)="onBackdropClicked('left')"
-        >
+      >
       </berg-panel-web-component>
     }
+
     <div class="p-4" slot="content">
       <app-editor-code
         [css]="css$ | async"
@@ -90,7 +103,7 @@
         [scss]="scss$ | async"
         [installCommand]="codePrinter.importCommand"
         [importDeclaration]="codePrinter.importDeclaration"
-        >
+      >
       </app-editor-code>
     </div>
   </berg-layout-web-component>

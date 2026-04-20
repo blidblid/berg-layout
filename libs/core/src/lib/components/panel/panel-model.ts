@@ -29,6 +29,9 @@ export interface BergPanelInputs {
 
   /** Whether the panel backdrop is hidden. */
   hideBackdrop: boolean;
+
+  /** Whether collapsing and expanding gestures are disabled. */
+  gesturesDisabled: boolean;
 }
 
 export type BergPanelInput = keyof BergPanelInputs;
@@ -47,6 +50,18 @@ export interface BergPanelOutputs {
   /** Emits when a panel has finished expanding. */
   afterExpanded: CustomEvent<void>;
 }
+
+export type BergPanelGestureEvent =
+  | {
+      type: 'collapse';
+    }
+  | {
+      type: 'expand';
+    }
+  | {
+      type: 'measure';
+      touch: Touch;
+    };
 
 /** Binding modes that controls how events automatically update attributes. */
 export type BergPanelEventBindingMode = 'auto' | 'none';

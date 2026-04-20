@@ -5,6 +5,7 @@ import {
   EMPTY,
   fromEvent,
   merge,
+  Observable,
   of,
   skip,
   timer,
@@ -13,8 +14,10 @@ import {
   debounceTime,
   delay,
   distinctUntilChanged,
+  filter,
   map,
   pairwise,
+  scan,
   share,
   startWith,
   switchMap,
@@ -31,7 +34,11 @@ import {
 import { WebComponent } from '../web-component';
 import {
   BERG_PANEL_ATTRIBUTE_BY_INPUT,
+  BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD,
+  BERG_PANEL_COLLAPSE_GESTURE_THRESHOLD,
   BERG_PANEL_DEFAULT_INPUTS,
+  BERG_PANEL_EXPAND_GESTURE_THRESHOLD,
+  BERG_PANEL_GESTURE_ZONE_SIZE,
   BERG_PANEL_INPUT_BY_ATTRIBUTE,
   BERG_PANEL_TAG_NAME,
 } from './panel-config';
@@ -53,7 +60,11 @@ import {
   BERG_PANEL_TWO_DIMENSION_COLLECTION_DISTANCE,
   BERG_PANEL_VERTICAL_CLASS,
 } from './panel-config-private';
-import { BergPanelInputs, BergPanelResizeEvent } from './panel-model';
+import {
+  BergPanelGestureEvent,
+  BergPanelInputs,
+  BergPanelResizeEvent,
+} from './panel-model';
 import { validateSlot } from './panel-util-private';
 
 export class BergPanelElement extends WebComponent<BergPanelInputs> {
@@ -80,6 +91,15 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   ]).pipe(
     map(([resizeDisabled, layoutResizeDisabled]) => {
       return resizeDisabled || layoutResizeDisabled;
+    })
+  );
+
+  private gesturesDisabled$ = combineLatest([
+    this.changes.gesturesDisabled,
+    defer(() => this.layout.changes.gesturesDisabled),
+  ]).pipe(
+    map(([gesturesDisabled, layoutGesturesDisabled]) => {
+      return gesturesDisabled || layoutGesturesDisabled;
     })
   );
 
@@ -157,6 +177,174 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     })
   );
 
+  private touch$: Observable<Touch | null> = fromEvent<TouchEvent>(
+    document.body,
+    'touchstart'
+  ).pipe(
+    switchMap((event) => {
+      if (!event.target) {
+        return EMPTY;
+      }
+
+      const touch = event.touches[0];
+
+      const zoneSize = this.values.collapsed
+        ? BERG_PANEL_GESTURE_ZONE_SIZE
+        : this.values.size;
+
+      // Check if the touchstart is out of bounds.
+      // If it is, ignore the rest of the gesture.
+      if (this.slot === 'top') {
+        if (this.layout.values.topInset > touch.clientY) {
+          return EMPTY;
+        }
+
+        if (touch.clientY > zoneSize + this.layout.values.topInset) {
+          return EMPTY;
+        }
+      } else if (this.slot === 'right') {
+        const maxX =
+          document.documentElement.clientWidth - this.layout.values.rightInset;
+
+        if (touch.clientX > maxX) {
+          return EMPTY;
+        }
+
+        if (touch.clientX < maxX - zoneSize) {
+          return EMPTY;
+        }
+      } else if (this.slot === 'bottom') {
+        const maxY =
+          document.documentElement.clientHeight -
+          this.layout.values.bottomInset;
+
+        if (touch.clientY > maxY) {
+          return EMPTY;
+        }
+
+        if (touch.clientY < maxY - zoneSize) {
+          return EMPTY;
+        }
+      } else if (this.slot === 'left') {
+        if (this.layout.values.leftInset > touch.clientX) {
+          return EMPTY;
+        }
+
+        if (touch.clientX > zoneSize + this.layout.values.leftInset) {
+          return EMPTY;
+        }
+      }
+
+      const touchend$ = fromEvent<TouchEvent>(document.body, 'touchend');
+
+      return merge(
+        touchend$.pipe(map(() => null)),
+        fromEvent<TouchEvent>(event.target, 'touchmove').pipe(
+          startWith(event),
+          map((event) => event.touches[0])
+        )
+      ).pipe(takeUntil(touchend$.pipe(delay(0))));
+    })
+  );
+
+  private gestureEvent$ = this.gesturesDisabled$.pipe(
+    switchMap((gesturesDisabled) => {
+      if (gesturesDisabled) {
+        return EMPTY;
+      }
+
+      return this.touch$;
+    }),
+    scan(
+      (acc, touch) => {
+        if (!touch) {
+          return null;
+        }
+
+        if (!acc) {
+          return {
+            type: 'measure' as const,
+            touch,
+          };
+        }
+
+        if (acc.type !== 'measure') {
+          return null;
+        }
+
+        const collapseThreshold = Math.min(
+          BERG_PANEL_COLLAPSE_GESTURE_THRESHOLD,
+          this.values.size * BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD
+        );
+
+        const expandThreshold = BERG_PANEL_EXPAND_GESTURE_THRESHOLD;
+
+        if (this.slot === 'top') {
+          if (this.values.collapsed) {
+            if (touch.clientY - expandThreshold > acc.touch.clientY) {
+              return {
+                type: 'expand' as const,
+              };
+            }
+          } else {
+            if (touch.clientY + collapseThreshold < acc.touch.clientY) {
+              return {
+                type: 'collapse' as const,
+              };
+            }
+          }
+        } else if (this.slot === 'right') {
+          if (this.values.collapsed) {
+            if (touch.clientX + expandThreshold < acc.touch.clientX) {
+              return {
+                type: 'expand' as const,
+              };
+            }
+          } else {
+            if (touch.clientX - collapseThreshold > acc.touch.clientX) {
+              return {
+                type: 'collapse' as const,
+              };
+            }
+          }
+        } else if (this.slot === 'bottom') {
+          if (this.values.collapsed) {
+            if (touch.clientY + expandThreshold < acc.touch.clientY) {
+              return {
+                type: 'expand' as const,
+              };
+            }
+          } else {
+            if (touch.clientY - collapseThreshold > acc.touch.clientY) {
+              return {
+                type: 'collapse' as const,
+              };
+            }
+          }
+        } else if (this.slot === 'left') {
+          if (this.values.collapsed) {
+            if (touch.clientX - expandThreshold > acc.touch.clientX) {
+              return {
+                type: 'expand' as const,
+              };
+            }
+          } else {
+            if (touch.clientX + collapseThreshold < acc.touch.clientX) {
+              return {
+                type: 'collapse' as const,
+              };
+            }
+          }
+        }
+
+        return acc;
+      },
+      null as BergPanelGestureEvent | null
+    ),
+    filter((event) => event !== null),
+    distinctUntilChanged((a, b) => a.type === b.type)
+  );
+
   constructor() {
     super(
       BERG_PANEL_DEFAULT_INPUTS,
@@ -170,6 +358,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         maxSize: coerceNumberProperty,
         animationDisabled: coerceBooleanProperty,
         hideBackdrop: coerceBooleanProperty,
+        gesturesDisabled: coerceBooleanProperty,
       },
       {
         absolute: () => {
@@ -493,6 +682,18 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
       });
   }
 
+  private subscribeToGestures() {
+    this.gestureEvent$
+      .pipe(takeUntil(this.disconnectedSub))
+      .subscribe((gestureEvent) => {
+        this.dispatchEvent(
+          new CustomEvent('gestured', {
+            detail: gestureEvent,
+          })
+        );
+      });
+  }
+
   private updateCanResize(currentSize: number): void {
     // avoid using getBoundingClient, since it has floating accuracy and `currentSize` integer accuracy.
     const size = this.isVertical ? this.offsetHeight : this.offsetWidth;
@@ -644,6 +845,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     this.classList.add(BERG_PANEL_CLASS);
     this.subscribeToResizing();
     this.subscribeToCollapsed();
+    this.subscribeToGestures();
 
     const shadowRoot = this.shadowRoot ?? this.attachShadow({ mode: 'open' });
     shadowRoot.innerHTML = `

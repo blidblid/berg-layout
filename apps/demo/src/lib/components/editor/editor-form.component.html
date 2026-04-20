@@ -49,156 +49,144 @@
       <mat-select [formControl]="layoutFormControls.theme">
         @for (
           theme of [
-          'Abyss',
-          'Dark',
-          'High Contrast',
-          'Light',
-          'Material Dark',
-          'Material Light',
-          'Quiet Light',
-          'Solarized Dark',
-          'Solarized Light'
-          ]
-          ; track
-          theme) {
-          <mat-option
-            [value]="theme"
-            >{{ theme }}</mat-option
-            >
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Top left position</mat-label>
-        <mat-select [formControl]="layoutFormControls.topLeftPosition">
-          @for (position of ['above', 'beside']; track position) {
-            <mat-option
-              [value]="position"
-              >{{ position }}</mat-option
-              >
-            }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Top right position</mat-label>
-          <mat-select [formControl]="layoutFormControls.topRightPosition">
-            @for (position of ['above', 'beside']; track position) {
-              <mat-option
-                [value]="position"
-                >{{ position }}</mat-option
-                >
-              }
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Bottom left position</mat-label>
-            <mat-select [formControl]="layoutFormControls.bottomLeftPosition">
-              @for (position of ['below', 'beside']; track position) {
-                <mat-option
-                  [value]="position"
-                  >{{ position }}</mat-option
-                  >
-                }
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Bottom right position</mat-label>
-              <mat-select [formControl]="layoutFormControls.bottomRightPosition">
-                @for (position of ['below', 'beside']; track position) {
-                  <mat-option
-                    [value]="position"
-                    >{{ position }}</mat-option
-                    >
-                  }
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Content min size</mat-label>
-                <input
-                  matInput
-                  [formControl]="layoutFormControls.contentMinSize"
-                  type="number"
-                  />
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Layout overflow</mat-label>
-                <mat-select [formControl]="layoutFormControls.overflow">
-                  @for (position of ['x', 'y', 'xy', 'none']; track position) {
-                    <mat-option
-                      [value]="position"
-                      >{{ position }}</mat-option
-                      >
-                    }
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Z-index base</mat-label>
-                  <input
-                    matInput
-                    [formControl]="layoutFormControls.zIndexBase"
-                    type="number"
-                    />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Resize toggle size</mat-label>
-                  <input
-                    matInput
-                    [formControl]="resizeFormControls.resizeToggleSize"
-                    type="number"
-                    />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Resize preview delay</mat-label>
-                  <input
-                    matInput
-                    [formControl]="resizeFormControls.resizePreviewDelay"
-                    type="number"
-                    />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Top inset</mat-label>
-                  <input matInput [formControl]="insetFormControls.top" type="number" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Right inset</mat-label>
-                  <input matInput [formControl]="insetFormControls.right" type="number" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Bottom inset</mat-label>
-                  <input matInput [formControl]="insetFormControls.bottom" type="number" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Left inset</mat-label>
-                  <input matInput [formControl]="insetFormControls.left" type="number" />
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Z-index base</mat-label>
-                  <input
-                    matInput
-                    [formControl]="layoutFormControls.zIndexBase"
-                    type="number"
-                    />
-                </mat-form-field>
-                <mat-checkbox [formControl]="resizeFormControls.resizeDisabled"
-                  >Resize disabled</mat-checkbox
-                  >
-                  <mat-checkbox [formControl]="resizeFormControls.resizeTwoDimensions"
-                    >Resize two dimensions</mat-checkbox
-                    >
-                  }
-                </div>
+            'Abyss',
+            'Dark',
+            'High Contrast',
+            'Light',
+            'Material Dark',
+            'Material Light',
+            'Quiet Light',
+            'Solarized Dark',
+            'Solarized Light',
+          ];
+          track theme
+        ) {
+          <mat-option [value]="theme">{{ theme }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Top left position</mat-label>
+      <mat-select [formControl]="layoutFormControls.topLeftPosition">
+        @for (position of ['above', 'beside']; track position) {
+          <mat-option [value]="position">{{ position }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Top right position</mat-label>
+      <mat-select [formControl]="layoutFormControls.topRightPosition">
+        @for (position of ['above', 'beside']; track position) {
+          <mat-option [value]="position">{{ position }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Bottom left position</mat-label>
+      <mat-select [formControl]="layoutFormControls.bottomLeftPosition">
+        @for (position of ['below', 'beside']; track position) {
+          <mat-option [value]="position">{{ position }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Bottom right position</mat-label>
+      <mat-select [formControl]="layoutFormControls.bottomRightPosition">
+        @for (position of ['below', 'beside']; track position) {
+          <mat-option [value]="position">{{ position }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Content min size</mat-label>
+      <input
+        matInput
+        [formControl]="layoutFormControls.contentMinSize"
+        type="number"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Layout overflow</mat-label>
+      <mat-select [formControl]="layoutFormControls.overflow">
+        @for (position of ['x', 'y', 'xy', 'none']; track position) {
+          <mat-option [value]="position">{{ position }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Z-index base</mat-label>
+      <input
+        matInput
+        [formControl]="layoutFormControls.zIndexBase"
+        type="number"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Resize toggle size</mat-label>
+      <input
+        matInput
+        [formControl]="resizeFormControls.resizeToggleSize"
+        type="number"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Resize preview delay</mat-label>
+      <input
+        matInput
+        [formControl]="resizeFormControls.resizePreviewDelay"
+        type="number"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Top inset</mat-label>
+      <input matInput [formControl]="insetFormControls.top" type="number" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Right inset</mat-label>
+      <input matInput [formControl]="insetFormControls.right" type="number" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Bottom inset</mat-label>
+      <input matInput [formControl]="insetFormControls.bottom" type="number" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Left inset</mat-label>
+      <input matInput [formControl]="insetFormControls.left" type="number" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Z-index base</mat-label>
+      <input
+        matInput
+        [formControl]="layoutFormControls.zIndexBase"
+        type="number"
+      />
+    </mat-form-field>
+    <mat-checkbox [formControl]="resizeFormControls.resizeDisabled"
+      >Resize disabled</mat-checkbox
+    >
+    <mat-checkbox [formControl]="layoutFormControls.gesturesDisabled"
+      >Gestures disabled</mat-checkbox
+    >
+    <mat-checkbox [formControl]="resizeFormControls.resizeTwoDimensions"
+      >Resize two dimensions</mat-checkbox
+    >
+  }
+</div>
 
-                <ng-template #panelTmpl let-formControls>
-                  <mat-checkbox [formControl]="formControls.absolute">Absolute</mat-checkbox>
-                  <mat-checkbox [formControl]="formControls.collapsed">Collapsed</mat-checkbox>
-                  <mat-checkbox [formControl]="formControls.remove">Remove</mat-checkbox>
-                  <mat-checkbox [formControl]="formControls.resizeDisabled">
-                    Resize disabled
-                  </mat-checkbox>
-                  <mat-checkbox [formControl]="formControls.animationDisabled">
-                    Animation disabled
-                  </mat-checkbox>
-                  <mat-checkbox [formControl]="formControls.hideBackdrop">
-                    Hide backdrop
-                  </mat-checkbox>
-                </ng-template>
+<ng-template #panelTmpl let-formControls>
+  <mat-checkbox [formControl]="formControls.absolute">Absolute</mat-checkbox>
+  <mat-checkbox [formControl]="formControls.collapsed">Collapsed</mat-checkbox>
+  <mat-checkbox [formControl]="formControls.remove">Remove</mat-checkbox>
+  <mat-checkbox [formControl]="formControls.resizeDisabled">
+    Resize disabled
+  </mat-checkbox>
+  <mat-checkbox [formControl]="formControls.animationDisabled">
+    Animation disabled
+  </mat-checkbox>
+  <mat-checkbox [formControl]="formControls.gesturesDisabled">
+    Gestures disabled
+  </mat-checkbox>
+  <mat-checkbox [formControl]="formControls.hideBackdrop">
+    Hide backdrop
+  </mat-checkbox>
+</ng-template>

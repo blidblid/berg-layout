@@ -5,7 +5,11 @@ import {
   OnDestroy,
   ViewEncapsulation,
 } from '@angular/core';
-import { BergPanelResizeEvent, BergPanelSlot } from '@berg-layout/core';
+import {
+  BergPanelGestureEvent,
+  BergPanelResizeEvent,
+  BergPanelSlot,
+} from '@berg-layout/core';
 import { combineLatest, map, Subject, takeUntil } from 'rxjs';
 import { Breakpoints, EditorView } from '../../lib/components';
 import { LayoutRx } from '../../lib/rx';
@@ -96,6 +100,16 @@ export class DemoComponent implements OnDestroy {
       this.leftSize = this.expandedLeftSize;
     } else {
       this.leftSize = this.initialLeftSize;
+    }
+  }
+
+  onGestured(slot: BergPanelSlot, event: BergPanelGestureEvent | Event) {
+    const gestureEvent = event instanceof CustomEvent ? event.detail : event;
+
+    if (gestureEvent.type === 'collapse') {
+      this.rx[slot].collapsed.next(true);
+    } else if (gestureEvent.type === 'expand') {
+      this.rx[slot].collapsed.next(false);
     }
   }
 

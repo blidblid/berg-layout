@@ -24,6 +24,7 @@ export const BERG_LAYOUT_DEFAULT_INPUTS: BergLayoutInputs = {
   resizeToggleSize: 6,
   overflow: 'none',
   zIndexBase: 0,
+  gesturesDisabled: false,
 };
 
 export const BERG_LAYOUT_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergLayoutInputs> =
@@ -43,6 +44,7 @@ export const BERG_LAYOUT_ATTRIBUTE_BY_INPUT: WebComponentAttributeByInput<BergLa
     resizeToggleSize: 'resize-toggle-size',
     overflow: 'overflow',
     zIndexBase: 'z-index-base',
+    gesturesDisabled: 'gestures-disabled',
   };
 
 export const BERG_LAYOUT_INPUT_BY_ATTRIBUTE: WebComponentInputByAttribute<BergLayoutInputs> =

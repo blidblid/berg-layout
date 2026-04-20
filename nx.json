@@ -112,6 +112,10 @@
       "typeSeparator": "."
     }
   },
+  "tui": {
+    "enabled": false
+  },
   "defaultProject": "demo",
-  "useInferencePlugins": false
+  "useInferencePlugins": false,
+  "analytics": false
 }

@@ -31,6 +31,7 @@ export function BergLayout(props: BergLayoutProps) {
       left-inset={props.leftInset}
       overflow={props.overflow}
       z-index-base={props.zIndexBase}
+      gestures-disabled={props.gesturesDisabled}
     >
       {props.children}
     </berg-layout-web-component>

@@ -35,5 +35,5 @@ export function connect<T>(
 }
 
 export function getConnectableValue<T>(connectable: Connectable<T>): T | null {
-  return isObservable(connectable) ? null : connectable ?? null;
+  return isObservable(connectable) ? null : (connectable ?? null);
 }

@@ -67,6 +67,7 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
         contentMinSize: coerceNumberProperty,
         overflow: validateBergLayoutOverflow,
         zIndexBase: coerceNumberProperty,
+        gesturesDisabled: coerceBooleanProperty,
       },
       {
         resizeToggleSize: () => {

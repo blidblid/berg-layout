@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { BergPanelSlot } from '@berg-layout/core';
 import { BergLayoutTestHarness } from './layout-test-harness';
 import { Render } from './run-layout-tests-model';
 
@@ -547,6 +548,199 @@ export const runLayoutTests = (
 
         harness.previewResize('top');
         expect(harness.getResizeToggle('top')).toBe(null);
+      });
+    });
+
+    describe('gesturing', () => {
+      const gestureEventTypes = (slot: BergPanelSlot): string[] => {
+        const eventTypes: string[] = [];
+
+        harness
+          .getAssertedPanel(slot)
+          .addEventListener('gestured', (event: Event) => {
+            eventTypes.push(
+              (event as CustomEvent<{ type: string }>).detail.type
+            );
+          });
+
+        return eventTypes;
+      };
+
+      it('should expand top panel on gesture', async () => {
+        await render({
+          top: {
+            size: 100,
+            collapsed: true,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('top');
+
+        await harness.gesture('top', 'expand');
+
+        expect(eventTypes).toContain('expand');
+      });
+
+      it('should collapse top panel on gesture', async () => {
+        await render({
+          top: {
+            size: 100,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('top');
+
+        await harness.gesture('top', 'collapse');
+
+        expect(eventTypes).toContain('collapse');
+      });
+
+      it('should expand right panel on gesture', async () => {
+        await render({
+          right: {
+            size: 100,
+            collapsed: true,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('right');
+
+        await harness.gesture('right', 'expand');
+
+        expect(eventTypes).toContain('expand');
+      });
+
+      it('should collapse right panel on gesture', async () => {
+        await render({
+          right: {
+            size: 100,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('right');
+
+        await harness.gesture('right', 'collapse');
+
+        expect(eventTypes).toContain('collapse');
+      });
+
+      it('should expand bottom panel on gesture', async () => {
+        await render({
+          bottom: {
+            size: 100,
+            collapsed: true,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('bottom');
+
+        await harness.gesture('bottom', 'expand');
+
+        expect(eventTypes).toContain('expand');
+      });
+
+      it('should collapse bottom panel on gesture', async () => {
+        await render({
+          bottom: {
+            size: 100,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('bottom');
+
+        await harness.gesture('bottom', 'collapse');
+
+        expect(eventTypes).toContain('collapse');
+      });
+
+      it('should expand left panel on gesture', async () => {
+        await render({
+          left: {
+            size: 100,
+            collapsed: true,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('left');
+
+        await harness.gesture('left', 'expand');
+
+        expect(eventTypes).toContain('expand');
+      });
+
+      it('should collapse left panel on gesture', async () => {
+        await render({
+          left: {
+            size: 100,
+          },
+        });
+
+        const eventTypes = gestureEventTypes('left');
+
+        await harness.gesture('left', 'collapse');
+
+        expect(eventTypes).toContain('collapse');
+      });
+
+      it('should disable gestures for a panel', async () => {
+        await render({
+          top: {
+            size: 100,
+            collapsed: true,
+            gesturesDisabled: true,
+          },
+        });
+
+        let gestured = false;
+
+        harness.assertedTop.addEventListener('gestured', () => {
+          gestured = true;
+        });
+
+        await harness.gesture('top', 'expand');
+
+        expect(gestured).toBe(false);
+      });
+
+      it('should disable gestures for the layout', async () => {
+        await render({
+          layout: {
+            gesturesDisabled: true,
+          },
+          top: {
+            size: 100,
+            collapsed: true,
+          },
+        });
+
+        let gestured = false;
+
+        harness.assertedTop.addEventListener('gestured', () => {
+          gestured = true;
+        });
+
+        await harness.gesture('top', 'expand');
+
+        expect(gestured).toBe(false);
+      });
+
+      it('should ignore a gesture that starts outside the panel zone', async () => {
+        await render({
+          top: {
+            size: 100,
+            collapsed: true,
+          },
+        });
+
+        let gestured = false;
+
+        harness.assertedTop.addEventListener('gestured', () => {
+          gestured = true;
+        });
+
+        await harness.gestureOutsidePanel('top');
+
+        expect(gestured).toBe(false);
       });
     });
 

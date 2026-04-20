@@ -8,10 +8,12 @@
   [attr.max-size]="maxSize"
   [attr.animation-disabled]="animationDisabled"
   [attr.hide-backdrop]="hideBackdrop"
+  [attr.gestures-disabled]="gesturesDisabled"
   (afterCollapsed)="onAfterCollapsed($event)"
   (afterExpanded)="onAfterExpanded($event)"
   (backdropClicked)="onBackdropClicked($event)"
   (resized)="onResized($event)"
+  (gestured)="onGestured($event)"
 >
   <ng-content></ng-content>
 </berg-panel-web-component>

@@ -1,9 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
+  inject,
   Input,
-  Optional,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -29,6 +28,8 @@ import { BergLayoutComponentInputs } from './layout-model-private';
   standalone: false,
 })
 export class BergLayoutComponent implements BergLayoutComponentInputs {
+  protected inputs = inject(BERG_LAYOUT_INPUTS, { optional: true });
+
   @Input()
   get resizeDisabled(): boolean {
     return this._resizeDisabled;
@@ -194,11 +195,16 @@ export class BergLayoutComponent implements BergLayoutComponentInputs {
   }
   private _zIndexBase: number = this.getDefaultInput('zIndexBase');
 
-  constructor(
-    @Inject(BERG_LAYOUT_INPUTS)
-    @Optional()
-    protected inputs: BergLayoutInputs
-  ) {}
+  @Input()
+  get gesturesDisabled(): boolean {
+    return this._gesturesDisabled;
+  }
+  set gesturesDisabled(value: boolean | null) {
+    this._gesturesDisabled = coerceBooleanProperty(
+      value ?? this.getDefaultInput('gesturesDisabled')
+    );
+  }
+  private _gesturesDisabled = this.getDefaultInput('gesturesDisabled');
 
   protected getDefaultInput<T extends keyof BergLayoutInputs>(
     input: T

@@ -1,8 +1,8 @@
 import {
-  BergLayoutInputs,
-  BergPanelInputs,
   BERG_LAYOUT_TAG_NAME,
   BERG_PANEL_TAG_NAME,
+  BergLayoutInputs,
+  BergPanelInputs,
 } from '@berg-layout/core';
 import { PropsWithChildren } from 'react';
 

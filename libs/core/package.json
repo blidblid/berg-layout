@@ -1,7 +1,6 @@
 {
   "name": "@berg-layout/core",
-  "version": "8.0.1",
-  "license": "MIT",
+  "version": "9.0.0",
   "keywords": [
     "layout",
     "resize",
@@ -10,5 +9,6 @@
   ],
   "repository": {
     "url": "https://github.com/blidblid/berg-layout"
-  }
+  },
+  "license": "MIT"
 }
