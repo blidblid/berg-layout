@@ -1,5 +1,5 @@
 // should match the configured transition duration
-$transition-duration: 0.4s;
+$transition-duration: 0.3s;
 $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 
 // applies styles outside of the shadow dom
@@ -53,9 +53,10 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     display: block;
     position: relative;
     box-sizing: border-box;
+    transform: translate3d(0, 0, 0);
     transition-duration: $transition-duration;
     transition-timing-function: $transition-timing-function;
-    transition-property: var(--berg-panel-transition-property), box-shadow;
+    transition-property: var(--berg-panel-transition-property);
 
     &.berg-panel-no-transition {
       transition-property: box-shadow;
@@ -93,7 +94,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     height: var(--berg-panel-top-size);
 
     &.berg-panel-collapsed {
-      top: calc(var(--berg-layout-top-inset) - var(--berg-panel-top-size));
+      transform: translateY(calc(-1 * var(--berg-panel-top-size)));
     }
 
     .berg-layout-top-above-left & {
@@ -125,9 +126,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     width: var(--berg-panel-right-size);
 
     &.berg-panel-collapsed {
-      right: calc(
-        var(--berg-layout-right-inset) - var(--berg-panel-right-size)
-      );
+      transform: translateX(var(--berg-panel-right-size));
     }
 
     .berg-layout-top-above-right & {
@@ -161,9 +160,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     height: var(--berg-panel-bottom-size);
 
     &.berg-panel-collapsed {
-      bottom: calc(
-        var(--berg-layout-bottom-inset) - var(--berg-panel-bottom-size)
-      );
+      transform: translateY(var(--berg-panel-bottom-size));
     }
 
     .berg-layout-bottom-below-left & {
@@ -195,7 +192,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     width: var(--berg-panel-left-size);
 
     &.berg-panel-collapsed {
-      left: calc(var(--berg-layout-left-inset) - var(--berg-panel-left-size));
+      transform: translateX(calc(-1 * var(--berg-panel-left-size)));
     }
 
     .berg-layout-top-above-left & {

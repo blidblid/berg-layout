@@ -287,7 +287,7 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
   private setTransitionPropertyVariables(
     disabledAnimations: Record<BergPanelSlot, boolean>
   ): void {
-    const transitionProperties = [];
+    const transitionProperties = ['transform'];
 
     if (!disabledAnimations.top) {
       transitionProperties.push('top');

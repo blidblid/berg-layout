@@ -17,6 +17,7 @@
     "prebuild-styles": "npx nx run-many --target=prebuild-styles",
     "prettier": "npx prettier --write {apps,libs}/**/*",
     "publish-lib": "npx tsx ./scripts/publish-lib.ts",
+    "serve": "npx nx serve demo",
     "test": "npx nx run-many --target=test --all --parallel --browsers=ChromeHeadlessNoSandbox"
   },
   "browserslist": [
