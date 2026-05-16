@@ -73,13 +73,6 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 @mixin positioning {
-  .berg-layout {
-    --berg-panel-top-size: 0;
-    --berg-panel-right-size: 0;
-    --berg-panel-bottom-size: 0;
-    --berg-panel-left-size: 0;
-  }
-
   .berg-panel-top,
   .berg-panel-right,
   .berg-panel-bottom,
