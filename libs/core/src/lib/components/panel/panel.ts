@@ -177,7 +177,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     })
   );
 
-  private touch$: Observable<Touch | null> = fromEvent<TouchEvent>(
+  private touchEvent$: Observable<TouchEvent | null> = fromEvent<TouchEvent>(
     document.body,
     'touchstart',
     {
@@ -186,6 +186,10 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   ).pipe(
     switchMap((event) => {
       if (!event.target) {
+        return EMPTY;
+      }
+
+      if (this.hasScrollingAncestor(event.target as Node, this)) {
         return EMPTY;
       }
 
@@ -246,10 +250,7 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         touchend$.pipe(map(() => null)),
         fromEvent<TouchEvent>(event.target, 'touchmove', {
           passive: true,
-        }).pipe(
-          startWith(event),
-          map((event) => event.touches[0])
-        )
+        }).pipe(startWith(event))
       ).pipe(takeUntil(touchend$.pipe(delay(0))));
     })
   );
@@ -260,18 +261,23 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
         return EMPTY;
       }
 
-      return this.touch$;
+      return this.touchEvent$;
     }),
     scan(
-      (acc, touch) => {
-        if (!touch) {
+      (acc, touchEvent) => {
+        if (!touchEvent) {
+          return null;
+        }
+
+        // Never interpret user scrolling gestures as panel gestures.
+        if (this.hasScrollingAncestor(touchEvent.target as Node, this)) {
           return null;
         }
 
         if (!acc) {
           return {
             type: 'measure' as const,
-            touch,
+            touchEvent,
           };
         }
 
@@ -284,17 +290,23 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           this.values.size * BERG_PANEL_COLLAPSE_GESTURE_FRACTIONAL_THRESHOLD
         );
 
+        const accTouch = acc.touchEvent.touches[0];
+        const touch = touchEvent.touches[0];
         const expandThreshold = BERG_PANEL_EXPAND_GESTURE_THRESHOLD;
+
+        if (!accTouch || !touch) {
+          return null;
+        }
 
         if (this.slot === 'top') {
           if (this.values.collapsed) {
-            if (touch.clientY - expandThreshold > acc.touch.clientY) {
+            if (touch.clientY - expandThreshold > accTouch.clientY) {
               return {
                 type: 'expand' as const,
               };
             }
           } else {
-            if (touch.clientY + collapseThreshold < acc.touch.clientY) {
+            if (touch.clientY + collapseThreshold < accTouch.clientY) {
               return {
                 type: 'collapse' as const,
               };
@@ -302,13 +314,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           }
         } else if (this.slot === 'right') {
           if (this.values.collapsed) {
-            if (touch.clientX + expandThreshold < acc.touch.clientX) {
+            if (touch.clientX + expandThreshold < accTouch.clientX) {
               return {
                 type: 'expand' as const,
               };
             }
           } else {
-            if (touch.clientX - collapseThreshold > acc.touch.clientX) {
+            if (touch.clientX - collapseThreshold > accTouch.clientX) {
               return {
                 type: 'collapse' as const,
               };
@@ -316,13 +328,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           }
         } else if (this.slot === 'bottom') {
           if (this.values.collapsed) {
-            if (touch.clientY + expandThreshold < acc.touch.clientY) {
+            if (touch.clientY + expandThreshold < accTouch.clientY) {
               return {
                 type: 'expand' as const,
               };
             }
           } else {
-            if (touch.clientY - collapseThreshold > acc.touch.clientY) {
+            if (touch.clientY - collapseThreshold > accTouch.clientY) {
               return {
                 type: 'collapse' as const,
               };
@@ -330,13 +342,13 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           }
         } else if (this.slot === 'left') {
           if (this.values.collapsed) {
-            if (touch.clientX - expandThreshold > acc.touch.clientX) {
+            if (touch.clientX - expandThreshold > accTouch.clientX) {
               return {
                 type: 'expand' as const,
               };
             }
           } else {
-            if (touch.clientX + collapseThreshold < acc.touch.clientX) {
+            if (touch.clientX + collapseThreshold < accTouch.clientX) {
               return {
                 type: 'collapse' as const,
               };
@@ -814,6 +826,29 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
     return (
       BERG_PANEL_TWO_DIMENSION_COLLECTION_DISTANCE > Math.abs(origin - mouse)
     );
+  }
+
+  private hasScrollingAncestor(
+    target: Node,
+    rootElement: HTMLElement
+  ): boolean {
+    let current: Node | null = target;
+
+    while (current && current !== rootElement.parentNode) {
+      if (current instanceof HTMLElement) {
+        if (current.scrollTop > 0 && this.isVertical) {
+          return true;
+        }
+
+        if (current.scrollLeft > 0 && !this.isVertical) {
+          return true;
+        }
+      }
+
+      current = current.parentNode;
+    }
+
+    return false;
   }
 
   private findLayoutElement(): BergLayoutElement {

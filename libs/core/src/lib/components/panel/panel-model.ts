@@ -63,7 +63,7 @@ export type BergPanelGestureEvent =
     }
   | {
       type: 'measure';
-      touch: Touch;
+      touchEvent: TouchEvent;
     };
 
 /** Binding modes that controls how events automatically update attributes. */

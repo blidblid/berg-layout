@@ -53,10 +53,11 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     display: block;
     position: relative;
     box-sizing: border-box;
+    opacity: 1;
     transform: translate3d(0, 0, 0);
     transition-duration: $transition-duration;
     transition-timing-function: $transition-timing-function;
-    transition-property: var(--berg-panel-transition-property);
+    transition-property: var(--berg-panel-transition-property), opacity;
 
     &.berg-panel-no-transition {
       transition-property: box-shadow;
@@ -87,6 +88,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     height: var(--berg-panel-top-size);
 
     &.berg-panel-collapsed {
+      opacity: 0;
       transform: translateY(calc(-1 * var(--berg-panel-top-size)));
     }
 
@@ -119,6 +121,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     width: var(--berg-panel-right-size);
 
     &.berg-panel-collapsed {
+      opacity: 0;
       transform: translateX(var(--berg-panel-right-size));
     }
 
@@ -153,6 +156,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     height: var(--berg-panel-bottom-size);
 
     &.berg-panel-collapsed {
+      opacity: 0;
       transform: translateY(var(--berg-panel-bottom-size));
     }
 
@@ -185,6 +189,7 @@ $transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     width: var(--berg-panel-left-size);
 
     &.berg-panel-collapsed {
+      opacity: 0;
       transform: translateX(calc(-1 * var(--berg-panel-left-size)));
     }
 
