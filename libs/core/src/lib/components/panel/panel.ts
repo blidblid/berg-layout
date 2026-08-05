@@ -298,6 +298,17 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
           return null;
         }
 
+        // Only check gestures that are perpendicular to the panel.
+        const deltaX = touch.clientX - accTouch.clientX;
+        const deltaY = touch.clientY - accTouch.clientY;
+        const isPerpendicular = this.isVertical
+          ? Math.abs(deltaX) < Math.abs(deltaY)
+          : Math.abs(deltaY) < Math.abs(deltaX);
+
+        if (!isPerpendicular) {
+          return null;
+        }
+
         if (this.slot === 'top') {
           if (this.values.collapsed) {
             if (touch.clientY - expandThreshold > accTouch.clientY) {
