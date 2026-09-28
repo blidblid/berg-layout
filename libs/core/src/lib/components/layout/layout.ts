@@ -352,6 +352,9 @@ export class BergLayoutElement extends WebComponent<BergLayoutInputs> {
   }
 }
 
-if (!customElements.get(BERG_LAYOUT_TAG_NAME)) {
+if (
+  typeof customElements !== 'undefined' &&
+  !customElements.get(BERG_LAYOUT_TAG_NAME)
+) {
   customElements.define(BERG_LAYOUT_TAG_NAME, BergLayoutElement);
 }

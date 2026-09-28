@@ -20,7 +20,12 @@ import {
   WebComponentSubjects,
 } from './web-component-model';
 
-export class WebComponent<T extends object> extends HTMLElement {
+const HTMLElementRef: typeof HTMLElement =
+  typeof HTMLElement === 'undefined'
+    ? (class {} as typeof HTMLElement)
+    : HTMLElement;
+
+export class WebComponent<T extends object> extends HTMLElementRef {
   private subjects = Object.keys(this.defaults).reduce(
     (acc, key) =>
       Object.assign(acc, {
