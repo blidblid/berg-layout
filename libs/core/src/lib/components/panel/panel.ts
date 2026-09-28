@@ -934,6 +934,9 @@ export class BergPanelElement extends WebComponent<BergPanelInputs> {
   }
 }
 
-if (!window.customElements.get(BERG_PANEL_TAG_NAME)) {
+if (
+  typeof customElements !== 'undefined' &&
+  !customElements.get(BERG_PANEL_TAG_NAME)
+) {
   customElements.define(BERG_PANEL_TAG_NAME, BergPanelElement);
 }
